@@ -1,0 +1,36 @@
+FIRESTORE SECURITY RULES — cruise Group Picks board
+====================================================
+
+The Group Picks board in explorer.html reads and writes ONE Firestore
+document:  collection "cruise", document "4LMNGG"  (the booking code).
+
+This rule is NOT auto-deployed. Paste the block below into:
+  Firebase Console -> project gto-poker-qui -> Firestore Database
+  -> Rules -> (merge into your existing rules) -> Publish.
+
+Add the match /cruise block INSIDE your existing
+  match /databases/{database}/documents { ... }
+alongside the existing  match /games/{shareCode}  block. Do not remove
+or change the games rule.
+
+------------------------------------------------------------------
+    // --- Canada & New England cruise: Group Picks board ---
+    match /cruise/{boardId} {
+      // Any signed-in (anonymous) guest may read and write a board.
+      // Board data is non-sensitive (shore-excursion preferences) and
+      // the doc id is the booking code. Listing is not granted, so
+      // boards cannot be enumerated. Delete is denied by default.
+      allow read, create, update: if request.auth != null;
+    }
+------------------------------------------------------------------
+
+Notes
+-----
+* Anonymous Auth must stay enabled (it already is, for the poker app):
+  Authentication -> Sign-in method -> Anonymous.
+* The site origin must be an authorized domain. mondrianaire.github.io
+  is already authorized because the existing app is hosted there, so
+  the cruise app at the same origin needs no change.
+* Opened as a local file (file://), Firebase auth will not connect and
+  the board falls back to this-device-only storage — this is expected
+  and harmless. Live sync works once served from GitHub Pages.
