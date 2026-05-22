@@ -150,7 +150,9 @@
     font-size:.74rem;padding:5px 14px;border-radius:20px;}
   .exc{background:var(--paper);border:1px solid var(--line);border-radius:9px;padding:13px 16px;margin-bottom:9px;}
   .exc .top{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:flex-start;}
-  .exc .nm{font-family:Georgia,serif;font-size:1.02rem;color:var(--navy);font-weight:600;}
+  .exc .nm{font-family:Georgia,serif;font-size:1.02rem;color:var(--navy);font-weight:600;text-decoration:none;}
+  a.nm,a.gp-nm{text-decoration:none;}
+  a.nm:hover,a.gp-nm:hover{text-decoration:underline;}
   .exc .right{display:flex;align-items:center;gap:4px;white-space:nowrap;}
   .exc .pr{font-family:Georgia,serif;color:var(--navy);}
   .exc .meta{font-size:.78rem;color:var(--muted);margin:3px 0 7px;}
@@ -871,7 +873,7 @@ function render(){
     const flags=e.flags.map(f=>'<span class="flag">'+f+'</span>').join(' ');
     const price=e.price?('$'+e.price.toFixed(2)):'price n/a';
     const on=picks[e.id]?'on':'';
-    return '<div class="exc"><div class="top"><span class="nm">'+e.name+'</span>'+
+    return '<div class="exc"><div class="top"><a class="nm" href="https://www.hollandamerica.com/sf/excursions" target="_blank" rel="noopener">'+e.name+' ↗</a>'+
       '<span class="right"><span class="pr">'+price+'</span>'+
       '<button class="star '+on+'" data-id="'+e.id+'" title="Add to Group Picks">'+(picks[e.id]?'★':'☆')+'</button></span></div>'+
       '<div class="meta">'+e.port+' · '+e.durationHrs+' hrs · '+e.durationBand+
@@ -896,7 +898,7 @@ function renderBoard(){
     if(votes.length===3){ag='all';agt='All 3 rooms — book together';}
     else if(votes.length){ag='some';agt=votes.length+' of 3 rooms';}
     const price=e.price?('$'+e.price.toFixed(2)+' pp'):'price n/a';
-    return '<div class="gp-row"><div class="gp-top"><div><span class="gp-nm">'+e.name+'</span>'+
+    return '<div class="gp-row"><div class="gp-top"><div><a class="gp-nm" href="https://www.hollandamerica.com/sf/excursions" target="_blank" rel="noopener">'+e.name+'</a>'+
       '<div class="gp-meta">'+e.port+' · '+e.durationHrs+' hrs · '+e.effort+' · '+price+'</div></div>'+
       '<span><span class="agree '+ag+'">'+agt+'</span><button class="gp-rm" data-id="'+id+'">remove</button></span></div>'+
       '<div class="gp-rooms"><span class="rlbl">Who wants it:</span>'+rooms+'</div></div>';
