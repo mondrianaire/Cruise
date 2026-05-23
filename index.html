@@ -1,1113 +1,1484 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Canada &amp; New England Cruise — Trip Hub · ms Zuiderdam</title>
-<meta name="description" content="Trip knowledge hub for the June 2026 Canada & New England voyage aboard Holland America's ms Zuiderdam — itinerary, flights, hotels, the ship, and an interactive finder for all 89 shore excursions.">
-<!-- Open Graph / social preview -->
+<meta charset="utf-8">
+<title>ms Zuiderdam · Voyage Console — Canada &amp; New England</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="The Voyage Console — a maritime instrument-panel front door to the Canada & New England trip hub aboard Holland America's ms Zuiderdam, June 2026.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Canada & New England — ms Zuiderdam · June 2026">
-<meta property="og:description" content="The full trip hub: itinerary, flights, hotels, the ship, and an interactive finder for all 89 shore excursions.">
+<meta property="og:title" content="Voyage Console — ms Zuiderdam · June 2026">
+<meta property="og:description" content="A maritime instrument-panel front door to the Canada & New England trip hub: the route chart, the excursion sonar, and the ship by the dial.">
 <meta property="og:image" content="https://mondrianaire.github.io/Cruise/voyage-preview.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:url" content="https://mondrianaire.github.io/Cruise/">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Canada & New England — ms Zuiderdam · June 2026">
-<meta name="twitter:description" content="The full trip hub: itinerary, flights, hotels, the ship, and an interactive finder for all 89 shore excursions.">
+<meta name="twitter:title" content="Voyage Console — ms Zuiderdam · June 2026">
+<meta name="twitter:description" content="A maritime instrument-panel front door to the Canada & New England trip hub.">
 <meta name="twitter:image" content="https://mondrianaire.github.io/Cruise/voyage-preview.png">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Space+Mono:wght@400;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,900&family=Space+Mono:wght@400;700&display=swap');
+
   :root{
     --abyss:#061a26; --sea:#0b2a3a; --sea2:#103b4f; --deep:#04131c;
     --brass:#c89b4a; --brass-lt:#e6c477; --brass-dk:#8f6a2c;
     --teal:#1c6b7e; --teal-lt:#3fa0ad;
-    --cream:#f1e7cf; --paper:#f5eed7;
+    --cream:#f1e7cf; --paper:#f5eed7; --foam:#eef5f5;
+    --rope:#c79a5b; --rope-dk:#8a6535;
+    --radar:#5fd6a0; --radar-dk:#2a7d5c;
+    --sig-red:#d8392b; --sig-blue:#1f5fa8; --sig-yel:#efb228;
+    --sig-grn:#2f8a52; --sig-wht:#f4efe0; --sig-blk:#15212a;
     --ink:#e8e2cc; --ink-dim:#8aa0a8;
-    --easy:#5fd6a0; --mod:#efb228; --stren:#e0795a;
-    --grn-dk:#2a7d5c;
-    /* accessibility-remediation tokens (per Voyage Console handoff) */
-    --route-text:#f1e7cf;     /* hero route — was low-contrast teal */
-    --port-sub:#163a4a;       /* chart port sub-labels on parchment */
-    --filter-off:#b9b09a;     /* struck filter label */
-    --focus-ring:#e6c477;     /* 2px solid, 2px offset, all interactives */
-    --target-min:44px;        /* min hit area, WCAG 2.5.x */
-    --d-serif:"Fraunces",Georgia,'Times New Roman',serif;
+    --maple:#d8392b;
+    /* accessibility-remediation tokens */
+    --route-text:#f1e7cf;       /* was #3fa0ad — contrast + hierarchy fix */
+    --port-sub:#163a4a;         /* was #5f7a82 — chart sub-label contrast */
+    --filter-off:#b9b09a;       /* struck filter label — replaces opacity dim */
+    --focus-ring:#e6c477;       /* 2px solid, 2px offset, all interactives */
+    --target-min:44px;          /* min hit area, WCAG 2.5.5 */
+    --d-serif:"Fraunces",Georgia,serif;
     --d-mono:"Space Mono",ui-monospace,Consolas,monospace;
-    --d-body:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+    --d-body:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,sans-serif;
   }
-  *{box-sizing:border-box;margin:0;padding:0;}
-  html{scroll-behavior:smooth;}
-  body{font-family:var(--d-body);color:var(--ink);background:var(--abyss);
-    line-height:1.65;overflow-x:hidden;}
-  /* motion gated on BOTH the OS query and the on-page toggle */
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    background:var(--abyss); color:var(--ink); font-family:var(--d-body);
+    overflow-x:hidden;
+  }
+  /* motion is gated on BOTH the OS query and the on-page toggle (body.motion-off) */
   @media (prefers-reduced-motion: reduce){
-    *{animation-duration:.001ms!important;animation-iteration-count:1!important;
-      transition-duration:.001ms!important;scroll-behavior:auto!important;}
+    *{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; }
   }
-  body.motion-off *{animation-duration:.001ms!important;animation-iteration-count:1!important;
-    transition-duration:.001ms!important;}
-  h1,h2,h3,h4{font-family:var(--d-serif);font-weight:600;color:var(--cream);line-height:1.22;}
-  a{color:var(--brass-lt);}
-  a:focus-visible,button:focus-visible,select:focus-visible,input:focus-visible{
-    outline:2px solid var(--focus-ring);outline-offset:2px;}
-  /* ---------- SKIP LINK ---------- */
-  .skip{position:absolute;left:12px;top:-60px;z-index:200;background:var(--brass-lt);
-    color:#08161a;font:700 12px/1 var(--d-body);padding:11px 16px;border-radius:6px;
-    text-decoration:none;transition:top .12s ease;}
-  .skip:focus{top:10px;}
-  /* ---------- TOOLBAR / MOTION TOGGLE ---------- */
-  .toolbar{position:fixed;left:10px;bottom:10px;z-index:80;
-    display:flex;align-items:center;gap:8px;}
-  .mtog{display:inline-flex;align-items:center;gap:9px;min-height:38px;
-    padding:0 12px;background:rgba(7,32,43,.82);border:1px solid var(--teal);
-    border-radius:8px;cursor:pointer;color:var(--ink);font:inherit;
-    opacity:.6;transition:opacity .15s;}
-  .mtog:hover,.mtog:focus-visible{opacity:1;}
-  .mtog .track{width:34px;height:18px;border-radius:9px;background:var(--teal);
-    position:relative;flex:0 0 34px;}
-  .mtog .track::after{content:"";position:absolute;top:2px;left:2px;width:14px;height:14px;
-    border-radius:50%;background:var(--brass-lt);transition:left .15s;}
-  .mtog[aria-pressed="false"] .track{background:var(--grn-dk);}
-  .mtog[aria-pressed="false"] .track::after{left:18px;}
-  .mtog .ml{font:600 11.5px/1 var(--d-body);}
-  /* ---------- NAV ---------- */
-  nav{position:sticky;top:0;z-index:100;background:var(--deep);
-    border-bottom:1px solid var(--brass-dk);box-shadow:0 2px 14px rgba(0,0,0,.5);}
-  nav .inner{max-width:1180px;margin:0 auto;display:flex;flex-wrap:wrap;
-    align-items:center;gap:2px;padding:0 16px;}
-  nav .brand{color:var(--cream);font-family:var(--d-serif);font-size:1rem;font-weight:700;
-    padding:13px 14px 13px 0;margin-right:auto;letter-spacing:.01em;}
-  nav a{color:var(--ink-dim);text-decoration:none;font:700 .7rem/1 var(--d-mono);
-    padding:14px 9px;text-transform:uppercase;letter-spacing:.11em;transition:.15s;}
-  nav a:hover{color:var(--brass-lt);}
-  nav a.console{color:var(--brass-lt);}
-  /* ---------- HERO ---------- */
-  header.hero{position:relative;text-align:center;padding:60px 20px 52px;overflow:hidden;
-    background:radial-gradient(ellipse at 50% 6%, #1a4a5e 0%, var(--sea) 46%, var(--abyss) 100%);}
-  .hero-stars{position:absolute;inset:0;}
-  .hero-stars i{position:absolute;width:2px;height:2px;border-radius:50%;
-    background:#cfe6df;opacity:.5;animation:twinkle 4s ease-in-out infinite;}
-  @keyframes twinkle{0%,100%{opacity:.15;}50%{opacity:.7;}}
-  header.hero .kicker{position:relative;color:var(--brass-lt);text-transform:uppercase;
-    letter-spacing:.3em;font:700 .72rem/1 var(--d-mono);margin-bottom:16px;}
-  header.hero h1{position:relative;color:var(--cream);font-size:clamp(2rem,5vw,3rem);
-    max-width:840px;margin:0 auto;letter-spacing:-.01em;}
-  header.hero .route{position:relative;font:700 .8rem/1.7 var(--d-mono);letter-spacing:.1em;
-    text-transform:uppercase;margin-top:18px;color:var(--route-text);}
-  header.hero .ship{position:relative;margin-top:8px;font:700 .7rem/1 var(--d-mono);
-    letter-spacing:.16em;color:var(--ink-dim);}
-  .countdown{position:relative;display:flex;justify-content:center;gap:16px;
-    margin-top:32px;flex-wrap:wrap;}
-  .countdown div{background:radial-gradient(circle at 38% 30%, #16404f, #07202b 72%);
-    border:5px solid;border-color:var(--brass-lt) var(--brass-dk) var(--brass-dk) var(--brass-lt);
-    border-radius:12px;padding:14px 22px;min-width:98px;box-shadow:0 8px 22px rgba(0,0,0,.5);}
-  .countdown .num{font-family:var(--d-serif);font-weight:700;font-size:2.1rem;
-    color:var(--brass-lt);display:block;}
-  .countdown .lbl{font:700 .58rem/1 var(--d-mono);text-transform:uppercase;
-    letter-spacing:.2em;color:var(--teal-lt);margin-top:5px;}
-  /* ---------- LAYOUT ---------- */
-  main{max-width:1180px;margin:0 auto;padding:10px 22px 70px;}
-  section{padding:50px 0 14px;border-bottom:1px solid rgba(143,106,44,.3);}
-  section:last-of-type{border-bottom:none;}
-  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:6px;flex-wrap:wrap;}
-  .sec-head h2{font-size:1.85rem;}
-  .sec-head .tag{color:var(--brass);font:700 .66rem/1 var(--d-mono);text-transform:uppercase;
-    letter-spacing:.15em;border:1px solid var(--brass-dk);border-radius:20px;padding:5px 12px;}
-  .lead{color:var(--ink-dim);max-width:810px;margin:10px 0 24px;font-size:.96rem;}
-  /* ---------- CARDS / GRID ---------- */
-  .grid{display:grid;gap:16px;}
-  .g2{grid-template-columns:repeat(2,1fr);}
-  .g3{grid-template-columns:repeat(3,1fr);}
-  .g4{grid-template-columns:repeat(4,1fr);}
-  .card{background:rgba(7,32,43,.7);border:1px solid var(--teal);border-radius:9px;
-    padding:18px 20px;position:relative;overflow:hidden;}
-  .card::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:3px;
-    background:linear-gradient(90deg,var(--brass),var(--teal-lt));}
-  .card h3{font-size:1.06rem;margin-bottom:6px;}
-  .card h4{font-size:.98rem;margin-bottom:4px;color:var(--cream);}
-  .fact .k{font:700 .63rem/1.3 var(--d-mono);text-transform:uppercase;letter-spacing:.13em;
-    color:var(--teal-lt);}
-  .fact .v{font-family:var(--d-serif);font-size:1.04rem;color:var(--cream);margin-top:4px;}
-  .pill{display:inline-block;background:var(--brass-lt);color:#08161a;
-    font:700 .64rem/1 var(--d-mono);padding:5px 11px;border-radius:20px;
-    letter-spacing:.05em;text-transform:uppercase;}
-  /* ---------- ITINERARY TIMELINE ---------- */
-  .timeline{position:relative;margin-left:8px;padding-left:30px;
-    border-left:3px solid var(--brass-dk);}
-  .stop{position:relative;margin-bottom:22px;}
-  .stop::before{content:"";position:absolute;left:-39px;top:5px;width:15px;height:15px;
-    background:var(--abyss);border:3px solid var(--brass);border-radius:50%;}
-  .stop.sea::before{background:var(--teal);border-color:var(--teal);}
-  .stop .day{font:700 .65rem/1 var(--d-mono);text-transform:uppercase;letter-spacing:.16em;
-    color:var(--brass);}
-  .stop h3{font-size:1.16rem;margin:4px 0;}
-  .stop .when{color:var(--ink-dim);font-size:.88rem;}
-  .stop .note{font-size:.9rem;margin-top:5px;color:var(--ink);}
-  .stop .hi{color:var(--brass-lt);font-weight:700;}
-  /* ---------- FLIGHTS ---------- */
-  .flight{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
-  .flight .seg{background:rgba(4,19,28,.6);border:1px solid var(--brass-dk);border-radius:8px;
-    padding:10px 14px;flex:1;min-width:200px;}
-  .flight .ap{font-family:var(--d-serif);font-size:1.3rem;color:var(--cream);font-weight:700;}
-  .flight .arrow{color:var(--brass);font-size:1.3rem;}
-  .flight .meta{font:600 .76rem/1.35 var(--d-mono);color:var(--ink-dim);margin-top:2px;}
-  /* ---------- LISTS / CALLOUT ---------- */
-  ul.clean{list-style:none;}
-  ul.clean li{padding:6px 0 6px 24px;position:relative;font-size:.92rem;color:var(--ink);}
-  ul.clean li::before{content:"\2693";position:absolute;left:0;color:var(--brass);}
-  .callout{background:rgba(200,155,74,.1);border-left:4px solid var(--brass);
-    border-radius:0 6px 6px 0;padding:14px 18px;font-size:.9rem;margin:16px 0;color:var(--ink);}
-  .callout strong{color:var(--brass-lt);}
-  /* ---------- ROUTE MAP — PARCHMENT CHART ---------- */
-  .routemap{background:var(--paper);
+  body.motion-off *{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; }
+
+  /* visible focus on every interactive element */
+  a:focus-visible, button:focus-visible{
+    outline:2px solid var(--focus-ring); outline-offset:2px;
+  }
+
+  /* ── SKIP LINK ── */
+  .skip{
+    position:absolute; left:10px; top:-60px; z-index:60;
+    background:var(--brass-lt); color:#08161a;
+    font:700 12px/1 var(--d-body); padding:11px 16px; border-radius:6px;
+    text-decoration:none; transition:top .12s ease;
+  }
+  .skip:focus{ top:10px; }
+
+  /* ── UTILITY BAR (motion toggle — early in DOM & tab order) ── */
+  .toolbar{
+    position:fixed; left:10px; bottom:10px; z-index:80;
+    display:flex; align-items:center; gap:8px;
+  }
+  .mtog{
+    display:inline-flex; align-items:center; gap:9px; min-height:38px;
+    padding:0 12px; background:rgba(7,32,43,.82); border:1px solid var(--teal);
+    border-radius:8px; cursor:pointer; color:var(--ink); font:inherit;
+    opacity:.6; transition:opacity .15s;
+  }
+  .mtog:hover,.mtog:focus-visible{ opacity:1; }
+  .mtog .track{ width:34px; height:18px; border-radius:9px; background:var(--teal);
+    position:relative; flex:0 0 34px; }
+  .mtog .track::after{ content:""; position:absolute; top:2px; left:2px; width:14px; height:14px;
+    border-radius:50%; background:var(--brass-lt); transition:left .15s; }
+  .mtog[aria-pressed="false"] .track{ background:var(--radar-dk); }
+  .mtog[aria-pressed="false"] .track::after{ left:18px; }
+  .mtog .ml{ font:600 11.5px/1 var(--d-body); }
+
+  /* ── SIGNAL-FLAG BUNTING ── */
+  .bunting{ display:flex; height:46px; overflow:hidden; background:var(--deep); }
+  .bunting .flag{
+    flex:1; position:relative; transform-origin:top center;
+    animation:sway 3.4s ease-in-out infinite;
+  }
+  .bunting .flag::after{
+    content:""; position:absolute; left:50%; top:0; width:1px; height:6px; background:#000;
+  }
+  .bunting .flag i{
+    display:block; height:30px; margin-top:8px;
+    clip-path:polygon(0 0,100% 0,100% 60%,50% 100%,0 60%);
+  }
+  .bf-1 i{ background:linear-gradient(90deg,var(--sig-red) 50%,var(--sig-wht) 50%); }
+  .bf-2 i{ background:repeating-linear-gradient(45deg,var(--sig-blue) 0 8px,var(--sig-wht) 8px 16px); }
+  .bf-3 i{ background:radial-gradient(circle,var(--sig-red) 38%,var(--sig-yel) 39%); }
+  .bf-4 i{ background:linear-gradient(180deg,var(--sig-blue) 50%,var(--sig-yel) 50%); }
+  .bf-5 i{ background:conic-gradient(var(--sig-blk) 0 25%,var(--sig-wht) 0 50%,var(--sig-blk) 0 75%,var(--sig-wht) 0); }
+  .bf-6 i{ background:linear-gradient(90deg,var(--sig-yel) 33%,var(--sig-red) 33% 66%,var(--sig-yel) 66%); }
+  .bf-7 i{ background:var(--sig-grn); }
+  .bf-8 i{ background:repeating-linear-gradient(90deg,var(--sig-red) 0 7px,var(--sig-wht) 7px 14px); }
+  @keyframes sway{ 0%,100%{ transform:rotate(-2.2deg);} 50%{ transform:rotate(2.2deg);} }
+
+  /* ── ROPE DIVIDER ── */
+  .rope{
+    height:14px; margin:0;
+    background:
+      repeating-linear-gradient(70deg, var(--rope) 0 9px, var(--rope-dk) 9px 12px, var(--rope) 12px 18px);
+    border-top:2px solid var(--rope-dk); border-bottom:2px solid var(--rope-dk);
+    box-shadow:inset 0 3px 6px rgba(0,0,0,.4), inset 0 -3px 6px rgba(0,0,0,.4);
+  }
+
+  /* ── WAVE STRIP ── */
+  .waves{ display:block; width:100%; height:64px; }
+  .waves .w1{ animation:drift 14s linear infinite; }
+  .waves .w2{ animation:drift 9s linear infinite reverse; }
+  .waves .w3{ animation:drift 22s linear infinite; }
+  @keyframes drift{ from{ transform:translateX(0);} to{ transform:translateX(-240px);} }
+
+  /* ── SECTION SHELL ── */
+  section{ position:relative; }
+  .wrap{ max-width:1180px; margin:0 auto; padding:0 28px; }
+  .sec-title{
+    font-family:var(--d-serif); font-weight:600; font-size:34px; color:var(--cream);
+    margin:0 0 6px; letter-spacing:-.01em;
+  }
+  .sec-kicker{
+    font:700 11px/1 var(--d-mono); letter-spacing:.28em; text-transform:uppercase;
+    color:var(--brass); display:flex; align-items:center; gap:10px; margin-bottom:14px;
+  }
+  .sec-kicker::before,.sec-kicker::after{ content:""; height:1px; flex:1; max-width:60px; background:var(--brass-dk); }
+  .sec-intro{ color:var(--ink-dim); max-width:620px; margin:0 0 24px; font-size:14px; }
+
+  /* in-hub link CTAs */
+  .cta{
+    display:inline-flex; align-items:center; gap:8px; min-height:var(--target-min);
+    padding:0 18px; margin-top:8px; border-radius:6px; text-decoration:none;
+    font:700 12px/1 var(--d-mono); letter-spacing:.08em; text-transform:uppercase;
+    background:var(--brass-lt); color:#08161a; border:1px solid var(--brass-dk);
+  }
+  .cta.ghost{ background:transparent; color:var(--brass-lt); }
+  .cta:hover{ background:var(--brass); }
+  .cta.ghost:hover{ background:rgba(200,155,74,.14); }
+
+  /* reveal */
+  .rv{ opacity:0; transform:translateY(26px); transition:opacity .7s ease, transform .7s cubic-bezier(.2,.7,.2,1); }
+  .rv.in{ opacity:1; transform:none; }
+
+  /* ── HERO ── */
+  .hero{
+    position:relative; min-height:660px; overflow:hidden;
+    background:
+      radial-gradient(ellipse at 50% 12%, #1a4a5e 0%, var(--sea) 42%, var(--abyss) 100%);
+  }
+  .hero-stars{ position:absolute; inset:0; }
+  .hero-stars i{ position:absolute; width:2px; height:2px; border-radius:50%; background:#cfe6df; opacity:.5; animation:twinkle 4s ease-in-out infinite; }
+  @keyframes twinkle{ 0%,100%{ opacity:.15;} 50%{ opacity:.7;} }
+
+  .lighthouse{ position:absolute; right:6%; bottom:118px; width:54px; height:150px; z-index:3; }
+  .lh-tower{
+    position:absolute; bottom:0; left:50%; transform:translateX(-50%);
+    width:34px; height:120px; border-radius:5px 5px 0 0;
+    background:repeating-linear-gradient(180deg,var(--cream) 0 20px,var(--sig-red) 20px 40px);
+    border:2px solid #2a2118;
+  }
+  .lh-lamp{
+    position:absolute; top:6px; left:50%; transform:translateX(-50%);
+    width:22px; height:18px; background:var(--brass-lt); border:2px solid var(--brass-dk);
+    box-shadow:0 0 16px 4px rgba(240,200,110,.7);
+  }
+  .lh-beam{
+    position:absolute; top:8px; left:50%; width:340px; height:90px;
+    transform-origin:left center;
+    background:linear-gradient(90deg, rgba(244,214,130,.55), transparent 78%);
+    clip-path:polygon(0 46%,100% 0,100% 100%,0 54%);
+    animation:beam 7s linear infinite;
+  }
+  @keyframes beam{ from{ transform:rotate(20deg);} 50%{ transform:rotate(140deg);} to{ transform:rotate(20deg);} }
+
+  .hero-inner{ position:relative; z-index:4; text-align:center; padding:62px 28px 0; }
+  .hero-eyebrow{
+    font:700 12px/1 var(--d-mono); letter-spacing:.34em; text-transform:uppercase;
+    color:var(--brass-lt); margin-bottom:18px;
+  }
+  .hero-title{
+    font-family:var(--d-serif); font-weight:900; font-size:clamp(44px,8vw,90px);
+    line-height:.96; color:var(--cream); margin:0; letter-spacing:-.02em;
+    text-shadow:0 4px 24px rgba(0,0,0,.5);
+  }
+  .hero-title em{ font-style:italic; font-weight:500; color:var(--brass-lt); display:block; font-size:.46em; margin-top:8px; letter-spacing:0; }
+  .hero-route{
+    margin-top:16px; font:700 13px/1 var(--d-mono); letter-spacing:.16em; text-transform:uppercase;
+    color:var(--route-text); display:flex; gap:10px; justify-content:center; align-items:center; flex-wrap:wrap;
+  }
+  .hero-route .dot{ width:6px; height:6px; border-radius:50%; background:var(--brass); }
+
+  .compass{ position:absolute; left:5%; top:78px; width:118px; height:118px; z-index:4; opacity:.92; }
+  .compass .ring{ position:absolute; inset:0; border-radius:50%; border:2px solid var(--brass); box-shadow:0 0 0 5px rgba(200,155,74,.12); }
+  .compass .ring::before{ content:""; position:absolute; inset:9px; border-radius:50%; border:1px solid var(--brass-dk); }
+  .compass .needle{
+    position:absolute; left:50%; top:50%; width:0; height:0; transform-origin:center;
+    animation:swing 9s ease-in-out infinite;
+  }
+  .compass .needle::before,.compass .needle::after{
+    content:""; position:absolute; left:-5px; width:10px;
+  }
+  .compass .needle::before{ top:-46px; height:46px; background:linear-gradient(var(--sig-red),#7a1d16); clip-path:polygon(50% 0,100% 100%,0 100%); }
+  .compass .needle::after{ top:0; height:46px; background:linear-gradient(#dfe7e3,#9aa9a4); clip-path:polygon(0 0,100% 0,50% 100%); }
+  .compass .pt{ position:absolute; font:700 11px var(--d-mono); color:var(--brass-lt); }
+  .compass .n{ top:3px; left:50%; transform:translateX(-50%); }
+  .compass .s{ bottom:3px; left:50%; transform:translateX(-50%); }
+  .compass .e{ right:5px; top:50%; transform:translateY(-50%); }
+  .compass .w{ left:6px; top:50%; transform:translateY(-50%); }
+  @keyframes swing{ 0%,100%{ transform:rotate(-14deg);} 50%{ transform:rotate(11deg);} }
+
+  .countdown{ display:flex; gap:22px; justify-content:center; margin-top:34px; flex-wrap:wrap; }
+  .gauge{
+    width:128px; height:128px; border-radius:50%; position:relative;
+    background:radial-gradient(circle at 38% 32%, #16404f, #07202b 70%);
+    border:7px solid; border-color:var(--brass-lt) var(--brass-dk) var(--brass-dk) var(--brass-lt);
+    box-shadow:0 10px 30px rgba(0,0,0,.55), inset 0 0 22px rgba(0,0,0,.7);
+  }
+  .gauge::before{ content:""; position:absolute; inset:5px; border-radius:50%; border:2px solid rgba(200,155,74,.4); }
+  .gauge::after{ content:""; position:absolute; top:8px; left:14px; width:46px; height:30px; border-radius:50%;
+    background:linear-gradient(135deg, rgba(255,255,255,.28), transparent 70%); }
+  .gauge .num{
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    font-family:var(--d-serif); font-weight:700; font-size:42px; color:var(--brass-lt);
+    text-shadow:0 0 14px rgba(230,196,119,.5);
+  }
+  .gauge .lbl{
+    position:absolute; bottom:16px; left:0; right:0; text-align:center;
+    font:700 8.5px var(--d-mono); letter-spacing:.2em; text-transform:uppercase; color:var(--teal-lt);
+  }
+  .gauge .screw{ position:absolute; width:7px; height:7px; border-radius:50%; background:radial-gradient(var(--brass-lt),var(--brass-dk)); }
+  .gauge .screw.tl{ top:-3px; left:14px; } .gauge .screw.tr{ top:-3px; right:14px; }
+  .gauge .screw.bl{ bottom:-3px; left:14px; } .gauge .screw.br{ bottom:-3px; right:14px; }
+  .cd-colon{ align-self:center; font:700 38px var(--d-serif); color:var(--brass-dk); }
+
+  .hero-sea{ position:absolute; left:0; right:0; bottom:0; height:200px; z-index:2; }
+  .hero-ship{
+    position:absolute; bottom:96px; left:50%; width:150px; z-index:3;
+    transform-origin:bottom center; animation:bob 5.5s ease-in-out infinite;
+  }
+  @keyframes bob{ 0%,100%{ transform:translateX(-50%) rotate(-2.4deg) translateY(0);} 50%{ transform:translateX(-50%) rotate(2.4deg) translateY(-7px);} }
+  .scroll-cue{
+    position:absolute; left:50%; bottom:20px; transform:translateX(-50%); z-index:5;
+    font:700 9px var(--d-mono); letter-spacing:.24em; text-transform:uppercase; color:var(--ink-dim);
+    text-align:center;
+  }
+  .scroll-cue .arr{ display:block; margin:6px auto 0; width:9px; height:9px;
+    border-right:2px solid var(--brass); border-bottom:2px solid var(--brass);
+    transform:rotate(45deg); animation:cue 1.8s ease-in-out infinite; }
+  @keyframes cue{ 0%,100%{ transform:rotate(45deg) translate(0,0); opacity:.4;} 50%{ transform:rotate(45deg) translate(3px,3px); opacity:1;} }
+
+  /* ── CHART SECTION ── */
+  .s-chart{ background:linear-gradient(180deg,var(--abyss),var(--deep)); padding:54px 0 60px; }
+  .chart-panel{
+    background:var(--paper);
     background-image:
       repeating-linear-gradient(38deg, rgba(28,107,126,.07) 0 1px, transparent 1px 30px),
       repeating-linear-gradient(-38deg, rgba(28,107,126,.07) 0 1px, transparent 1px 30px);
-    border:3px solid var(--brass-dk);border-radius:6px;padding:16px 16px 10px;
-    margin:8px 0 26px;box-shadow:0 18px 40px rgba(0,0,0,.5);}
-  .routemap svg{display:block;width:100%;height:auto;}
-  .routemap .cap{font:600 .8rem/1.55 var(--d-body);color:#3a4f44;text-align:center;margin-top:8px;}
-  /* ---------- ACTIVITY-LEVEL KEY ---------- */
-  .levelkey{background:rgba(7,32,43,.7);border:1px solid var(--teal);border-radius:9px;
-    padding:16px 20px;margin-bottom:24px;}
-  .levelkey h4{font-size:1rem;margin-bottom:10px;}
-  .lk-row{font-size:.9rem;margin:7px 0;display:flex;gap:10px;align-items:baseline;color:var(--ink);}
-  .lk-note{font-size:.83rem;color:var(--ink-dim);margin-top:12px;
-    border-top:1px dotted var(--brass-dk);padding-top:11px;}
-  /* ---------- PORT CARDS ---------- */
-  .portcard{background:rgba(7,32,43,.7);border:1px solid var(--teal);border-radius:9px;
-    padding:14px 16px;}
-  .portcard h4{font-size:1.02rem;margin-bottom:3px;}
-  .portcard .ph{font:700 .63rem/1.3 var(--d-mono);text-transform:uppercase;letter-spacing:.11em;
-    color:var(--brass);margin-bottom:7px;}
-  .portcard p{font-size:.86rem;color:var(--ink);}
-  /* ---------- FINDER PANELS ---------- */
-  .panel{background:rgba(4,19,28,.55);border:1px solid var(--brass-dk);border-radius:9px;
-    padding:15px 17px;margin-bottom:14px;}
-  .panel h4{font:700 .7rem/1.5 var(--d-mono);text-transform:uppercase;letter-spacing:.13em;
-    color:var(--brass);margin-bottom:10px;}
-  .chips{display:flex;flex-wrap:wrap;gap:8px;}
-  .chip{cursor:pointer;border:1px solid var(--teal);background:rgba(7,32,43,.6);
-    border-radius:20px;padding:0 14px;min-height:40px;display:inline-flex;align-items:center;
-    font:600 .8rem/1 var(--d-body);color:var(--ink);transition:.12s;}
-  .chip:hover{border-color:var(--teal-lt);}
-  .chip.on{background:var(--teal);color:var(--cream);border-color:var(--teal-lt);}
-  .chip.persona{border-color:var(--brass-dk);color:var(--brass-lt);font-weight:700;}
-  .chip.persona.on{background:var(--brass);color:#08161a;border-color:var(--brass-lt);}
-  .ctrls{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end;}
-  .ctrls label{font:700 .61rem/1 var(--d-mono);text-transform:uppercase;letter-spacing:.11em;
-    color:var(--ink-dim);display:block;margin-bottom:5px;}
-  .ctrls select,.ctrls input[type=text]{font:inherit;font-size:.86rem;padding:9px 11px;
-    min-height:var(--target-min);border:1px solid var(--teal);border-radius:6px;
-    background:rgba(7,32,43,.85);color:var(--ink);}
-  /* ---------- RESULTS ---------- */
-  .resbar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;
-    gap:10px;margin:8px 0 14px;}
-  .resbar .count{font-family:var(--d-serif);font-size:1.04rem;color:var(--cream);}
-  .reset{cursor:pointer;border:1px solid var(--brass);background:transparent;
-    color:var(--brass-lt);font:700 .72rem/1 var(--d-mono);text-transform:uppercase;
-    letter-spacing:.07em;padding:0 16px;min-height:var(--target-min);border-radius:20px;}
-  .reset:hover{background:rgba(200,155,74,.14);}
-  .exc{background:rgba(7,32,43,.7);border:1px solid var(--teal);border-radius:9px;
-    padding:14px 16px;margin-bottom:10px;}
-  .exc .top{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
-    align-items:flex-start;}
-  .exc .nm{font-family:var(--d-serif);font-size:1.04rem;color:var(--cream);font-weight:700;
-    text-decoration:none;}
-  a.nm:hover,a.gp-nm:hover{text-decoration:underline;color:var(--brass-lt);}
-  .exc .right{display:flex;align-items:center;gap:6px;white-space:nowrap;}
-  .exc .pr{font-family:var(--d-serif);color:var(--brass-lt);}
-  .exc .meta{font:600 .78rem/1.5 var(--d-mono);color:var(--ink-dim);margin:5px 0 8px;
-    display:flex;flex-wrap:wrap;gap:7px;align-items:center;}
-  .exc .themes{display:flex;flex-wrap:wrap;gap:5px;}
-  .star{cursor:pointer;font-size:1.35rem;line-height:1;color:var(--ink-dim);background:none;
-    border:none;padding:4px;min-width:var(--target-min);min-height:var(--target-min);
-    display:inline-flex;align-items:center;justify-content:center;}
-  .star:hover{color:var(--brass-lt);}
-  .star.on{color:var(--brass-lt);}
-  .tt{display:inline-block;font:700 .65rem/1.4 var(--d-mono);padding:3px 8px;border-radius:5px;
-    color:#fff;letter-spacing:.03em;text-transform:uppercase;}
-  .t-history{background:#9c7440;}.t-landmark{background:#c0503a;}.t-scenery{background:#3f7d4e;}
-  .t-wildlife{background:#5b8c5a;}.t-food{background:#c0612e;}.t-drinks{background:#8a4f9e;}
-  .t-music{background:#2f6f8f;}.t-culture{background:#357a87;}.t-literary{background:#9e7b2f;}
-  .t-water{background:#2f6f8f;}.t-walking{background:#6b7280;}.t-drive{background:#4a5a78;}
-  .t-active{background:#c0503a;}.t-handson{background:#a8842f;}.t-photo{background:#566b8a;}
-  .t-offbeat{background:#6a5a8d;}
-  .flag{font:700 .6rem/1.5 var(--d-mono);padding:2px 7px;border-radius:4px;
-    background:rgba(31,95,168,.22);color:var(--teal-lt);text-transform:uppercase;
-    letter-spacing:.05em;border:1px solid var(--teal);}
-  .empty{text-align:center;color:var(--ink-dim);padding:30px;font-style:italic;}
-  /* ---------- GROUP PICKS ---------- */
-  #gpPanel{border-color:var(--brass);background:rgba(200,155,74,.08);}
-  .gp-empty{font-size:.88rem;color:var(--ink-dim);font-style:italic;}
-  .gp-row{border:1px solid var(--teal);border-radius:8px;background:rgba(7,32,43,.7);
-    padding:11px 14px;margin-bottom:9px;}
-  .gp-top{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline;}
-  .gp-nm{font-family:var(--d-serif);color:var(--cream);font-weight:700;font-size:.98rem;
-    text-decoration:none;}
-  .gp-meta{font:600 .74rem/1.4 var(--d-mono);color:var(--ink-dim);margin-top:3px;}
-  .gp-rooms{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px;align-items:center;}
-  .rlbl{font:700 .62rem/1 var(--d-mono);text-transform:uppercase;letter-spacing:.1em;
-    color:var(--ink-dim);}
-  .roomchip{cursor:pointer;border:1px solid var(--teal);background:rgba(7,32,43,.6);
-    border-radius:20px;padding:0 13px;min-height:36px;display:inline-flex;align-items:center;
-    font:600 .76rem/1 var(--d-body);color:var(--ink);}
-  .roomchip.on{background:var(--teal);color:var(--cream);border-color:var(--teal-lt);}
-  .agree{font:700 .62rem/1.4 var(--d-mono);padding:4px 10px;border-radius:20px;
-    text-transform:uppercase;letter-spacing:.04em;}
-  .agree.all{background:rgba(95,214,160,.16);color:var(--easy);}
-  .agree.some{background:rgba(239,178,40,.16);color:var(--mod);}
-  .agree.none{background:rgba(138,160,168,.16);color:var(--ink-dim);}
-  .gp-rm{cursor:pointer;color:var(--stren);font:700 .72rem/1 var(--d-mono);border:none;
-    background:none;padding:6px 8px;min-height:var(--target-min);}
-  .gp-rm:hover{text-decoration:underline;}
-  .gp-summary{margin-top:13px;border-top:1px solid var(--brass-dk);padding-top:11px;}
-  .gp-sum-row{display:flex;justify-content:space-between;font-size:.85rem;padding:4px 0;
-    flex-wrap:wrap;gap:4px;color:var(--ink);}
-  .gp-sum-row .rm{color:var(--cream);font-weight:600;}
-  .gp-sum-row .net{font-family:var(--d-serif);color:var(--brass-lt);}
-  .gp-fine{color:var(--ink-dim);font-size:.74rem;font-style:italic;}
-  .gp-actions{margin-top:12px;}
-  .gp-clear{cursor:pointer;border:1px solid var(--brass);background:transparent;
-    color:var(--brass-lt);font:700 .72rem/1 var(--d-mono);text-transform:uppercase;
-    letter-spacing:.07em;padding:0 16px;min-height:var(--target-min);border-radius:20px;}
-  .syncstatus{font:700 .58rem/1.4 var(--d-mono);letter-spacing:.07em;text-transform:uppercase;
-    padding:3px 9px;border-radius:20px;vertical-align:2px;margin-left:6px;display:inline-block;}
-  .syncstatus.ok{background:rgba(95,214,160,.16);color:var(--easy);}
-  .syncstatus.wait{background:rgba(239,178,40,.16);color:var(--mod);}
-  .syncstatus.err{background:rgba(224,121,90,.16);color:var(--stren);}
-  /* ---------- FOOTER ---------- */
-  footer{background:var(--deep);color:var(--ink-dim);text-align:center;padding:36px 22px;
-    font-size:.84rem;border-top:1px solid var(--brass-dk);}
-  footer .gold{color:var(--brass-lt);font-family:var(--d-serif);font-weight:700;}
-  footer a{color:var(--brass-lt);}
-  @media(max-width:760px){
-    .g2,.g3,.g4{grid-template-columns:1fr;}
-    nav .brand{width:100%;margin-right:0;padding-bottom:4px;}
-    nav a{padding:9px 7px;}
-    .sec-head h2{font-size:1.5rem;}
+    border:3px solid var(--brass-dk); border-radius:6px;
+    box-shadow:0 22px 50px rgba(0,0,0,.55), inset 0 0 60px rgba(120,90,40,.12);
+    padding:20px; position:relative;
   }
-  /* ---------- ACCESS GATE ---------- */
-  .gate{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;
-    justify-content:center;padding:24px;
-    background:radial-gradient(ellipse at 50% 14%, #1a4a5e 0%, var(--sea) 46%, var(--abyss) 100%);}
-  .gate-card{max-width:430px;width:100%;text-align:center;background:rgba(7,32,43,.92);
-    border:1px solid var(--teal);border-radius:13px;padding:40px 32px;
-    box-shadow:0 26px 64px rgba(0,0,0,.62);}
-  .gate-badge{font-size:36px;line-height:1;color:var(--brass-lt);}
-  .gate-kicker{font:700 11px/1 var(--d-mono);letter-spacing:.26em;text-transform:uppercase;
-    color:var(--brass);margin:12px 0 14px;}
-  .gate-title{font-family:var(--d-serif);font-weight:700;font-size:27px;color:var(--cream);
-    margin:0 0 12px;}
-  .gate-msg{color:var(--ink-dim);font-size:14px;line-height:1.65;margin:0 0 22px;}
-  .gate-err{color:#e0795a;}
-  .gate-pick{display:flex;flex-direction:column;gap:9px;}
-  .gate-btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;
-    width:100%;min-height:46px;padding:0 18px;cursor:pointer;border-radius:8px;
-    font:700 13px/1 var(--d-body);border:1px solid var(--brass-dk);
-    background:var(--brass-lt);color:#08161a;}
-  .gate-btn:hover{background:var(--brass);}
-  .gate-btn.sec{background:transparent;color:var(--brass-lt);font-weight:600;}
-  .gate-btn.sec:hover{background:rgba(200,155,74,.14);}
-  .gate-btn:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px;}
-  .gate-foot{margin-top:22px;font:700 9px/1 var(--d-mono);letter-spacing:.18em;
-    text-transform:uppercase;color:var(--ink-dim);}
+  .chart-panel .corner{ position:absolute; width:26px; height:26px; border:2px solid var(--brass-dk); }
+  .chart-panel .corner.tl{ top:7px; left:7px; border-right:0; border-bottom:0; }
+  .chart-panel .corner.tr{ top:7px; right:7px; border-left:0; border-bottom:0; }
+  .chart-panel .corner.bl{ bottom:7px; left:7px; border-right:0; border-top:0; }
+  .chart-panel .corner.br{ bottom:7px; right:7px; border-left:0; border-top:0; }
+  .chart-svg{ display:block; width:100%; height:auto; }
+  .route-guide{ stroke:#8a9c8e; stroke-width:1.5; fill:none; stroke-dasharray:6 6; opacity:.65; }
+  /* route is drawn by default (survives JS failure); .in only animates the draw-on */
+  .route-path{ stroke:var(--sig-red); stroke-width:2.8; fill:none; stroke-linecap:round; }
+  .in .route-path{ stroke-dasharray:1300; animation:draw 3.7s ease forwards; }
+  @keyframes draw{ from{ stroke-dashoffset:1300; } to{ stroke-dashoffset:0; } }
+  .route-ship{ offset-path:path("M 90 250 C 200 150, 360 120, 520 175 S 760 280, 940 200"); offset-distance:0%;
+    transition:offset-distance 3.8s cubic-bezier(.4,.1,.3,1); }
+  .in .route-ship{ offset-distance:100%; }
+  /* port pins visible by default; .in only animates the drop */
+  .port-pin{ transform-box:fill-box; transform-origin:bottom center; }
+  .in .port-pin{ animation:drop .5s cubic-bezier(.3,1.5,.5,1) backwards; }
+  .in .port-pin:nth-child(1){ animation-delay:.5s; } .in .port-pin:nth-child(2){ animation-delay:1.0s; }
+  .in .port-pin:nth-child(3){ animation-delay:1.5s; } .in .port-pin:nth-child(4){ animation-delay:2.1s; }
+  .in .port-pin:nth-child(5){ animation-delay:2.7s; } .in .port-pin:nth-child(6){ animation-delay:3.3s; }
+  @keyframes drop{ from{ opacity:0; transform:translateY(-14px) scale(.4);} to{ opacity:1; transform:translateY(0) scale(1);} }
+
+  .chart-stats{ display:flex; gap:14px; margin-top:18px; flex-wrap:wrap; }
+  .stat{
+    flex:1; min-width:150px; background:rgba(7,32,43,.7); border:1px solid var(--teal);
+    border-radius:5px; padding:14px 16px; position:relative; overflow:hidden;
+  }
+  .stat::after{ content:""; position:absolute; left:0; bottom:0; width:100%; height:3px;
+    background:linear-gradient(90deg,var(--brass),var(--teal-lt)); }
+  .stat .v{ font-family:var(--d-serif); font-weight:700; font-size:38px; color:var(--brass-lt); line-height:1; }
+  .stat .k{ font:700 9px var(--d-mono); letter-spacing:.18em; text-transform:uppercase; color:var(--teal-lt); margin-top:7px; }
+
+  /* ── SONAR SECTION ── */
+  .s-sonar{ background:radial-gradient(ellipse at 50% 0%, #0d2f33, var(--deep) 70%); padding:54px 0 64px; }
+  .sonar-grid{ display:grid; grid-template-columns:1fr 320px; gap:34px; align-items:start; }
+  @media (max-width:880px){ .sonar-grid{ grid-template-columns:1fr; } }
+  .scope{
+    position:relative; width:100%; max-width:480px; aspect-ratio:1; margin:0 auto;
+    border-radius:50%; background:radial-gradient(circle, #06231f 0%, #041713 78%);
+    border:9px solid; border-color:var(--brass-lt) var(--brass-dk) var(--brass-dk) var(--brass-lt);
+    box-shadow:0 16px 44px rgba(0,0,0,.6), inset 0 0 50px rgba(0,0,0,.8);
+    overflow:hidden;
+  }
+  .scope .rings{ position:absolute; inset:0; }
+  .scope .rings i{ position:absolute; border:1px solid rgba(95,214,160,.22); border-radius:50%; }
+  .scope .rings i:nth-child(1){ inset:12%; } .scope .rings i:nth-child(2){ inset:26%; }
+  .scope .rings i:nth-child(3){ inset:40%; }
+  .scope .cross{ position:absolute; background:rgba(95,214,160,.18); }
+  .scope .cross.h{ left:0; right:0; top:50%; height:1px; }
+  .scope .cross.v{ top:0; bottom:0; left:50%; width:1px; }
+  .scope .sweep{
+    position:absolute; inset:0; border-radius:50%;
+    background:conic-gradient(from 0deg, rgba(95,214,160,.42) 0deg, rgba(95,214,160,.10) 26deg, transparent 60deg);
+  }
+  .scope .blip{
+    position:absolute; width:9px; height:9px; margin:-4.5px; border-radius:50%;
+    background:var(--radar); box-shadow:0 0 6px var(--radar);
+    opacity:.32; transition:opacity .25s;
+  }
+  .scope .blip.lit{ opacity:1; transform:scale(1.7); box-shadow:0 0 14px 3px var(--radar); }
+  .scope .blip.hidden{ opacity:0 !important; pointer-events:none; }
+  .scope .hub{ position:absolute; left:50%; top:50%; width:14px; height:14px; margin:-7px;
+    border-radius:50%; background:radial-gradient(var(--brass-lt),var(--brass-dk)); border:1px solid #000; }
+  .scope .readout{
+    position:absolute; left:14px; bottom:14px; font:700 10px var(--d-mono); color:var(--radar);
+    letter-spacing:.06em; text-shadow:0 0 8px rgba(95,214,160,.6);
+  }
+
+  .flag-filters{ display:flex; flex-direction:column; gap:7px; }
+  .flag-btn{
+    display:flex; align-items:center; gap:11px; width:100%; min-height:var(--target-min);
+    padding:6px 12px; cursor:pointer; color:var(--ink); font:inherit; text-align:left;
+    background:rgba(7,32,43,.6); border:1px solid var(--teal); border-radius:6px;
+    transition:transform .1s ease, background .15s, border-color .15s;
+  }
+  .flag-btn:hover{ transform:translateX(3px); background:rgba(20,59,79,.85); border-color:var(--teal-lt); }
+  .flag-btn .pennant{
+    width:30px; height:20px; flex:0 0 30px;
+    clip-path:polygon(0 0,100% 50%,0 100%);
+  }
+  .flag-btn .fl-name{ font:700 12.5px/1.25 var(--d-body); color:var(--ink); min-width:0; flex:1; }
+  .flag-btn .fl-ct{ margin-left:auto; font:700 12px/1 var(--d-mono); color:var(--teal-lt); }
+  .flag-btn .fl-off{ margin-left:auto; display:none; align-items:center; gap:5px;
+    font:700 10px/1 var(--d-mono); letter-spacing:.06em; color:#9bb0b6; }
+  /* off-state: struck label + OFF marker — NOT opacity */
+  .flag-btn[aria-pressed="false"] .fl-name{ text-decoration:line-through; color:var(--filter-off); }
+  .flag-btn[aria-pressed="false"] .pennant{ opacity:.55; }
+  .flag-btn[aria-pressed="false"] .fl-ct{ display:none; }
+  .flag-btn[aria-pressed="false"] .fl-off{ display:flex; }
+
+  /* ── WATER-FILL THEME BARS ── */
+  .s-themes{ background:linear-gradient(180deg,var(--deep),var(--abyss)); padding:54px 0 60px; }
+  .wbar{ margin-bottom:13px; }
+  .wbar .wb-head{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:5px; }
+  .wbar .wb-name{ font:600 14px/1 var(--d-serif); color:var(--cream); }
+  .wbar .wb-val{ font:700 12px var(--d-mono); color:var(--brass-lt); }
+  .wbar .wb-track{
+    position:relative; height:30px; border-radius:5px; overflow:hidden;
+    background:rgba(7,32,43,.85); border:1px solid var(--teal);
+  }
+  .wbar .wb-fill{
+    position:absolute; left:0; top:0; bottom:0; width:0;
+    background:linear-gradient(180deg,var(--teal-lt),var(--teal));
+    transition:width 1.7s cubic-bezier(.3,.8,.3,1);
+    overflow:hidden;
+  }
+  .wbar .wb-fill::before,.wbar .wb-fill::after{
+    content:""; position:absolute; top:-7px; right:-60px; width:200%; height:14px;
+    background:radial-gradient(circle at 10px 10px, transparent 9px, var(--teal-lt) 9px);
+    background-size:20px 14px;
+  }
+  .wbar .wb-fill::before{ animation:swell 2.6s linear infinite; }
+  .wbar .wb-fill::after{ opacity:.5; animation:swell 1.7s linear infinite reverse; }
+  @keyframes swell{ to{ transform:translateX(-20px);} }
+
+  /* ── PORTHOLES — GROUP PICKS ── */
+  .s-crew{ background:radial-gradient(ellipse at 50% 0%,#0d2f33,var(--deep) 70%); padding:54px 0 62px; }
+  .portholes{ display:flex; gap:22px; justify-content:center; flex-wrap:wrap; }
+  .porthole{ width:170px; text-align:center; }
+  .ph-glass{
+    width:150px; height:150px; border-radius:50%; margin:0 auto; position:relative;
+    background:radial-gradient(circle at 36% 30%, #2f7c8a, #08222c 72%);
+    border:9px solid; border-color:var(--brass-lt) var(--brass-dk) var(--brass-dk) var(--brass-lt);
+    box-shadow:0 12px 26px rgba(0,0,0,.5), inset 0 0 26px rgba(0,0,0,.7);
+    overflow:hidden; display:flex; align-items:center; justify-content:center;
+  }
+  .ph-glass .water{
+    position:absolute; left:-30%; right:-30%; bottom:-10%; height:62%;
+    background:linear-gradient(180deg,rgba(63,160,173,.6),rgba(28,107,126,.85));
+    border-radius:44% 46% 0 0;
+    animation:slosh 6s ease-in-out infinite;
+  }
+  @keyframes slosh{ 0%,100%{ transform:rotate(-4deg) translateY(4px);} 50%{ transform:rotate(4deg) translateY(-3px);} }
+  .ph-glass .initials{
+    position:relative; z-index:2; font-family:var(--d-serif); font-weight:900; font-size:46px;
+    color:var(--cream); text-shadow:0 2px 10px rgba(0,0,0,.6);
+  }
+  .ph-glass .glint{ position:absolute; top:14px; left:24px; width:42px; height:26px; border-radius:50%;
+    background:linear-gradient(135deg,rgba(255,255,255,.4),transparent 70%); z-index:3; }
+  .ph-glass .screw{ position:absolute; width:9px; height:9px; border-radius:50%;
+    background:radial-gradient(var(--brass-lt),var(--brass-dk)); z-index:4; }
+  .ph-name{ font-family:var(--d-serif); font-weight:600; font-size:17px; color:var(--cream); margin-top:11px; }
+  .ph-room{ font:700 9px var(--d-mono); letter-spacing:.12em; text-transform:uppercase; color:var(--teal-lt); margin-top:3px; }
+
+  .bell-wrap{ text-align:center; margin-top:30px; }
+  .bell{ display:inline-block; transform-origin:top center; animation:ring 5s ease-in-out infinite; }
+  @keyframes ring{ 0%,72%,100%{ transform:rotate(0);} 78%{ transform:rotate(13deg);} 84%{ transform:rotate(-10deg);} 90%{ transform:rotate(6deg);} 95%{ transform:rotate(-3deg);} }
+  .bell-note{ font:italic 13px/1.5 var(--d-serif); color:var(--ink-dim); margin-top:6px; }
+
+  /* ── SHIP GAUGES ── */
+  .s-ship{ background:linear-gradient(180deg,var(--abyss),var(--sea)); padding:54px 0 64px; }
+  .dials{ display:flex; gap:22px; justify-content:center; flex-wrap:wrap; }
+  .dial{ width:200px; text-align:center; }
+  .dial .face{ width:180px; height:104px; margin:0 auto; position:relative; overflow:hidden; }
+  .dial svg{ display:block; }
+  .dial .needle{
+    position:absolute; left:50%; bottom:6px; width:3px; height:78px; background:linear-gradient(var(--sig-red),#6a1812);
+    transform-origin:bottom center; transform:rotate(-90deg);
+    transition:transform 1.8s cubic-bezier(.3,1.3,.4,1); border-radius:2px;
+  }
+  .dial .hub{ position:absolute; left:50%; bottom:0; width:18px; height:18px; margin-left:-9px;
+    border-radius:50%; background:radial-gradient(var(--brass-lt),var(--brass-dk)); border:1px solid #000; }
+  .dial .v{ font-family:var(--d-serif); font-weight:700; font-size:26px; color:var(--brass-lt); margin-top:4px; }
+  .dial .k{ font:700 9px var(--d-mono); letter-spacing:.14em; text-transform:uppercase; color:var(--teal-lt); margin-top:2px; }
+
+  .plimsoll{ max-width:240px; margin:30px auto 0; }
+  .plimsoll .pl-ring{ width:54px; height:54px; border-radius:50%; border:4px solid var(--cream); margin:0 auto; position:relative; }
+  .plimsoll .pl-ring::after{ content:""; position:absolute; left:-22px; right:-22px; top:50%; height:4px;
+    margin-top:-2px; background:var(--cream); }
+  .plimsoll .pl-cap{ text-align:center; font:700 9px var(--d-mono); letter-spacing:.16em;
+    text-transform:uppercase; color:var(--ink-dim); margin-top:10px; }
+
+  /* ── FOOTER ── */
+  footer{ background:var(--deep); text-align:center; padding:46px 28px 40px; position:relative; }
+  .anchor-drop{ display:inline-block; animation:adrop 6s ease-in-out infinite; transform-origin:top center; }
+  @keyframes adrop{ 0%,100%{ transform:translateY(0) rotate(-4deg);} 50%{ transform:translateY(9px) rotate(4deg);} }
+  .foot-title{ font-family:var(--d-serif); font-weight:700; font-size:22px; color:var(--cream); margin:14px 0 6px; }
+  .foot-sub{ font:700 9.5px var(--d-mono); letter-spacing:.2em; text-transform:uppercase; color:var(--brass); }
+  .foot-note{ font:italic 13px/1.6 var(--d-serif); color:var(--ink-dim); max-width:560px; margin:14px auto 0; }
+  .knot{ display:inline-block; width:22px; height:22px; border-radius:50%;
+    border:3px solid var(--rope); border-right-color:var(--rope-dk); border-bottom-color:var(--rope-dk); }
+
+  /* ── RESPONSIVE — small phones ── */
+  @media (max-width:600px){
+    .countdown{ gap:12px; }
+    .gauge{ width:96px; height:96px; border-width:5px; }
+    .gauge .num{ font-size:30px; }
+    .cd-colon{ font-size:26px; }
+    .dial{ width:160px; }
+    .sec-title{ font-size:26px; }
+  }
+  @media (max-width:420px){
+    /* decorative & overlapping the hero title at this width — both already aria-hidden */
+    .lighthouse,.compass{ display:none; }
+  }
+
+  /* ══ ACCESS SPLASH ══ */
+  .gate{ position:fixed; inset:0; z-index:9999; display:flex; align-items:center;
+    justify-content:center; padding:24px; overflow:hidden;
+    background:radial-gradient(ellipse at 50% 11%, #1c5066 0%, var(--sea) 44%, var(--abyss) 100%);
+    transition:transform 1.2s cubic-bezier(.66,0,.32,1), opacity 1.2s ease; }
+  .gate.depart{ transform:translateY(-101%); opacity:0; pointer-events:none; }
+  /* bunting */
+  .g-bunting{ position:absolute; top:0; left:0; right:0; height:48px; display:flex; }
+  .g-bunting .g-flag{ flex:1; transform-origin:top center;
+    animation:sway 3.4s ease-in-out infinite; }
+  .g-bunting .g-flag i{ display:block; height:30px; margin-top:7px;
+    clip-path:polygon(0 0,100% 0,100% 60%,50% 100%,0 60%); }
+  /* starfield */
+  .g-stars{ position:absolute; inset:0; }
+  .g-stars i{ position:absolute; width:2px; height:2px; border-radius:50%;
+    background:#cfe6df; opacity:.5; animation:twinkle 4s ease-in-out infinite; }
+  /* lighthouse */
+  .g-lh{ position:absolute; left:7%; bottom:148px; width:44px; height:118px; }
+  .g-beam{ position:absolute; top:6px; left:50%; width:58vw; height:116px;
+    transform-origin:left center;
+    background:linear-gradient(90deg, rgba(244,214,130,.4), transparent 74%);
+    clip-path:polygon(0 46%,100% 0,100% 100%,0 54%); animation:beam 8s linear infinite; }
+  .g-tower{ position:absolute; bottom:0; left:50%; transform:translateX(-50%);
+    width:30px; height:100px; border-radius:5px 5px 0 0;
+    background:repeating-linear-gradient(180deg,var(--cream) 0 17px,var(--sig-red) 17px 34px);
+    border:2px solid #2a2118; }
+  .g-lamp{ position:absolute; top:3px; left:50%; transform:translateX(-50%);
+    width:18px; height:14px; background:var(--brass-lt); border:2px solid var(--brass-dk);
+    box-shadow:0 0 16px 4px rgba(240,200,110,.7); }
+  /* horizon ship + sea */
+  .g-ship{ position:absolute; bottom:92px; left:50%; width:118px;
+    transform-origin:bottom center; animation:bob 5.6s ease-in-out infinite; }
+  .g-sea{ position:absolute; left:0; right:0; bottom:0; height:160px; }
+  .g-sea .waves{ width:100%; height:160px; display:block; }
+  /* the login instrument card */
+  .gate-card{ position:relative; z-index:5; max-width:434px; width:100%; text-align:center;
+    background:linear-gradient(180deg, rgba(13,46,60,.97), rgba(7,32,43,.97));
+    border:1px solid var(--brass-dk); border-radius:15px; padding:38px 34px 30px;
+    box-shadow:0 30px 70px rgba(0,0,0,.66), inset 0 0 40px rgba(120,90,40,.1);
+    animation:cardIn .9s cubic-bezier(.2,.7,.2,1) both; }
+  .gate-card::before{ content:""; position:absolute; inset:6px; border-radius:11px;
+    border:1px solid rgba(200,155,74,.32); pointer-events:none; }
+  @keyframes cardIn{ from{ opacity:0; transform:translateY(28px) scale(.94); } to{ opacity:1; transform:none; } }
+  .gate-badge{ font-size:40px; line-height:1; color:var(--brass-lt);
+    text-shadow:0 0 22px rgba(230,196,119,.6); }
+  .gate-kicker{ font:700 11px/1 var(--d-mono); letter-spacing:.26em; text-transform:uppercase;
+    color:var(--brass); margin:11px 0 13px; }
+  .gate-title{ font-family:var(--d-serif); font-weight:700; font-size:28px; color:var(--cream);
+    margin:0 0 12px; letter-spacing:-.01em; }
+  .gate-msg{ color:var(--ink-dim); font-size:14px; line-height:1.65; margin:0 0 22px; }
+  .gate-err{ color:#e0795a; }
+  .gate-pick{ display:flex; flex-direction:column; gap:9px; }
+  .gate-btn{ position:relative; display:inline-flex; align-items:center; justify-content:center;
+    gap:10px; width:100%; min-height:48px; padding:0 18px; cursor:pointer; border-radius:9px;
+    font:700 13px/1 var(--d-body); border:1px solid var(--brass-dk); overflow:hidden;
+    background:linear-gradient(180deg,var(--brass-lt),var(--brass)); color:#08161a;
+    box-shadow:0 6px 18px rgba(0,0,0,.4); }
+  .gate-btn::after{ content:""; position:absolute; top:0; left:-60%; width:38%; height:100%;
+    background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);
+    animation:sheen 3.8s ease-in-out infinite; }
+  @keyframes sheen{ 0%,60%{ left:-60%; } 84%,100%{ left:135%; } }
+  .gate-btn:hover{ background:var(--brass-lt); }
+  .gate-btn.sec{ background:transparent; color:var(--brass-lt); font-weight:600; box-shadow:none; }
+  .gate-btn.sec::after{ display:none; }
+  .gate-btn.sec:hover{ background:rgba(200,155,74,.14); }
+  .gate-btn:focus-visible{ outline:2px solid var(--focus-ring); outline-offset:2px; }
+  .gate-foot{ margin-top:20px; font:700 9px/1 var(--d-mono); letter-spacing:.18em;
+    text-transform:uppercase; color:var(--ink-dim); }
+  /* confetti */
+  .g-confetti{ position:absolute; inset:0; z-index:9; pointer-events:none; }
+  /* ── celebration ── */
+  .gate.celebrate .g-beam{ animation-duration:1.7s; }
+  .gate.celebrate .g-bunting .g-flag{ animation-duration:1.1s; }
+  .gate-card.aboard{ border-color:var(--brass-lt);
+    box-shadow:0 30px 80px rgba(0,0,0,.7), 0 0 64px rgba(230,196,119,.4),
+      inset 0 0 52px rgba(230,196,119,.12);
+    animation:aboardPulse 1.8s ease-in-out infinite; }
+  @keyframes aboardPulse{ 0%,100%{ transform:scale(1); } 50%{ transform:scale(1.022); } }
+  .gate-badge.big{ font-size:48px; display:inline-block; animation:badgeSpin 1s ease both; }
+  @keyframes badgeSpin{ from{ transform:rotate(-220deg) scale(0); } to{ transform:none; } }
+  .welcome-name{ font-family:var(--d-serif); font-weight:900;
+    font-size:clamp(34px,9vw,52px); line-height:1.04; color:var(--brass-lt);
+    text-shadow:0 0 28px rgba(230,196,119,.55); margin:6px 0 4px;
+    animation:nameIn .7s cubic-bezier(.2,1.55,.4,1) both; }
+  @keyframes nameIn{ from{ opacity:0; transform:scale(.35); } to{ opacity:1; transform:none; } }
+  .welcome-sub{ font:italic 15px/1.5 var(--d-serif); color:var(--cream); margin-bottom:15px; }
+  .welcome-ribbon{ display:inline-block; font:700 11px/1 var(--d-mono); letter-spacing:.24em;
+    text-transform:uppercase; color:#08161a; padding:9px 22px;
+    background:linear-gradient(180deg,var(--brass-lt),var(--brass));
+    clip-path:polygon(9px 0,calc(100% - 9px) 0,100% 50%,calc(100% - 9px) 100%,9px 100%,0 50%);
+    animation:ribbonIn .6s .26s ease both; }
+  @keyframes ribbonIn{ from{ opacity:0; transform:translateY(9px); } to{ opacity:1; transform:none; } }
+  /* ── dim + flash ── */
+  .g-dim{ position:absolute; inset:0; z-index:4; pointer-events:none;
+    background:radial-gradient(circle at 50% 47%, rgba(4,15,22,0) 0%, rgba(4,14,21,.55) 32%, rgba(2,8,13,.95) 80%);
+    transition:opacity 1.05s ease; }
+  .gate.celebrate .g-dim{ opacity:0; }
+  .g-bunting,.g-lh,.g-ship,.g-sea{ filter:brightness(.46) saturate(.72); transition:filter 1.1s ease; }
+  .gate.celebrate .g-bunting,.gate.celebrate .g-lh,
+  .gate.celebrate .g-ship,.gate.celebrate .g-sea{ filter:none; }
+  .g-flash{ position:absolute; inset:0; z-index:20; pointer-events:none; opacity:0;
+    background:radial-gradient(circle at 50% 44%, rgba(255,242,205,.95), rgba(255,221,150,0) 62%); }
+  .gate.celebrate .g-flash{ animation:flashBurst 1.15s ease-out; }
+  @keyframes flashBurst{ 0%{ opacity:0; } 16%{ opacity:1; } 100%{ opacity:0; } }
+  /* ── treasure-chest sign-in button ── */
+  .chest{ display:block; margin:8px auto 2px; width:172px; padding:0; border:0;
+    background:none; cursor:pointer; animation:chestBob 4.6s ease-in-out infinite; }
+  .chest:hover{ filter:brightness(1.13); }
+  .chest.unlocked,.chest.unlocking{ animation:none; }
+  @keyframes chestBob{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-5px); } }
+  .chest-svg{ width:172px; height:auto; display:block;
+    filter:drop-shadow(0 14px 20px rgba(0,0,0,.62)); }
+  .chest:focus-visible{ outline:2px solid var(--focus-ring); outline-offset:5px; border-radius:12px; }
+  .chest-lid,.chest-lock,.chest-glow,.chest-rays,.chest-coins{ transform-box:fill-box; }
+  .chest-lid{ transform-origin:50% 96%; transition:transform 1s cubic-bezier(.5,-.38,.3,1.35); }
+  .chest-lock{ transform-origin:50% 26%; transition:transform 1s cubic-bezier(.5,0,.4,1), opacity .8s ease; }
+  .chest-glow{ transform-origin:50% 70%; opacity:0; transform:scale(.2);
+    transition:opacity .9s ease, transform 1.1s cubic-bezier(.2,.85,.3,1); }
+  .chest-rays{ transform-origin:50% 64%; opacity:0; transition:opacity 1s ease; }
+  .chest-coins{ opacity:0; transition:opacity .6s ease .25s; }
+  .chest.unlocking .chest-lock{ animation:rattle .34s ease-in-out 3; }
+  @keyframes rattle{ 0%,100%{ transform:rotate(0); } 25%{ transform:rotate(-10deg); } 75%{ transform:rotate(10deg); } }
+  .chest.unlocked .chest-lid{ transform:translateY(-54px) rotate(-13deg); }
+  .chest.unlocked .chest-lock{ transform:translateY(78px) rotate(220deg); opacity:0; }
+  .chest.unlocked .chest-glow{ opacity:1; transform:scale(1.12); }
+  .chest.unlocked .chest-rays{ opacity:.92; animation:raySpin 10s linear infinite; }
+  @keyframes raySpin{ to{ transform:rotate(360deg); } }
+  .chest.unlocked .chest-coins{ opacity:1; }
+  .chest-cap{ font:700 11px/1.5 var(--d-mono); letter-spacing:.16em; text-transform:uppercase;
+    color:var(--brass-lt); margin-top:6px; }
+  .welcome-wrap[hidden]{ display:none; }
+  .welcome-wrap{ margin-top:6px; }
+  @media (max-width:520px){ .gate-card{ padding:30px 22px 26px; } .g-lh{ display:none; }
+    .chest,.chest-svg{ width:150px; } }
 </style>
 </head>
 <body>
 
-<a class="skip" href="#glance">Skip to content</a>
+<div id="gate" class="gate" role="dialog" aria-modal="true" aria-labelledby="gateTitle">
+  <div class="g-bunting" aria-hidden="true">
+    <div class="g-flag bf-1" style="animation-delay:-.2s"><i></i></div>
+    <div class="g-flag bf-2" style="animation-delay:-.6s"><i></i></div>
+    <div class="g-flag bf-3" style="animation-delay:-1.0s"><i></i></div>
+    <div class="g-flag bf-4" style="animation-delay:-1.4s"><i></i></div>
+    <div class="g-flag bf-5" style="animation-delay:-1.8s"><i></i></div>
+    <div class="g-flag bf-6" style="animation-delay:-2.2s"><i></i></div>
+    <div class="g-flag bf-7" style="animation-delay:-2.6s"><i></i></div>
+    <div class="g-flag bf-8" style="animation-delay:-3.0s"><i></i></div>
+    <div class="g-flag bf-2" style="animation-delay:-.4s"><i></i></div>
+    <div class="g-flag bf-1" style="animation-delay:-.9s"><i></i></div>
+    <div class="g-flag bf-4" style="animation-delay:-1.5s"><i></i></div>
+    <div class="g-flag bf-6" style="animation-delay:-2.1s"><i></i></div>
+    <div class="g-flag bf-3" style="animation-delay:-2.7s"><i></i></div>
+    <div class="g-flag bf-5" style="animation-delay:-3.2s"><i></i></div>
+  </div>
+  <div class="g-stars" id="gStars" aria-hidden="true"></div>
+  <div class="g-lh" aria-hidden="true">
+    <div class="g-beam"></div><div class="g-tower"></div><div class="g-lamp"></div>
+  </div>
+  <svg class="g-ship" viewBox="0 0 200 116" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <ellipse cx="100" cy="107" rx="64" ry="8" fill="#3a6c83" opacity=".55"/>
+    <rect x="116" y="33" width="15" height="31" rx="3" fill="#2c5168" stroke="#92b6c2" stroke-width="1.2"/>
+    <rect x="116" y="39" width="15" height="6" fill="#d8392b"/>
+    <line x1="73" y1="60" x2="73" y2="22" stroke="#c9b98a" stroke-width="2.2"/>
+    <path d="M73 23 L95 29 L73 35 Z" fill="#d8392b"/>
+    <rect x="55" y="57" width="108" height="19" rx="3" fill="#f1e7cf"/>
+    <rect x="69" y="46" width="80" height="13" rx="3" fill="#f1e7cf"/>
+    <g fill="#1c6b7e">
+      <rect x="62" y="63" width="6" height="6" rx="1"/><rect x="76" y="63" width="6" height="6" rx="1"/>
+      <rect x="90" y="63" width="6" height="6" rx="1"/><rect x="104" y="63" width="6" height="6" rx="1"/>
+      <rect x="118" y="63" width="6" height="6" rx="1"/><rect x="132" y="63" width="6" height="6" rx="1"/>
+      <rect x="146" y="63" width="6" height="6" rx="1"/>
+    </g>
+    <path d="M38 76 L172 76 L160 101 Q138 109 100 109 Q62 109 50 101 Z" fill="#2c5168" stroke="#92b6c2" stroke-width="1.4"/>
+    <path d="M38 76 L172 76 L170 84 L40 84 Z" fill="#d8392b"/>
+  </svg>
+  <div class="g-sea" aria-hidden="true">
+    <svg class="waves" viewBox="0 0 480 130" preserveAspectRatio="none" style="height:160px" xmlns="http://www.w3.org/2000/svg">
+      <path class="w3" d="M0 60 q60 -22 120 0 t120 0 t120 0 t120 0 t120 0 V130 H0 Z" fill="#103b4f"/>
+      <path class="w2" d="M0 78 q60 -20 120 0 t120 0 t120 0 t120 0 t120 0 V130 H0 Z" fill="#0d3346"/>
+      <path class="w1" d="M0 96 q60 -18 120 0 t120 0 t120 0 t120 0 t120 0 V130 H0 Z" fill="#0b2a3a"/>
+    </svg>
+  </div>
+  <div class="g-dim" aria-hidden="true"></div>
+  <div class="gate-card" id="gateCard">
+    <div class="gate-badge" aria-hidden="true">&#9875;</div>
+    <div class="gate-kicker">MS Zuiderdam &middot; Crew Access</div>
+    <h2 class="gate-title" id="gateTitle">Canada &amp; New England</h2>
+    <p class="gate-msg" id="gateMsg">Loading sign-in&hellip;</p>
+    <button class="chest" id="chestBtn" type="button" aria-label="Sign in with Google to unlock the voyage">
+      <svg class="chest-svg" viewBox="0 0 200 168" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs>
+          <radialGradient id="cGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#fff3c4"/>
+            <stop offset="42%" stop-color="#f6dd92" stop-opacity=".9"/>
+            <stop offset="100%" stop-color="#f0c870" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <rect x="28" y="90" width="144" height="64" rx="9" fill="#241c12" stroke="#0d0905" stroke-width="2"/>
+        <rect x="30" y="92" width="140" height="11" fill="#3a2c1a"/>
+        <rect x="57" y="92" width="14" height="62" fill="#8f6a2c"/>
+        <rect x="59" y="92" width="9" height="62" fill="#c89b4a"/>
+        <rect x="129" y="92" width="14" height="62" fill="#8f6a2c"/>
+        <rect x="131" y="92" width="9" height="62" fill="#c89b4a"/>
+        <rect x="28" y="142" width="144" height="12" rx="3" fill="#8f6a2c"/>
+        <rect x="30" y="143" width="140" height="6" fill="#c89b4a"/>
+        <circle cx="40" cy="148" r="2.4" fill="#e6c477"/><circle cx="160" cy="148" r="2.4" fill="#e6c477"/>
+        <g class="chest-rays"><g fill="#f6dd92" opacity=".85">
+          <path d="M100 84 L94 16 L106 16 Z"/><path d="M100 84 L150 28 L161 39 Z"/>
+          <path d="M100 84 L50 28 L39 39 Z"/><path d="M100 84 L178 70 L181 84 Z"/>
+          <path d="M100 84 L22 70 L19 84 Z"/><path d="M100 84 L142 12 L154 19 Z"/>
+          <path d="M100 84 L58 12 L46 19 Z"/>
+        </g></g>
+        <ellipse class="chest-glow" cx="100" cy="88" rx="66" ry="40" fill="url(#cGlow)"/>
+        <g class="chest-coins">
+          <circle cx="74" cy="92" r="8" fill="#e6c477" stroke="#8f6a2c" stroke-width="1.5"/>
+          <circle cx="126" cy="93" r="8" fill="#e6c477" stroke="#8f6a2c" stroke-width="1.5"/>
+          <circle cx="100" cy="86" r="9.5" fill="#f6dd92" stroke="#8f6a2c" stroke-width="1.5"/>
+          <circle cx="88" cy="95" r="6" fill="#c89b4a"/><circle cx="113" cy="95" r="6" fill="#c89b4a"/>
+          <circle cx="100" cy="86" r="3" fill="#fff3c4"/>
+        </g>
+        <g class="chest-lid">
+          <path d="M28 96 L28 74 Q28 48 100 48 Q172 48 172 74 L172 96 Z" fill="#2e2417" stroke="#0d0905" stroke-width="2"/>
+          <path d="M30 74 Q30 51 100 51 Q170 51 170 74" fill="none" stroke="#8f6a2c" stroke-width="10"/>
+          <path d="M30 74 Q30 51 100 51 Q170 51 170 74" fill="none" stroke="#c89b4a" stroke-width="5"/>
+          <rect x="59" y="52" width="9" height="44" fill="#c89b4a"/>
+          <rect x="132" y="52" width="9" height="44" fill="#c89b4a"/>
+          <rect x="28" y="86" width="144" height="10" fill="#8f6a2c"/>
+          <rect x="30" y="87" width="140" height="5" fill="#c89b4a"/>
+        </g>
+        <g class="chest-lock">
+          <path d="M91 92 Q91 78 100 78 Q109 78 109 92" fill="none" stroke="#6f5320" stroke-width="7"/>
+          <path d="M91 92 Q91 78 100 78 Q109 78 109 92" fill="none" stroke="#c89b4a" stroke-width="3.4"/>
+          <rect x="85" y="90" width="30" height="26" rx="5" fill="#c89b4a" stroke="#6f5320" stroke-width="2"/>
+          <rect x="88" y="93" width="5" height="20" rx="2.5" fill="#e6c477" opacity=".75"/>
+          <circle cx="101" cy="100" r="3.6" fill="#3a2c1a"/>
+          <rect x="99.4" y="100" width="3.2" height="10" fill="#3a2c1a"/>
+        </g>
+      </svg>
+    </button>
+    <div class="chest-cap" id="chestCap">Locked &middot; tap to sign in</div>
+    <div class="welcome-wrap" id="welcomeWrap" hidden>
+      <div class="welcome-name" id="welcomeName"></div>
+      <div class="welcome-ribbon">Bon Voyage</div>
+    </div>
+    <div class="gate-pick" id="gateBody"></div>
+    <div class="gate-foot">Booking 4LMNGG &middot; June 2026</div>
+  </div>
+  <canvas class="g-confetti" id="gConfetti" aria-hidden="true"></canvas>
+  <div class="g-flash" aria-hidden="true"></div>
+</div>
 
+<a class="skip" href="#chart">Skip to the voyage chart</a>
+
+<!-- ── UTILITY BAR — motion toggle, early in DOM & tab order ── -->
 <div class="toolbar">
   <button class="mtog" id="motionToggle" type="button" aria-pressed="true">
     <span class="track" aria-hidden="true"></span><span class="ml">Animation on</span>
   </button>
+  <button class="mtog replay" id="replayBtn" type="button">
+    <span class="ml">&#9875; Replay intro</span>
+  </button>
 </div>
 
-<nav>
-  <div class="inner">
-    <span class="brand">&#9875; Canada &amp; New England 2026</span>
-    <a href="#glance">At a Glance</a>
-    <a href="#travel">Flights</a>
-    <a href="#hotels">Hotels</a>
-    <a href="#itinerary">Itinerary</a>
-    <a href="#ship">The Ship</a>
-    <a href="#package">Package</a>
-    <a href="#ports">Ports &amp; Excursions</a>
-    <a href="#kbyg">Know Before You Go</a>
-    <a href="voyage-console.html" class="console">&#9875; Voyage Console</a>
-  </div>
-</nav>
-
-<header class="hero">
-  <div class="hero-stars" id="stars" aria-hidden="true"></div>
-  <div class="kicker">Holland America Line &bull; 7-Day Voyage</div>
-  <h1>Canada &amp; New England: Unesco Sites &amp; Quebecois Nights</h1>
-  <div class="route">Quebec City &nbsp;&rarr;&nbsp; Charlottetown &nbsp;&rarr;&nbsp; Sydney &nbsp;&rarr;&nbsp; Halifax &nbsp;&rarr;&nbsp; Portland &nbsp;&rarr;&nbsp; Boston</div>
-  <div class="ship">ms ZUIDERDAM &bull; JUNE 13&ndash;20, 2026 &bull; BOOKING 4LMNGG</div>
-  <div class="countdown" id="cd">
-    <div><span class="num" id="cd-d" aria-live="polite">--</span><span class="lbl">Days</span></div>
-    <div><span class="num" id="cd-h">--</span><span class="lbl">Hours</span></div>
-    <div><span class="num" id="cd-m">--</span><span class="lbl">Minutes</span></div>
-  </div>
-</header>
+<!-- ░░ SIGNAL-FLAG BUNTING (decorative) ░░ -->
+<div class="bunting" aria-hidden="true">
+  <div class="flag bf-1" style="animation-delay:-.2s"><i></i></div>
+  <div class="flag bf-2" style="animation-delay:-.6s"><i></i></div>
+  <div class="flag bf-3" style="animation-delay:-1.0s"><i></i></div>
+  <div class="flag bf-4" style="animation-delay:-1.4s"><i></i></div>
+  <div class="flag bf-5" style="animation-delay:-1.8s"><i></i></div>
+  <div class="flag bf-6" style="animation-delay:-2.2s"><i></i></div>
+  <div class="flag bf-7" style="animation-delay:-2.6s"><i></i></div>
+  <div class="flag bf-8" style="animation-delay:-3.0s"><i></i></div>
+  <div class="flag bf-1" style="animation-delay:-.4s"><i></i></div>
+  <div class="flag bf-4" style="animation-delay:-.9s"><i></i></div>
+  <div class="flag bf-2" style="animation-delay:-1.5s"><i></i></div>
+  <div class="flag bf-6" style="animation-delay:-2.1s"><i></i></div>
+</div>
 
 <main>
 
-<!-- ============ AT A GLANCE ============ -->
-<section id="glance" aria-labelledby="glance-h">
-  <div class="sec-head"><h2 id="glance-h">Trip at a Glance</h2><span class="tag">The Essentials</span></div>
-  <p class="lead">Everything you and Laura need for the Canada &amp; New England voyage aboard Holland America's <em>ms Zuiderdam</em>. This hub pulls together your confirmed booking, flights, day-by-day itinerary, ship details, and every shore excursion offered in each port.</p>
-  <div class="grid g4">
-    <div class="card fact"><div class="k">Cruise Line / Ship</div><div class="v">Holland America &mdash; ms Zuiderdam</div></div>
-    <div class="card fact"><div class="k">Sailing Dates</div><div class="v">June 13&ndash;20, 2026 (7 nights)</div></div>
-    <div class="card fact"><div class="k">Embark / Disembark</div><div class="v">Quebec City &rarr; Boston</div></div>
-    <div class="card fact"><div class="k">Your Booking #</div><div class="v">4LMNGG</div></div>
-    <div class="card fact"><div class="k">Guests</div><div class="v">Jett Mitchellrose &amp; Laura Brentnell</div></div>
-    <div class="card fact"><div class="k">Stateroom</div><div class="v">Cabin 5161 &mdash; Deck 5</div></div>
-    <div class="card fact"><div class="k">Package</div><div class="v">Have It All (premium)</div></div>
-    <div class="card fact"><div class="k">Online Check-In By</div><div class="v">June 10, 2026</div></div>
-  </div>
-  <div class="callout">
-    <strong>Travelling as a group.</strong> Three staterooms are booked under linked confirmations &mdash;
-    <strong>4LMNGG</strong> Jett &amp; Laura &nbsp;|&nbsp; <strong>4LMNGC</strong> Sandra &amp; Becca &nbsp;|&nbsp; <strong>4LMNGT</strong> Karen.
-    Each room carries the Have It All package. Coordinate dining times and excursions so the group can book the same departures together &mdash; popular tours sell out.
-  </div>
-</section>
+<!-- ░░ HERO ░░ -->
+<section class="hero" aria-labelledby="heroH">
+  <div class="hero-stars" id="stars" aria-hidden="true"></div>
 
-<!-- ============ TRAVEL & FLIGHTS ============ -->
-<section id="travel" aria-labelledby="travel-h">
-  <div class="sec-head"><h2 id="travel-h">Travel &amp; Flights</h2><span class="tag">Getting There &amp; Back</span></div>
-  <p class="lead">Both flights are ticketed for Jett and Laura. The cruise begins in Quebec City and ends in Boston, so the outbound and return airports differ.</p>
+  <div class="lighthouse" aria-hidden="true">
+    <div class="lh-beam"></div>
+    <div class="lh-tower"></div>
+    <div class="lh-lamp"></div>
+  </div>
 
-  <div class="grid g2">
-    <div class="card">
-      <span class="pill">Outbound &bull; Thu, June 11, 2026</span>
-      <h3 style="margin-top:8px;">Greensboro &rarr; Montreal</h3>
-      <p style="font-size:.84rem;color:var(--ink-dim);margin-bottom:12px;">Delta Air Lines &bull; Confirmation <strong>GYHRHV</strong> &bull; Total 5h 19m</p>
-      <div class="flight" style="margin-bottom:8px;">
-        <div class="seg"><div class="ap">GSO</div><div class="meta">Greensboro, NC &bull; 12:26 PM</div></div>
-        <span class="arrow" aria-hidden="true">&#9992;</span>
-        <div class="seg"><div class="ap">ATL</div><div class="meta">Atlanta, GA &bull; 1:50 PM</div></div>
+  <div class="compass" aria-hidden="true">
+    <div class="ring"></div>
+    <span class="pt n">N</span><span class="pt s">S</span><span class="pt e">E</span><span class="pt w">W</span>
+    <div class="needle"></div>
+  </div>
+
+  <div class="hero-inner">
+    <div class="hero-eyebrow">&#9875; Holland America Line · Booking 4LMNGG</div>
+    <h1 class="hero-title" id="heroH">Canada &amp; New England<em>aboard the ms Zuiderdam</em></h1>
+    <p class="hero-route">
+      <span>&#127464;&#127462; Qu&eacute;bec City</span><span class="dot" aria-hidden="true"></span>
+      <span>the St. Lawrence</span><span class="dot" aria-hidden="true"></span>
+      <span>&#127482;&#127480; Boston</span>
+    </p>
+    <div class="countdown" id="cd">
+      <div class="gauge">
+        <span class="screw tl"></span><span class="screw tr"></span><span class="screw bl"></span><span class="screw br"></span>
+        <div class="num" id="cd-d" aria-live="polite">&mdash;</div><div class="lbl">Days</div>
       </div>
-      <p style="font-size:.8rem;color:var(--ink-dim);margin:2px 0 8px;">DL 3052 (Boeing 717-200) &bull; layover 1h 8m at ATL</p>
-      <div class="flight">
-        <div class="seg"><div class="ap">ATL</div><div class="meta">Atlanta, GA &bull; 2:58 PM &bull; Intl Terminal</div></div>
-        <span class="arrow" aria-hidden="true">&#9992;</span>
-        <div class="seg"><div class="ap">YUL</div><div class="meta">Montreal, QC &bull; 5:45 PM</div></div>
+      <div class="cd-colon" aria-hidden="true">:</div>
+      <div class="gauge">
+        <span class="screw tl"></span><span class="screw tr"></span><span class="screw bl"></span><span class="screw br"></span>
+        <div class="num" id="cd-h">&mdash;</div><div class="lbl">Hours</div>
       </div>
-      <p style="font-size:.8rem;color:var(--ink-dim);margin-top:6px;">DL 2665 (Airbus A319) &bull; Seats 17E (Jett) &amp; 17D (Laura) &bull; Delta Main</p>
-    </div>
-
-    <div class="card">
-      <span class="pill">Return &bull; Sun, June 21, 2026</span>
-      <h3 style="margin-top:8px;">Boston &rarr; Greensboro</h3>
-      <p style="font-size:.84rem;color:var(--ink-dim);margin-bottom:12px;">American Airlines &bull; Confirmation <strong>MNUWWX</strong> &bull; Total 4h 30m</p>
-      <div class="flight" style="margin-bottom:8px;">
-        <div class="seg"><div class="ap">BOS</div><div class="meta">Boston, MA &bull; 12:32 PM</div></div>
-        <span class="arrow" aria-hidden="true">&#9992;</span>
-        <div class="seg"><div class="ap">PHL</div><div class="meta">Philadelphia, PA &bull; 2:08 PM</div></div>
+      <div class="cd-colon" aria-hidden="true">:</div>
+      <div class="gauge">
+        <span class="screw tl"></span><span class="screw tr"></span><span class="screw bl"></span><span class="screw br"></span>
+        <div class="num" id="cd-m">&mdash;</div><div class="lbl">Minutes</div>
       </div>
-      <p style="font-size:.8rem;color:var(--ink-dim);margin:2px 0 8px;">AA 3043 (Economy) &bull; connection 1h 12m at PHL</p>
-      <div class="flight">
-        <div class="seg"><div class="ap">PHL</div><div class="meta">Philadelphia, PA &bull; 3:20 PM</div></div>
-        <span class="arrow" aria-hidden="true">&#9992;</span>
-        <div class="seg"><div class="ap">GSO</div><div class="meta">Greensboro, NC &bull; 5:02 PM</div></div>
-      </div>
-      <p style="font-size:.8rem;color:var(--ink-dim);margin-top:6px;">AA 5518 (Economy) &bull; operated by PSA Airlines as American Eagle</p>
+    </div>
+    <div style="font:700 9px var(--d-mono);letter-spacing:.2em;text-transform:uppercase;color:var(--ink-dim);margin-top:14px;">
+      Until the gangway lifts &mdash; departs <time datetime="2026-06-13">13 June 2026</time>
     </div>
   </div>
 
-  <div class="callout">
-    <strong>Getting from Montreal to Quebec City.</strong> You land in <strong>Montreal (YUL) on June 11</strong>
-    and stay at the Renaissance, then move on to your loft in <strong>Quebec City</strong> before the ship departs
-    June 13. Montreal to Quebec City is roughly a 3-hour drive (~250&nbsp;km) or about 3&frac14; hours by VIA Rail
-    train &mdash; plan that intercity transfer. Hotel details are in <a href="#hotels">Where You're Staying</a>.
-  </div>
-  <div class="callout">
-    <strong>Disembarkation day.</strong> The ship arrives in Boston at 7:00 AM on June 20, but your flight home
-    is June 21 &mdash; you will need <strong>one hotel night in Boston</strong>, which is not yet booked.
-    Boston Logan (BOS) is about 15&ndash;20 minutes from the cruise terminal. See <a href="#hotels">Where You're Staying</a>.
-  </div>
-</section>
+  <svg class="hero-ship" viewBox="0 0 200 116" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <rect x="108" y="20" width="17" height="32" rx="3" fill="#0b2a3a"/>
+    <rect x="108" y="26" width="17" height="7" fill="#d8392b"/>
+    <rect x="132" y="14" width="17" height="38" rx="3" fill="#0b2a3a"/>
+    <rect x="132" y="20" width="17" height="7" fill="#d8392b"/>
+    <line x1="60" y1="52" x2="60" y2="8" stroke="#0b2a3a" stroke-width="2.4"/>
+    <path d="M60 9 L84 15 L60 21 Z" fill="#d8392b"/>
+    <rect x="46" y="50" width="120" height="20" rx="3" fill="#f1e7cf"/>
+    <rect x="58" y="38" width="92" height="14" rx="3" fill="#f1e7cf"/>
+    <rect x="72" y="28" width="58" height="12" rx="3" fill="#f1e7cf"/>
+    <g fill="#1c6b7e">
+      <rect x="52" y="56" width="6" height="6" rx="1"/><rect x="64" y="56" width="6" height="6" rx="1"/>
+      <rect x="76" y="56" width="6" height="6" rx="1"/><rect x="88" y="56" width="6" height="6" rx="1"/>
+      <rect x="100" y="56" width="6" height="6" rx="1"/><rect x="112" y="56" width="6" height="6" rx="1"/>
+      <rect x="124" y="56" width="6" height="6" rx="1"/><rect x="136" y="56" width="6" height="6" rx="1"/>
+      <rect x="148" y="56" width="6" height="6" rx="1"/>
+      <rect x="66" y="42" width="6" height="6" rx="1"/><rect x="80" y="42" width="6" height="6" rx="1"/>
+      <rect x="94" y="42" width="6" height="6" rx="1"/><rect x="108" y="42" width="6" height="6" rx="1"/>
+      <rect x="122" y="42" width="6" height="6" rx="1"/><rect x="136" y="42" width="6" height="6" rx="1"/>
+    </g>
+    <path d="M30 70 L180 70 L168 96 Q150 104 100 104 Q50 104 40 96 Z" fill="#0b2a3a"/>
+    <path d="M30 70 L180 70 L178 78 L31 78 Z" fill="#d8392b"/>
+    <text x="104" y="92" font-family="Fraunces,serif" font-weight="700" font-size="11" fill="#e6c477" text-anchor="middle" font-style="italic">Zuiderdam</text>
+  </svg>
 
-<!-- ============ HOTELS ============ -->
-<section id="hotels" aria-labelledby="hotels-h">
-  <div class="sec-head"><h2 id="hotels-h">Where You're Staying</h2><span class="tag">Hotels &amp; Lodging</span></div>
-  <p class="lead">Pre- and post-cruise accommodations for the trip. The Montreal and Quebec City stays are booked; the Boston night after disembarkation is still to be arranged.</p>
-  <div class="grid g3">
-    <div class="card">
-      <span class="pill">Pre-Cruise &bull; Montreal</span>
-      <h3 style="margin-top:8px;">Renaissance Montreal</h3>
-      <p style="font-size:.9rem;">Renaissance by Marriott, Montreal &mdash; your first stop after landing at YUL on June 11.</p>
-      <p style="font-size:.82rem;color:var(--ink-dim);margin-top:8px;">Booked for the travelling group.</p>
-    </div>
-    <div class="card">
-      <span class="pill">Pre-Cruise &bull; Quebec City</span>
-      <h3 style="margin-top:8px;">Les Lofts St-Pierre</h3>
-      <p style="font-size:.9rem;">Apartment-style lofts in the heart of Old Quebec &mdash; loftsvieuxquebec.com. Two units booked:</p>
-      <ul class="clean" style="margin-top:6px;">
-        <li><strong>Unit SP304</strong> &mdash; Jett &amp; Laura</li>
-        <li><strong>Unit SP109</strong> &mdash; Sandra, Becca &amp; Karen</li>
-      </ul>
-    </div>
-    <div class="card">
-      <span class="pill">Post-Cruise &bull; Boston</span>
-      <h3 style="margin-top:8px;">Boston &mdash; To Be Booked</h3>
-      <p style="font-size:.9rem;">One night needed after disembarkation (<strong>June 20&ndash;21</strong>) before the flight home. Flagged as the <strong>birthday hotel</strong> &mdash; still gathering ideas.</p>
-    </div>
-  </div>
-  <div class="callout">
-    <strong>Still to sort:</strong> the Boston hotel for the night of June 20. Since it is a birthday stay, it is
-    worth booking somewhere memorable &mdash; the Seaport / waterfront is closest to the cruise terminal, while
-    Back Bay puts you near Newbury Street and the Public Garden. Both are an easy ride to Logan for the June 21 flight.
-  </div>
-</section>
-
-<!-- ============ ITINERARY ============ -->
-<section id="itinerary" aria-labelledby="itinerary-h">
-  <div class="sec-head"><h2 id="itinerary-h">Day-by-Day Itinerary</h2><span class="tag">7 Nights</span></div>
-  <p class="lead">Two relaxed sea days open the voyage as the Zuiderdam glides down the St.&nbsp;Lawrence, followed by four full days in port and a morning arrival in Boston.</p>
-
-  <div class="routemap">
-    <svg viewBox="0 0 720 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Map of the cruise route, sailing in order from Quebec City down the St. Lawrence to Charlottetown, Sydney, Halifax, Portland, and Boston.">
-      <defs>
-        <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="#efe6c8"/><stop offset="1" stop-color="#e3d6ad"/>
-        </linearGradient>
-      </defs>
-      <rect width="720" height="300" fill="url(#sea)"/>
-      <!-- abstract landmasses -->
-      <path d="M0,0 H720 V34 Q560,58 452,104 Q360,142 250,138 Q132,134 0,196 Z" fill="#dccfa3" stroke="#b89a5e" stroke-width="1.2"/>
-      <path d="M720,300 V210 Q610,232 470,214 Q520,266 600,300 Z" fill="#dccfa3" stroke="#b89a5e" stroke-width="1.2"/>
-      <path d="M0,300 V268 Q70,250 120,300 Z" fill="#dccfa3" stroke="#b89a5e" stroke-width="1.2"/>
-      <!-- sailing route -->
-      <path d="M96,60 Q224,74 366,140 Q452,160 520,84 Q528,152 476,196 Q382,250 262,236 Q190,228 138,262"
-        fill="none" stroke="#d8392b" stroke-width="2.8" stroke-dasharray="7 6" stroke-linecap="round"/>
-      <!-- sea-day marker -->
-      <text x="232" y="86" font-family="Space Mono,monospace" font-size="11" fill="#163a4a" text-anchor="middle">Days 2&ndash;3 &bull; two sea days</text>
-      <!-- port pins -->
-      <g font-family="Space Mono,monospace" font-weight="700" font-size="14" fill="#163a4a">
-        <circle cx="96" cy="60" r="8" fill="#0b2a3a" stroke="#c89b4a" stroke-width="2.4"/>
-        <text x="96" y="43" text-anchor="middle">Quebec City</text>
-        <text x="96" y="84" text-anchor="middle" font-size="11" font-weight="400" fill="#163a4a">Embark &bull; Jun 13</text>
-        <circle cx="366" cy="140" r="8" fill="#c89b4a" stroke="#0b2a3a" stroke-width="2.2"/>
-        <text x="366" y="123" text-anchor="middle">Charlottetown</text>
-        <text x="366" y="163" text-anchor="middle" font-size="11" font-weight="400" fill="#163a4a">Jun 16</text>
-        <circle cx="520" cy="84" r="8" fill="#c89b4a" stroke="#0b2a3a" stroke-width="2.2"/>
-        <text x="520" y="67" text-anchor="middle">Sydney</text>
-        <text x="520" y="108" text-anchor="middle" font-size="11" font-weight="400" fill="#163a4a">Jun 17</text>
-        <circle cx="476" cy="196" r="8" fill="#c89b4a" stroke="#0b2a3a" stroke-width="2.2"/>
-        <text x="498" y="200" text-anchor="start">Halifax</text>
-        <text x="498" y="215" text-anchor="start" font-size="11" font-weight="400" fill="#163a4a">Jun 18</text>
-        <circle cx="262" cy="236" r="8" fill="#c89b4a" stroke="#0b2a3a" stroke-width="2.2"/>
-        <text x="262" y="219" text-anchor="middle">Portland</text>
-        <text x="262" y="259" text-anchor="middle" font-size="11" font-weight="400" fill="#163a4a">Jun 19</text>
-        <circle cx="138" cy="262" r="8" fill="#0b2a3a" stroke="#c89b4a" stroke-width="2.4"/>
-        <text x="138" y="245" text-anchor="middle">Boston</text>
-        <text x="138" y="285" text-anchor="middle" font-size="11" font-weight="400" fill="#163a4a">Disembark &bull; Jun 20</text>
-      </g>
+  <div class="hero-sea" aria-hidden="true">
+    <svg class="waves" viewBox="0 0 480 130" preserveAspectRatio="none" style="height:200px" xmlns="http://www.w3.org/2000/svg">
+      <path class="w3" d="M0 60 q60 -22 120 0 t120 0 t120 0 t120 0 t120 0 V130 H0 Z" fill="#103b4f"/>
+      <path class="w2" d="M0 78 q60 -20 120 0 t120 0 t120 0 t120 0 t120 0 V130 H0 Z" fill="#0d3346"/>
+      <path class="w1" d="M0 96 q60 -18 120 0 t120 0 t120 0 t120 0 t120 0 V130 H0 Z" fill="#0b2a3a"/>
     </svg>
-    <div class="cap">The voyage descends the St.&nbsp;Lawrence, rounds Atlantic Canada through Prince&nbsp;Edward&nbsp;Island and Nova&nbsp;Scotia, then turns south down the New England coast. Dark pins mark embarkation and disembarkation; brass pins are ports of call.</div>
   </div>
 
-  <div class="timeline">
-    <div class="stop">
-      <div class="day">Day 1 &bull; Saturday, June 13</div>
-      <h3>Quebec City, Quebec &mdash; Embarkation</h3>
-      <div class="when">All aboard during the afternoon &bull; Ship departs 11:00 PM</div>
-      <div class="note">Board the ship and enjoy a late sail-away past the floodlit Old City. An optional embarkation-day tour of Historic Quebec &amp; Montmorency Falls is offered (see Ports below).</div>
-    </div>
-    <div class="stop sea">
-      <div class="day">Day 2 &bull; Sunday, June 14</div>
-      <h3>Cruising the Saint Lawrence River</h3>
-      <div class="when">Scenic cruising &mdash; no port call</div>
-      <div class="note">A full sea day. Great for settling in, booking spa treatments, and exploring the ship as the shoreline drifts by.</div>
-    </div>
-    <div class="stop sea">
-      <div class="day">Day 3 &bull; Monday, June 15</div>
-      <h3>Cruising the Gulf of St. Lawrence</h3>
-      <div class="when">Scenic cruising &mdash; no port call</div>
-      <div class="note">Open-water cruising into the Gulf. Watch for marine life &mdash; the Gulf is rich whale habitat in June.</div>
-    </div>
-    <div class="stop">
-      <div class="day">Day 4 &bull; Tuesday, June 16</div>
-      <h3>Charlottetown, Prince Edward Island</h3>
-      <div class="when">In port 7:00 AM &ndash; 5:00 PM</div>
-      <div class="note">The longest port day &mdash; ten hours ashore on Canada's smallest province.</div>
-    </div>
-    <div class="stop">
-      <div class="day">Day 5 &bull; Wednesday, June 17</div>
-      <h3>Sydney, Nova Scotia</h3>
-      <div class="when">In port 7:00 AM &ndash; 4:00 PM</div>
-      <div class="note">Gateway to Cape Breton Island, the Cabot Trail and the Fortress of Louisbourg.</div>
-    </div>
-    <div class="stop">
-      <div class="day">Day 6 &bull; Thursday, June 18</div>
-      <h3>Halifax, Nova Scotia</h3>
-      <div class="when">In port 8:00 AM &ndash; 4:00 PM</div>
-      <div class="note">Nova Scotia's capital. <span class="hi">Reminder:</span> Pinnacle Grill dinner is booked for 6:00 PM (Laura).</div>
-    </div>
-    <div class="stop">
-      <div class="day">Day 7 &bull; Friday, June 19</div>
-      <h3>Portland, Maine</h3>
-      <div class="when">In port 12:30 PM &ndash; 10:00 PM</div>
-      <div class="note">An afternoon-and-evening call &mdash; ideal for a lobster dinner ashore and Old Port strolling at dusk.</div>
-    </div>
-    <div class="stop">
-      <div class="day">Day 8 &bull; Saturday, June 20</div>
-      <h3>Boston, Massachusetts &mdash; Disembarkation</h3>
-      <div class="when">Arrives 7:00 AM</div>
-      <div class="note">Voyage ends. Disembark in the morning; a city tour with airport/hotel transfer is offered.</div>
+  <div class="scroll-cue" aria-hidden="true">Chart a course<span class="arr"></span></div>
+</section>
+
+<div class="rope" aria-hidden="true"></div>
+
+<!-- ░░ THE CHART — ANIMATED ROUTE ░░ -->
+<section class="s-chart" id="chart" aria-labelledby="chartH">
+  <div class="wrap">
+    <div class="sec-kicker">Plot the Passage</div>
+    <h2 class="sec-title" id="chartH">The course, Qu&eacute;bec to Boston</h2>
+    <div class="chart-panel rv" id="chartPanel">
+      <span class="corner tl" aria-hidden="true"></span><span class="corner tr" aria-hidden="true"></span>
+      <span class="corner bl" aria-hidden="true"></span><span class="corner br" aria-hidden="true"></span>
+      <svg class="chart-svg" viewBox="0 0 1040 380" xmlns="http://www.w3.org/2000/svg"
+           role="img" aria-label="Voyage route map. The ms Zuiderdam sails in order from Quebec City to Charlottetown, Sydney, Halifax, Portland, and Boston, with two days cruising the St. Lawrence River and Gulf between Quebec City and Charlottetown.">
+        <path d="M-20 -20 H1060 V70 Q900 130 720 95 Q540 60 360 110 Q180 160 -20 110 Z" fill="#e3d6ad" stroke="#b89a5e" stroke-width="1.5"/>
+        <path d="M-20 380 H440 Q470 300 380 250 Q250 220 120 290 Q20 330 -20 300 Z" fill="#e3d6ad" stroke="#b89a5e" stroke-width="1.5"/>
+        <path d="M1040 380 H760 Q820 300 900 300 Q1000 300 1040 250 Z" fill="#e3d6ad" stroke="#b89a5e" stroke-width="1.5"/>
+        <g font-family="Space Mono,monospace" font-size="10" fill="#7a93a0">
+          <text x="320" y="230">42</text><text x="480" y="280">67</text>
+          <text x="650" y="160">88</text><text x="840" y="300">51</text>
+        </g>
+        <g transform="translate(620 300)">
+          <path d="M0 0 Q20 -14 40 0 Q44 8 38 12 Q20 20 2 12 Q-4 8 0 0 Z" fill="#2a4a5a"/>
+          <path d="M40 0 Q50 -8 52 2 Q48 6 40 4 Z" fill="#2a4a5a"/>
+          <circle cx="10" cy="3" r="1.6" fill="#e3d6ad"/>
+          <path d="M14 -10 Q12 -22 18 -26 M14 -10 Q18 -22 24 -24" stroke="#7fb0c0" stroke-width="2" fill="none" stroke-linecap="round"/>
+        </g>
+        <path class="route-guide" d="M 90 250 C 200 150, 360 120, 520 175 S 760 280, 940 200"/>
+        <path class="route-path"  d="M 90 250 C 200 150, 360 120, 520 175 S 760 280, 940 200"/>
+        <g class="route-ship">
+          <ellipse cx="0" cy="9" rx="15" ry="4" fill="#1c6b7e" opacity=".4"/>
+          <path d="M-11 1 L11 1 L8 7 Q0 9 -8 7 Z" fill="#0b2a3a"/>
+          <rect x="-6" y="-4" width="12" height="6" rx="1" fill="#f1e7cf"/>
+          <rect x="-1.5" y="-10" width="3.5" height="7" fill="#d8392b"/>
+        </g>
+        <g>
+          <g class="port-pin">
+            <circle cx="90" cy="250" r="8" fill="#0b2a3a" stroke="#c89b4a" stroke-width="2.4"/>
+            <circle cx="90" cy="250" r="3" fill="#d8392b"/>
+            <text x="90" y="228" text-anchor="middle" font-family="Space Mono,monospace" font-weight="700" font-size="17" fill="#163a4a">&#127809; Qu&eacute;bec City</text>
+            <text x="90" y="278" text-anchor="middle" font-family="Space Mono,monospace" font-size="13" fill="#163a4a">EMBARK · DAY 1</text>
+          </g>
+          <g class="port-pin">
+            <circle cx="255" cy="165" r="7" fill="#0b2a3a" stroke="#c89b4a" stroke-width="2.2"/>
+            <circle cx="255" cy="165" r="2.6" fill="#f1e7cf"/>
+            <text x="255" y="146" text-anchor="middle" font-family="Space Mono,monospace" font-weight="700" font-size="16" fill="#163a4a">Charlottetown</text>
+          </g>
+          <g class="port-pin">
+            <circle cx="430" cy="133" r="7" fill="#0b2a3a" stroke="#c89b4a" stroke-width="2.2"/>
+            <circle cx="430" cy="133" r="2.6" fill="#f1e7cf"/>
+            <text x="430" y="114" text-anchor="middle" font-family="Space Mono,monospace" font-weight="700" font-size="16" fill="#163a4a">Sydney</text>
+          </g>
+          <g class="port-pin">
+            <circle cx="560" cy="183" r="7" fill="#0b2a3a" stroke="#c89b4a" stroke-width="2.2"/>
+            <circle cx="560" cy="183" r="2.6" fill="#f1e7cf"/>
+            <text x="560" y="209" text-anchor="middle" font-family="Space Mono,monospace" font-weight="700" font-size="16" fill="#163a4a">Halifax</text>
+          </g>
+          <g class="port-pin">
+            <circle cx="775" cy="252" r="7" fill="#0b2a3a" stroke="#c89b4a" stroke-width="2.2"/>
+            <circle cx="775" cy="252" r="2.6" fill="#f1e7cf"/>
+            <text x="775" y="278" text-anchor="middle" font-family="Space Mono,monospace" font-weight="700" font-size="16" fill="#163a4a">Portland</text>
+          </g>
+          <g class="port-pin">
+            <circle cx="940" cy="200" r="8" fill="#0b2a3a" stroke="#c89b4a" stroke-width="2.4"/>
+            <circle cx="940" cy="200" r="3" fill="#d8392b"/>
+            <text x="940" y="178" text-anchor="middle" font-family="Space Mono,monospace" font-weight="700" font-size="17" fill="#163a4a">&#129438; Boston</text>
+            <text x="940" y="228" text-anchor="middle" font-family="Space Mono,monospace" font-size="13" fill="#163a4a">DISEMBARK · DAY 8</text>
+          </g>
+        </g>
+        <g transform="translate(965 80)" opacity=".9">
+          <circle r="34" fill="none" stroke="#b89a5e" stroke-width="1.5"/>
+          <circle r="26" fill="none" stroke="#b89a5e" stroke-width="1"/>
+          <path d="M0 -32 L7 0 L0 32 L-7 0 Z" fill="#163a4a"/>
+          <path d="M-32 0 L0 -7 L32 0 L0 7 Z" fill="#c89b4a"/>
+          <text x="0" y="-38" text-anchor="middle" font-family="Space Mono,monospace" font-weight="700" font-size="11" fill="#163a4a">N</text>
+        </g>
+        <g transform="translate(70 350)" font-family="Space Mono,monospace" font-size="9" fill="#5f7a82">
+          <rect x="0" y="0" width="40" height="5" fill="#163a4a"/>
+          <rect x="40" y="0" width="40" height="5" fill="none" stroke="#163a4a"/>
+          <text x="0" y="18">0</text><text x="68" y="18">200 nm</text>
+        </g>
+      </svg>
+      <div class="chart-stats">
+        <div class="stat"><div class="v" data-count="8">8</div><div class="k">Days, port to port</div></div>
+        <div class="stat"><div class="v" data-count="6">6</div><div class="k">Ports of call</div></div>
+        <div class="stat"><div class="v" data-count="2">2</div><div class="k">Scenic sea days</div></div>
+        <div class="stat"><div class="v" data-count="89">89</div><div class="k">Shore excursions</div></div>
+      </div>
+      <a class="cta ghost" href="hub.html#itinerary">Open the full day-by-day itinerary &rarr;</a>
     </div>
   </div>
 </section>
 
-<!-- ============ THE SHIP ============ -->
-<section id="ship" aria-labelledby="ship-h">
-  <div class="sec-head"><h2 id="ship-h">The Ship &mdash; ms Zuiderdam</h2><span class="tag">Vista Class</span></div>
-  <p class="lead">The <em>Zuiderdam</em> is the lead ship of Holland America's Vista class &mdash; a mid-size, classically elegant vessel that completed a comprehensive dry-dock refresh in December 2025.</p>
-  <div class="grid g4">
-    <div class="card fact"><div class="k">Class / Entered Service</div><div class="v">Vista Class &bull; 2002</div></div>
-    <div class="card fact"><div class="k">Guests</div><div class="v">~1,964 (double occ.)</div></div>
-    <div class="card fact"><div class="k">Crew</div><div class="v">~840</div></div>
-    <div class="card fact"><div class="k">Passenger Decks</div><div class="v">11</div></div>
-  </div>
+<svg class="waves" viewBox="0 0 480 64" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" style="background:var(--deep)" aria-hidden="true">
+  <path class="w1" d="M0 30 q60 -16 120 0 t120 0 t120 0 t120 0 t120 0 V64 H0 Z" fill="#0d2f33"/>
+</svg>
 
-  <div class="grid g2" style="margin-top:16px;">
-    <div class="card">
-      <h3>Dining &mdash; Included</h3>
-      <ul class="clean">
-        <li><strong>Dining Room</strong> &mdash; the main multi-course restaurant; open seating or fixed time</li>
-        <li><strong>Lido Market</strong> &mdash; casual buffet for breakfast, lunch and dinner</li>
-        <li><strong>Dive-In</strong> &mdash; poolside burgers, hot dogs and fries</li>
-        <li><strong>New York Pizza</strong> &mdash; hand-tossed pizza by the slice</li>
-        <li><strong>Explorations Caf&eacute;</strong> &mdash; espresso bar, pastries and light bites</li>
-        <li><strong>Room Service</strong> &mdash; available to your stateroom</li>
-      </ul>
+<!-- ░░ THE SONAR — EXCURSION SCOPE ░░ -->
+<section class="s-sonar" aria-labelledby="sonarH">
+  <div class="wrap">
+    <div class="sec-kicker">Sweep the Excursions</div>
+    <h2 class="sec-title" id="sonarH">All 89 shore excursions, on the scope</h2>
+    <p class="sec-intro">
+      Every contact is one of the voyage's 89 shore excursions. The sweep lights each as it
+      passes &mdash; raise or strike a signal flag to filter the scope by theme.
+    </p>
+    <div class="sonar-grid">
+      <div class="scope rv" id="scope" role="img"
+           aria-label="Sonar scope plotting all 89 shore excursions as contacts, grouped by theme.">
+        <div class="rings" aria-hidden="true"><i></i><i></i><i></i></div>
+        <div class="cross h" aria-hidden="true"></div><div class="cross v" aria-hidden="true"></div>
+        <div class="sweep" id="sweep" aria-hidden="true"></div>
+        <div class="hub" aria-hidden="true"></div>
+        <div class="readout" id="scopeReadout" aria-live="polite">CONTACTS · 89 / 89</div>
+      </div>
+      <div class="flag-filters" id="filters">
+        <button type="button" class="flag-btn" data-theme="history" aria-pressed="true" aria-label="History &amp; Heritage, 16 excursions">
+          <span class="pennant" style="background:#c89b4a" aria-hidden="true"></span><span class="fl-name">History &amp; Heritage</span><span class="fl-ct">16</span><span class="fl-off">&#9788; OFF</span></button>
+        <button type="button" class="flag-btn" data-theme="scenery" aria-pressed="true" aria-label="Scenery &amp; Views, 14 excursions">
+          <span class="pennant" style="background:#2f8a52" aria-hidden="true"></span><span class="fl-name">Scenery &amp; Views</span><span class="fl-ct">14</span><span class="fl-off">&#9788; OFF</span></button>
+        <button type="button" class="flag-btn" data-theme="wildlife" aria-pressed="true" aria-label="Wildlife &amp; Nature, 11 excursions">
+          <span class="pennant" style="background:#3fa0ad" aria-hidden="true"></span><span class="fl-name">Wildlife &amp; Nature</span><span class="fl-ct">11</span><span class="fl-off">&#9788; OFF</span></button>
+        <button type="button" class="flag-btn" data-theme="food" aria-pressed="true" aria-label="Food &amp; Drink, 13 excursions">
+          <span class="pennant" style="background:#d8392b" aria-hidden="true"></span><span class="fl-name">Food &amp; Drink</span><span class="fl-ct">13</span><span class="fl-off">&#9788; OFF</span></button>
+        <button type="button" class="flag-btn" data-theme="culture" aria-pressed="true" aria-label="Culture &amp; Music, 12 excursions">
+          <span class="pennant" style="background:#1f5fa8" aria-hidden="true"></span><span class="fl-name">Culture &amp; Music</span><span class="fl-ct">12</span><span class="fl-off">&#9788; OFF</span></button>
+        <button type="button" class="flag-btn" data-theme="active" aria-pressed="true" aria-label="Active &amp; Walking, 13 excursions">
+          <span class="pennant" style="background:#efb228" aria-hidden="true"></span><span class="fl-name">Active &amp; Walking</span><span class="fl-ct">13</span><span class="fl-off">&#9788; OFF</span></button>
+        <button type="button" class="flag-btn" data-theme="water" aria-pressed="true" aria-label="On the Water, 10 excursions">
+          <span class="pennant" style="background:#5fd6a0" aria-hidden="true"></span><span class="fl-name">On the Water</span><span class="fl-ct">10</span><span class="fl-off">&#9788; OFF</span></button>
+      </div>
     </div>
-    <div class="card">
-      <h3>Dining &mdash; Specialty (reservations)</h3>
-      <ul class="clean">
-        <li><strong>Pinnacle Grill</strong> &mdash; signature steak &amp; seafood. Lunch $29.50 &bull; Dinner $61.36 pp</li>
-        <li><strong>Canaletto</strong> &mdash; relaxed Italian dining. $29.50 pp</li>
-        <li><strong>Morimoto Pop-up Dinner</strong> &mdash; Japanese tasting menu. $64.90 pp</li>
-        <li><strong>Seafood Boil</strong> &mdash; New England-style dinner. $41.30 pp</li>
-        <li><strong>Club Orange</strong> &mdash; premium dining &amp; perks program</li>
-      </ul>
-      <p style="font-size:.8rem;color:var(--ink-dim);margin-top:8px;">Your Have It All package includes <strong>one specialty dinner</strong> per guest &mdash; already redeemed.</p>
-    </div>
-  </div>
-
-  <div class="grid g2" style="margin-top:16px;">
-    <div class="card">
-      <h3>Entertainment &mdash; Music Walk</h3>
-      <ul class="clean">
-        <li><strong>World Stage</strong> &mdash; wraparound main theater for shows &amp; films</li>
-        <li><strong>Lincoln Center Stage</strong> &mdash; live classical chamber music</li>
-        <li><strong>B.B. King's Blues Club</strong> &mdash; Memphis-style soul &amp; blues band</li>
-        <li><strong>Billboard Onboard</strong> &mdash; dueling pianos, chart hits</li>
-        <li><strong>Rolling Stone Rock Room</strong> &mdash; live classic rock</li>
-      </ul>
-    </div>
-    <div class="card">
-      <h3>Amenities &amp; Spaces</h3>
-      <ul class="clean">
-        <li><strong>Pools</strong> &mdash; Lido pool with retractable glass roof, plus aft Sea View pool &amp; hot tubs</li>
-        <li><strong>Greenhouse Spa &amp; Salon</strong> &mdash; treatments, thermal suite, salon (book early for up to 30% off)</li>
-        <li><strong>Fitness Center</strong> &mdash; gym, classes, sports deck</li>
-        <li><strong>Crow's Nest / Explorations Central</strong> &mdash; observation lounge, library &amp; enrichment</li>
-        <li><strong>Casino, shops, photo studio &amp; Club HAL</strong> youth program</li>
-      </ul>
-    </div>
-  </div>
-  <div class="callout">
-    <strong>The Navigator app</strong> is the on-board hub &mdash; daily schedule, dining reservations, deck plans,
-    excursion management and messaging between staterooms. Download it before you sail and the group can stay in sync.
+    <a class="cta" href="hub.html#ports">Open the full Excursion Finder &rarr;</a>
   </div>
 </section>
 
-<!-- ============ PACKAGE ============ -->
-<section id="package" aria-labelledby="package-h">
-  <div class="sec-head"><h2 id="package-h">Your Package &amp; Onboard Credits</h2><span class="tag">Have It All</span></div>
-  <p class="lead">Both Jett and Laura are booked on Holland America's premium <strong>Have It All</strong> package. Here is what is already included before you spend a cent on board.</p>
-  <div class="grid g3">
-    <div class="card"><h4>&#127863; Signature Beverage Package</h4><p style="font-size:.88rem;">Cocktails, wine, beer, soft drinks and specialty coffees included up to the daily limit, for both guests.</p></div>
-    <div class="card"><h4>&#127869; Specialty Dining</h4><p style="font-size:.88rem;">One specialty restaurant dinner per guest &mdash; already <strong>redeemed</strong>.</p></div>
-    <div class="card"><h4>&#128247; Shore Excursion Credit</h4><p style="font-size:.88rem;"><strong>$100 per guest</strong> ($200 for your room) toward shore excursions. Applies automatically to the highest-priced tour in your cart.</p></div>
-    <div class="card"><h4>&#128241; Surf Wi-Fi Package</h4><p style="font-size:.88rem;">Internet for browsing, email and social media throughout the voyage, for both guests.</p></div>
-    <div class="card"><h4>&#128176; Onboard Credit</h4><p style="font-size:.88rem;"><strong>$85 per stateroom</strong> in spendable onboard credit &mdash; use it for the spa, extra dining, gift shop or gratuities.</p></div>
-    <div class="card"><h4>&#9989; Crew Appreciation</h4><p style="font-size:.88rem;">Daily gratuities are typically billed to your onboard account &mdash; confirm at check-in whether they are prepaid.</p></div>
-  </div>
-  <div class="callout">
-    <strong>Spend the excursion credit wisely.</strong> The $200 room credit is applied to your single highest-value
-    tour. If you book one bigger excursion and one smaller one, put them in the same cart &mdash; the discount lands
-    on the pricier ticket automatically.
+<div class="rope" aria-hidden="true"></div>
+
+<!-- ░░ THE SOUNDINGS — THEME WATER BARS ░░ -->
+<section class="s-themes" aria-labelledby="themesH">
+  <div class="wrap">
+    <div class="sec-kicker">Take a Sounding</div>
+    <h2 class="sec-title" id="themesH">How the excursions break down</h2>
+    <p class="sec-intro">Depth of field by theme &mdash; each gauge floods to its share of the 89.</p>
+    <div class="rv" id="wbars">
+      <div class="wbar"><div class="wb-head"><span class="wb-name">History &amp; Heritage</span><span class="wb-val">16</span></div>
+        <div class="wb-track"><div class="wb-fill" data-pct="100"></div></div></div>
+      <div class="wbar"><div class="wb-head"><span class="wb-name">Scenery &amp; Views</span><span class="wb-val">14</span></div>
+        <div class="wb-track"><div class="wb-fill" data-pct="88"></div></div></div>
+      <div class="wbar"><div class="wb-head"><span class="wb-name">Food &amp; Drink</span><span class="wb-val">13</span></div>
+        <div class="wb-track"><div class="wb-fill" data-pct="81"></div></div></div>
+      <div class="wbar"><div class="wb-head"><span class="wb-name">Active &amp; Walking</span><span class="wb-val">13</span></div>
+        <div class="wb-track"><div class="wb-fill" data-pct="81"></div></div></div>
+      <div class="wbar"><div class="wb-head"><span class="wb-name">Culture &amp; Music</span><span class="wb-val">12</span></div>
+        <div class="wb-track"><div class="wb-fill" data-pct="75"></div></div></div>
+      <div class="wbar"><div class="wb-head"><span class="wb-name">Wildlife &amp; Nature</span><span class="wb-val">11</span></div>
+        <div class="wb-track"><div class="wb-fill" data-pct="69"></div></div></div>
+      <div class="wbar"><div class="wb-head"><span class="wb-name">On the Water</span><span class="wb-val">10</span></div>
+        <div class="wb-track"><div class="wb-fill" data-pct="63"></div></div></div>
+    </div>
   </div>
 </section>
 
-<!-- ============ PORTS & EXCURSIONS ============ -->
-<section id="ports" aria-labelledby="ports-h">
-  <div class="sec-head"><h2 id="ports-h">Ports &amp; Excursions</h2><span class="tag">89 Tours Across 6 Calls</span></div>
-  <p class="lead">A guide to all six ports, plus an interactive finder for every one of the 89 shore excursions offered on your sailing dates. Read the port summaries, then filter by traveller persona, theme tag, port, price, duration and effort &mdash; sort the results and star tours into the shared <strong>Group Picks</strong> board. Prices are per adult unless noted; "On-Your-Own" tours may price per party.</p>
+<svg class="waves" viewBox="0 0 480 64" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" style="background:var(--abyss)" aria-hidden="true">
+  <path class="w2" d="M0 34 q60 -16 120 0 t120 0 t120 0 t120 0 t120 0 V64 H0 Z" fill="#0d2f33"/>
+</svg>
 
-  <div class="levelkey">
-    <h4>Activity levels explained</h4>
-    <div class="lk-row"><span class="lvl Easy">Easy</span><span>Mostly seated touring; little walking, on even ground.</span></div>
-    <div class="lk-row"><span class="lvl Moderate">Moderate</span><span>Sustained walking; some stairs or uneven paths.</span></div>
-    <div class="lk-row"><span class="lvl Strenuous">Strenuous</span><span>Long distances on foot, steep grades, or rough terrain.</span></div>
-    <p class="lk-note">These are Holland America's official ratings and describe <em>physical demand</em> &mdash; not how long a tour is, or how interesting it is. They can read oddly against the clock: a few short walking tours rate Strenuous because of sustained walking on cobbled or uneven streets, while some seven-hour coach tours rate only Moderate because guests are seated for most of the day. Always read the level <em>together with</em> the listed duration when judging a tour, and confirm in the Navigator app before booking.</p>
-  </div>
-
-  <div class="grid g3" style="margin-bottom:24px;">
-    <div class="portcard"><div class="ph">Day 1 &bull; Jun 13 &bull; Embarkation</div><h4>Quebec City, Quebec</h4>
-      <p>The only walled city north of Mexico and a UNESCO World Heritage Site &mdash; Old Quebec's cobbled lanes climb from Quartier Petit-Champlain to Ch&acirc;teau Frontenac. Most of the day is for boarding.</p></div>
-    <div class="portcard"><div class="ph">Day 4 &bull; Jun 16 &bull; 7 AM&ndash;5 PM</div><h4>Charlottetown, PEI</h4>
-      <p>Birthplace of Confederation and Anne of Green Gables country &mdash; red-sand shores, lighthouses, lobster, and the 12.9-km Confederation Bridge.</p></div>
-    <div class="portcard"><div class="ph">Day 5 &bull; Jun 17 &bull; 7 AM&ndash;4 PM</div><h4>Sydney, Nova Scotia</h4>
-      <p>The heart of Cape Breton &mdash; Highlands scenery, the Cabot Trail, the Fortress of Louisbourg, and live Celtic fiddle music everywhere.</p></div>
-    <div class="portcard"><div class="ph">Day 6 &bull; Jun 18 &bull; 8 AM&ndash;4 PM</div><h4>Halifax, Nova Scotia</h4>
-      <p>A lively harbour capital &mdash; the star-shaped Citadel, the Maritime Museum's Titanic collection, and iconic Peggy's Cove nearby. Pinnacle Grill dinner is 6 PM tonight.</p></div>
-    <div class="portcard"><div class="ph">Day 7 &bull; Jun 19 &bull; 12:30&ndash;10 PM</div><h4>Portland, Maine</h4>
-      <p>New England's foodie town on Casco Bay &mdash; the Old Port's lobster shacks and breweries, Portland Head Light, and a long evening in port.</p></div>
-    <div class="portcard"><div class="ph">Day 8 &bull; Jun 20 &bull; Disembarkation</div><h4>Boston, Massachusetts</h4>
-      <p>The voyage ends in historic Boston &mdash; the 2.5-mile Freedom Trail, Faneuil Hall and the North End, with a hotel night before the June 21 flight.</p></div>
-  </div>
-
-  <h3 style="font-size:1.35rem;margin:8px 0 4px;">Find &amp; Compare Excursions</h3>
-  <p class="lead" style="margin-bottom:16px;">All 89 tours across the six ports, in one tool. Pick a traveller persona or filter by theme tag, port, price, duration and effort; sort the results; and star tours into the live <strong>Group Picks</strong> board shared across all five travellers.</p>
-
-  <div class="panel">
-    <h4>Quick start &mdash; traveller personas</h4>
-    <div class="chips" id="personaChips" role="group" aria-label="Traveller persona filters"></div>
-  </div>
-  <div class="panel">
-    <h4>Theme tags</h4>
-    <div class="chips" id="themeChips" role="group" aria-label="Theme tag filters"></div>
-  </div>
-  <div class="panel">
-    <div class="ctrls">
-      <div><label for="fSort">Sort by</label><select id="fSort">
-        <option value="default">Recommended (by port)</option>
-        <option value="price-asc">Price: low to high</option>
-        <option value="price-desc">Price: high to low</option>
-        <option value="dur-asc">Duration: short to long</option>
-        <option value="dur-desc">Duration: long to short</option>
-      </select></div>
-      <div><label for="fPort">Port</label><select id="fPort"></select></div>
-      <div><label for="fDur">Duration</label><select id="fDur"></select></div>
-      <div><label for="fEff">Effort</label><select id="fEff"></select></div>
-      <div><label for="fPrice">Price</label><select id="fPrice"></select></div>
-      <div><label for="fFlag">Flag</label><select id="fFlag"></select></div>
-      <div><label for="fSearch">Search</label><input type="text" id="fSearch" placeholder="name contains&hellip;"></div>
+<!-- ░░ THE CREW — GROUP PICKS PORTHOLES ░░ -->
+<section class="s-crew" aria-labelledby="crewH">
+  <div class="wrap">
+    <div class="sec-kicker">Muster the Crew</div>
+    <h2 class="sec-title" id="crewH">Five travellers, three staterooms</h2>
+    <p class="sec-intro">
+      Each porthole is one of the party. The Group Picks board in the hub syncs every
+      shortlist across all of their phones &mdash; a tick on one appears on them all.
+    </p>
+    <div class="portholes rv" id="crew">
+      <div class="porthole">
+        <div class="ph-glass">
+          <div class="water" aria-hidden="true"></div><div class="glint" aria-hidden="true"></div><div class="initials">JMR</div>
+          <span class="screw" style="top:10px;left:18px"></span><span class="screw" style="top:10px;right:18px"></span>
+          <span class="screw" style="bottom:10px;left:18px"></span><span class="screw" style="bottom:10px;right:18px"></span>
+        </div>
+        <div class="ph-name">Jett</div><div class="ph-room">Stateroom 1 · 4LMNGG</div>
+      </div>
+      <div class="porthole">
+        <div class="ph-glass">
+          <div class="water" aria-hidden="true"></div><div class="glint" aria-hidden="true"></div><div class="initials">LB</div>
+          <span class="screw" style="top:10px;left:18px"></span><span class="screw" style="top:10px;right:18px"></span>
+          <span class="screw" style="bottom:10px;left:18px"></span><span class="screw" style="bottom:10px;right:18px"></span>
+        </div>
+        <div class="ph-name">Laura</div><div class="ph-room">Stateroom 1 · 4LMNGG</div>
+      </div>
+      <div class="porthole">
+        <div class="ph-glass">
+          <div class="water" aria-hidden="true"></div><div class="glint" aria-hidden="true"></div><div class="initials">SM</div>
+          <span class="screw" style="top:10px;left:18px"></span><span class="screw" style="top:10px;right:18px"></span>
+          <span class="screw" style="bottom:10px;left:18px"></span><span class="screw" style="bottom:10px;right:18px"></span>
+        </div>
+        <div class="ph-name">Sandra</div><div class="ph-room">Stateroom 2 · 4LMNGC</div>
+      </div>
+      <div class="porthole">
+        <div class="ph-glass">
+          <div class="water" aria-hidden="true"></div><div class="glint" aria-hidden="true"></div><div class="initials">BM</div>
+          <span class="screw" style="top:10px;left:18px"></span><span class="screw" style="top:10px;right:18px"></span>
+          <span class="screw" style="bottom:10px;left:18px"></span><span class="screw" style="bottom:10px;right:18px"></span>
+        </div>
+        <div class="ph-name">Becca</div><div class="ph-room">Stateroom 2 · 4LMNGC</div>
+      </div>
+      <div class="porthole">
+        <div class="ph-glass">
+          <div class="water" aria-hidden="true"></div><div class="glint" aria-hidden="true"></div><div class="initials">KS</div>
+          <span class="screw" style="top:10px;left:18px"></span><span class="screw" style="top:10px;right:18px"></span>
+          <span class="screw" style="bottom:10px;left:18px"></span><span class="screw" style="bottom:10px;right:18px"></span>
+        </div>
+        <div class="ph-name">Karen</div><div class="ph-room">Stateroom 3 · 4LMNGT</div>
+      </div>
+    </div>
+    <div class="bell-wrap rv">
+      <svg width="48" height="52" viewBox="0 0 46 52" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <g class="bell">
+          <rect x="21" y="3" width="4" height="6" rx="2" fill="#8f6a2c"/>
+          <path d="M9 36 Q9 12 23 10 Q37 12 37 36 Q37 39 34 39 L12 39 Q9 39 9 36 Z" fill="#e6c477" stroke="#8f6a2c" stroke-width="1.5"/>
+          <rect x="7" y="38" width="32" height="4.5" rx="2.2" fill="#c89b4a" stroke="#8f6a2c" stroke-width="1"/>
+          <circle cx="23" cy="46" r="3.6" fill="#8f6a2c"/>
+        </g>
+      </svg>
+      <div class="bell-note">Find where the rooms already agree &mdash; and book those departures together.</div>
+      <a class="cta" href="hub.html#ports" style="margin-top:14px;">Open the live Group Picks board &rarr;</a>
     </div>
   </div>
-  <div class="panel" id="gpPanel">
-    <h4>&#9733; Group Picks &mdash; shared shortlist for the 5 travellers <span id="syncStatus" class="syncstatus wait">connecting&hellip;</span></h4>
-    <div id="gpBoard"></div>
-  </div>
-  <div class="resbar">
-    <span class="count" id="resCount" aria-live="polite">&nbsp;</span>
-    <button type="button" class="reset" id="resetBtn">Reset all filters</button>
-  </div>
-  <div id="results"></div>
 </section>
 
-<!-- ============ KNOW BEFORE YOU GO ============ -->
-<section id="kbyg" aria-labelledby="kbyg-h">
-  <div class="sec-head"><h2 id="kbyg-h">Know Before You Go</h2><span class="tag">Practical Info</span></div>
-  <div class="grid g2">
-    <div class="card">
-      <h3>Documents &amp; Check-In</h3>
-      <ul class="clean">
-        <li>Complete <strong>Online Check-In by June 10, 2026</strong> in the Navigator app or on hollandamerica.com.</li>
-        <li>This is a cross-border cruise (Canada &amp; USA): bring a <strong>valid passport</strong> &mdash; the recommended document for all guests.</li>
-        <li>Print or save your boarding pass and luggage tags after check-in.</li>
-        <li>Note any medical needs and emergency contacts in your profile.</li>
-      </ul>
+<div class="rope" aria-hidden="true"></div>
+
+<!-- ░░ THE SHIP — INSTRUMENT DIALS ░░ -->
+<section class="s-ship" aria-labelledby="shipH">
+  <div class="wrap">
+    <div class="sec-kicker">Read the Instruments</div>
+    <h2 class="sec-title" id="shipH">ms Zuiderdam, by the dial</h2>
+    <div class="dials rv" id="dials">
+      <div class="dial">
+        <div class="face">
+          <svg viewBox="0 0 180 108" width="180" height="108" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M14 102 A76 76 0 0 1 166 102" fill="none" stroke="#07202b" stroke-width="11" stroke-linecap="round"/>
+            <path d="M14 102 A76 76 0 0 1 166 102" fill="none" stroke="#1c6b7e" stroke-width="3.5"/>
+          </svg>
+          <div class="needle" data-angle="51" aria-hidden="true"></div><div class="hub" aria-hidden="true"></div>
+        </div>
+        <div class="v" data-count="1964">1,964</div><div class="k">Guests aboard</div>
+      </div>
+      <div class="dial">
+        <div class="face">
+          <svg viewBox="0 0 180 108" width="180" height="108" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M14 102 A76 76 0 0 1 166 102" fill="none" stroke="#07202b" stroke-width="11" stroke-linecap="round"/>
+            <path d="M14 102 A76 76 0 0 1 166 102" fill="none" stroke="#1c6b7e" stroke-width="3.5"/>
+          </svg>
+          <div class="needle" data-angle="42" aria-hidden="true"></div><div class="hub" aria-hidden="true"></div>
+        </div>
+        <div class="v" data-count="11">11</div><div class="k">Passenger decks</div>
+      </div>
+      <div class="dial">
+        <div class="face">
+          <svg viewBox="0 0 180 108" width="180" height="108" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M14 102 A76 76 0 0 1 166 102" fill="none" stroke="#07202b" stroke-width="11" stroke-linecap="round"/>
+            <path d="M14 102 A76 76 0 0 1 166 102" fill="none" stroke="#1c6b7e" stroke-width="3.5"/>
+          </svg>
+          <div class="needle" data-angle="57" aria-hidden="true"></div><div class="hub" aria-hidden="true"></div>
+        </div>
+        <div class="v" data-count="285">285</div><div class="k">Metres length overall</div>
+      </div>
+      <div class="dial">
+        <div class="face">
+          <svg viewBox="0 0 180 108" width="180" height="108" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M14 102 A76 76 0 0 1 166 102" fill="none" stroke="#07202b" stroke-width="11" stroke-linecap="round"/>
+            <path d="M14 102 A76 76 0 0 1 166 102" fill="none" stroke="#1c6b7e" stroke-width="3.5"/>
+          </svg>
+          <div class="needle" data-angle="58" aria-hidden="true"></div><div class="hub" aria-hidden="true"></div>
+        </div>
+        <div class="v" data-count="82">82</div><div class="k">Thousand gross tons</div>
+      </div>
     </div>
-    <div class="card">
-      <h3>Weather &amp; Packing</h3>
-      <ul class="clean">
-        <li>Mid-June in Atlantic Canada / New England: daytime highs typically <strong>60&ndash;72&deg;F (16&ndash;22&deg;C)</strong>, cooler at sea and in the evenings.</li>
-        <li>Pack <strong>layers</strong>: a warm jacket, light rain shell and a sweater &mdash; coastal weather shifts fast.</li>
-        <li><strong>Comfortable walking shoes</strong> for cobblestones (Quebec) and granite (Peggy's Cove).</li>
-        <li>Smart-casual evening wear; one dressier outfit for a Pinnacle / specialty dinner.</li>
-        <li>Sunglasses, sunscreen, refillable water bottle, daypack and any medications.</li>
-      </ul>
-    </div>
-    <div class="card">
-      <h3>Money &amp; Currency</h3>
-      <ul class="clean">
-        <li>Canadian ports (Quebec City, Charlottetown, Sydney, Halifax) use the <strong>Canadian dollar (CAD)</strong>.</li>
-        <li>US ports (Portland, Boston) use the <strong>US dollar (USD)</strong>.</li>
-        <li>Cards are widely accepted; carry a little local cash for small vendors and tips ashore.</li>
-        <li>Onboard purchases bill to your stateroom account &mdash; settle it before disembarking in Boston.</li>
-      </ul>
-    </div>
-    <div class="card">
-      <h3>Onboard Tips</h3>
-      <ul class="clean">
-        <li>Book spa treatments and specialty dining early &mdash; pre-cruise discounts apply.</li>
-        <li>Your Signature Beverage Package and Surf Wi-Fi are active from embarkation.</li>
-        <li>Watch the daily schedule in the Navigator app for shows, talks and Music Walk sets.</li>
-        <li>Shore excursions can sell out &mdash; coordinate and book the group's tours together soon.</li>
-        <li>Ship's clock stays on one time zone; all aboard times in this hub are local port time.</li>
-      </ul>
+    <div class="plimsoll rv">
+      <div class="pl-ring" aria-hidden="true"></div>
+      <div class="pl-cap">Load line · Have-It-All package &mdash; 5 aboard, 3 rooms, $100/guest credit</div>
     </div>
   </div>
 </section>
 
 </main>
 
+<div class="rope" aria-hidden="true"></div>
+
+<!-- ░░ FOOTER ░░ -->
 <footer>
-  <p><span class="gold">Canada &amp; New England 2026</span> &bull; ms Zuiderdam &bull; Booking 4LMNGG &bull; <a href="voyage-console.html">Voyage Console</a></p>
-  <p style="margin-top:6px;opacity:.85;">Personal trip knowledge hub for Jett &amp; Laura. Excursion prices and availability from Holland America and subject to change &mdash; verify in the Navigator app before booking.</p>
+  <svg class="anchor-drop" width="58" height="66" viewBox="0 0 58 66" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <circle cx="29" cy="9" r="6.5" fill="none" stroke="#c89b4a" stroke-width="3.4"/>
+    <line x1="29" y1="15.5" x2="29" y2="54" stroke="#c89b4a" stroke-width="4.4"/>
+    <line x1="16" y1="24" x2="42" y2="24" stroke="#c89b4a" stroke-width="4.4" stroke-linecap="round"/>
+    <path d="M29 54 Q12 54 9 35 L3 40 M9 35 L14 41" stroke="#c89b4a" stroke-width="4.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M29 54 Q46 54 49 35 L55 40 M49 35 L44 41" stroke="#c89b4a" stroke-width="4.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+  <div class="foot-title">Bon Voyage</div>
+  <div class="foot-sub">ms Zuiderdam · 13&ndash;20 June 2026 · Booking 4LMNGG</div>
+  <p class="foot-note">A maritime instrument-panel front door for the Canada &amp; New England trip hub &mdash; every gauge, scope and chart reads the voyage's own data.</p>
+  <a class="cta" href="hub.html" style="margin-top:18px;">Enter the full trip hub &rarr;</a>
+  <div style="margin-top:18px;display:flex;gap:9px;justify-content:center;" aria-hidden="true">
+    <span class="knot"></span><span class="knot"></span><span class="knot"></span>
+  </div>
 </footer>
 
 <script>
-  /* ---- motion toggle (mirrors prefers-reduced-motion) ---- */
-  (function(){
-    var osR = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var off = osR, b = document.getElementById('motionToggle');
-    function apply(){
-      document.body.classList.toggle('motion-off', off);
-      if(b){ b.setAttribute('aria-pressed', String(!off));
-        b.querySelector('.ml').textContent = off ? 'Animation off' : 'Animation on'; }
-    }
-    apply();
-    if(b) b.addEventListener('click', function(){ off = !off; apply(); });
-  })();
+(function(){
+  "use strict";
+  var osReduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var motionOff = osReduce;            /* effective motion state */
 
-  /* ---- hero stars (decorative) ---- */
-  (function(){
-    var s = document.getElementById('stars');
-    if(!s) return;
-    for(var i=0;i<26;i++){
-      var d=document.createElement('i');
-      d.style.left=(Math.random()*100)+'%';
-      d.style.top=(Math.random()*92)+'%';
-      d.style.animationDelay=(-Math.random()*4)+'s';
-      s.appendChild(d);
+  /* ── motion toggle (WCAG 2.2.2) ── */
+  var mtog = document.getElementById('motionToggle');
+  function applyMotion(){
+    document.body.classList.toggle('motion-off', motionOff);
+    if(mtog){
+      mtog.setAttribute('aria-pressed', String(!motionOff));
+      mtog.querySelector('.ml').textContent = motionOff ? 'Animation off' : 'Animation on';
     }
-  })();
-
-  /* ---- countdown to embarkation: June 13, 2026 ---- */
-  var target = new Date('2026-06-13T00:00:00').getTime();
-  function tick(){
-    var now = new Date().getTime();
-    var d = target - now;
-    if(d < 0){ document.getElementById('cd').innerHTML = '<div><span class="num">&#9875;</span><span class="lbl">Bon Voyage</span></div>'; return; }
-    var days = Math.floor(d/86400000);
-    var hrs = Math.floor((d%86400000)/3600000);
-    var mins = Math.floor((d%3600000)/60000);
-    document.getElementById('cd-d').textContent = days;
-    document.getElementById('cd-h').textContent = hrs;
-    document.getElementById('cd-m').textContent = mins;
   }
-  tick(); setInterval(tick, 30000);
+  applyMotion();
+  if(mtog){
+    mtog.addEventListener('click', function(){
+      motionOff = !motionOff;
+      applyMotion();
+      if(motionOff) stopSonar(); else startSonar();
+    });
+  }
+
+  /* ── hero stars ── */
+  var stars = document.getElementById('stars');
+  if (stars) {
+    for (var i=0;i<26;i++){
+      var s=document.createElement('i');
+      s.style.left=(Math.random()*100)+'%';
+      s.style.top=(Math.random()*64)+'%';
+      s.style.animationDelay=(-Math.random()*4)+'s';
+      stars.appendChild(s);
+    }
+  }
+
+  /* ── countdown to 13 June 2026 ── */
+  function pad(n){ return (n<10?'0':'')+n; }
+  function tick(){
+    var sail=new Date(2026,5,13,0,0,0), now=new Date(), diff=sail-now;
+    var sailed = diff<0;
+    if(sailed) diff=0;
+    var d=Math.floor(diff/864e5), h=Math.floor(diff/36e5)%24, m=Math.floor(diff/6e4)%60;
+    var hEl=document.getElementById('cd-h'), mEl=document.getElementById('cd-m'),
+        dEl=document.getElementById('cd-d');
+    if(hEl) hEl.textContent=pad(h);
+    if(mEl) mEl.textContent=pad(m);
+    if(sailed && dEl){ dEl.textContent='⚓'; }   /* Bon Voyage — now under way */
+    return { d:d, sailed:sailed };
+  }
+  var cd=tick();
+  setInterval(tick,30000);
+
+  /* ── count-up helper ── */
+  function fmt(n){ return n>=1000 ? n.toLocaleString('en-US') : (''+n); }
+  function countUp(el,target,dur){
+    if(motionOff){ el.textContent=fmt(target); return; }
+    var t0=null;
+    function step(ts){
+      if(!t0) t0=ts;
+      var p=Math.min((ts-t0)/dur,1);
+      var e=1-Math.pow(1-p,3);
+      el.textContent=fmt(Math.round(target*e));
+      if(p<1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  var cdD=document.getElementById('cd-d');
+  if(cdD && !cd.sailed) countUp(cdD,cd.d,1300);
+
+  /* ── reveal observer ── */
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(!en.isIntersecting) return;
+      var el=en.target; el.classList.add('in');
+      el.querySelectorAll('[data-count]').forEach(function(c){
+        countUp(c,parseInt(c.getAttribute('data-count'),10),1500);
+      });
+      el.querySelectorAll('.wb-fill').forEach(function(f,idx){
+        setTimeout(function(){ f.style.width=f.getAttribute('data-pct')+'%'; }, 120+idx*110);
+      });
+      el.querySelectorAll('.needle').forEach(function(nd,idx){
+        setTimeout(function(){ nd.style.transform='rotate('+nd.getAttribute('data-angle')+'deg)'; }, 180+idx*160);
+      });
+      io.unobserve(el);
+    });
+  },{ threshold:0.25 });
+  document.querySelectorAll('.rv').forEach(function(el){ io.observe(el); });
+
+  /* ── sonar scope ── */
+  var scope=document.getElementById('scope'),
+      sweep=document.getElementById('sweep'),
+      readout=document.getElementById('scopeReadout');
+  var THEMES=[
+    {k:'history', n:16, c:'#c89b4a'},{k:'scenery', n:14, c:'#2f8a52'},
+    {k:'wildlife',n:11, c:'#3fa0ad'},{k:'food',    n:13, c:'#d8392b'},
+    {k:'culture', n:12, c:'#1f5fa8'},{k:'active',  n:13, c:'#efb228'},
+    {k:'water',   n:10, c:'#5fd6a0'}
+  ];
+  var blips=[], active={}, rafId=null, running=false;
+  THEMES.forEach(function(t){ active[t.k]=true; });
+
+  if(scope){
+    THEMES.forEach(function(t){
+      for(var i=0;i<t.n;i++){
+        var ang=Math.random()*360;
+        var r=8+Math.random()*36;
+        var b=document.createElement('div');
+        b.className='blip';
+        b.style.background=t.c; b.style.boxShadow='0 0 6px '+t.c;
+        b.style.left=(50+r*Math.sin(ang*Math.PI/180))+'%';
+        b.style.top =(50-r*Math.cos(ang*Math.PI/180))+'%';
+        b._ang=ang; b._theme=t.k; b._lit=t.c;
+        scope.insertBefore(b, sweep.nextSibling);
+        blips.push(b);
+      }
+    });
+  }
+
+  var period=4400, baseTs=null;
+  function frame(ts){
+    if(!running) return;
+    if(baseTs===null) baseTs=ts;
+    var ang=((ts-baseTs)%period)/period*360;
+    if(sweep) sweep.style.transform='rotate('+ang+'deg)';
+    blips.forEach(function(b){
+      var d=(ang-b._ang+360)%360;
+      if(d>=0 && d<=26 && active[b._theme]){
+        if(!b.classList.contains('lit')){
+          b.classList.add('lit'); b.style.boxShadow='0 0 15px 4px '+b._lit;
+        }
+      } else if(b.classList.contains('lit')){
+        b.classList.remove('lit'); b.style.boxShadow='0 0 6px '+b._lit;
+      }
+    });
+    rafId=requestAnimationFrame(frame);
+  }
+  function startSonar(){
+    if(running || motionOff || document.hidden || !scope) { staticBlips(); return; }
+    running=true; baseTs=null; rafId=requestAnimationFrame(frame);
+  }
+  function stopSonar(){
+    running=false; if(rafId) cancelAnimationFrame(rafId);
+    staticBlips();
+  }
+  function staticBlips(){
+    /* reduced-motion / paused: every visible blip shown static and lit */
+    blips.forEach(function(b){
+      if(active[b._theme]){ b.classList.add('lit'); }
+    });
+  }
+
+  /* pause the loop when the tab is backgrounded (battery) */
+  document.addEventListener('visibilitychange', function(){
+    if(document.hidden) stopSonar();
+    else if(!motionOff) startSonar();
+  });
+
+  /* filter buttons — native <button>, aria-pressed */
+  function refresh(){
+    var vis=0;
+    blips.forEach(function(b){
+      if(active[b._theme]){ b.classList.remove('hidden'); vis++; }
+      else b.classList.add('hidden');
+    });
+    if(readout) readout.textContent='CONTACTS · '+vis+' / 89';
+  }
+  document.querySelectorAll('#filters .flag-btn').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var th=btn.getAttribute('data-theme');
+      active[th]=!active[th];
+      btn.setAttribute('aria-pressed', String(active[th]));
+      refresh();
+      if(motionOff) staticBlips();
+    });
+  });
+
+  startSonar();
+})();
 </script>
 
-<!-- ===== interactive excursion finder ===== -->
-<script>
-const THEMES={history:["History","t-history"],landmark:["Landmark","t-landmark"],scenery:["Scenery","t-scenery"],
- wildlife:["Wildlife","t-wildlife"],food:["Food","t-food"],drinks:["Drinks","t-drinks"],music:["Music","t-music"],
- culture:["Culture","t-culture"],literary:["Literary","t-literary"],water:["Water","t-water"],walking:["Walking","t-walking"],
- drive:["Drive","t-drive"],active:["Active","t-active"],handson:["Hands-On","t-handson"],photo:["Photo","t-photo"],
- offbeat:["Offbeat","t-offbeat"]};
-const PERSONAS={"History Buff":["history","landmark"],"Foodie":["food","drinks"],
- "Nature Lover":["scenery","wildlife","water"],"Culture & Music Fan":["music","culture","literary"],
- "Active Explorer":["active","walking"],"Easygoing Sightseer":["drive","scenery","landmark"],
- "Photographer":["photo","scenery","landmark"],"Celebration":["handson","music","food"]};
-const ROOMS=[{key:"jl",label:"Jett & Laura",size:2},{key:"sb",label:"Sandra & Becca",size:2},{key:"k",label:"Karen",size:1}];
-const DATA=[
-{id:"qc-01",port:"Quebec City",name:"Embarkation Tour: Historic Quebec & Montmorency Falls",durationHrs:3,durationBand:"half-day",effort:"Moderate",price:149.95,priceBand:"mid",themes:["history","landmark","scenery","drive","walking"],flags:[]},
-{id:"char-01",port:"Charlottetown",name:"Panoramic Island Drive & Confederation Bridge",durationHrs:3.5,durationBand:"half-day",effort:"Easy",price:99.95,priceBand:"value",themes:["landmark","scenery","drive"],flags:[]},
-{id:"char-02",port:"Charlottetown",name:"Island Drive & Anne of Green Gables",durationHrs:3.5,durationBand:"half-day",effort:"Easy",price:119.95,priceBand:"mid",themes:["literary","drive","scenery","landmark"],flags:[]},
-{id:"char-03",port:"Charlottetown",name:"PEI Coast, Lighthouse & Cellar",durationHrs:4,durationBand:"extended",effort:"Easy",price:139.95,priceBand:"mid",themes:["scenery","landmark","drinks","drive"],flags:[]},
-{id:"char-04",port:"Charlottetown",name:"The Island's Finest: Anne, Lobster & Scenic Drive",durationHrs:5.5,durationBand:"extended",effort:"Easy",price:229.95,priceBand:"premium",themes:["literary","food","drive","scenery","landmark"],flags:["meal-included"]},
-{id:"char-05",port:"Charlottetown",name:"Solar-Powered Scenic Harbor Cruise",durationHrs:1.5,durationBand:"quick",effort:"Easy",price:79.95,priceBand:"value",themes:["water","scenery"],flags:[]},
-{id:"char-06",port:"Charlottetown",name:"Charlottetown by Solar-Powered Pedal Bus",durationHrs:2.5,durationBand:"half-day",effort:"Easy",price:149.95,priceBand:"mid",themes:["active","drive","offbeat"],flags:[]},
-{id:"char-07",port:"Charlottetown",name:"Fun with Falcons",durationHrs:3,durationBand:"half-day",effort:"Easy",price:199.95,priceBand:"mid",themes:["wildlife","handson"],flags:[]},
-{id:"char-08",port:"Charlottetown",name:"Ultimate Anne of Green Gables Experience",durationHrs:5.5,durationBand:"extended",effort:"Moderate",price:199.95,priceBand:"mid",themes:["literary","culture","history"],flags:[]},
-{id:"char-09",port:"Charlottetown",name:"The Best of Prince Edward Island",durationHrs:7,durationBand:"full-day",effort:"Moderate",price:199.95,priceBand:"mid",themes:["landmark","scenery","drive","history"],flags:[]},
-{id:"char-10",port:"Charlottetown",name:"Charlottetown City Escape (Victoria Park)",durationHrs:1.5,durationBand:"quick",effort:"Moderate",price:99.95,priceBand:"value",themes:["scenery","walking"],flags:[]},
-{id:"char-11",port:"Charlottetown",name:"Charlottetown Sights & Bites",durationHrs:3,durationBand:"half-day",effort:"Moderate",price:99.95,priceBand:"value",themes:["food","walking","history"],flags:["meal-included"]},
-{id:"char-12",port:"Charlottetown",name:"The Seafood Chef",durationHrs:2.75,durationBand:"half-day",effort:"Moderate",price:189.95,priceBand:"mid",themes:["food","handson"],flags:["meal-included"]},
-{id:"char-13",port:"Charlottetown",name:"The Fair Isle: Meet the Makers (Small-Group Tour)",durationHrs:4,durationBand:"extended",effort:"Moderate",price:199.95,priceBand:"mid",themes:["culture","handson"],flags:["small-group"]},
-{id:"char-14",port:"Charlottetown",name:"Anne & Gilbert: The Musical",durationHrs:4,durationBand:"extended",effort:"Moderate",price:129.95,priceBand:"mid",themes:["literary","music"],flags:[]},
-{id:"char-15",port:"Charlottetown",name:"Charlottetown by Harbour Hopper (land & water)",durationHrs:1,durationBand:"quick",effort:"Moderate",price:79.95,priceBand:"value",themes:["water","drive","offbeat"],flags:["family-friendly"]},
-{id:"char-16",port:"Charlottetown",name:"Brewventure: Canada's Origins through Beer Tasting",durationHrs:3,durationBand:"half-day",effort:"Moderate",price:139.95,priceBand:"mid",themes:["drinks","history"],flags:[]},
-{id:"char-17",port:"Charlottetown",name:"Picture Perfect: City Selfies in Charlottetown",durationHrs:2.5,durationBand:"half-day",effort:"Moderate",price:129.95,priceBand:"mid",themes:["photo","walking"],flags:[]},
-{id:"char-18",port:"Charlottetown",name:"East Coast Art Party",durationHrs:2.5,durationBand:"half-day",effort:"Moderate",price:119.95,priceBand:"mid",themes:["handson","culture"],flags:[]},
-{id:"char-19",port:"Charlottetown",name:"Raspberry Point Oyster Farm",durationHrs:3.5,durationBand:"half-day",effort:"Moderate",price:169.95,priceBand:"mid",themes:["food","handson","water"],flags:["meal-included"]},
-{id:"char-20",port:"Charlottetown",name:"Charlottetown Scavenger Hunt On Your Own (with GPS)",durationHrs:2.5,durationBand:"half-day",effort:"Moderate",price:79.95,priceBand:"value",themes:["active","offbeat","walking"],flags:["on-your-own","family-friendly","waitlist"]},
-{id:"char-21",port:"Charlottetown",name:"Churches of Charlottetown History Walk",durationHrs:3,durationBand:"half-day",effort:"Strenuous",price:59.95,priceBand:"value",themes:["history","walking","culture"],flags:[]},
-{id:"char-22",port:"Charlottetown",name:"A Taste of Charlottetown: Culinary Walk",durationHrs:3,durationBand:"half-day",effort:"Strenuous",price:129.95,priceBand:"mid",themes:["food","walking"],flags:["meal-included"]},
-{id:"syd-01",port:"Sydney",name:"Waterfront Lobster Boil",durationHrs:1.5,durationBand:"quick",effort:"Easy",price:149.95,priceBand:"mid",themes:["food"],flags:["meal-included"]},
-{id:"syd-02",port:"Sydney",name:"Music Island: Songs & Stories from Cape Breton",durationHrs:1.5,durationBand:"quick",effort:"Easy",price:99.95,priceBand:"value",themes:["music","culture"],flags:[]},
-{id:"syd-03",port:"Sydney",name:"Sydney Heritage & Coastal Highlights Drive",durationHrs:2,durationBand:"half-day",effort:"Easy",price:79.95,priceBand:"value",themes:["history","scenery","drive"],flags:[]},
-{id:"syd-04",port:"Sydney",name:"A Taste of the Cabot Trail",durationHrs:7,durationBand:"full-day",effort:"Moderate",price:204.95,priceBand:"premium",themes:["scenery","landmark","drive","food"],flags:[]},
-{id:"syd-05",port:"Sydney",name:"The Best of Cape Breton",durationHrs:6,durationBand:"full-day",effort:"Moderate",price:179.95,priceBand:"mid",themes:["scenery","history","drive","landmark"],flags:[]},
-{id:"syd-06",port:"Sydney",name:"Baddeck & Louisbourg: A Step Back in Time",durationHrs:7,durationBand:"full-day",effort:"Moderate",price:189.95,priceBand:"mid",themes:["history","landmark","drive"],flags:[]},
-{id:"syd-07",port:"Sydney",name:"The Bras d'Or Lakes: Heart of the Island",durationHrs:7,durationBand:"full-day",effort:"Moderate",price:239.95,priceBand:"premium",themes:["scenery","drive","culture","water"],flags:[]},
-{id:"syd-08",port:"Sydney",name:"The Bird Islands of Cape Breton: Puffins, Seals & Eagles",durationHrs:5,durationBand:"extended",effort:"Moderate",price:279.95,priceBand:"premium",themes:["wildlife","water","scenery"],flags:[]},
-{id:"syd-09",port:"Sydney",name:"Baddeck & the Alexander Graham Bell Museum",durationHrs:4,durationBand:"extended",effort:"Moderate",price:99.95,priceBand:"value",themes:["history","culture","drive"],flags:[]},
-{id:"syd-10",port:"Sydney",name:"Relive History at the Fortress of Louisbourg",durationHrs:3.5,durationBand:"half-day",effort:"Moderate",price:139.95,priceBand:"mid",themes:["history","landmark","culture"],flags:[]},
-{id:"syd-11",port:"Sydney",name:"Baddeck & Bras d'Or Lake Cruise",durationHrs:5,durationBand:"extended",effort:"Moderate",price:169.95,priceBand:"mid",themes:["water","scenery","drive"],flags:[]},
-{id:"syd-12",port:"Sydney",name:"Traditional Mi'kmaq Experience & Lunch",durationHrs:3.5,durationBand:"half-day",effort:"Moderate",price:149.95,priceBand:"mid",themes:["culture","history","food"],flags:["meal-included"]},
-{id:"syd-13",port:"Sydney",name:"Highland Village & Gaelic Experience",durationHrs:3.5,durationBand:"half-day",effort:"Moderate",price:109.95,priceBand:"mid",themes:["culture","history"],flags:[]},
-{id:"syd-14",port:"Sydney",name:"Cape Breton Fossil Centre & Sydney Mines Heritage Museum",durationHrs:3,durationBand:"half-day",effort:"Moderate",price:79.95,priceBand:"value",themes:["history","drive"],flags:[]},
-{id:"syd-15",port:"Sydney",name:"Spirit of the Fiddle: Kitchen Party Experience",durationHrs:1.5,durationBand:"quick",effort:"Moderate",price:89.95,priceBand:"value",themes:["music","culture"],flags:[]},
-{id:"syd-16",port:"Sydney",name:"Raise A Glass: Sydney Pub Crawl",durationHrs:2,durationBand:"half-day",effort:"Moderate",price:99.95,priceBand:"value",themes:["drinks","walking","offbeat"],flags:[]},
-{id:"syd-17",port:"Sydney",name:"A Walk through Old Sydney Town",durationHrs:2,durationBand:"half-day",effort:"Moderate",price:69.95,priceBand:"value",themes:["history","walking"],flags:[]},
-{id:"syd-18",port:"Sydney",name:"Picture Perfect: City Selfies in Sydney",durationHrs:2.5,durationBand:"half-day",effort:"Moderate",price:69.95,priceBand:"value",themes:["photo","walking"],flags:[]},
-{id:"syd-19",port:"Sydney",name:"Haunted Historic Sydney: A Wicked Walking Tour",durationHrs:1.5,durationBand:"quick",effort:"Moderate",price:49.95,priceBand:"value",themes:["offbeat","history","walking"],flags:[]},
-{id:"hal-01",port:"Halifax",name:"Halifax by Solar-Powered Pedal Bus",durationHrs:2.5,durationBand:"half-day",effort:"Easy",price:169.95,priceBand:"mid",themes:["active","drive","offbeat"],flags:[]},
-{id:"hal-02",port:"Halifax",name:"Accessible Halifax Highlights & Peggy's Cove Escape",durationHrs:4,durationBand:"extended",effort:"Easy",price:249.95,priceBand:"premium",themes:["landmark","scenery","drive"],flags:["accessible"]},
-{id:"hal-03",port:"Halifax",name:"Halifax Private Touring - Half Day (Van and/or SUV)",durationHrs:4,durationBand:"extended",effort:"Easy",price:899,priceBand:"premium",themes:["drive","scenery","landmark"],flags:["small-group","on-your-own","waitlist"]},
-{id:"hal-04",port:"Halifax",name:"On the Lighthouse Route: Peggy's Cove Lighthouse & Village",durationHrs:3.5,durationBand:"half-day",effort:"Moderate",price:99.95,priceBand:"value",themes:["landmark","scenery","drive"],flags:[]},
-{id:"hal-05",port:"Halifax",name:"Peggy's Cove & Double-Decker Hop-On, Hop-Off Halifax Combination",durationHrs:4.5,durationBand:"extended",effort:"Moderate",price:139.95,priceBand:"mid",themes:["landmark","drive","scenery"],flags:[]},
-{id:"hal-06",port:"Halifax",name:"Peggy's Cove & Titanic Combination",durationHrs:4,durationBand:"extended",effort:"Moderate",price:89.95,priceBand:"value",themes:["landmark","history","scenery","drive"],flags:[]},
-{id:"hal-07",port:"Halifax",name:"Peggy's Cove In Focus: A Photo Safari",durationHrs:3,durationBand:"half-day",effort:"Moderate",price:129.95,priceBand:"mid",themes:["photo","landmark","scenery"],flags:[]},
-{id:"hal-08",port:"Halifax",name:"Views, Vines & Vino (Annapolis Valley wine country)",durationHrs:5.25,durationBand:"extended",effort:"Moderate",price:259.95,priceBand:"premium",themes:["drinks","scenery","drive","food"],flags:[]},
-{id:"hal-09",port:"Halifax",name:"O Canada: Halifax, Peggy's Cove, Lunenburg & Acadian Maple (Small-Group)",durationHrs:7,durationBand:"full-day",effort:"Moderate",price:279.95,priceBand:"premium",themes:["landmark","scenery","culture","food","drive"],flags:["small-group"]},
-{id:"hal-10",port:"Halifax",name:"Best of Halifax",durationHrs:7,durationBand:"full-day",effort:"Moderate",price:179.95,priceBand:"mid",themes:["history","landmark","scenery","drive"],flags:[]},
-{id:"hal-11",port:"Halifax",name:"Iconic Towns of Nova Scotia",durationHrs:7,durationBand:"full-day",effort:"Moderate",price:129.95,priceBand:"mid",themes:["landmark","scenery","drive","culture"],flags:[]},
-{id:"hal-12",port:"Halifax",name:"The Bay of Fundy: Explore the Ocean Floor",durationHrs:7,durationBand:"full-day",effort:"Moderate",price:189.95,priceBand:"mid",themes:["scenery","landmark","drive"],flags:[]},
-{id:"hal-13",port:"Halifax",name:"Halifax Gardens Walk, Panoramic City Drive & Extended Peggy's Cove",durationHrs:6,durationBand:"full-day",effort:"Moderate",price:159.95,priceBand:"mid",themes:["scenery","landmark","drive","walking"],flags:[]},
-{id:"hal-14",port:"Halifax",name:"The Heart of Historic Halifax",durationHrs:3,durationBand:"half-day",effort:"Moderate",price:89.95,priceBand:"value",themes:["history","walking"],flags:[]},
-{id:"hal-15",port:"Halifax",name:"Hop-On, Hop-Off Halifax with Maritime Museum & Citadel Hill admission",durationHrs:1,durationBand:"quick",effort:"Moderate",price:99.95,priceBand:"value",themes:["history","landmark","drive"],flags:[]},
-{id:"hal-16",port:"Halifax",name:"Hop-On Hop-Off Halifax",durationHrs:1,durationBand:"quick",effort:"Moderate",price:69.95,priceBand:"value",themes:["drive","landmark"],flags:["family-friendly"]},
-{id:"hal-17",port:"Halifax",name:"Halifax City & Harbour Hopper",durationHrs:1,durationBand:"quick",effort:"Moderate",price:79.95,priceBand:"value",themes:["water","drive","offbeat"],flags:["family-friendly"]},
-{id:"hal-18",port:"Halifax",name:"Halifax Scenic Views by Tall Ship",durationHrs:2.5,durationBand:"half-day",effort:"Moderate",price:149.95,priceBand:"mid",themes:["water","scenery"],flags:[]},
-{id:"hal-19",port:"Halifax",name:"Leisurely Halifax Waterfront Walk & Ferry Ride to Dartmouth",durationHrs:3,durationBand:"half-day",effort:"Moderate",price:59.95,priceBand:"value",themes:["walking","water","scenery"],flags:[]},
-{id:"hal-20",port:"Halifax",name:"Kick Up Your Heels: A Maritime Ceilidh",durationHrs:2,durationBand:"half-day",effort:"Moderate",price:69.95,priceBand:"value",themes:["music","culture"],flags:[]},
-{id:"hal-21",port:"Halifax",name:"Picture Perfect: Waterfront Selfies in Halifax",durationHrs:3,durationBand:"half-day",effort:"Moderate",price:99.95,priceBand:"value",themes:["photo","walking"],flags:[]},
-{id:"hal-22",port:"Halifax",name:"Accessible Halifax Highlights & Peggy's Cove Escape (Companion)",durationHrs:4,durationBand:"extended",effort:"Moderate",price:249.95,priceBand:"premium",themes:["landmark","scenery","drive"],flags:["accessible","waitlist"]},
-{id:"hal-23",port:"Halifax",name:"A Taste of Halifax",durationHrs:2.5,durationBand:"half-day",effort:"Strenuous",price:179.95,priceBand:"mid",themes:["food","walking"],flags:["meal-included"]},
-{id:"hal-24",port:"Halifax",name:"A Walk through Historic Halifax & the Citadel",durationHrs:3.5,durationBand:"half-day",effort:"Strenuous",price:49.95,priceBand:"value",themes:["history","walking","landmark"],flags:[]},
-{id:"hal-25",port:"Halifax",name:"Halifax by Electric Bicycle",durationHrs:2,durationBand:"half-day",effort:"Strenuous",price:149.95,priceBand:"mid",themes:["active","scenery"],flags:[]},
-{id:"hal-26",port:"Halifax",name:"Urban Insider: Halifax Like a Local",durationHrs:3.5,durationBand:"half-day",effort:"Strenuous",price:229.95,priceBand:"premium",themes:["offbeat","culture","walking","food"],flags:[]},
-{id:"por-01",port:"Portland",name:"Portland Highlights, Fort Williams & Lighthouse",durationHrs:2,durationBand:"half-day",effort:"Easy",price:99.95,priceBand:"value",themes:["landmark","scenery","drive"],flags:[]},
-{id:"por-02",port:"Portland",name:"Portland Highlights & Victoria Mansion",durationHrs:2,durationBand:"half-day",effort:"Easy",price:99.95,priceBand:"value",themes:["history","landmark","drive"],flags:[]},
-{id:"por-03",port:"Portland",name:"Portland Panoramic",durationHrs:1.75,durationBand:"quick",effort:"Easy",price:99.95,priceBand:"value",themes:["scenery","drive"],flags:[]},
-{id:"por-04",port:"Portland",name:"Scenic Portland City Drive",durationHrs:2,durationBand:"half-day",effort:"Easy",price:99.95,priceBand:"value",themes:["scenery","drive"],flags:[]},
-{id:"por-05",port:"Portland",name:"Portland Highlights & Schooner Adventure",durationHrs:4,durationBand:"extended",effort:"Easy",price:179.95,priceBand:"mid",themes:["water","scenery","landmark"],flags:[]},
-{id:"por-06",port:"Portland",name:"Kennebunkport",durationHrs:3.5,durationBand:"half-day",effort:"Easy",price:119.95,priceBand:"mid",themes:["scenery","landmark","drive","culture"],flags:[]},
-{id:"por-07",port:"Portland",name:"Best of Maine: Portland Head Light & Kennebunkport",durationHrs:5,durationBand:"extended",effort:"Easy",price:149.95,priceBand:"mid",themes:["landmark","scenery","drive"],flags:[]},
-{id:"por-08",port:"Portland",name:"A Day in Maine: Warehouse District, Kennebunkport & the Portland Head Light",durationHrs:7,durationBand:"full-day",effort:"Easy",price:169.95,priceBand:"mid",themes:["landmark","scenery","drive","history"],flags:[]},
-{id:"por-09",port:"Portland",name:"Kennebunkport Seaside Village & Maine Sweet Treat Sampler (Small-Group)",durationHrs:3.5,durationBand:"half-day",effort:"Easy",price:179.95,priceBand:"mid",themes:["food","scenery","culture"],flags:["small-group","meal-included"]},
-{id:"por-10",port:"Portland",name:"Portland Highlights, Lighthouses & Maine Sweet Treat Sampler (Small-Group)",durationHrs:2.25,durationBand:"half-day",effort:"Easy",price:159.95,priceBand:"mid",themes:["landmark","food","scenery"],flags:["small-group","meal-included"]},
-{id:"por-11",port:"Portland",name:"Kennebunkport & Scenic Cruise",durationHrs:4.75,durationBand:"extended",effort:"Easy",price:null,priceBand:"unknown",themes:["water","scenery","landmark"],flags:[]},
-{id:"por-12",port:"Portland",name:"Peaks Island Lobster Bake",durationHrs:3.5,durationBand:"half-day",effort:"Moderate",price:179.95,priceBand:"mid",themes:["food","water","scenery"],flags:["meal-included"]},
-{id:"por-13",port:"Portland",name:"Go On — Crack a Lobstah!",durationHrs:3.5,durationBand:"half-day",effort:"Moderate",price:159.95,priceBand:"mid",themes:["food","handson"],flags:["meal-included"]},
-{id:"por-14",port:"Portland",name:"Working Waterfront & Lobster Pull",durationHrs:3,durationBand:"half-day",effort:"Moderate",price:179.95,priceBand:"mid",themes:["food","water","handson","culture"],flags:["meal-included"]},
-{id:"por-15",port:"Portland",name:"Portland's Working Waterfront Tour & Local Beer Tasting",durationHrs:3,durationBand:"half-day",effort:"Moderate",price:169.95,priceBand:"mid",themes:["drinks","food","culture","walking"],flags:[]},
-{id:"por-16",port:"Portland",name:"Kennebunkport Brewery & Coastal Highlights",durationHrs:4.5,durationBand:"extended",effort:"Moderate",price:159.95,priceBand:"mid",themes:["drinks","scenery","drive"],flags:[]},
-{id:"por-17",port:"Portland",name:"Portland Culinary Walk",durationHrs:2,durationBand:"half-day",effort:"Moderate",price:169.95,priceBand:"mid",themes:["food","walking"],flags:["meal-included"]},
-{id:"por-18",port:"Portland",name:"The White Mountains by Conway Scenic Railroad",durationHrs:7.5,durationBand:"full-day",effort:"Moderate",price:259.95,priceBand:"premium",themes:["scenery","landmark","offbeat","drive"],flags:[]},
-{id:"por-19",port:"Portland",name:"Ghosts & Legends of Portland",durationHrs:2,durationBand:"half-day",effort:"Moderate",price:59.95,priceBand:"value",themes:["offbeat","history","walking"],flags:[]},
-{id:"bos-01",port:"Boston",name:"Scenic Boston with Airport Transfer",durationHrs:2.5,durationBand:"half-day",effort:"Moderate",price:174.95,priceBand:"mid",themes:["landmark","history","drive","scenery"],flags:[]},
-{id:"bos-02",port:"Boston",name:"Scenic Boston with Airport Transfer (Wheelchair Accessible)",durationHrs:2.5,durationBand:"half-day",effort:"Moderate",price:174.95,priceBand:"mid",themes:["landmark","history","drive","scenery"],flags:["accessible","waitlist"]}
-];
-let activeThemes=new Set(), activePersona=null;
-let picks={};
-try{ picks=JSON.parse(localStorage.getItem('cruise_grouppicks')||'{}')||{}; }catch(e){ picks={}; }
-function savePicks(){
-  try{ localStorage.setItem('cruise_grouppicks',JSON.stringify(picks)); }catch(e){}
-  if(window.__cruisePush) window.__cruisePush(picks);
-}
-window.__getPicks=function(){ return picks; };
-window.__applyRemote=function(r){ picks=(r&&typeof r==='object')?r:{}; render(); renderBoard(); };
-function exById(id){ return DATA.find(e=>e.id===id); }
-function clearPersona(){
-  activePersona=null;
-  document.querySelectorAll('.chip.persona').forEach(x=>{
-    x.classList.remove('on'); x.setAttribute('aria-pressed','false'); });
-}
-const themeChips=document.getElementById('themeChips');
-Object.entries(THEMES).forEach(([k,v])=>{
-  const c=document.createElement('button');
-  c.type='button'; c.className='chip'; c.dataset.theme=k; c.textContent=v[0];
-  c.setAttribute('aria-pressed','false');
-  c.onclick=()=>{ c.classList.toggle('on');
-    c.setAttribute('aria-pressed', String(c.classList.contains('on')));
-    if(activeThemes.has(k)) activeThemes.delete(k); else activeThemes.add(k);
-    clearPersona(); render(); };
-  themeChips.appendChild(c);
-});
-const personaChips=document.getElementById('personaChips');
-Object.keys(PERSONAS).forEach(name=>{
-  const c=document.createElement('button');
-  c.type='button'; c.className='chip persona'; c.dataset.persona=name; c.textContent=name;
-  c.setAttribute('aria-pressed','false');
-  c.onclick=()=>{
-    const wasOn=c.classList.contains('on');
-    document.querySelectorAll('.chip.persona').forEach(x=>{
-      x.classList.remove('on'); x.setAttribute('aria-pressed','false'); });
-    activeThemes.clear();
-    document.querySelectorAll('#themeChips .chip').forEach(x=>{
-      x.classList.remove('on'); x.setAttribute('aria-pressed','false'); });
-    if(!wasOn){
-      c.classList.add('on'); c.setAttribute('aria-pressed','true'); activePersona=name;
-      PERSONAS[name].forEach(t=>{ activeThemes.add(t);
-        const tc=document.querySelector('#themeChips .chip[data-theme="'+t+'"]');
-        if(tc){ tc.classList.add('on'); tc.setAttribute('aria-pressed','true'); } });
-    } else activePersona=null;
-    render();
-  };
-  personaChips.appendChild(c);
-});
-function fill(id,opts){ const s=document.getElementById(id);
-  s.innerHTML='<option value="">Any</option>'+opts.map(o=>'<option>'+o+'</option>').join('');
-  s.onchange=render; }
-fill('fPort',[...new Set(DATA.map(e=>e.port))]);
-fill('fDur',["quick","half-day","extended","full-day"]);
-fill('fEff',["Easy","Moderate","Strenuous"]);
-fill('fPrice',["value","mid","premium"]);
-fill('fFlag',["meal-included","small-group","family-friendly","accessible","on-your-own","waitlist"]);
-document.getElementById('fSearch').oninput=render;
-document.getElementById('fSort').onchange=render;
-document.getElementById('resetBtn').onclick=()=>{
-  activeThemes.clear(); clearPersona();
-  document.querySelectorAll('.chip').forEach(x=>{
-    x.classList.remove('on'); x.setAttribute('aria-pressed','false'); });
-  ['fPort','fDur','fEff','fPrice','fFlag'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('fSort').value='default';
-  document.getElementById('fSearch').value=''; render();
-};
-function render(){
-  const port=document.getElementById('fPort').value;
-  const dur=document.getElementById('fDur').value;
-  const eff=document.getElementById('fEff').value;
-  const pr=document.getElementById('fPrice').value;
-  const flag=document.getElementById('fFlag').value;
-  const sort=document.getElementById('fSort').value;
-  const q=document.getElementById('fSearch').value.toLowerCase().trim();
-  let list=DATA.filter(e=>{
-    if(activeThemes.size && !e.themes.some(t=>activeThemes.has(t))) return false;
-    if(port && e.port!==port) return false;
-    if(dur && e.durationBand!==dur) return false;
-    if(eff && e.effort!==eff) return false;
-    if(pr && e.priceBand!==pr) return false;
-    if(flag && !e.flags.includes(flag)) return false;
-    if(q && !e.name.toLowerCase().includes(q)) return false;
-    return true;
-  });
-  if(sort==='price-asc') list.sort((a,b)=>(a.price==null?1e9:a.price)-(b.price==null?1e9:b.price));
-  else if(sort==='price-desc') list.sort((a,b)=>(b.price==null?-1:b.price)-(a.price==null?-1:a.price));
-  else if(sort==='dur-asc') list.sort((a,b)=>a.durationHrs-b.durationHrs);
-  else if(sort==='dur-desc') list.sort((a,b)=>b.durationHrs-a.durationHrs);
-  document.getElementById('resCount').textContent=
-    list.length+' of '+DATA.length+' excursions'+(activeThemes.size?' · themes: '+[...activeThemes].map(t=>THEMES[t][0]).join(', '):'');
-  const box=document.getElementById('results');
-  if(!list.length){ box.innerHTML='<div class="empty">No excursions match these filters. Try removing one.</div>'; return; }
-  box.innerHTML=list.map(e=>{
-    const themes=e.themes.map(t=>'<span class="tt '+THEMES[t][1]+'">'+THEMES[t][0]+'</span>').join('');
-    const flags=e.flags.map(f=>'<span class="flag">'+f+'</span>').join(' ');
-    const price=e.price?('$'+e.price.toFixed(2)):'price n/a';
-    const on=picks[e.id]?'on':'';
-    return '<div class="exc"><div class="top"><a class="nm" href="https://www.hollandamerica.com/sf/excursions" target="_blank" rel="noopener">'+e.name+' ↗</a>'+
-      '<span class="right"><span class="pr">'+price+'</span>'+
-      '<button class="star '+on+'" data-id="'+e.id+'" aria-pressed="'+(picks[e.id]?'true':'false')+'" title="Add to Group Picks" aria-label="Add '+e.name.replace(/"/g,'&quot;')+' to Group Picks">'+(picks[e.id]?'★':'☆')+'</button></span></div>'+
-      '<div class="meta">'+e.port+' · '+e.durationHrs+' hrs · '+e.durationBand+
-      ' <span class="lvl '+e.effort+'">'+e.effort+'</span> '+flags+'</div>'+
-      '<div class="themes">'+themes+'</div></div>';
-  }).join('');
-  box.querySelectorAll('.star').forEach(btn=>{
-    btn.onclick=()=>{ const id=btn.dataset.id;
-      if(picks[id]) delete picks[id]; else picks[id]=['jl'];
-      savePicks(); render(); renderBoard(); };
-  });
-}
-function renderBoard(){
-  const board=document.getElementById('gpBoard');
-  const ids=Object.keys(picks);
-  if(!ids.length){ board.innerHTML='<div class="gp-empty">No tours picked yet. Tap the ☆ star on any excursion to add it here, then mark which of the three rooms wants it.</div>'; return; }
-  let html=ids.map(id=>{
-    const e=exById(id); if(!e) return '';
-    const votes=picks[id]||[];
-    const rooms=ROOMS.map(r=>'<button type="button" class="roomchip '+(votes.includes(r.key)?'on':'')+'" aria-pressed="'+(votes.includes(r.key)?'true':'false')+'" data-id="'+id+'" data-room="'+r.key+'">'+r.label+'</button>').join('');
-    let ag='none',agt='No rooms yet';
-    if(votes.length===3){ag='all';agt='All 3 rooms — book together';}
-    else if(votes.length){ag='some';agt=votes.length+' of 3 rooms';}
-    const price=e.price?('$'+e.price.toFixed(2)+' pp'):'price n/a';
-    return '<div class="gp-row"><div class="gp-top"><div><a class="gp-nm" href="https://www.hollandamerica.com/sf/excursions" target="_blank" rel="noopener">'+e.name+'</a>'+
-      '<div class="gp-meta">'+e.port+' · '+e.durationHrs+' hrs · '+e.effort+' · '+price+'</div></div>'+
-      '<span><span class="agree '+ag+'">'+agt+'</span><button class="gp-rm" data-id="'+id+'">remove</button></span></div>'+
-      '<div class="gp-rooms"><span class="rlbl">Who wants it:</span>'+rooms+'</div></div>';
-  }).join('');
-  html+='<div class="gp-summary">';
-  ROOMS.forEach(r=>{
-    let total=0,n=0;
-    ids.forEach(id=>{ if((picks[id]||[]).includes(r.key)){ const e=exById(id); if(e&&e.price){ total+=e.price*r.size; n++; } } });
-    const credit=r.size*100, applied=Math.min(credit,total), net=total-applied;
-    html+='<div class="gp-sum-row"><span class="rm">'+r.label+'</span><span>'+n+' tour'+(n!==1?'s':'')+
-      ' · $'+total.toFixed(2)+' − $'+applied.toFixed(2)+' credit = <span class="net">$'+net.toFixed(2)+' net</span></span></div>';
-  });
-  html+='<div class="gp-sum-row gp-fine">Credit = the $100-per-guest Have It All shore-excursion credit (Jett &amp; Laura $200, Sandra &amp; Becca $200, Karen $100). Tour cost is counted per adult in each room. This board syncs live across everyone’s device.</div>';
-  html+='</div><div class="gp-actions"><button class="gp-clear" id="gpClear">Clear all picks</button></div>';
-  board.innerHTML=html;
-  board.querySelectorAll('.roomchip').forEach(c=>{
-    c.onclick=()=>{ const id=c.dataset.id, rk=c.dataset.room, v=picks[id]||[];
-      picks[id]=v.includes(rk)?v.filter(x=>x!==rk):v.concat([rk]);
-      savePicks(); renderBoard(); };
-  });
-  board.querySelectorAll('.gp-rm').forEach(b=>{
-    b.onclick=()=>{ delete picks[b.dataset.id]; savePicks(); render(); renderBoard(); };
-  });
-  const clr=document.getElementById('gpClear');
-  if(clr) clr.onclick=()=>{ picks={}; savePicks(); render(); renderBoard(); };
-}
-render();
-renderBoard();
-</script>
-
-<!-- Firebase: live Group Picks sync — sign-in is carried over from the Voyage Console -->
+<!-- Firebase: Google SSO crew gate -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
-  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
-  import { initializeFirestore, doc, setDoc, onSnapshot }
+  import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut }
+    from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+  import { initializeFirestore, doc, getDoc, setDoc }
     from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
   const cfg={apiKey:"AIzaSyCxc5ICHwz4Fp_2kRwHogeLdgUeCGKgHss",authDomain:"gto-poker-qui.firebaseapp.com",
     projectId:"gto-poker-qui",storageBucket:"gto-poker-qui.firebasestorage.app",
     messagingSenderId:"607915389446",appId:"1:607915389446:web:5b1c777bf4fad0bc1c0987"};
-  function status(t,c){ const e=document.getElementById('syncStatus');
-    if(e){ e.textContent=t; e.className='syncstatus '+c; } }
-  let auth,boardRef,boardReady=false,firstSnap=true;
+  const TRAVELLERS=["Jett","Laura","Sandra","Becca","Karen"];
+  const gate=document.getElementById('gate'),
+        gMsg=document.getElementById('gateMsg'),
+        gBody=document.getElementById('gateBody');
+  function btn(label,cls,fn){ const b=document.createElement('button');
+    b.type='button'; b.className='gate-btn'+(cls?' '+cls:''); b.textContent=label;
+    b.addEventListener('click',fn); return b; }
+  function only(node){ gBody.innerHTML=''; if(node) gBody.appendChild(node); }
+  (function(){ var s=document.getElementById('gStars'); if(!s) return;
+    for(var i=0;i<34;i++){ var d=document.createElement('i');
+      d.style.left=(Math.random()*100)+'%'; d.style.top=(Math.random()*88)+'%';
+      d.style.animationDelay=(-Math.random()*4)+'s'; s.appendChild(d); } })();
+  function reduced(){ return document.body.classList.contains('motion-off')
+    || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches); }
+  let auth,rosterRef;
   try{
     const app=initializeApp(cfg); auth=getAuth(app);
     const db=initializeFirestore(app,{experimentalForceLongPolling:true});
-    boardRef=doc(db,"cruise","4LMNGG");
-  }catch(e){ status('offline · saved on this device','err'); }
-  function startBoard(){
-    if(!boardRef||boardReady) return;
-    boardReady=true;
-    status('connecting…','wait');
-    window.__cruisePush=function(p){
-      setDoc(boardRef,{picks:p,updatedAt:Date.now()})
-        .then(()=>status('synced','ok')).catch(()=>status('sync error','err'));
-    };
-    onSnapshot(boardRef,function(snap){
-      if(snap.exists() && snap.data() && snap.data().picks){
-        if(window.__applyRemote) window.__applyRemote(snap.data().picks);
-        status('synced','ok');
-      } else if(firstSnap && window.__getPicks){
-        window.__cruisePush(window.__getPicks()); status('synced','ok');
-      }
-      firstSnap=false;
-    },function(){ status('offline · saved on this device','err'); });
+    rosterRef=doc(db,"cruise","roster");
+  }catch(e){ hideGate(); }
+  function showSignIn(){
+    gMsg.textContent='The voyage is locked. Tap the captain’s chest to sign in with Google.';
+    only(null);
+    var c=document.getElementById('chestBtn'),
+        cap=document.getElementById('chestCap'),
+        w=document.getElementById('welcomeWrap');
+    if(c){ c.style.display=''; c.classList.remove('unlocked','unlocking'); c.onclick=doSignIn; }
+    if(cap){ cap.style.display=''; cap.textContent='Locked · tap to sign in'; }
+    if(w) w.hidden=true;
   }
-  if(auth){
-    status('connecting…','wait');
-    onAuthStateChanged(auth,function(user){
-      if(user) startBoard();
-      else status('sign in via the Voyage Console to sync','wait');
+  function doSignIn(){
+    var c=document.getElementById('chestBtn');
+    if(c) c.classList.add('unlocking');
+    gMsg.textContent='Opening Google sign-in…';
+    signInWithPopup(auth,new GoogleAuthProvider()).catch(function(){
+      if(c) c.classList.remove('unlocking');
+      gMsg.innerHTML='<span class="gate-err">Sign-in didn’t finish. Allow pop-ups, then tap the chest again.</span>';
     });
   }
+  function confettiBurst(){
+    const cv=document.getElementById('gConfetti'); if(!cv) return;
+    const ctx=cv.getContext('2d'); cv.width=innerWidth; cv.height=innerHeight;
+    const COL=['#d8392b','#1f5fa8','#efb228','#2f8a52','#f4efe0','#e6c477','#c89b4a'];
+    const cx=innerWidth/2, cy=innerHeight*0.42, P=[];
+    for(var i=0;i<130;i++){
+      var a=Math.random()*Math.PI*2, sp=4+Math.random()*12;
+      P.push({x:cx+(Math.random()-.5)*150,y:cy+(Math.random()-.5)*70,
+        vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-7,rot:Math.random()*6.3,
+        vr:(Math.random()-.5)*.42,sz:7+Math.random()*9,
+        col:COL[(Math.random()*COL.length)|0],
+        sh:Math.random()<.6?0:(Math.random()<.5?1:2),
+        life:0,ttl:150+Math.random()*100,sw:Math.random()*6.3});
+    }
+    var fr=0;
+    (function loop(){
+      ctx.clearRect(0,0,cv.width,cv.height); var alive=0;
+      for(var i=0;i<P.length;i++){ var p=P[i]; if(p.life>p.ttl) continue; alive++;
+        p.life++; p.vy+=.23; p.vx*=.992; p.sw+=.1;
+        p.x+=p.vx+Math.sin(p.sw)*.9; p.y+=p.vy; p.rot+=p.vr;
+        var fade=p.life>p.ttl-44?(p.ttl-p.life)/44:1;
+        ctx.save(); ctx.globalAlpha=Math.max(0,fade);
+        ctx.translate(p.x,p.y); ctx.rotate(p.rot); ctx.fillStyle=p.col;
+        if(p.sh===0){ ctx.beginPath(); ctx.moveTo(-p.sz,-p.sz*.6);
+          ctx.lineTo(p.sz,0); ctx.lineTo(-p.sz,p.sz*.6); ctx.closePath(); ctx.fill(); }
+        else if(p.sh===1){ ctx.beginPath();
+          for(var k=0;k<8;k++){ var r=k%2?p.sz*.34:p.sz*.95, an=k/8*Math.PI*2;
+            ctx[k?'lineTo':'moveTo'](Math.cos(an)*r,Math.sin(an)*r); }
+          ctx.closePath(); ctx.fill(); }
+        else ctx.fillRect(-p.sz*.5,-p.sz*.34,p.sz,p.sz*.68);
+        ctx.restore();
+      }
+      fr++;
+      if(alive>0 && fr<460) requestAnimationFrame(loop);
+      else ctx.clearRect(0,0,cv.width,cv.height);
+    })();
+  }
+  function hideGate(){
+    if(!gate) return;
+    gate.style.display='none';
+    gate.classList.remove('celebrate','depart');
+    var c=document.getElementById('chestBtn'),
+        w=document.getElementById('welcomeWrap');
+    if(c){ c.classList.remove('unlocked','unlocking'); c.style.display=''; }
+    if(w) w.hidden=true;
+  }
+  function reveal(name){
+    window.__crewName=name||null;
+    if(reduced()){ hideGate(); return; }
+    var c=document.getElementById('chestBtn'),
+        cap=document.getElementById('chestCap'),
+        w=document.getElementById('welcomeWrap'),
+        wn=document.getElementById('welcomeName');
+    if(c){ c.classList.remove('unlocking'); c.classList.add('unlocked'); }
+    if(cap) cap.style.display='none';
+    if(gate) gate.classList.add('celebrate');
+    gMsg.textContent='Identity verified — welcome aboard!';
+    confettiBurst();
+    setTimeout(confettiBurst,520);
+    setTimeout(function(){
+      if(wn) wn.textContent=name||'Traveller';
+      if(w) w.hidden=false;
+      if(c) c.style.display='none';
+    },950);
+    setTimeout(function(){ if(gate) gate.classList.add('depart'); },2500);
+    setTimeout(hideGate,3800);
+  }
+  function replayIntro(){
+    if(!gate) return;
+    hideGate();
+    var c=document.getElementById('chestBtn'),
+        cap=document.getElementById('chestCap');
+    if(c) c.onclick=null;
+    if(cap){ cap.style.display=''; cap.textContent='Weighing anchor…'; }
+    if(gMsg) gMsg.textContent='Replaying your welcome aboard…';
+    gate.style.display='';
+    setTimeout(function(){ reveal(window.__crewName||'Traveller'); },850);
+  }
+  function showReject(dn){
+    var c=document.getElementById('chestBtn'), cap=document.getElementById('chestCap');
+    if(c) c.style.display='none';
+    if(cap) cap.style.display='none';
+    gMsg.textContent=(dn?('"'+dn+'" '):'That Google account ')
+      +'is not one of the five travellers. Sign in with the Google account whose first name is Jett, Laura, Sandra, Becca or Karen.';
+    only(btn('Use a different account','sec',function(){ signOut(auth).then(showSignIn); }));
+  }
+  function enter(name){
+    gMsg.textContent='Verified — welcome aboard, '+name+'.'; only(null);
+    const m={}; m[auth.currentUser.email]=name;
+    setDoc(rosterRef,{members:m},{merge:true})
+      .then(function(){ reveal(name); })
+      .catch(function(){ reveal(name); });
+  }
+  function onUser(user){
+    if(!user){ showSignIn(); return; }
+    gMsg.textContent='Verifying your sign-in...'; only(null);
+    const dn=(user.displayName||'').trim();
+    const first=(dn.split(/\s+/)[0]||'').toLowerCase();
+    let matched=null;
+    for(var i=0;i<TRAVELLERS.length;i++){
+      if(TRAVELLERS[i].toLowerCase()===first){ matched=TRAVELLERS[i]; break; }
+    }
+    if(matched) enter(matched);
+    else showReject(dn);
+  }
+  if(auth) onAuthStateChanged(auth,onUser);
+  (function(){ var rb=document.getElementById('replayBtn');
+    if(rb) rb.addEventListener('click',replayIntro); })();
 </script>
+
 </body>
 </html>

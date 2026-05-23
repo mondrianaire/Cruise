@@ -1,0 +1,1113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Canada &amp; New England Cruise — Trip Hub · ms Zuiderdam</title>
+<meta name="description" content="Trip knowledge hub for the June 2026 Canada & New England voyage aboard Holland America's ms Zuiderdam — itinerary, flights, hotels, the ship, and an interactive finder for all 89 shore excursions.">
+<!-- Open Graph / social preview -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Canada & New England — ms Zuiderdam · June 2026">
+<meta property="og:description" content="The full trip hub: itinerary, flights, hotels, the ship, and an interactive finder for all 89 shore excursions.">
+<meta property="og:image" content="https://mondrianaire.github.io/Cruise/voyage-preview.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://mondrianaire.github.io/Cruise/hub.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Canada & New England — ms Zuiderdam · June 2026">
+<meta name="twitter:description" content="The full trip hub: itinerary, flights, hotels, the ship, and an interactive finder for all 89 shore excursions.">
+<meta name="twitter:image" content="https://mondrianaire.github.io/Cruise/voyage-preview.png">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Space+Mono:wght@400;700&display=swap');
+  :root{
+    --abyss:#061a26; --sea:#0b2a3a; --sea2:#103b4f; --deep:#04131c;
+    --brass:#c89b4a; --brass-lt:#e6c477; --brass-dk:#8f6a2c;
+    --teal:#1c6b7e; --teal-lt:#3fa0ad;
+    --cream:#f1e7cf; --paper:#f5eed7;
+    --ink:#e8e2cc; --ink-dim:#8aa0a8;
+    --easy:#5fd6a0; --mod:#efb228; --stren:#e0795a;
+    --grn-dk:#2a7d5c;
+    /* accessibility-remediation tokens (per Voyage Console handoff) */
+    --route-text:#f1e7cf;     /* hero route — was low-contrast teal */
+    --port-sub:#163a4a;       /* chart port sub-labels on parchment */
+    --filter-off:#b9b09a;     /* struck filter label */
+    --focus-ring:#e6c477;     /* 2px solid, 2px offset, all interactives */
+    --target-min:44px;        /* min hit area, WCAG 2.5.x */
+    --d-serif:"Fraunces",Georgia,'Times New Roman',serif;
+    --d-mono:"Space Mono",ui-monospace,Consolas,monospace;
+    --d-body:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{font-family:var(--d-body);color:var(--ink);background:var(--abyss);
+    line-height:1.65;overflow-x:hidden;}
+  /* motion gated on BOTH the OS query and the on-page toggle */
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:.001ms!important;animation-iteration-count:1!important;
+      transition-duration:.001ms!important;scroll-behavior:auto!important;}
+  }
+  body.motion-off *{animation-duration:.001ms!important;animation-iteration-count:1!important;
+    transition-duration:.001ms!important;}
+  h1,h2,h3,h4{font-family:var(--d-serif);font-weight:600;color:var(--cream);line-height:1.22;}
+  a{color:var(--brass-lt);}
+  a:focus-visible,button:focus-visible,select:focus-visible,input:focus-visible{
+    outline:2px solid var(--focus-ring);outline-offset:2px;}
+  /* ---------- SKIP LINK ---------- */
+  .skip{position:absolute;left:12px;top:-60px;z-index:200;background:var(--brass-lt);
+    color:#08161a;font:700 12px/1 var(--d-body);padding:11px 16px;border-radius:6px;
+    text-decoration:none;transition:top .12s ease;}
+  .skip:focus{top:10px;}
+  /* ---------- TOOLBAR / MOTION TOGGLE ---------- */
+  .toolbar{position:fixed;left:10px;bottom:10px;z-index:80;
+    display:flex;align-items:center;gap:8px;}
+  .mtog{display:inline-flex;align-items:center;gap:9px;min-height:38px;
+    padding:0 12px;background:rgba(7,32,43,.82);border:1px solid var(--teal);
+    border-radius:8px;cursor:pointer;color:var(--ink);font:inherit;
+    opacity:.6;transition:opacity .15s;}
+  .mtog:hover,.mtog:focus-visible{opacity:1;}
+  .mtog .track{width:34px;height:18px;border-radius:9px;background:var(--teal);
+    position:relative;flex:0 0 34px;}
+  .mtog .track::after{content:"";position:absolute;top:2px;left:2px;width:14px;height:14px;
+    border-radius:50%;background:var(--brass-lt);transition:left .15s;}
+  .mtog[aria-pressed="false"] .track{background:var(--grn-dk);}
+  .mtog[aria-pressed="false"] .track::after{left:18px;}
+  .mtog .ml{font:600 11.5px/1 var(--d-body);}
+  /* ---------- NAV ---------- */
+  nav{position:sticky;top:0;z-index:100;background:var(--deep);
+    border-bottom:1px solid var(--brass-dk);box-shadow:0 2px 14px rgba(0,0,0,.5);}
+  nav .inner{max-width:1180px;margin:0 auto;display:flex;flex-wrap:wrap;
+    align-items:center;gap:2px;padding:0 16px;}
+  nav .brand{color:var(--cream);font-family:var(--d-serif);font-size:1rem;font-weight:700;
+    padding:13px 14px 13px 0;margin-right:auto;letter-spacing:.01em;}
+  nav a{color:var(--ink-dim);text-decoration:none;font:700 .7rem/1 var(--d-mono);
+    padding:14px 9px;text-transform:uppercase;letter-spacing:.11em;transition:.15s;}
+  nav a:hover{color:var(--brass-lt);}
+  nav a.console{color:var(--brass-lt);}
+  /* ---------- HERO ---------- */
+  header.hero{position:relative;text-align:center;padding:60px 20px 52px;overflow:hidden;
+    background:radial-gradient(ellipse at 50% 6%, #1a4a5e 0%, var(--sea) 46%, var(--abyss) 100%);}
+  .hero-stars{position:absolute;inset:0;}
+  .hero-stars i{position:absolute;width:2px;height:2px;border-radius:50%;
+    background:#cfe6df;opacity:.5;animation:twinkle 4s ease-in-out infinite;}
+  @keyframes twinkle{0%,100%{opacity:.15;}50%{opacity:.7;}}
+  header.hero .kicker{position:relative;color:var(--brass-lt);text-transform:uppercase;
+    letter-spacing:.3em;font:700 .72rem/1 var(--d-mono);margin-bottom:16px;}
+  header.hero h1{position:relative;color:var(--cream);font-size:clamp(2rem,5vw,3rem);
+    max-width:840px;margin:0 auto;letter-spacing:-.01em;}
+  header.hero .route{position:relative;font:700 .8rem/1.7 var(--d-mono);letter-spacing:.1em;
+    text-transform:uppercase;margin-top:18px;color:var(--route-text);}
+  header.hero .ship{position:relative;margin-top:8px;font:700 .7rem/1 var(--d-mono);
+    letter-spacing:.16em;color:var(--ink-dim);}
+  .countdown{position:relative;display:flex;justify-content:center;gap:16px;
+    margin-top:32px;flex-wrap:wrap;}
+  .countdown div{background:radial-gradient(circle at 38% 30%, #16404f, #07202b 72%);
+    border:5px solid;border-color:var(--brass-lt) var(--brass-dk) var(--brass-dk) var(--brass-lt);
+    border-radius:12px;padding:14px 22px;min-width:98px;box-shadow:0 8px 22px rgba(0,0,0,.5);}
+  .countdown .num{font-family:var(--d-serif);font-weight:700;font-size:2.1rem;
+    color:var(--brass-lt);display:block;}
+  .countdown .lbl{font:700 .58rem/1 var(--d-mono);text-transform:uppercase;
+    letter-spacing:.2em;color:var(--teal-lt);margin-top:5px;}
+  /* ---------- LAYOUT ---------- */
+  main{max-width:1180px;margin:0 auto;padding:10px 22px 70px;}
+  section{padding:50px 0 14px;border-bottom:1px solid rgba(143,106,44,.3);}
+  section:last-of-type{border-bottom:none;}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:6px;flex-wrap:wrap;}
+  .sec-head h2{font-size:1.85rem;}
+  .sec-head .tag{color:var(--brass);font:700 .66rem/1 var(--d-mono);text-transform:uppercase;
+    letter-spacing:.15em;border:1px solid var(--brass-dk);border-radius:20px;padding:5px 12px;}
+  .lead{color:var(--ink-dim);max-width:810px;margin:10px 0 24px;font-size:.96rem;}
+  /* ---------- CARDS / GRID ---------- */
+  .grid{display:grid;gap:16px;}
+  .g2{grid-template-columns:repeat(2,1fr);}
+  .g3{grid-template-columns:repeat(3,1fr);}
+  .g4{grid-template-columns:repeat(4,1fr);}
+  .card{background:rgba(7,32,43,.7);border:1px solid var(--teal);border-radius:9px;
+    padding:18px 20px;position:relative;overflow:hidden;}
+  .card::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:3px;
+    background:linear-gradient(90deg,var(--brass),var(--teal-lt));}
+  .card h3{font-size:1.06rem;margin-bottom:6px;}
+  .card h4{font-size:.98rem;margin-bottom:4px;color:var(--cream);}
+  .fact .k{font:700 .63rem/1.3 var(--d-mono);text-transform:uppercase;letter-spacing:.13em;
+    color:var(--teal-lt);}
+  .fact .v{font-family:var(--d-serif);font-size:1.04rem;color:var(--cream);margin-top:4px;}
+  .pill{display:inline-block;background:var(--brass-lt);color:#08161a;
+    font:700 .64rem/1 var(--d-mono);padding:5px 11px;border-radius:20px;
+    letter-spacing:.05em;text-transform:uppercase;}
+  /* ---------- ITINERARY TIMELINE ---------- */
+  .timeline{position:relative;margin-left:8px;padding-left:30px;
+    border-left:3px solid var(--brass-dk);}
+  .stop{position:relative;margin-bottom:22px;}
+  .stop::before{content:"";position:absolute;left:-39px;top:5px;width:15px;height:15px;
+    background:var(--abyss);border:3px solid var(--brass);border-radius:50%;}
+  .stop.sea::before{background:var(--teal);border-color:var(--teal);}
+  .stop .day{font:700 .65rem/1 var(--d-mono);text-transform:uppercase;letter-spacing:.16em;
+    color:var(--brass);}
+  .stop h3{font-size:1.16rem;margin:4px 0;}
+  .stop .when{color:var(--ink-dim);font-size:.88rem;}
+  .stop .note{font-size:.9rem;margin-top:5px;color:var(--ink);}
+  .stop .hi{color:var(--brass-lt);font-weight:700;}
+  /* ---------- FLIGHTS ---------- */
+  .flight{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  .flight .seg{background:rgba(4,19,28,.6);border:1px solid var(--brass-dk);border-radius:8px;
+    padding:10px 14px;flex:1;min-width:200px;}
+  .flight .ap{font-family:var(--d-serif);font-size:1.3rem;color:var(--cream);font-weight:700;}
+  .flight .arrow{color:var(--brass);font-size:1.3rem;}
+  .flight .meta{font:600 .76rem/1.35 var(--d-mono);color:var(--ink-dim);margin-top:2px;}
+  /* ---------- LISTS / CALLOUT ---------- */
+  ul.clean{list-style:none;}
+  ul.clean li{padding:6px 0 6px 24px;position:relative;font-size:.92rem;color:var(--ink);}
+  ul.clean li::before{content:"\2693";position:absolute;left:0;color:var(--brass);}
+  .callout{background:rgba(200,155,74,.1);border-left:4px solid var(--brass);
+    border-radius:0 6px 6px 0;padding:14px 18px;font-size:.9rem;margin:16px 0;color:var(--ink);}
+  .callout strong{color:var(--brass-lt);}
+  /* ---------- ROUTE MAP — PARCHMENT CHART ---------- */
+  .routemap{background:var(--paper);
+    background-image:
+      repeating-linear-gradient(38deg, rgba(28,107,126,.07) 0 1px, transparent 1px 30px),
+      repeating-linear-gradient(-38deg, rgba(28,107,126,.07) 0 1px, transparent 1px 30px);
+    border:3px solid var(--brass-dk);border-radius:6px;padding:16px 16px 10px;
+    margin:8px 0 26px;box-shadow:0 18px 40px rgba(0,0,0,.5);}
+  .routemap svg{display:block;width:100%;height:auto;}
+  .routemap .cap{font:600 .8rem/1.55 var(--d-body);color:#3a4f44;text-align:center;margin-top:8px;}
+  /* ---------- ACTIVITY-LEVEL KEY ---------- */
+  .levelkey{background:rgba(7,32,43,.7);border:1px solid var(--teal);border-radius:9px;
+    padding:16px 20px;margin-bottom:24px;}
+  .levelkey h4{font-size:1rem;margin-bottom:10px;}
+  .lk-row{font-size:.9rem;margin:7px 0;display:flex;gap:10px;align-items:baseline;color:var(--ink);}
+  .lk-note{font-size:.83rem;color:var(--ink-dim);margin-top:12px;
+    border-top:1px dotted var(--brass-dk);padding-top:11px;}
+  /* ---------- PORT CARDS ---------- */
+  .portcard{background:rgba(7,32,43,.7);border:1px solid var(--teal);border-radius:9px;
+    padding:14px 16px;}
+  .portcard h4{font-size:1.02rem;margin-bottom:3px;}
+  .portcard .ph{font:700 .63rem/1.3 var(--d-mono);text-transform:uppercase;letter-spacing:.11em;
+    color:var(--brass);margin-bottom:7px;}
+  .portcard p{font-size:.86rem;color:var(--ink);}
+  /* ---------- FINDER PANELS ---------- */
+  .panel{background:rgba(4,19,28,.55);border:1px solid var(--brass-dk);border-radius:9px;
+    padding:15px 17px;margin-bottom:14px;}
+  .panel h4{font:700 .7rem/1.5 var(--d-mono);text-transform:uppercase;letter-spacing:.13em;
+    color:var(--brass);margin-bottom:10px;}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;}
+  .chip{cursor:pointer;border:1px solid var(--teal);background:rgba(7,32,43,.6);
+    border-radius:20px;padding:0 14px;min-height:40px;display:inline-flex;align-items:center;
+    font:600 .8rem/1 var(--d-body);color:var(--ink);transition:.12s;}
+  .chip:hover{border-color:var(--teal-lt);}
+  .chip.on{background:var(--teal);color:var(--cream);border-color:var(--teal-lt);}
+  .chip.persona{border-color:var(--brass-dk);color:var(--brass-lt);font-weight:700;}
+  .chip.persona.on{background:var(--brass);color:#08161a;border-color:var(--brass-lt);}
+  .ctrls{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end;}
+  .ctrls label{font:700 .61rem/1 var(--d-mono);text-transform:uppercase;letter-spacing:.11em;
+    color:var(--ink-dim);display:block;margin-bottom:5px;}
+  .ctrls select,.ctrls input[type=text]{font:inherit;font-size:.86rem;padding:9px 11px;
+    min-height:var(--target-min);border:1px solid var(--teal);border-radius:6px;
+    background:rgba(7,32,43,.85);color:var(--ink);}
+  /* ---------- RESULTS ---------- */
+  .resbar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;
+    gap:10px;margin:8px 0 14px;}
+  .resbar .count{font-family:var(--d-serif);font-size:1.04rem;color:var(--cream);}
+  .reset{cursor:pointer;border:1px solid var(--brass);background:transparent;
+    color:var(--brass-lt);font:700 .72rem/1 var(--d-mono);text-transform:uppercase;
+    letter-spacing:.07em;padding:0 16px;min-height:var(--target-min);border-radius:20px;}
+  .reset:hover{background:rgba(200,155,74,.14);}
+  .exc{background:rgba(7,32,43,.7);border:1px solid var(--teal);border-radius:9px;
+    padding:14px 16px;margin-bottom:10px;}
+  .exc .top{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
+    align-items:flex-start;}
+  .exc .nm{font-family:var(--d-serif);font-size:1.04rem;color:var(--cream);font-weight:700;
+    text-decoration:none;}
+  a.nm:hover,a.gp-nm:hover{text-decoration:underline;color:var(--brass-lt);}
+  .exc .right{display:flex;align-items:center;gap:6px;white-space:nowrap;}
+  .exc .pr{font-family:var(--d-serif);color:var(--brass-lt);}
+  .exc .meta{font:600 .78rem/1.5 var(--d-mono);color:var(--ink-dim);margin:5px 0 8px;
+    display:flex;flex-wrap:wrap;gap:7px;align-items:center;}
+  .exc .themes{display:flex;flex-wrap:wrap;gap:5px;}
+  .star{cursor:pointer;font-size:1.35rem;line-height:1;color:var(--ink-dim);background:none;
+    border:none;padding:4px;min-width:var(--target-min);min-height:var(--target-min);
+    display:inline-flex;align-items:center;justify-content:center;}
+  .star:hover{color:var(--brass-lt);}
+  .star.on{color:var(--brass-lt);}
+  .tt{display:inline-block;font:700 .65rem/1.4 var(--d-mono);padding:3px 8px;border-radius:5px;
+    color:#fff;letter-spacing:.03em;text-transform:uppercase;}
+  .t-history{background:#9c7440;}.t-landmark{background:#c0503a;}.t-scenery{background:#3f7d4e;}
+  .t-wildlife{background:#5b8c5a;}.t-food{background:#c0612e;}.t-drinks{background:#8a4f9e;}
+  .t-music{background:#2f6f8f;}.t-culture{background:#357a87;}.t-literary{background:#9e7b2f;}
+  .t-water{background:#2f6f8f;}.t-walking{background:#6b7280;}.t-drive{background:#4a5a78;}
+  .t-active{background:#c0503a;}.t-handson{background:#a8842f;}.t-photo{background:#566b8a;}
+  .t-offbeat{background:#6a5a8d;}
+  .flag{font:700 .6rem/1.5 var(--d-mono);padding:2px 7px;border-radius:4px;
+    background:rgba(31,95,168,.22);color:var(--teal-lt);text-transform:uppercase;
+    letter-spacing:.05em;border:1px solid var(--teal);}
+  .empty{text-align:center;color:var(--ink-dim);padding:30px;font-style:italic;}
+  /* ---------- GROUP PICKS ---------- */
+  #gpPanel{border-color:var(--brass);background:rgba(200,155,74,.08);}
+  .gp-empty{font-size:.88rem;color:var(--ink-dim);font-style:italic;}
+  .gp-row{border:1px solid var(--teal);border-radius:8px;background:rgba(7,32,43,.7);
+    padding:11px 14px;margin-bottom:9px;}
+  .gp-top{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline;}
+  .gp-nm{font-family:var(--d-serif);color:var(--cream);font-weight:700;font-size:.98rem;
+    text-decoration:none;}
+  .gp-meta{font:600 .74rem/1.4 var(--d-mono);color:var(--ink-dim);margin-top:3px;}
+  .gp-rooms{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px;align-items:center;}
+  .rlbl{font:700 .62rem/1 var(--d-mono);text-transform:uppercase;letter-spacing:.1em;
+    color:var(--ink-dim);}
+  .roomchip{cursor:pointer;border:1px solid var(--teal);background:rgba(7,32,43,.6);
+    border-radius:20px;padding:0 13px;min-height:36px;display:inline-flex;align-items:center;
+    font:600 .76rem/1 var(--d-body);color:var(--ink);}
+  .roomchip.on{background:var(--teal);color:var(--cream);border-color:var(--teal-lt);}
+  .agree{font:700 .62rem/1.4 var(--d-mono);padding:4px 10px;border-radius:20px;
+    text-transform:uppercase;letter-spacing:.04em;}
+  .agree.all{background:rgba(95,214,160,.16);color:var(--easy);}
+  .agree.some{background:rgba(239,178,40,.16);color:var(--mod);}
+  .agree.none{background:rgba(138,160,168,.16);color:var(--ink-dim);}
+  .gp-rm{cursor:pointer;color:var(--stren);font:700 .72rem/1 var(--d-mono);border:none;
+    background:none;padding:6px 8px;min-height:var(--target-min);}
+  .gp-rm:hover{text-decoration:underline;}
+  .gp-summary{margin-top:13px;border-top:1px solid var(--brass-dk);padding-top:11px;}
+  .gp-sum-row{display:flex;justify-content:space-between;font-size:.85rem;padding:4px 0;
+    flex-wrap:wrap;gap:4px;color:var(--ink);}
+  .gp-sum-row .rm{color:var(--cream);font-weight:600;}
+  .gp-sum-row .net{font-family:var(--d-serif);color:var(--brass-lt);}
+  .gp-fine{color:var(--ink-dim);font-size:.74rem;font-style:italic;}
+  .gp-actions{margin-top:12px;}
+  .gp-clear{cursor:pointer;border:1px solid var(--brass);background:transparent;
+    color:var(--brass-lt);font:700 .72rem/1 var(--d-mono);text-transform:uppercase;
+    letter-spacing:.07em;padding:0 16px;min-height:var(--target-min);border-radius:20px;}
+  .syncstatus{font:700 .58rem/1.4 var(--d-mono);letter-spacing:.07em;text-transform:uppercase;
+    padding:3px 9px;border-radius:20px;vertical-align:2px;margin-left:6px;display:inline-block;}
+  .syncstatus.ok{background:rgba(95,214,160,.16);color:var(--easy);}
+  .syncstatus.wait{background:rgba(239,178,40,.16);color:var(--mod);}
+  .syncstatus.err{background:rgba(224,121,90,.16);color:var(--stren);}
+  /* ---------- FOOTER ---------- */
+  footer{background:var(--deep);color:var(--ink-dim);text-align:center;padding:36px 22px;
+    font-size:.84rem;border-top:1px solid var(--brass-dk);}
+  footer .gold{color:var(--brass-lt);font-family:var(--d-serif);font-weight:700;}
+  footer a{color:var(--brass-lt);}
+  @media(max-width:760px){
+    .g2,.g3,.g4{grid-template-columns:1fr;}
+    nav .brand{width:100%;margin-right:0;padding-bottom:4px;}
+    nav a{padding:9px 7px;}
+    .sec-head h2{font-size:1.5rem;}
+  }
+  /* ---------- ACCESS GATE ---------- */
+  .gate{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;
+    justify-content:center;padding:24px;
+    background:radial-gradient(ellipse at 50% 14%, #1a4a5e 0%, var(--sea) 46%, var(--abyss) 100%);}
+  .gate-card{max-width:430px;width:100%;text-align:center;background:rgba(7,32,43,.92);
+    border:1px solid var(--teal);border-radius:13px;padding:40px 32px;
+    box-shadow:0 26px 64px rgba(0,0,0,.62);}
+  .gate-badge{font-size:36px;line-height:1;color:var(--brass-lt);}
+  .gate-kicker{font:700 11px/1 var(--d-mono);letter-spacing:.26em;text-transform:uppercase;
+    color:var(--brass);margin:12px 0 14px;}
+  .gate-title{font-family:var(--d-serif);font-weight:700;font-size:27px;color:var(--cream);
+    margin:0 0 12px;}
+  .gate-msg{color:var(--ink-dim);font-size:14px;line-height:1.65;margin:0 0 22px;}
+  .gate-err{color:#e0795a;}
+  .gate-pick{display:flex;flex-direction:column;gap:9px;}
+  .gate-btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;
+    width:100%;min-height:46px;padding:0 18px;cursor:pointer;border-radius:8px;
+    font:700 13px/1 var(--d-body);border:1px solid var(--brass-dk);
+    background:var(--brass-lt);color:#08161a;}
+  .gate-btn:hover{background:var(--brass);}
+  .gate-btn.sec{background:transparent;color:var(--brass-lt);font-weight:600;}
+  .gate-btn.sec:hover{background:rgba(200,155,74,.14);}
+  .gate-btn:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px;}
+  .gate-foot{margin-top:22px;font:700 9px/1 var(--d-mono);letter-spacing:.18em;
+    text-transform:uppercase;color:var(--ink-dim);}
+</style>
+</head>
+<body>
+
+<a class="skip" href="#glance">Skip to content</a>
+
+<div class="toolbar">
+  <button class="mtog" id="motionToggle" type="button" aria-pressed="true">
+    <span class="track" aria-hidden="true"></span><span class="ml">Animation on</span>
+  </button>
+</div>
+
+<nav>
+  <div class="inner">
+    <span class="brand">&#9875; Canada &amp; New England 2026</span>
+    <a href="#glance">At a Glance</a>
+    <a href="#travel">Flights</a>
+    <a href="#hotels">Hotels</a>
+    <a href="#itinerary">Itinerary</a>
+    <a href="#ship">The Ship</a>
+    <a href="#package">Package</a>
+    <a href="#ports">Ports &amp; Excursions</a>
+    <a href="#kbyg">Know Before You Go</a>
+    <a href="index.html" class="console">&#9875; Voyage Console</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-stars" id="stars" aria-hidden="true"></div>
+  <div class="kicker">Holland America Line &bull; 7-Day Voyage</div>
+  <h1>Canada &amp; New England: Unesco Sites &amp; Quebecois Nights</h1>
+  <div class="route">Quebec City &nbsp;&rarr;&nbsp; Charlottetown &nbsp;&rarr;&nbsp; Sydney &nbsp;&rarr;&nbsp; Halifax &nbsp;&rarr;&nbsp; Portland &nbsp;&rarr;&nbsp; Boston</div>
+  <div class="ship">ms ZUIDERDAM &bull; JUNE 13&ndash;20, 2026 &bull; BOOKING 4LMNGG</div>
+  <div class="countdown" id="cd">
+    <div><span class="num" id="cd-d" aria-live="polite">--</span><span class="lbl">Days</span></div>
+    <div><span class="num" id="cd-h">--</span><span class="lbl">Hours</span></div>
+    <div><span class="num" id="cd-m">--</span><span class="lbl">Minutes</span></div>
+  </div>
+</header>
+
+<main>
+
+<!-- ============ AT A GLANCE ============ -->
+<section id="glance" aria-labelledby="glance-h">
+  <div class="sec-head"><h2 id="glance-h">Trip at a Glance</h2><span class="tag">The Essentials</span></div>
+  <p class="lead">Everything you and Laura need for the Canada &amp; New England voyage aboard Holland America's <em>ms Zuiderdam</em>. This hub pulls together your confirmed booking, flights, day-by-day itinerary, ship details, and every shore excursion offered in each port.</p>
+  <div class="grid g4">
+    <div class="card fact"><div class="k">Cruise Line / Ship</div><div class="v">Holland America &mdash; ms Zuiderdam</div></div>
+    <div class="card fact"><div class="k">Sailing Dates</div><div class="v">June 13&ndash;20, 2026 (7 nights)</div></div>
+    <div class="card fact"><div class="k">Embark / Disembark</div><div class="v">Quebec City &rarr; Boston</div></div>
+    <div class="card fact"><div class="k">Your Booking #</div><div class="v">4LMNGG</div></div>
+    <div class="card fact"><div class="k">Guests</div><div class="v">Jett Mitchellrose &amp; Laura Brentnell</div></div>
+    <div class="card fact"><div class="k">Stateroom</div><div class="v">Cabin 5161 &mdash; Deck 5</div></div>
+    <div class="card fact"><div class="k">Package</div><div class="v">Have It All (premium)</div></div>
+    <div class="card fact"><div class="k">Online Check-In By</div><div class="v">June 10, 2026</div></div>
+  </div>
+  <div class="callout">
+    <strong>Travelling as a group.</strong> Three staterooms are booked under linked confirmations &mdash;
+    <strong>4LMNGG</strong> Jett &amp; Laura &nbsp;|&nbsp; <strong>4LMNGC</strong> Sandra &amp; Becca &nbsp;|&nbsp; <strong>4LMNGT</strong> Karen.
+    Each room carries the Have It All package. Coordinate dining times and excursions so the group can book the same departures together &mdash; popular tours sell out.
+  </div>
+</section>
+
+<!-- ============ TRAVEL & FLIGHTS ============ -->
+<section id="travel" aria-labelledby="travel-h">
+  <div class="sec-head"><h2 id="travel-h">Travel &amp; Flights</h2><span class="tag">Getting There &amp; Back</span></div>
+  <p class="lead">Both flights are ticketed for Jett and Laura. The cruise begins in Quebec City and ends in Boston, so the outbound and return airports differ.</p>
+
+  <div class="grid g2">
+    <div class="card">
+      <span class="pill">Outbound &bull; Thu, June 11, 2026</span>
+      <h3 style="margin-top:8px;">Greensboro &rarr; Montreal</h3>
+      <p style="font-size:.84rem;color:var(--ink-dim);margin-bottom:12px;">Delta Air Lines &bull; Confirmation <strong>GYHRHV</strong> &bull; Total 5h 19m</p>
+      <div class="flight" style="margin-bottom:8px;">
+        <div class="seg"><div class="ap">GSO</div><div class="meta">Greensboro, NC &bull; 12:26 PM</div></div>
+        <span class="arrow" aria-hidden="true">&#9992;</span>
+        <div class="seg"><div class="ap">ATL</div><div class="meta">Atlanta, GA &bull; 1:50 PM</div></div>
+      </div>
+      <p style="font-size:.8rem;color:var(--ink-dim);margin:2px 0 8px;">DL 3052 (Boeing 717-200) &bull; layover 1h 8m at ATL</p>
+      <div class="flight">
+        <div class="seg"><div class="ap">ATL</div><div class="meta">Atlanta, GA &bull; 2:58 PM &bull; Intl Terminal</div></div>
+        <span class="arrow" aria-hidden="true">&#9992;</span>
+        <div class="seg"><div class="ap">YUL</div><div class="meta">Montreal, QC &bull; 5:45 PM</div></div>
+      </div>
+      <p style="font-size:.8rem;color:var(--ink-dim);margin-top:6px;">DL 2665 (Airbus A319) &bull; Seats 17E (Jett) &amp; 17D (Laura) &bull; Delta Main</p>
+    </div>
+
+    <div class="card">
+      <span class="pill">Return &bull; Sun, June 21, 2026</span>
+      <h3 style="margin-top:8px;">Boston &rarr; Greensboro</h3>
+      <p style="font-size:.84rem;color:var(--ink-dim);margin-bottom:12px;">American Airlines &bull; Confirmation <strong>MNUWWX</strong> &bull; Total 4h 30m</p>
+      <div class="flight" style="margin-bottom:8px;">
+        <div class="seg"><div class="ap">BOS</div><div class="meta">Boston, MA &bull; 12:32 PM</div></div>
+        <span class="arrow" aria-hidden="true">&#9992;</span>
+        <div class="seg"><div class="ap">PHL</div><div class="meta">Philadelphia, PA &bull; 2:08 PM</div></div>
+      </div>
+      <p style="font-size:.8rem;color:var(--ink-dim);margin:2px 0 8px;">AA 3043 (Economy) &bull; connection 1h 12m at PHL</p>
+      <div class="flight">
+        <div class="seg"><div class="ap">PHL</div><div class="meta">Philadelphia, PA &bull; 3:20 PM</div></div>
+        <span class="arrow" aria-hidden="true">&#9992;</span>
+        <div class="seg"><div class="ap">GSO</div><div class="meta">Greensboro, NC &bull; 5:02 PM</div></div>
+      </div>
+      <p style="font-size:.8rem;color:var(--ink-dim);margin-top:6px;">AA 5518 (Economy) &bull; operated by PSA Airlines as American Eagle</p>
+    </div>
+  </div>
+
+  <div class="callout">
+    <strong>Getting from Montreal to Quebec City.</strong> You land in <strong>Montreal (YUL) on June 11</strong>
+    and stay at the Renaissance, then move on to your loft in <strong>Quebec City</strong> before the ship departs
+    June 13. Montreal to Quebec City is roughly a 3-hour drive (~250&nbsp;km) or about 3&frac14; hours by VIA Rail
+    train &mdash; plan that intercity transfer. Hotel details are in <a href="#hotels">Where You're Staying</a>.
+  </div>
+  <div class="callout">
+    <strong>Disembarkation day.</strong> The ship arrives in Boston at 7:00 AM on June 20, but your flight home
+    is June 21 &mdash; you will need <strong>one hotel night in Boston</strong>, which is not yet booked.
+    Boston Logan (BOS) is about 15&ndash;20 minutes from the cruise terminal. See <a href="#hotels">Where You're Staying</a>.
+  </div>
+</section>
+
+<!-- ============ HOTELS ============ -->
+<section id="hotels" aria-labelledby="hotels-h">
+  <div class="sec-head"><h2 id="hotels-h">Where You're Staying</h2><span class="tag">Hotels &amp; Lodging</span></div>
+  <p class="lead">Pre- and post-cruise accommodations for the trip. The Montreal and Quebec City stays are booked; the Boston night after disembarkation is still to be arranged.</p>
+  <div class="grid g3">
+    <div class="card">
+      <span class="pill">Pre-Cruise &bull; Montreal</span>
+      <h3 style="margin-top:8px;">Renaissance Montreal</h3>
+      <p style="font-size:.9rem;">Renaissance by Marriott, Montreal &mdash; your first stop after landing at YUL on June 11.</p>
+      <p style="font-size:.82rem;color:var(--ink-dim);margin-top:8px;">Booked for the travelling group.</p>
+    </div>
+    <div class="card">
+      <span class="pill">Pre-Cruise &bull; Quebec City</span>
+      <h3 style="margin-top:8px;">Les Lofts St-Pierre</h3>
+      <p style="font-size:.9rem;">Apartment-style lofts in the heart of Old Quebec &mdash; loftsvieuxquebec.com. Two units booked:</p>
+      <ul class="clean" style="margin-top:6px;">
+        <li><strong>Unit SP304</strong> &mdash; Jett &amp; Laura</li>
+        <li><strong>Unit SP109</strong> &mdash; Sandra, Becca &amp; Karen</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="pill">Post-Cruise &bull; Boston</span>
+      <h3 style="margin-top:8px;">Boston &mdash; To Be Booked</h3>
+      <p style="font-size:.9rem;">One night needed after disembarkation (<strong>June 20&ndash;21</strong>) before the flight home. Flagged as the <strong>birthday hotel</strong> &mdash; still gathering ideas.</p>
+    </div>
+  </div>
+  <div class="callout">
+    <strong>Still to sort:</strong> the Boston hotel for the night of June 20. Since it is a birthday stay, it is
+    worth booking somewhere memorable &mdash; the Seaport / waterfront is closest to the cruise terminal, while
+    Back Bay puts you near Newbury Street and the Public Garden. Both are an easy ride to Logan for the June 21 flight.
+  </div>
+</section>
+
+<!-- ============ ITINERARY ============ -->
+<section id="itinerary" aria-labelledby="itinerary-h">
+  <div class="sec-head"><h2 id="itinerary-h">Day-by-Day Itinerary</h2><span class="tag">7 Nights</span></div>
+  <p class="lead">Two relaxed sea days open the voyage as the Zuiderdam glides down the St.&nbsp;Lawrence, followed by four full days in port and a morning arrival in Boston.</p>
+
+  <div class="routemap">
+    <svg viewBox="0 0 720 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Map of the cruise route, sailing in order from Quebec City down the St. Lawrence to Charlottetown, Sydney, Halifax, Portland, and Boston.">
+      <defs>
+        <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#efe6c8"/><stop offset="1" stop-color="#e3d6ad"/>
+        </linearGradient>
+      </defs>
+      <rect width="720" height="300" fill="url(#sea)"/>
+      <!-- abstract landmasses -->
+      <path d="M0,0 H720 V34 Q560,58 452,104 Q360,142 250,138 Q132,134 0,196 Z" fill="#dccfa3" stroke="#b89a5e" stroke-width="1.2"/>
+      <path d="M720,300 V210 Q610,232 470,214 Q520,266 600,300 Z" fill="#dccfa3" stroke="#b89a5e" stroke-width="1.2"/>
+      <path d="M0,300 V268 Q70,250 120,300 Z" fill="#dccfa3" stroke="#b89a5e" stroke-width="1.2"/>
+      <!-- sailing route -->
+      <path d="M96,60 Q224,74 366,140 Q452,160 520,84 Q528,152 476,196 Q382,250 262,236 Q190,228 138,262"
+        fill="none" stroke="#d8392b" stroke-width="2.8" stroke-dasharray="7 6" stroke-linecap="round"/>
+      <!-- sea-day marker -->
+      <text x="232" y="86" font-family="Space Mono,monospace" font-size="11" fill="#163a4a" text-anchor="middle">Days 2&ndash;3 &bull; two sea days</text>
+      <!-- port pins -->
+      <g font-family="Space Mono,monospace" font-weight="700" font-size="14" fill="#163a4a">
+        <circle cx="96" cy="60" r="8" fill="#0b2a3a" stroke="#c89b4a" stroke-width="2.4"/>
+        <text x="96" y="43" text-anchor="middle">Quebec City</text>
+        <text x="96" y="84" text-anchor="middle" font-size="11" font-weight="400" fill="#163a4a">Embark &bull; Jun 13</text>
+        <circle cx="366" cy="140" r="8" fill="#c89b4a" stroke="#0b2a3a" stroke-width="2.2"/>
+        <text x="366" y="123" text-anchor="middle">Charlottetown</text>
+        <text x="366" y="163" text-anchor="middle" font-size="11" font-weight="400" fill="#163a4a">Jun 16</text>
+        <circle cx="520" cy="84" r="8" fill="#c89b4a" stroke="#0b2a3a" stroke-width="2.2"/>
+        <text x="520" y="67" text-anchor="middle">Sydney</text>
+        <text x="520" y="108" text-anchor="middle" font-size="11" font-weight="400" fill="#163a4a">Jun 17</text>
+        <circle cx="476" cy="196" r="8" fill="#c89b4a" stroke="#0b2a3a" stroke-width="2.2"/>
+        <text x="498" y="200" text-anchor="start">Halifax</text>
+        <text x="498" y="215" text-anchor="start" font-size="11" font-weight="400" fill="#163a4a">Jun 18</text>
+        <circle cx="262" cy="236" r="8" fill="#c89b4a" stroke="#0b2a3a" stroke-width="2.2"/>
+        <text x="262" y="219" text-anchor="middle">Portland</text>
+        <text x="262" y="259" text-anchor="middle" font-size="11" font-weight="400" fill="#163a4a">Jun 19</text>
+        <circle cx="138" cy="262" r="8" fill="#0b2a3a" stroke="#c89b4a" stroke-width="2.4"/>
+        <text x="138" y="245" text-anchor="middle">Boston</text>
+        <text x="138" y="285" text-anchor="middle" font-size="11" font-weight="400" fill="#163a4a">Disembark &bull; Jun 20</text>
+      </g>
+    </svg>
+    <div class="cap">The voyage descends the St.&nbsp;Lawrence, rounds Atlantic Canada through Prince&nbsp;Edward&nbsp;Island and Nova&nbsp;Scotia, then turns south down the New England coast. Dark pins mark embarkation and disembarkation; brass pins are ports of call.</div>
+  </div>
+
+  <div class="timeline">
+    <div class="stop">
+      <div class="day">Day 1 &bull; Saturday, June 13</div>
+      <h3>Quebec City, Quebec &mdash; Embarkation</h3>
+      <div class="when">All aboard during the afternoon &bull; Ship departs 11:00 PM</div>
+      <div class="note">Board the ship and enjoy a late sail-away past the floodlit Old City. An optional embarkation-day tour of Historic Quebec &amp; Montmorency Falls is offered (see Ports below).</div>
+    </div>
+    <div class="stop sea">
+      <div class="day">Day 2 &bull; Sunday, June 14</div>
+      <h3>Cruising the Saint Lawrence River</h3>
+      <div class="when">Scenic cruising &mdash; no port call</div>
+      <div class="note">A full sea day. Great for settling in, booking spa treatments, and exploring the ship as the shoreline drifts by.</div>
+    </div>
+    <div class="stop sea">
+      <div class="day">Day 3 &bull; Monday, June 15</div>
+      <h3>Cruising the Gulf of St. Lawrence</h3>
+      <div class="when">Scenic cruising &mdash; no port call</div>
+      <div class="note">Open-water cruising into the Gulf. Watch for marine life &mdash; the Gulf is rich whale habitat in June.</div>
+    </div>
+    <div class="stop">
+      <div class="day">Day 4 &bull; Tuesday, June 16</div>
+      <h3>Charlottetown, Prince Edward Island</h3>
+      <div class="when">In port 7:00 AM &ndash; 5:00 PM</div>
+      <div class="note">The longest port day &mdash; ten hours ashore on Canada's smallest province.</div>
+    </div>
+    <div class="stop">
+      <div class="day">Day 5 &bull; Wednesday, June 17</div>
+      <h3>Sydney, Nova Scotia</h3>
+      <div class="when">In port 7:00 AM &ndash; 4:00 PM</div>
+      <div class="note">Gateway to Cape Breton Island, the Cabot Trail and the Fortress of Louisbourg.</div>
+    </div>
+    <div class="stop">
+      <div class="day">Day 6 &bull; Thursday, June 18</div>
+      <h3>Halifax, Nova Scotia</h3>
+      <div class="when">In port 8:00 AM &ndash; 4:00 PM</div>
+      <div class="note">Nova Scotia's capital. <span class="hi">Reminder:</span> Pinnacle Grill dinner is booked for 6:00 PM (Laura).</div>
+    </div>
+    <div class="stop">
+      <div class="day">Day 7 &bull; Friday, June 19</div>
+      <h3>Portland, Maine</h3>
+      <div class="when">In port 12:30 PM &ndash; 10:00 PM</div>
+      <div class="note">An afternoon-and-evening call &mdash; ideal for a lobster dinner ashore and Old Port strolling at dusk.</div>
+    </div>
+    <div class="stop">
+      <div class="day">Day 8 &bull; Saturday, June 20</div>
+      <h3>Boston, Massachusetts &mdash; Disembarkation</h3>
+      <div class="when">Arrives 7:00 AM</div>
+      <div class="note">Voyage ends. Disembark in the morning; a city tour with airport/hotel transfer is offered.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ THE SHIP ============ -->
+<section id="ship" aria-labelledby="ship-h">
+  <div class="sec-head"><h2 id="ship-h">The Ship &mdash; ms Zuiderdam</h2><span class="tag">Vista Class</span></div>
+  <p class="lead">The <em>Zuiderdam</em> is the lead ship of Holland America's Vista class &mdash; a mid-size, classically elegant vessel that completed a comprehensive dry-dock refresh in December 2025.</p>
+  <div class="grid g4">
+    <div class="card fact"><div class="k">Class / Entered Service</div><div class="v">Vista Class &bull; 2002</div></div>
+    <div class="card fact"><div class="k">Guests</div><div class="v">~1,964 (double occ.)</div></div>
+    <div class="card fact"><div class="k">Crew</div><div class="v">~840</div></div>
+    <div class="card fact"><div class="k">Passenger Decks</div><div class="v">11</div></div>
+  </div>
+
+  <div class="grid g2" style="margin-top:16px;">
+    <div class="card">
+      <h3>Dining &mdash; Included</h3>
+      <ul class="clean">
+        <li><strong>Dining Room</strong> &mdash; the main multi-course restaurant; open seating or fixed time</li>
+        <li><strong>Lido Market</strong> &mdash; casual buffet for breakfast, lunch and dinner</li>
+        <li><strong>Dive-In</strong> &mdash; poolside burgers, hot dogs and fries</li>
+        <li><strong>New York Pizza</strong> &mdash; hand-tossed pizza by the slice</li>
+        <li><strong>Explorations Caf&eacute;</strong> &mdash; espresso bar, pastries and light bites</li>
+        <li><strong>Room Service</strong> &mdash; available to your stateroom</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Dining &mdash; Specialty (reservations)</h3>
+      <ul class="clean">
+        <li><strong>Pinnacle Grill</strong> &mdash; signature steak &amp; seafood. Lunch $29.50 &bull; Dinner $61.36 pp</li>
+        <li><strong>Canaletto</strong> &mdash; relaxed Italian dining. $29.50 pp</li>
+        <li><strong>Morimoto Pop-up Dinner</strong> &mdash; Japanese tasting menu. $64.90 pp</li>
+        <li><strong>Seafood Boil</strong> &mdash; New England-style dinner. $41.30 pp</li>
+        <li><strong>Club Orange</strong> &mdash; premium dining &amp; perks program</li>
+      </ul>
+      <p style="font-size:.8rem;color:var(--ink-dim);margin-top:8px;">Your Have It All package includes <strong>one specialty dinner</strong> per guest &mdash; already redeemed.</p>
+    </div>
+  </div>
+
+  <div class="grid g2" style="margin-top:16px;">
+    <div class="card">
+      <h3>Entertainment &mdash; Music Walk</h3>
+      <ul class="clean">
+        <li><strong>World Stage</strong> &mdash; wraparound main theater for shows &amp; films</li>
+        <li><strong>Lincoln Center Stage</strong> &mdash; live classical chamber music</li>
+        <li><strong>B.B. King's Blues Club</strong> &mdash; Memphis-style soul &amp; blues band</li>
+        <li><strong>Billboard Onboard</strong> &mdash; dueling pianos, chart hits</li>
+        <li><strong>Rolling Stone Rock Room</strong> &mdash; live classic rock</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Amenities &amp; Spaces</h3>
+      <ul class="clean">
+        <li><strong>Pools</strong> &mdash; Lido pool with retractable glass roof, plus aft Sea View pool &amp; hot tubs</li>
+        <li><strong>Greenhouse Spa &amp; Salon</strong> &mdash; treatments, thermal suite, salon (book early for up to 30% off)</li>
+        <li><strong>Fitness Center</strong> &mdash; gym, classes, sports deck</li>
+        <li><strong>Crow's Nest / Explorations Central</strong> &mdash; observation lounge, library &amp; enrichment</li>
+        <li><strong>Casino, shops, photo studio &amp; Club HAL</strong> youth program</li>
+      </ul>
+    </div>
+  </div>
+  <div class="callout">
+    <strong>The Navigator app</strong> is the on-board hub &mdash; daily schedule, dining reservations, deck plans,
+    excursion management and messaging between staterooms. Download it before you sail and the group can stay in sync.
+  </div>
+</section>
+
+<!-- ============ PACKAGE ============ -->
+<section id="package" aria-labelledby="package-h">
+  <div class="sec-head"><h2 id="package-h">Your Package &amp; Onboard Credits</h2><span class="tag">Have It All</span></div>
+  <p class="lead">Both Jett and Laura are booked on Holland America's premium <strong>Have It All</strong> package. Here is what is already included before you spend a cent on board.</p>
+  <div class="grid g3">
+    <div class="card"><h4>&#127863; Signature Beverage Package</h4><p style="font-size:.88rem;">Cocktails, wine, beer, soft drinks and specialty coffees included up to the daily limit, for both guests.</p></div>
+    <div class="card"><h4>&#127869; Specialty Dining</h4><p style="font-size:.88rem;">One specialty restaurant dinner per guest &mdash; already <strong>redeemed</strong>.</p></div>
+    <div class="card"><h4>&#128247; Shore Excursion Credit</h4><p style="font-size:.88rem;"><strong>$100 per guest</strong> ($200 for your room) toward shore excursions. Applies automatically to the highest-priced tour in your cart.</p></div>
+    <div class="card"><h4>&#128241; Surf Wi-Fi Package</h4><p style="font-size:.88rem;">Internet for browsing, email and social media throughout the voyage, for both guests.</p></div>
+    <div class="card"><h4>&#128176; Onboard Credit</h4><p style="font-size:.88rem;"><strong>$85 per stateroom</strong> in spendable onboard credit &mdash; use it for the spa, extra dining, gift shop or gratuities.</p></div>
+    <div class="card"><h4>&#9989; Crew Appreciation</h4><p style="font-size:.88rem;">Daily gratuities are typically billed to your onboard account &mdash; confirm at check-in whether they are prepaid.</p></div>
+  </div>
+  <div class="callout">
+    <strong>Spend the excursion credit wisely.</strong> The $200 room credit is applied to your single highest-value
+    tour. If you book one bigger excursion and one smaller one, put them in the same cart &mdash; the discount lands
+    on the pricier ticket automatically.
+  </div>
+</section>
+
+<!-- ============ PORTS & EXCURSIONS ============ -->
+<section id="ports" aria-labelledby="ports-h">
+  <div class="sec-head"><h2 id="ports-h">Ports &amp; Excursions</h2><span class="tag">89 Tours Across 6 Calls</span></div>
+  <p class="lead">A guide to all six ports, plus an interactive finder for every one of the 89 shore excursions offered on your sailing dates. Read the port summaries, then filter by traveller persona, theme tag, port, price, duration and effort &mdash; sort the results and star tours into the shared <strong>Group Picks</strong> board. Prices are per adult unless noted; "On-Your-Own" tours may price per party.</p>
+
+  <div class="levelkey">
+    <h4>Activity levels explained</h4>
+    <div class="lk-row"><span class="lvl Easy">Easy</span><span>Mostly seated touring; little walking, on even ground.</span></div>
+    <div class="lk-row"><span class="lvl Moderate">Moderate</span><span>Sustained walking; some stairs or uneven paths.</span></div>
+    <div class="lk-row"><span class="lvl Strenuous">Strenuous</span><span>Long distances on foot, steep grades, or rough terrain.</span></div>
+    <p class="lk-note">These are Holland America's official ratings and describe <em>physical demand</em> &mdash; not how long a tour is, or how interesting it is. They can read oddly against the clock: a few short walking tours rate Strenuous because of sustained walking on cobbled or uneven streets, while some seven-hour coach tours rate only Moderate because guests are seated for most of the day. Always read the level <em>together with</em> the listed duration when judging a tour, and confirm in the Navigator app before booking.</p>
+  </div>
+
+  <div class="grid g3" style="margin-bottom:24px;">
+    <div class="portcard"><div class="ph">Day 1 &bull; Jun 13 &bull; Embarkation</div><h4>Quebec City, Quebec</h4>
+      <p>The only walled city north of Mexico and a UNESCO World Heritage Site &mdash; Old Quebec's cobbled lanes climb from Quartier Petit-Champlain to Ch&acirc;teau Frontenac. Most of the day is for boarding.</p></div>
+    <div class="portcard"><div class="ph">Day 4 &bull; Jun 16 &bull; 7 AM&ndash;5 PM</div><h4>Charlottetown, PEI</h4>
+      <p>Birthplace of Confederation and Anne of Green Gables country &mdash; red-sand shores, lighthouses, lobster, and the 12.9-km Confederation Bridge.</p></div>
+    <div class="portcard"><div class="ph">Day 5 &bull; Jun 17 &bull; 7 AM&ndash;4 PM</div><h4>Sydney, Nova Scotia</h4>
+      <p>The heart of Cape Breton &mdash; Highlands scenery, the Cabot Trail, the Fortress of Louisbourg, and live Celtic fiddle music everywhere.</p></div>
+    <div class="portcard"><div class="ph">Day 6 &bull; Jun 18 &bull; 8 AM&ndash;4 PM</div><h4>Halifax, Nova Scotia</h4>
+      <p>A lively harbour capital &mdash; the star-shaped Citadel, the Maritime Museum's Titanic collection, and iconic Peggy's Cove nearby. Pinnacle Grill dinner is 6 PM tonight.</p></div>
+    <div class="portcard"><div class="ph">Day 7 &bull; Jun 19 &bull; 12:30&ndash;10 PM</div><h4>Portland, Maine</h4>
+      <p>New England's foodie town on Casco Bay &mdash; the Old Port's lobster shacks and breweries, Portland Head Light, and a long evening in port.</p></div>
+    <div class="portcard"><div class="ph">Day 8 &bull; Jun 20 &bull; Disembarkation</div><h4>Boston, Massachusetts</h4>
+      <p>The voyage ends in historic Boston &mdash; the 2.5-mile Freedom Trail, Faneuil Hall and the North End, with a hotel night before the June 21 flight.</p></div>
+  </div>
+
+  <h3 style="font-size:1.35rem;margin:8px 0 4px;">Find &amp; Compare Excursions</h3>
+  <p class="lead" style="margin-bottom:16px;">All 89 tours across the six ports, in one tool. Pick a traveller persona or filter by theme tag, port, price, duration and effort; sort the results; and star tours into the live <strong>Group Picks</strong> board shared across all five travellers.</p>
+
+  <div class="panel">
+    <h4>Quick start &mdash; traveller personas</h4>
+    <div class="chips" id="personaChips" role="group" aria-label="Traveller persona filters"></div>
+  </div>
+  <div class="panel">
+    <h4>Theme tags</h4>
+    <div class="chips" id="themeChips" role="group" aria-label="Theme tag filters"></div>
+  </div>
+  <div class="panel">
+    <div class="ctrls">
+      <div><label for="fSort">Sort by</label><select id="fSort">
+        <option value="default">Recommended (by port)</option>
+        <option value="price-asc">Price: low to high</option>
+        <option value="price-desc">Price: high to low</option>
+        <option value="dur-asc">Duration: short to long</option>
+        <option value="dur-desc">Duration: long to short</option>
+      </select></div>
+      <div><label for="fPort">Port</label><select id="fPort"></select></div>
+      <div><label for="fDur">Duration</label><select id="fDur"></select></div>
+      <div><label for="fEff">Effort</label><select id="fEff"></select></div>
+      <div><label for="fPrice">Price</label><select id="fPrice"></select></div>
+      <div><label for="fFlag">Flag</label><select id="fFlag"></select></div>
+      <div><label for="fSearch">Search</label><input type="text" id="fSearch" placeholder="name contains&hellip;"></div>
+    </div>
+  </div>
+  <div class="panel" id="gpPanel">
+    <h4>&#9733; Group Picks &mdash; shared shortlist for the 5 travellers <span id="syncStatus" class="syncstatus wait">connecting&hellip;</span></h4>
+    <div id="gpBoard"></div>
+  </div>
+  <div class="resbar">
+    <span class="count" id="resCount" aria-live="polite">&nbsp;</span>
+    <button type="button" class="reset" id="resetBtn">Reset all filters</button>
+  </div>
+  <div id="results"></div>
+</section>
+
+<!-- ============ KNOW BEFORE YOU GO ============ -->
+<section id="kbyg" aria-labelledby="kbyg-h">
+  <div class="sec-head"><h2 id="kbyg-h">Know Before You Go</h2><span class="tag">Practical Info</span></div>
+  <div class="grid g2">
+    <div class="card">
+      <h3>Documents &amp; Check-In</h3>
+      <ul class="clean">
+        <li>Complete <strong>Online Check-In by June 10, 2026</strong> in the Navigator app or on hollandamerica.com.</li>
+        <li>This is a cross-border cruise (Canada &amp; USA): bring a <strong>valid passport</strong> &mdash; the recommended document for all guests.</li>
+        <li>Print or save your boarding pass and luggage tags after check-in.</li>
+        <li>Note any medical needs and emergency contacts in your profile.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Weather &amp; Packing</h3>
+      <ul class="clean">
+        <li>Mid-June in Atlantic Canada / New England: daytime highs typically <strong>60&ndash;72&deg;F (16&ndash;22&deg;C)</strong>, cooler at sea and in the evenings.</li>
+        <li>Pack <strong>layers</strong>: a warm jacket, light rain shell and a sweater &mdash; coastal weather shifts fast.</li>
+        <li><strong>Comfortable walking shoes</strong> for cobblestones (Quebec) and granite (Peggy's Cove).</li>
+        <li>Smart-casual evening wear; one dressier outfit for a Pinnacle / specialty dinner.</li>
+        <li>Sunglasses, sunscreen, refillable water bottle, daypack and any medications.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Money &amp; Currency</h3>
+      <ul class="clean">
+        <li>Canadian ports (Quebec City, Charlottetown, Sydney, Halifax) use the <strong>Canadian dollar (CAD)</strong>.</li>
+        <li>US ports (Portland, Boston) use the <strong>US dollar (USD)</strong>.</li>
+        <li>Cards are widely accepted; carry a little local cash for small vendors and tips ashore.</li>
+        <li>Onboard purchases bill to your stateroom account &mdash; settle it before disembarking in Boston.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Onboard Tips</h3>
+      <ul class="clean">
+        <li>Book spa treatments and specialty dining early &mdash; pre-cruise discounts apply.</li>
+        <li>Your Signature Beverage Package and Surf Wi-Fi are active from embarkation.</li>
+        <li>Watch the daily schedule in the Navigator app for shows, talks and Music Walk sets.</li>
+        <li>Shore excursions can sell out &mdash; coordinate and book the group's tours together soon.</li>
+        <li>Ship's clock stays on one time zone; all aboard times in this hub are local port time.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <p><span class="gold">Canada &amp; New England 2026</span> &bull; ms Zuiderdam &bull; Booking 4LMNGG &bull; <a href="index.html">Voyage Console</a></p>
+  <p style="margin-top:6px;opacity:.85;">Personal trip knowledge hub for Jett &amp; Laura. Excursion prices and availability from Holland America and subject to change &mdash; verify in the Navigator app before booking.</p>
+</footer>
+
+<script>
+  /* ---- motion toggle (mirrors prefers-reduced-motion) ---- */
+  (function(){
+    var osR = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var off = osR, b = document.getElementById('motionToggle');
+    function apply(){
+      document.body.classList.toggle('motion-off', off);
+      if(b){ b.setAttribute('aria-pressed', String(!off));
+        b.querySelector('.ml').textContent = off ? 'Animation off' : 'Animation on'; }
+    }
+    apply();
+    if(b) b.addEventListener('click', function(){ off = !off; apply(); });
+  })();
+
+  /* ---- hero stars (decorative) ---- */
+  (function(){
+    var s = document.getElementById('stars');
+    if(!s) return;
+    for(var i=0;i<26;i++){
+      var d=document.createElement('i');
+      d.style.left=(Math.random()*100)+'%';
+      d.style.top=(Math.random()*92)+'%';
+      d.style.animationDelay=(-Math.random()*4)+'s';
+      s.appendChild(d);
+    }
+  })();
+
+  /* ---- countdown to embarkation: June 13, 2026 ---- */
+  var target = new Date('2026-06-13T00:00:00').getTime();
+  function tick(){
+    var now = new Date().getTime();
+    var d = target - now;
+    if(d < 0){ document.getElementById('cd').innerHTML = '<div><span class="num">&#9875;</span><span class="lbl">Bon Voyage</span></div>'; return; }
+    var days = Math.floor(d/86400000);
+    var hrs = Math.floor((d%86400000)/3600000);
+    var mins = Math.floor((d%3600000)/60000);
+    document.getElementById('cd-d').textContent = days;
+    document.getElementById('cd-h').textContent = hrs;
+    document.getElementById('cd-m').textContent = mins;
+  }
+  tick(); setInterval(tick, 30000);
+</script>
+
+<!-- ===== interactive excursion finder ===== -->
+<script>
+const THEMES={history:["History","t-history"],landmark:["Landmark","t-landmark"],scenery:["Scenery","t-scenery"],
+ wildlife:["Wildlife","t-wildlife"],food:["Food","t-food"],drinks:["Drinks","t-drinks"],music:["Music","t-music"],
+ culture:["Culture","t-culture"],literary:["Literary","t-literary"],water:["Water","t-water"],walking:["Walking","t-walking"],
+ drive:["Drive","t-drive"],active:["Active","t-active"],handson:["Hands-On","t-handson"],photo:["Photo","t-photo"],
+ offbeat:["Offbeat","t-offbeat"]};
+const PERSONAS={"History Buff":["history","landmark"],"Foodie":["food","drinks"],
+ "Nature Lover":["scenery","wildlife","water"],"Culture & Music Fan":["music","culture","literary"],
+ "Active Explorer":["active","walking"],"Easygoing Sightseer":["drive","scenery","landmark"],
+ "Photographer":["photo","scenery","landmark"],"Celebration":["handson","music","food"]};
+const ROOMS=[{key:"jl",label:"Jett & Laura",size:2},{key:"sb",label:"Sandra & Becca",size:2},{key:"k",label:"Karen",size:1}];
+const DATA=[
+{id:"qc-01",port:"Quebec City",name:"Embarkation Tour: Historic Quebec & Montmorency Falls",durationHrs:3,durationBand:"half-day",effort:"Moderate",price:149.95,priceBand:"mid",themes:["history","landmark","scenery","drive","walking"],flags:[]},
+{id:"char-01",port:"Charlottetown",name:"Panoramic Island Drive & Confederation Bridge",durationHrs:3.5,durationBand:"half-day",effort:"Easy",price:99.95,priceBand:"value",themes:["landmark","scenery","drive"],flags:[]},
+{id:"char-02",port:"Charlottetown",name:"Island Drive & Anne of Green Gables",durationHrs:3.5,durationBand:"half-day",effort:"Easy",price:119.95,priceBand:"mid",themes:["literary","drive","scenery","landmark"],flags:[]},
+{id:"char-03",port:"Charlottetown",name:"PEI Coast, Lighthouse & Cellar",durationHrs:4,durationBand:"extended",effort:"Easy",price:139.95,priceBand:"mid",themes:["scenery","landmark","drinks","drive"],flags:[]},
+{id:"char-04",port:"Charlottetown",name:"The Island's Finest: Anne, Lobster & Scenic Drive",durationHrs:5.5,durationBand:"extended",effort:"Easy",price:229.95,priceBand:"premium",themes:["literary","food","drive","scenery","landmark"],flags:["meal-included"]},
+{id:"char-05",port:"Charlottetown",name:"Solar-Powered Scenic Harbor Cruise",durationHrs:1.5,durationBand:"quick",effort:"Easy",price:79.95,priceBand:"value",themes:["water","scenery"],flags:[]},
+{id:"char-06",port:"Charlottetown",name:"Charlottetown by Solar-Powered Pedal Bus",durationHrs:2.5,durationBand:"half-day",effort:"Easy",price:149.95,priceBand:"mid",themes:["active","drive","offbeat"],flags:[]},
+{id:"char-07",port:"Charlottetown",name:"Fun with Falcons",durationHrs:3,durationBand:"half-day",effort:"Easy",price:199.95,priceBand:"mid",themes:["wildlife","handson"],flags:[]},
+{id:"char-08",port:"Charlottetown",name:"Ultimate Anne of Green Gables Experience",durationHrs:5.5,durationBand:"extended",effort:"Moderate",price:199.95,priceBand:"mid",themes:["literary","culture","history"],flags:[]},
+{id:"char-09",port:"Charlottetown",name:"The Best of Prince Edward Island",durationHrs:7,durationBand:"full-day",effort:"Moderate",price:199.95,priceBand:"mid",themes:["landmark","scenery","drive","history"],flags:[]},
+{id:"char-10",port:"Charlottetown",name:"Charlottetown City Escape (Victoria Park)",durationHrs:1.5,durationBand:"quick",effort:"Moderate",price:99.95,priceBand:"value",themes:["scenery","walking"],flags:[]},
+{id:"char-11",port:"Charlottetown",name:"Charlottetown Sights & Bites",durationHrs:3,durationBand:"half-day",effort:"Moderate",price:99.95,priceBand:"value",themes:["food","walking","history"],flags:["meal-included"]},
+{id:"char-12",port:"Charlottetown",name:"The Seafood Chef",durationHrs:2.75,durationBand:"half-day",effort:"Moderate",price:189.95,priceBand:"mid",themes:["food","handson"],flags:["meal-included"]},
+{id:"char-13",port:"Charlottetown",name:"The Fair Isle: Meet the Makers (Small-Group Tour)",durationHrs:4,durationBand:"extended",effort:"Moderate",price:199.95,priceBand:"mid",themes:["culture","handson"],flags:["small-group"]},
+{id:"char-14",port:"Charlottetown",name:"Anne & Gilbert: The Musical",durationHrs:4,durationBand:"extended",effort:"Moderate",price:129.95,priceBand:"mid",themes:["literary","music"],flags:[]},
+{id:"char-15",port:"Charlottetown",name:"Charlottetown by Harbour Hopper (land & water)",durationHrs:1,durationBand:"quick",effort:"Moderate",price:79.95,priceBand:"value",themes:["water","drive","offbeat"],flags:["family-friendly"]},
+{id:"char-16",port:"Charlottetown",name:"Brewventure: Canada's Origins through Beer Tasting",durationHrs:3,durationBand:"half-day",effort:"Moderate",price:139.95,priceBand:"mid",themes:["drinks","history"],flags:[]},
+{id:"char-17",port:"Charlottetown",name:"Picture Perfect: City Selfies in Charlottetown",durationHrs:2.5,durationBand:"half-day",effort:"Moderate",price:129.95,priceBand:"mid",themes:["photo","walking"],flags:[]},
+{id:"char-18",port:"Charlottetown",name:"East Coast Art Party",durationHrs:2.5,durationBand:"half-day",effort:"Moderate",price:119.95,priceBand:"mid",themes:["handson","culture"],flags:[]},
+{id:"char-19",port:"Charlottetown",name:"Raspberry Point Oyster Farm",durationHrs:3.5,durationBand:"half-day",effort:"Moderate",price:169.95,priceBand:"mid",themes:["food","handson","water"],flags:["meal-included"]},
+{id:"char-20",port:"Charlottetown",name:"Charlottetown Scavenger Hunt On Your Own (with GPS)",durationHrs:2.5,durationBand:"half-day",effort:"Moderate",price:79.95,priceBand:"value",themes:["active","offbeat","walking"],flags:["on-your-own","family-friendly","waitlist"]},
+{id:"char-21",port:"Charlottetown",name:"Churches of Charlottetown History Walk",durationHrs:3,durationBand:"half-day",effort:"Strenuous",price:59.95,priceBand:"value",themes:["history","walking","culture"],flags:[]},
+{id:"char-22",port:"Charlottetown",name:"A Taste of Charlottetown: Culinary Walk",durationHrs:3,durationBand:"half-day",effort:"Strenuous",price:129.95,priceBand:"mid",themes:["food","walking"],flags:["meal-included"]},
+{id:"syd-01",port:"Sydney",name:"Waterfront Lobster Boil",durationHrs:1.5,durationBand:"quick",effort:"Easy",price:149.95,priceBand:"mid",themes:["food"],flags:["meal-included"]},
+{id:"syd-02",port:"Sydney",name:"Music Island: Songs & Stories from Cape Breton",durationHrs:1.5,durationBand:"quick",effort:"Easy",price:99.95,priceBand:"value",themes:["music","culture"],flags:[]},
+{id:"syd-03",port:"Sydney",name:"Sydney Heritage & Coastal Highlights Drive",durationHrs:2,durationBand:"half-day",effort:"Easy",price:79.95,priceBand:"value",themes:["history","scenery","drive"],flags:[]},
+{id:"syd-04",port:"Sydney",name:"A Taste of the Cabot Trail",durationHrs:7,durationBand:"full-day",effort:"Moderate",price:204.95,priceBand:"premium",themes:["scenery","landmark","drive","food"],flags:[]},
+{id:"syd-05",port:"Sydney",name:"The Best of Cape Breton",durationHrs:6,durationBand:"full-day",effort:"Moderate",price:179.95,priceBand:"mid",themes:["scenery","history","drive","landmark"],flags:[]},
+{id:"syd-06",port:"Sydney",name:"Baddeck & Louisbourg: A Step Back in Time",durationHrs:7,durationBand:"full-day",effort:"Moderate",price:189.95,priceBand:"mid",themes:["history","landmark","drive"],flags:[]},
+{id:"syd-07",port:"Sydney",name:"The Bras d'Or Lakes: Heart of the Island",durationHrs:7,durationBand:"full-day",effort:"Moderate",price:239.95,priceBand:"premium",themes:["scenery","drive","culture","water"],flags:[]},
+{id:"syd-08",port:"Sydney",name:"The Bird Islands of Cape Breton: Puffins, Seals & Eagles",durationHrs:5,durationBand:"extended",effort:"Moderate",price:279.95,priceBand:"premium",themes:["wildlife","water","scenery"],flags:[]},
+{id:"syd-09",port:"Sydney",name:"Baddeck & the Alexander Graham Bell Museum",durationHrs:4,durationBand:"extended",effort:"Moderate",price:99.95,priceBand:"value",themes:["history","culture","drive"],flags:[]},
+{id:"syd-10",port:"Sydney",name:"Relive History at the Fortress of Louisbourg",durationHrs:3.5,durationBand:"half-day",effort:"Moderate",price:139.95,priceBand:"mid",themes:["history","landmark","culture"],flags:[]},
+{id:"syd-11",port:"Sydney",name:"Baddeck & Bras d'Or Lake Cruise",durationHrs:5,durationBand:"extended",effort:"Moderate",price:169.95,priceBand:"mid",themes:["water","scenery","drive"],flags:[]},
+{id:"syd-12",port:"Sydney",name:"Traditional Mi'kmaq Experience & Lunch",durationHrs:3.5,durationBand:"half-day",effort:"Moderate",price:149.95,priceBand:"mid",themes:["culture","history","food"],flags:["meal-included"]},
+{id:"syd-13",port:"Sydney",name:"Highland Village & Gaelic Experience",durationHrs:3.5,durationBand:"half-day",effort:"Moderate",price:109.95,priceBand:"mid",themes:["culture","history"],flags:[]},
+{id:"syd-14",port:"Sydney",name:"Cape Breton Fossil Centre & Sydney Mines Heritage Museum",durationHrs:3,durationBand:"half-day",effort:"Moderate",price:79.95,priceBand:"value",themes:["history","drive"],flags:[]},
+{id:"syd-15",port:"Sydney",name:"Spirit of the Fiddle: Kitchen Party Experience",durationHrs:1.5,durationBand:"quick",effort:"Moderate",price:89.95,priceBand:"value",themes:["music","culture"],flags:[]},
+{id:"syd-16",port:"Sydney",name:"Raise A Glass: Sydney Pub Crawl",durationHrs:2,durationBand:"half-day",effort:"Moderate",price:99.95,priceBand:"value",themes:["drinks","walking","offbeat"],flags:[]},
+{id:"syd-17",port:"Sydney",name:"A Walk through Old Sydney Town",durationHrs:2,durationBand:"half-day",effort:"Moderate",price:69.95,priceBand:"value",themes:["history","walking"],flags:[]},
+{id:"syd-18",port:"Sydney",name:"Picture Perfect: City Selfies in Sydney",durationHrs:2.5,durationBand:"half-day",effort:"Moderate",price:69.95,priceBand:"value",themes:["photo","walking"],flags:[]},
+{id:"syd-19",port:"Sydney",name:"Haunted Historic Sydney: A Wicked Walking Tour",durationHrs:1.5,durationBand:"quick",effort:"Moderate",price:49.95,priceBand:"value",themes:["offbeat","history","walking"],flags:[]},
+{id:"hal-01",port:"Halifax",name:"Halifax by Solar-Powered Pedal Bus",durationHrs:2.5,durationBand:"half-day",effort:"Easy",price:169.95,priceBand:"mid",themes:["active","drive","offbeat"],flags:[]},
+{id:"hal-02",port:"Halifax",name:"Accessible Halifax Highlights & Peggy's Cove Escape",durationHrs:4,durationBand:"extended",effort:"Easy",price:249.95,priceBand:"premium",themes:["landmark","scenery","drive"],flags:["accessible"]},
+{id:"hal-03",port:"Halifax",name:"Halifax Private Touring - Half Day (Van and/or SUV)",durationHrs:4,durationBand:"extended",effort:"Easy",price:899,priceBand:"premium",themes:["drive","scenery","landmark"],flags:["small-group","on-your-own","waitlist"]},
+{id:"hal-04",port:"Halifax",name:"On the Lighthouse Route: Peggy's Cove Lighthouse & Village",durationHrs:3.5,durationBand:"half-day",effort:"Moderate",price:99.95,priceBand:"value",themes:["landmark","scenery","drive"],flags:[]},
+{id:"hal-05",port:"Halifax",name:"Peggy's Cove & Double-Decker Hop-On, Hop-Off Halifax Combination",durationHrs:4.5,durationBand:"extended",effort:"Moderate",price:139.95,priceBand:"mid",themes:["landmark","drive","scenery"],flags:[]},
+{id:"hal-06",port:"Halifax",name:"Peggy's Cove & Titanic Combination",durationHrs:4,durationBand:"extended",effort:"Moderate",price:89.95,priceBand:"value",themes:["landmark","history","scenery","drive"],flags:[]},
+{id:"hal-07",port:"Halifax",name:"Peggy's Cove In Focus: A Photo Safari",durationHrs:3,durationBand:"half-day",effort:"Moderate",price:129.95,priceBand:"mid",themes:["photo","landmark","scenery"],flags:[]},
+{id:"hal-08",port:"Halifax",name:"Views, Vines & Vino (Annapolis Valley wine country)",durationHrs:5.25,durationBand:"extended",effort:"Moderate",price:259.95,priceBand:"premium",themes:["drinks","scenery","drive","food"],flags:[]},
+{id:"hal-09",port:"Halifax",name:"O Canada: Halifax, Peggy's Cove, Lunenburg & Acadian Maple (Small-Group)",durationHrs:7,durationBand:"full-day",effort:"Moderate",price:279.95,priceBand:"premium",themes:["landmark","scenery","culture","food","drive"],flags:["small-group"]},
+{id:"hal-10",port:"Halifax",name:"Best of Halifax",durationHrs:7,durationBand:"full-day",effort:"Moderate",price:179.95,priceBand:"mid",themes:["history","landmark","scenery","drive"],flags:[]},
+{id:"hal-11",port:"Halifax",name:"Iconic Towns of Nova Scotia",durationHrs:7,durationBand:"full-day",effort:"Moderate",price:129.95,priceBand:"mid",themes:["landmark","scenery","drive","culture"],flags:[]},
+{id:"hal-12",port:"Halifax",name:"The Bay of Fundy: Explore the Ocean Floor",durationHrs:7,durationBand:"full-day",effort:"Moderate",price:189.95,priceBand:"mid",themes:["scenery","landmark","drive"],flags:[]},
+{id:"hal-13",port:"Halifax",name:"Halifax Gardens Walk, Panoramic City Drive & Extended Peggy's Cove",durationHrs:6,durationBand:"full-day",effort:"Moderate",price:159.95,priceBand:"mid",themes:["scenery","landmark","drive","walking"],flags:[]},
+{id:"hal-14",port:"Halifax",name:"The Heart of Historic Halifax",durationHrs:3,durationBand:"half-day",effort:"Moderate",price:89.95,priceBand:"value",themes:["history","walking"],flags:[]},
+{id:"hal-15",port:"Halifax",name:"Hop-On, Hop-Off Halifax with Maritime Museum & Citadel Hill admission",durationHrs:1,durationBand:"quick",effort:"Moderate",price:99.95,priceBand:"value",themes:["history","landmark","drive"],flags:[]},
+{id:"hal-16",port:"Halifax",name:"Hop-On Hop-Off Halifax",durationHrs:1,durationBand:"quick",effort:"Moderate",price:69.95,priceBand:"value",themes:["drive","landmark"],flags:["family-friendly"]},
+{id:"hal-17",port:"Halifax",name:"Halifax City & Harbour Hopper",durationHrs:1,durationBand:"quick",effort:"Moderate",price:79.95,priceBand:"value",themes:["water","drive","offbeat"],flags:["family-friendly"]},
+{id:"hal-18",port:"Halifax",name:"Halifax Scenic Views by Tall Ship",durationHrs:2.5,durationBand:"half-day",effort:"Moderate",price:149.95,priceBand:"mid",themes:["water","scenery"],flags:[]},
+{id:"hal-19",port:"Halifax",name:"Leisurely Halifax Waterfront Walk & Ferry Ride to Dartmouth",durationHrs:3,durationBand:"half-day",effort:"Moderate",price:59.95,priceBand:"value",themes:["walking","water","scenery"],flags:[]},
+{id:"hal-20",port:"Halifax",name:"Kick Up Your Heels: A Maritime Ceilidh",durationHrs:2,durationBand:"half-day",effort:"Moderate",price:69.95,priceBand:"value",themes:["music","culture"],flags:[]},
+{id:"hal-21",port:"Halifax",name:"Picture Perfect: Waterfront Selfies in Halifax",durationHrs:3,durationBand:"half-day",effort:"Moderate",price:99.95,priceBand:"value",themes:["photo","walking"],flags:[]},
+{id:"hal-22",port:"Halifax",name:"Accessible Halifax Highlights & Peggy's Cove Escape (Companion)",durationHrs:4,durationBand:"extended",effort:"Moderate",price:249.95,priceBand:"premium",themes:["landmark","scenery","drive"],flags:["accessible","waitlist"]},
+{id:"hal-23",port:"Halifax",name:"A Taste of Halifax",durationHrs:2.5,durationBand:"half-day",effort:"Strenuous",price:179.95,priceBand:"mid",themes:["food","walking"],flags:["meal-included"]},
+{id:"hal-24",port:"Halifax",name:"A Walk through Historic Halifax & the Citadel",durationHrs:3.5,durationBand:"half-day",effort:"Strenuous",price:49.95,priceBand:"value",themes:["history","walking","landmark"],flags:[]},
+{id:"hal-25",port:"Halifax",name:"Halifax by Electric Bicycle",durationHrs:2,durationBand:"half-day",effort:"Strenuous",price:149.95,priceBand:"mid",themes:["active","scenery"],flags:[]},
+{id:"hal-26",port:"Halifax",name:"Urban Insider: Halifax Like a Local",durationHrs:3.5,durationBand:"half-day",effort:"Strenuous",price:229.95,priceBand:"premium",themes:["offbeat","culture","walking","food"],flags:[]},
+{id:"por-01",port:"Portland",name:"Portland Highlights, Fort Williams & Lighthouse",durationHrs:2,durationBand:"half-day",effort:"Easy",price:99.95,priceBand:"value",themes:["landmark","scenery","drive"],flags:[]},
+{id:"por-02",port:"Portland",name:"Portland Highlights & Victoria Mansion",durationHrs:2,durationBand:"half-day",effort:"Easy",price:99.95,priceBand:"value",themes:["history","landmark","drive"],flags:[]},
+{id:"por-03",port:"Portland",name:"Portland Panoramic",durationHrs:1.75,durationBand:"quick",effort:"Easy",price:99.95,priceBand:"value",themes:["scenery","drive"],flags:[]},
+{id:"por-04",port:"Portland",name:"Scenic Portland City Drive",durationHrs:2,durationBand:"half-day",effort:"Easy",price:99.95,priceBand:"value",themes:["scenery","drive"],flags:[]},
+{id:"por-05",port:"Portland",name:"Portland Highlights & Schooner Adventure",durationHrs:4,durationBand:"extended",effort:"Easy",price:179.95,priceBand:"mid",themes:["water","scenery","landmark"],flags:[]},
+{id:"por-06",port:"Portland",name:"Kennebunkport",durationHrs:3.5,durationBand:"half-day",effort:"Easy",price:119.95,priceBand:"mid",themes:["scenery","landmark","drive","culture"],flags:[]},
+{id:"por-07",port:"Portland",name:"Best of Maine: Portland Head Light & Kennebunkport",durationHrs:5,durationBand:"extended",effort:"Easy",price:149.95,priceBand:"mid",themes:["landmark","scenery","drive"],flags:[]},
+{id:"por-08",port:"Portland",name:"A Day in Maine: Warehouse District, Kennebunkport & the Portland Head Light",durationHrs:7,durationBand:"full-day",effort:"Easy",price:169.95,priceBand:"mid",themes:["landmark","scenery","drive","history"],flags:[]},
+{id:"por-09",port:"Portland",name:"Kennebunkport Seaside Village & Maine Sweet Treat Sampler (Small-Group)",durationHrs:3.5,durationBand:"half-day",effort:"Easy",price:179.95,priceBand:"mid",themes:["food","scenery","culture"],flags:["small-group","meal-included"]},
+{id:"por-10",port:"Portland",name:"Portland Highlights, Lighthouses & Maine Sweet Treat Sampler (Small-Group)",durationHrs:2.25,durationBand:"half-day",effort:"Easy",price:159.95,priceBand:"mid",themes:["landmark","food","scenery"],flags:["small-group","meal-included"]},
+{id:"por-11",port:"Portland",name:"Kennebunkport & Scenic Cruise",durationHrs:4.75,durationBand:"extended",effort:"Easy",price:null,priceBand:"unknown",themes:["water","scenery","landmark"],flags:[]},
+{id:"por-12",port:"Portland",name:"Peaks Island Lobster Bake",durationHrs:3.5,durationBand:"half-day",effort:"Moderate",price:179.95,priceBand:"mid",themes:["food","water","scenery"],flags:["meal-included"]},
+{id:"por-13",port:"Portland",name:"Go On — Crack a Lobstah!",durationHrs:3.5,durationBand:"half-day",effort:"Moderate",price:159.95,priceBand:"mid",themes:["food","handson"],flags:["meal-included"]},
+{id:"por-14",port:"Portland",name:"Working Waterfront & Lobster Pull",durationHrs:3,durationBand:"half-day",effort:"Moderate",price:179.95,priceBand:"mid",themes:["food","water","handson","culture"],flags:["meal-included"]},
+{id:"por-15",port:"Portland",name:"Portland's Working Waterfront Tour & Local Beer Tasting",durationHrs:3,durationBand:"half-day",effort:"Moderate",price:169.95,priceBand:"mid",themes:["drinks","food","culture","walking"],flags:[]},
+{id:"por-16",port:"Portland",name:"Kennebunkport Brewery & Coastal Highlights",durationHrs:4.5,durationBand:"extended",effort:"Moderate",price:159.95,priceBand:"mid",themes:["drinks","scenery","drive"],flags:[]},
+{id:"por-17",port:"Portland",name:"Portland Culinary Walk",durationHrs:2,durationBand:"half-day",effort:"Moderate",price:169.95,priceBand:"mid",themes:["food","walking"],flags:["meal-included"]},
+{id:"por-18",port:"Portland",name:"The White Mountains by Conway Scenic Railroad",durationHrs:7.5,durationBand:"full-day",effort:"Moderate",price:259.95,priceBand:"premium",themes:["scenery","landmark","offbeat","drive"],flags:[]},
+{id:"por-19",port:"Portland",name:"Ghosts & Legends of Portland",durationHrs:2,durationBand:"half-day",effort:"Moderate",price:59.95,priceBand:"value",themes:["offbeat","history","walking"],flags:[]},
+{id:"bos-01",port:"Boston",name:"Scenic Boston with Airport Transfer",durationHrs:2.5,durationBand:"half-day",effort:"Moderate",price:174.95,priceBand:"mid",themes:["landmark","history","drive","scenery"],flags:[]},
+{id:"bos-02",port:"Boston",name:"Scenic Boston with Airport Transfer (Wheelchair Accessible)",durationHrs:2.5,durationBand:"half-day",effort:"Moderate",price:174.95,priceBand:"mid",themes:["landmark","history","drive","scenery"],flags:["accessible","waitlist"]}
+];
+let activeThemes=new Set(), activePersona=null;
+let picks={};
+try{ picks=JSON.parse(localStorage.getItem('cruise_grouppicks')||'{}')||{}; }catch(e){ picks={}; }
+function savePicks(){
+  try{ localStorage.setItem('cruise_grouppicks',JSON.stringify(picks)); }catch(e){}
+  if(window.__cruisePush) window.__cruisePush(picks);
+}
+window.__getPicks=function(){ return picks; };
+window.__applyRemote=function(r){ picks=(r&&typeof r==='object')?r:{}; render(); renderBoard(); };
+function exById(id){ return DATA.find(e=>e.id===id); }
+function clearPersona(){
+  activePersona=null;
+  document.querySelectorAll('.chip.persona').forEach(x=>{
+    x.classList.remove('on'); x.setAttribute('aria-pressed','false'); });
+}
+const themeChips=document.getElementById('themeChips');
+Object.entries(THEMES).forEach(([k,v])=>{
+  const c=document.createElement('button');
+  c.type='button'; c.className='chip'; c.dataset.theme=k; c.textContent=v[0];
+  c.setAttribute('aria-pressed','false');
+  c.onclick=()=>{ c.classList.toggle('on');
+    c.setAttribute('aria-pressed', String(c.classList.contains('on')));
+    if(activeThemes.has(k)) activeThemes.delete(k); else activeThemes.add(k);
+    clearPersona(); render(); };
+  themeChips.appendChild(c);
+});
+const personaChips=document.getElementById('personaChips');
+Object.keys(PERSONAS).forEach(name=>{
+  const c=document.createElement('button');
+  c.type='button'; c.className='chip persona'; c.dataset.persona=name; c.textContent=name;
+  c.setAttribute('aria-pressed','false');
+  c.onclick=()=>{
+    const wasOn=c.classList.contains('on');
+    document.querySelectorAll('.chip.persona').forEach(x=>{
+      x.classList.remove('on'); x.setAttribute('aria-pressed','false'); });
+    activeThemes.clear();
+    document.querySelectorAll('#themeChips .chip').forEach(x=>{
+      x.classList.remove('on'); x.setAttribute('aria-pressed','false'); });
+    if(!wasOn){
+      c.classList.add('on'); c.setAttribute('aria-pressed','true'); activePersona=name;
+      PERSONAS[name].forEach(t=>{ activeThemes.add(t);
+        const tc=document.querySelector('#themeChips .chip[data-theme="'+t+'"]');
+        if(tc){ tc.classList.add('on'); tc.setAttribute('aria-pressed','true'); } });
+    } else activePersona=null;
+    render();
+  };
+  personaChips.appendChild(c);
+});
+function fill(id,opts){ const s=document.getElementById(id);
+  s.innerHTML='<option value="">Any</option>'+opts.map(o=>'<option>'+o+'</option>').join('');
+  s.onchange=render; }
+fill('fPort',[...new Set(DATA.map(e=>e.port))]);
+fill('fDur',["quick","half-day","extended","full-day"]);
+fill('fEff',["Easy","Moderate","Strenuous"]);
+fill('fPrice',["value","mid","premium"]);
+fill('fFlag',["meal-included","small-group","family-friendly","accessible","on-your-own","waitlist"]);
+document.getElementById('fSearch').oninput=render;
+document.getElementById('fSort').onchange=render;
+document.getElementById('resetBtn').onclick=()=>{
+  activeThemes.clear(); clearPersona();
+  document.querySelectorAll('.chip').forEach(x=>{
+    x.classList.remove('on'); x.setAttribute('aria-pressed','false'); });
+  ['fPort','fDur','fEff','fPrice','fFlag'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('fSort').value='default';
+  document.getElementById('fSearch').value=''; render();
+};
+function render(){
+  const port=document.getElementById('fPort').value;
+  const dur=document.getElementById('fDur').value;
+  const eff=document.getElementById('fEff').value;
+  const pr=document.getElementById('fPrice').value;
+  const flag=document.getElementById('fFlag').value;
+  const sort=document.getElementById('fSort').value;
+  const q=document.getElementById('fSearch').value.toLowerCase().trim();
+  let list=DATA.filter(e=>{
+    if(activeThemes.size && !e.themes.some(t=>activeThemes.has(t))) return false;
+    if(port && e.port!==port) return false;
+    if(dur && e.durationBand!==dur) return false;
+    if(eff && e.effort!==eff) return false;
+    if(pr && e.priceBand!==pr) return false;
+    if(flag && !e.flags.includes(flag)) return false;
+    if(q && !e.name.toLowerCase().includes(q)) return false;
+    return true;
+  });
+  if(sort==='price-asc') list.sort((a,b)=>(a.price==null?1e9:a.price)-(b.price==null?1e9:b.price));
+  else if(sort==='price-desc') list.sort((a,b)=>(b.price==null?-1:b.price)-(a.price==null?-1:a.price));
+  else if(sort==='dur-asc') list.sort((a,b)=>a.durationHrs-b.durationHrs);
+  else if(sort==='dur-desc') list.sort((a,b)=>b.durationHrs-a.durationHrs);
+  document.getElementById('resCount').textContent=
+    list.length+' of '+DATA.length+' excursions'+(activeThemes.size?' · themes: '+[...activeThemes].map(t=>THEMES[t][0]).join(', '):'');
+  const box=document.getElementById('results');
+  if(!list.length){ box.innerHTML='<div class="empty">No excursions match these filters. Try removing one.</div>'; return; }
+  box.innerHTML=list.map(e=>{
+    const themes=e.themes.map(t=>'<span class="tt '+THEMES[t][1]+'">'+THEMES[t][0]+'</span>').join('');
+    const flags=e.flags.map(f=>'<span class="flag">'+f+'</span>').join(' ');
+    const price=e.price?('$'+e.price.toFixed(2)):'price n/a';
+    const on=picks[e.id]?'on':'';
+    return '<div class="exc"><div class="top"><a class="nm" href="https://www.hollandamerica.com/sf/excursions" target="_blank" rel="noopener">'+e.name+' ↗</a>'+
+      '<span class="right"><span class="pr">'+price+'</span>'+
+      '<button class="star '+on+'" data-id="'+e.id+'" aria-pressed="'+(picks[e.id]?'true':'false')+'" title="Add to Group Picks" aria-label="Add '+e.name.replace(/"/g,'&quot;')+' to Group Picks">'+(picks[e.id]?'★':'☆')+'</button></span></div>'+
+      '<div class="meta">'+e.port+' · '+e.durationHrs+' hrs · '+e.durationBand+
+      ' <span class="lvl '+e.effort+'">'+e.effort+'</span> '+flags+'</div>'+
+      '<div class="themes">'+themes+'</div></div>';
+  }).join('');
+  box.querySelectorAll('.star').forEach(btn=>{
+    btn.onclick=()=>{ const id=btn.dataset.id;
+      if(picks[id]) delete picks[id]; else picks[id]=['jl'];
+      savePicks(); render(); renderBoard(); };
+  });
+}
+function renderBoard(){
+  const board=document.getElementById('gpBoard');
+  const ids=Object.keys(picks);
+  if(!ids.length){ board.innerHTML='<div class="gp-empty">No tours picked yet. Tap the ☆ star on any excursion to add it here, then mark which of the three rooms wants it.</div>'; return; }
+  let html=ids.map(id=>{
+    const e=exById(id); if(!e) return '';
+    const votes=picks[id]||[];
+    const rooms=ROOMS.map(r=>'<button type="button" class="roomchip '+(votes.includes(r.key)?'on':'')+'" aria-pressed="'+(votes.includes(r.key)?'true':'false')+'" data-id="'+id+'" data-room="'+r.key+'">'+r.label+'</button>').join('');
+    let ag='none',agt='No rooms yet';
+    if(votes.length===3){ag='all';agt='All 3 rooms — book together';}
+    else if(votes.length){ag='some';agt=votes.length+' of 3 rooms';}
+    const price=e.price?('$'+e.price.toFixed(2)+' pp'):'price n/a';
+    return '<div class="gp-row"><div class="gp-top"><div><a class="gp-nm" href="https://www.hollandamerica.com/sf/excursions" target="_blank" rel="noopener">'+e.name+'</a>'+
+      '<div class="gp-meta">'+e.port+' · '+e.durationHrs+' hrs · '+e.effort+' · '+price+'</div></div>'+
+      '<span><span class="agree '+ag+'">'+agt+'</span><button class="gp-rm" data-id="'+id+'">remove</button></span></div>'+
+      '<div class="gp-rooms"><span class="rlbl">Who wants it:</span>'+rooms+'</div></div>';
+  }).join('');
+  html+='<div class="gp-summary">';
+  ROOMS.forEach(r=>{
+    let total=0,n=0;
+    ids.forEach(id=>{ if((picks[id]||[]).includes(r.key)){ const e=exById(id); if(e&&e.price){ total+=e.price*r.size; n++; } } });
+    const credit=r.size*100, applied=Math.min(credit,total), net=total-applied;
+    html+='<div class="gp-sum-row"><span class="rm">'+r.label+'</span><span>'+n+' tour'+(n!==1?'s':'')+
+      ' · $'+total.toFixed(2)+' − $'+applied.toFixed(2)+' credit = <span class="net">$'+net.toFixed(2)+' net</span></span></div>';
+  });
+  html+='<div class="gp-sum-row gp-fine">Credit = the $100-per-guest Have It All shore-excursion credit (Jett &amp; Laura $200, Sandra &amp; Becca $200, Karen $100). Tour cost is counted per adult in each room. This board syncs live across everyone’s device.</div>';
+  html+='</div><div class="gp-actions"><button class="gp-clear" id="gpClear">Clear all picks</button></div>';
+  board.innerHTML=html;
+  board.querySelectorAll('.roomchip').forEach(c=>{
+    c.onclick=()=>{ const id=c.dataset.id, rk=c.dataset.room, v=picks[id]||[];
+      picks[id]=v.includes(rk)?v.filter(x=>x!==rk):v.concat([rk]);
+      savePicks(); renderBoard(); };
+  });
+  board.querySelectorAll('.gp-rm').forEach(b=>{
+    b.onclick=()=>{ delete picks[b.dataset.id]; savePicks(); render(); renderBoard(); };
+  });
+  const clr=document.getElementById('gpClear');
+  if(clr) clr.onclick=()=>{ picks={}; savePicks(); render(); renderBoard(); };
+}
+render();
+renderBoard();
+</script>
+
+<!-- Firebase: live Group Picks sync — sign-in is carried over from the Voyage Console -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+  import { initializeFirestore, doc, setDoc, onSnapshot }
+    from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+  const cfg={apiKey:"AIzaSyCxc5ICHwz4Fp_2kRwHogeLdgUeCGKgHss",authDomain:"gto-poker-qui.firebaseapp.com",
+    projectId:"gto-poker-qui",storageBucket:"gto-poker-qui.firebasestorage.app",
+    messagingSenderId:"607915389446",appId:"1:607915389446:web:5b1c777bf4fad0bc1c0987"};
+  function status(t,c){ const e=document.getElementById('syncStatus');
+    if(e){ e.textContent=t; e.className='syncstatus '+c; } }
+  let auth,boardRef,boardReady=false,firstSnap=true;
+  try{
+    const app=initializeApp(cfg); auth=getAuth(app);
+    const db=initializeFirestore(app,{experimentalForceLongPolling:true});
+    boardRef=doc(db,"cruise","4LMNGG");
+  }catch(e){ status('offline · saved on this device','err'); }
+  function startBoard(){
+    if(!boardRef||boardReady) return;
+    boardReady=true;
+    status('connecting…','wait');
+    window.__cruisePush=function(p){
+      setDoc(boardRef,{picks:p,updatedAt:Date.now()})
+        .then(()=>status('synced','ok')).catch(()=>status('sync error','err'));
+    };
+    onSnapshot(boardRef,function(snap){
+      if(snap.exists() && snap.data() && snap.data().picks){
+        if(window.__applyRemote) window.__applyRemote(snap.data().picks);
+        status('synced','ok');
+      } else if(firstSnap && window.__getPicks){
+        window.__cruisePush(window.__getPicks()); status('synced','ok');
+      }
+      firstSnap=false;
+    },function(){ status('offline · saved on this device','err'); });
+  }
+  if(auth){
+    status('connecting…','wait');
+    onAuthStateChanged(auth,function(user){
+      if(user) startBoard();
+      else status('sign in via the Voyage Console to sync','wait');
+    });
+  }
+</script>
+</body>
+</html>
