@@ -1,232 +1,307 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Canada & New England Cruise — Knowledge Hub</title>
+<title>Canada &amp; New England Cruise — Trip Hub · ms Zuiderdam</title>
+<meta name="description" content="Trip knowledge hub for the June 2026 Canada & New England voyage aboard Holland America's ms Zuiderdam — itinerary, flights, hotels, the ship, and an interactive finder for all 89 shore excursions.">
+<!-- Open Graph / social preview -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Canada & New England — ms Zuiderdam · June 2026">
+<meta property="og:description" content="The full trip hub: itinerary, flights, hotels, the ship, and an interactive finder for all 89 shore excursions.">
+<meta property="og:image" content="https://mondrianaire.github.io/Cruise/voyage-preview.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://mondrianaire.github.io/Cruise/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Canada & New England — ms Zuiderdam · June 2026">
+<meta name="twitter:description" content="The full trip hub: itinerary, flights, hotels, the ship, and an interactive finder for all 89 shore excursions.">
+<meta name="twitter:image" content="https://mondrianaire.github.io/Cruise/voyage-preview.png">
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Space+Mono:wght@400;700&display=swap');
   :root{
-    --navy:#0c2340; --navy2:#163a63; --gold:#c9a14a; --gold-dk:#a8842f;
-    --cream:#f7f3ea; --paper:#fffdf8; --ink:#23272e; --muted:#5d6470;
-    --line:#e3dcc9; --easy:#3f7d4e; --mod:#c08a2e; --stren:#b4452f;
+    --abyss:#061a26; --sea:#0b2a3a; --sea2:#103b4f; --deep:#04131c;
+    --brass:#c89b4a; --brass-lt:#e6c477; --brass-dk:#8f6a2c;
+    --teal:#1c6b7e; --teal-lt:#3fa0ad;
+    --cream:#f1e7cf; --paper:#f5eed7;
+    --ink:#e8e2cc; --ink-dim:#8aa0a8;
+    --easy:#5fd6a0; --mod:#efb228; --stren:#e0795a;
+    --grn-dk:#2a7d5c;
+    /* accessibility-remediation tokens (per Voyage Console handoff) */
+    --route-text:#f1e7cf;     /* hero route — was low-contrast teal */
+    --port-sub:#163a4a;       /* chart port sub-labels on parchment */
+    --filter-off:#b9b09a;     /* struck filter label */
+    --focus-ring:#e6c477;     /* 2px solid, 2px offset, all interactives */
+    --target-min:44px;        /* min hit area, WCAG 2.5.x */
+    --d-serif:"Fraunces",Georgia,'Times New Roman',serif;
+    --d-mono:"Space Mono",ui-monospace,Consolas,monospace;
+    --d-body:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
   }
   *{box-sizing:border-box;margin:0;padding:0;}
   html{scroll-behavior:smooth;}
-  body{font-family:'Segoe UI',Helvetica,Arial,sans-serif;color:var(--ink);
-    background:var(--cream);line-height:1.6;}
-  h1,h2,h3,h4{font-family:Georgia,'Times New Roman',serif;font-weight:600;color:var(--navy);}
-  a{color:var(--navy2);}
+  body{font-family:var(--d-body);color:var(--ink);background:var(--abyss);
+    line-height:1.65;overflow-x:hidden;}
+  /* motion gated on BOTH the OS query and the on-page toggle */
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:.001ms!important;animation-iteration-count:1!important;
+      transition-duration:.001ms!important;scroll-behavior:auto!important;}
+  }
+  body.motion-off *{animation-duration:.001ms!important;animation-iteration-count:1!important;
+    transition-duration:.001ms!important;}
+  h1,h2,h3,h4{font-family:var(--d-serif);font-weight:600;color:var(--cream);line-height:1.22;}
+  a{color:var(--brass-lt);}
+  a:focus-visible,button:focus-visible,select:focus-visible,input:focus-visible{
+    outline:2px solid var(--focus-ring);outline-offset:2px;}
+  /* ---------- SKIP LINK ---------- */
+  .skip{position:absolute;left:12px;top:-60px;z-index:200;background:var(--brass-lt);
+    color:#08161a;font:700 12px/1 var(--d-body);padding:11px 16px;border-radius:6px;
+    text-decoration:none;transition:top .12s ease;}
+  .skip:focus{top:10px;}
+  /* ---------- TOOLBAR / MOTION TOGGLE ---------- */
+  .toolbar{display:flex;justify-content:flex-end;align-items:center;
+    background:var(--deep);padding:6px 14px;}
+  .mtog{display:inline-flex;align-items:center;gap:9px;min-height:var(--target-min);
+    padding:0 13px;background:rgba(7,32,43,.7);border:1px solid var(--teal);
+    border-radius:6px;cursor:pointer;color:var(--ink);font:inherit;}
+  .mtog .track{width:38px;height:20px;border-radius:10px;background:var(--teal);
+    position:relative;flex:0 0 38px;}
+  .mtog .track::after{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;
+    border-radius:50%;background:var(--brass-lt);transition:left .15s;}
+  .mtog[aria-pressed="false"] .track{background:var(--grn-dk);}
+  .mtog[aria-pressed="false"] .track::after{left:20px;}
+  .mtog .ml{font:600 12.5px/1 var(--d-body);}
   /* ---------- NAV ---------- */
-  nav{position:sticky;top:0;z-index:50;background:var(--navy);
-    box-shadow:0 2px 10px rgba(0,0,0,.25);}
-  nav .inner{max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;
-    align-items:center;gap:2px;padding:0 12px;}
-  nav .brand{color:#fff;font-family:Georgia,serif;font-size:1rem;font-weight:600;
-    padding:12px 14px 12px 0;margin-right:auto;letter-spacing:.5px;}
-  nav a{color:#dfe5ee;text-decoration:none;font-size:.82rem;padding:14px 11px;
-    text-transform:uppercase;letter-spacing:.6px;transition:.15s;}
-  nav a:hover{background:var(--navy2);color:#fff;}
+  nav{position:sticky;top:0;z-index:100;background:var(--deep);
+    border-bottom:1px solid var(--brass-dk);box-shadow:0 2px 14px rgba(0,0,0,.5);}
+  nav .inner{max-width:1180px;margin:0 auto;display:flex;flex-wrap:wrap;
+    align-items:center;gap:2px;padding:0 16px;}
+  nav .brand{color:var(--cream);font-family:var(--d-serif);font-size:1rem;font-weight:700;
+    padding:13px 14px 13px 0;margin-right:auto;letter-spacing:.01em;}
+  nav a{color:var(--ink-dim);text-decoration:none;font:700 .7rem/1 var(--d-mono);
+    padding:14px 9px;text-transform:uppercase;letter-spacing:.11em;transition:.15s;}
+  nav a:hover{color:var(--brass-lt);}
+  nav a.console{color:var(--brass-lt);}
   /* ---------- HERO ---------- */
-  header.hero{background:linear-gradient(180deg,#0c2340 0%,#1b3a63 60%,#2a5183 100%);
-    color:#fff;text-align:center;padding:58px 20px 46px;}
-  header.hero .kicker{color:var(--gold);text-transform:uppercase;letter-spacing:3px;
-    font-size:.8rem;margin-bottom:14px;}
-  header.hero h1{color:#fff;font-size:2.5rem;line-height:1.2;max-width:760px;margin:0 auto;}
-  header.hero .route{font-size:1.15rem;margin-top:16px;color:#e9d9b4;font-family:Georgia,serif;}
-  header.hero .ship{margin-top:6px;font-size:.95rem;color:#c4cede;letter-spacing:1px;}
-  /* countdown */
-  .countdown{display:flex;justify-content:center;gap:14px;margin-top:30px;flex-wrap:wrap;}
-  .countdown div{background:rgba(255,255,255,.08);border:1px solid rgba(201,161,74,.4);
-    border-radius:8px;padding:12px 18px;min-width:84px;}
-  .countdown .num{font-family:Georgia,serif;font-size:2rem;color:var(--gold);display:block;}
-  .countdown .lbl{font-size:.68rem;text-transform:uppercase;letter-spacing:2px;color:#c4cede;}
+  header.hero{position:relative;text-align:center;padding:60px 20px 52px;overflow:hidden;
+    background:radial-gradient(ellipse at 50% 6%, #1a4a5e 0%, var(--sea) 46%, var(--abyss) 100%);}
+  .hero-stars{position:absolute;inset:0;}
+  .hero-stars i{position:absolute;width:2px;height:2px;border-radius:50%;
+    background:#cfe6df;opacity:.5;animation:twinkle 4s ease-in-out infinite;}
+  @keyframes twinkle{0%,100%{opacity:.15;}50%{opacity:.7;}}
+  header.hero .kicker{position:relative;color:var(--brass-lt);text-transform:uppercase;
+    letter-spacing:.3em;font:700 .72rem/1 var(--d-mono);margin-bottom:16px;}
+  header.hero h1{position:relative;color:var(--cream);font-size:clamp(2rem,5vw,3rem);
+    max-width:840px;margin:0 auto;letter-spacing:-.01em;}
+  header.hero .route{position:relative;font:700 .8rem/1.7 var(--d-mono);letter-spacing:.1em;
+    text-transform:uppercase;margin-top:18px;color:var(--route-text);}
+  header.hero .ship{position:relative;margin-top:8px;font:700 .7rem/1 var(--d-mono);
+    letter-spacing:.16em;color:var(--ink-dim);}
+  .countdown{position:relative;display:flex;justify-content:center;gap:16px;
+    margin-top:32px;flex-wrap:wrap;}
+  .countdown div{background:radial-gradient(circle at 38% 30%, #16404f, #07202b 72%);
+    border:5px solid;border-color:var(--brass-lt) var(--brass-dk) var(--brass-dk) var(--brass-lt);
+    border-radius:12px;padding:14px 22px;min-width:98px;box-shadow:0 8px 22px rgba(0,0,0,.5);}
+  .countdown .num{font-family:var(--d-serif);font-weight:700;font-size:2.1rem;
+    color:var(--brass-lt);display:block;}
+  .countdown .lbl{font:700 .58rem/1 var(--d-mono);text-transform:uppercase;
+    letter-spacing:.2em;color:var(--teal-lt);margin-top:5px;}
   /* ---------- LAYOUT ---------- */
-  main{max-width:1100px;margin:0 auto;padding:10px 20px 60px;}
-  section{padding:46px 0 10px;border-bottom:1px solid var(--line);}
+  main{max-width:1180px;margin:0 auto;padding:10px 22px 70px;}
+  section{padding:50px 0 14px;border-bottom:1px solid rgba(143,106,44,.3);}
   section:last-of-type{border-bottom:none;}
-  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:6px;}
-  .sec-head h2{font-size:1.8rem;}
-  .sec-head .tag{color:var(--gold-dk);font-size:.78rem;text-transform:uppercase;
-    letter-spacing:2px;border:1px solid var(--gold);border-radius:20px;padding:3px 12px;}
-  .lead{color:var(--muted);max-width:780px;margin:8px 0 22px;}
-  /* cards */
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:6px;flex-wrap:wrap;}
+  .sec-head h2{font-size:1.85rem;}
+  .sec-head .tag{color:var(--brass);font:700 .66rem/1 var(--d-mono);text-transform:uppercase;
+    letter-spacing:.15em;border:1px solid var(--brass-dk);border-radius:20px;padding:5px 12px;}
+  .lead{color:var(--ink-dim);max-width:810px;margin:10px 0 24px;font-size:.96rem;}
+  /* ---------- CARDS / GRID ---------- */
   .grid{display:grid;gap:16px;}
   .g2{grid-template-columns:repeat(2,1fr);}
   .g3{grid-template-columns:repeat(3,1fr);}
   .g4{grid-template-columns:repeat(4,1fr);}
-  .card{background:var(--paper);border:1px solid var(--line);border-radius:10px;
-    padding:18px 20px;box-shadow:0 1px 3px rgba(0,0,0,.04);}
-  .card h3{font-size:1.05rem;margin-bottom:6px;}
-  .card h4{font-size:.95rem;margin-bottom:4px;}
-  .fact .k{font-size:.72rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--gold-dk);}
-  .fact .v{font-size:1.05rem;font-family:Georgia,serif;color:var(--navy);margin-top:2px;}
-  .pill{display:inline-block;background:var(--navy);color:#fff;font-size:.72rem;
-    padding:3px 10px;border-radius:20px;letter-spacing:.5px;}
-  /* itinerary timeline */
-  .timeline{position:relative;margin-left:8px;padding-left:28px;border-left:3px solid var(--gold);}
-  .stop{position:relative;margin-bottom:20px;}
-  .stop::before{content:"";position:absolute;left:-37px;top:4px;width:15px;height:15px;
-    background:var(--paper);border:3px solid var(--gold);border-radius:50%;}
-  .stop.sea::before{background:var(--navy2);border-color:var(--navy2);}
-  .stop .day{font-size:.72rem;text-transform:uppercase;letter-spacing:2px;color:var(--gold-dk);}
-  .stop h3{font-size:1.15rem;margin:2px 0;}
-  .stop .when{color:var(--muted);font-size:.9rem;}
-  .stop .note{font-size:.88rem;margin-top:4px;color:var(--ink);}
-  /* flight */
-  .flight{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:.92rem;}
-  .flight .seg{background:#fff;border:1px solid var(--line);border-radius:8px;
+  .card{background:rgba(7,32,43,.7);border:1px solid var(--teal);border-radius:9px;
+    padding:18px 20px;position:relative;overflow:hidden;}
+  .card::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:3px;
+    background:linear-gradient(90deg,var(--brass),var(--teal-lt));}
+  .card h3{font-size:1.06rem;margin-bottom:6px;}
+  .card h4{font-size:.98rem;margin-bottom:4px;color:var(--cream);}
+  .fact .k{font:700 .63rem/1.3 var(--d-mono);text-transform:uppercase;letter-spacing:.13em;
+    color:var(--teal-lt);}
+  .fact .v{font-family:var(--d-serif);font-size:1.04rem;color:var(--cream);margin-top:4px;}
+  .pill{display:inline-block;background:var(--brass-lt);color:#08161a;
+    font:700 .64rem/1 var(--d-mono);padding:5px 11px;border-radius:20px;
+    letter-spacing:.05em;text-transform:uppercase;}
+  /* ---------- ITINERARY TIMELINE ---------- */
+  .timeline{position:relative;margin-left:8px;padding-left:30px;
+    border-left:3px solid var(--brass-dk);}
+  .stop{position:relative;margin-bottom:22px;}
+  .stop::before{content:"";position:absolute;left:-39px;top:5px;width:15px;height:15px;
+    background:var(--abyss);border:3px solid var(--brass);border-radius:50%;}
+  .stop.sea::before{background:var(--teal);border-color:var(--teal);}
+  .stop .day{font:700 .65rem/1 var(--d-mono);text-transform:uppercase;letter-spacing:.16em;
+    color:var(--brass);}
+  .stop h3{font-size:1.16rem;margin:4px 0;}
+  .stop .when{color:var(--ink-dim);font-size:.88rem;}
+  .stop .note{font-size:.9rem;margin-top:5px;color:var(--ink);}
+  .stop .hi{color:var(--brass-lt);font-weight:700;}
+  /* ---------- FLIGHTS ---------- */
+  .flight{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  .flight .seg{background:rgba(4,19,28,.6);border:1px solid var(--brass-dk);border-radius:8px;
     padding:10px 14px;flex:1;min-width:200px;}
-  .flight .ap{font-family:Georgia,serif;font-size:1.3rem;color:var(--navy);}
-  .flight .arrow{color:var(--gold);font-size:1.3rem;}
-  .flight .meta{font-size:.78rem;color:var(--muted);}
-  /* tables */
-  table{width:100%;border-collapse:collapse;background:var(--paper);
-    border:1px solid var(--line);border-radius:8px;overflow:hidden;font-size:.9rem;}
-  th{background:var(--navy);color:#fff;text-align:left;padding:9px 12px;
-    font-size:.74rem;text-transform:uppercase;letter-spacing:1px;font-weight:600;}
-  td{padding:9px 12px;border-top:1px solid var(--line);vertical-align:top;}
-  tr:nth-child(even) td{background:#faf6ec;}
-  .lvl{font-size:.7rem;font-weight:700;padding:2px 9px;border-radius:20px;
-    text-transform:uppercase;letter-spacing:.5px;white-space:nowrap;}
-  .lvl.Easy{background:#e4f0e6;color:var(--easy);}
-  .lvl.Moderate{background:#f6ebd4;color:var(--mod);}
-  .lvl.Strenuous{background:#f6e0da;color:var(--stren);}
-  .price{font-family:Georgia,serif;color:var(--navy);white-space:nowrap;}
-  .soldout{font-size:.68rem;color:var(--stren);font-weight:700;}
-  /* port block */
-  .port{margin-bottom:34px;}
-  .port-head{background:var(--navy);color:#fff;border-radius:10px 10px 0 0;
-    padding:16px 22px;display:flex;flex-wrap:wrap;align-items:baseline;gap:12px;}
-  .port-head h3{color:#fff;font-size:1.35rem;}
-  .port-head .hours{color:var(--gold);font-size:.85rem;letter-spacing:1px;}
-  .port-body{background:var(--paper);border:1px solid var(--line);border-top:none;
-    border-radius:0 0 10px 10px;padding:18px 22px;}
-  .port-body .desc{color:var(--ink);margin-bottom:6px;}
-  .hi{color:var(--gold-dk);font-weight:600;}
-  .filters{margin:14px 0 10px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
-  .filters span{font-size:.76rem;text-transform:uppercase;letter-spacing:1px;color:var(--muted);}
-  .fbtn{cursor:pointer;border:1px solid var(--navy);background:#fff;color:var(--navy);
-    font-size:.74rem;padding:4px 12px;border-radius:20px;letter-spacing:.5px;}
-  .fbtn.active{background:var(--navy);color:#fff;}
+  .flight .ap{font-family:var(--d-serif);font-size:1.3rem;color:var(--cream);font-weight:700;}
+  .flight .arrow{color:var(--brass);font-size:1.3rem;}
+  .flight .meta{font:600 .76rem/1.35 var(--d-mono);color:var(--ink-dim);margin-top:2px;}
+  /* ---------- LISTS / CALLOUT ---------- */
   ul.clean{list-style:none;}
-  ul.clean li{padding:5px 0 5px 22px;position:relative;font-size:.92rem;}
-  ul.clean li::before{content:"\2693";position:absolute;left:0;color:var(--gold);}
-  .callout{background:#fff7e3;border-left:4px solid var(--gold);border-radius:6px;
-    padding:13px 18px;font-size:.9rem;margin:14px 0;}
-  .callout strong{color:var(--gold-dk);}
-  /* route map */
-  .routemap{background:#e9eef1;border:1px solid var(--line);border-radius:10px;
-    padding:14px 14px 8px;margin:6px 0 24px;}
+  ul.clean li{padding:6px 0 6px 24px;position:relative;font-size:.92rem;color:var(--ink);}
+  ul.clean li::before{content:"\2693";position:absolute;left:0;color:var(--brass);}
+  .callout{background:rgba(200,155,74,.1);border-left:4px solid var(--brass);
+    border-radius:0 6px 6px 0;padding:14px 18px;font-size:.9rem;margin:16px 0;color:var(--ink);}
+  .callout strong{color:var(--brass-lt);}
+  /* ---------- ROUTE MAP — PARCHMENT CHART ---------- */
+  .routemap{background:var(--paper);
+    background-image:
+      repeating-linear-gradient(38deg, rgba(28,107,126,.07) 0 1px, transparent 1px 30px),
+      repeating-linear-gradient(-38deg, rgba(28,107,126,.07) 0 1px, transparent 1px 30px);
+    border:3px solid var(--brass-dk);border-radius:6px;padding:16px 16px 10px;
+    margin:8px 0 26px;box-shadow:0 18px 40px rgba(0,0,0,.5);}
   .routemap svg{display:block;width:100%;height:auto;}
-  .routemap .cap{font-size:.8rem;color:var(--muted);text-align:center;margin-top:6px;}
-  /* activity-level key */
-  .levelkey{background:var(--paper);border:1px solid var(--line);border-radius:10px;
-    padding:16px 20px;margin-bottom:22px;}
-  .levelkey h4{font-size:1rem;margin-bottom:9px;}
-  .lk-row{font-size:.9rem;margin:6px 0;display:flex;gap:10px;align-items:baseline;}
-  .lk-note{font-size:.82rem;color:var(--muted);margin-top:11px;border-top:1px dotted var(--line);
-    padding-top:10px;}
-  /* ===== interactive excursion finder ===== */
-  .portcard{background:var(--paper);border:1px solid var(--line);border-radius:9px;padding:13px 15px;}
-  .portcard h4{font-size:1rem;margin-bottom:2px;}
-  .portcard .ph{font-size:.72rem;text-transform:uppercase;letter-spacing:1px;color:var(--gold-dk);margin-bottom:6px;}
-  .portcard p{font-size:.85rem;color:var(--ink);}
-  .panel{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:14px;}
-  .panel h4{font-size:.76rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--gold-dk);margin-bottom:8px;}
-  .chips{display:flex;flex-wrap:wrap;gap:7px;}
-  .chip{cursor:pointer;border:1px solid var(--line);background:#fff;border-radius:20px;
-    padding:4px 12px;font-size:.78rem;color:var(--navy);user-select:none;transition:.12s;}
-  .chip:hover{border-color:var(--navy2);}
-  .chip.on{background:var(--navy);color:#fff;border-color:var(--navy);}
-  .chip.persona{border-color:var(--gold);color:var(--gold-dk);font-weight:600;}
-  .chip.persona.on{background:var(--gold);color:#fff;border-color:var(--gold);}
-  .ctrls{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;}
-  .ctrls label{font-size:.7rem;text-transform:uppercase;letter-spacing:1px;color:var(--muted);display:block;margin-bottom:3px;}
-  .ctrls select,.ctrls input[type=text]{font-family:inherit;font-size:.86rem;padding:6px 10px;
-    border:1px solid var(--line);border-radius:6px;background:#fff;color:var(--ink);}
-  .resbar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin:6px 0 12px;}
-  .resbar .count{font-family:Georgia,serif;font-size:1.02rem;color:var(--navy);}
-  .reset{cursor:pointer;border:1px solid var(--navy);background:#fff;color:var(--navy);
-    font-size:.74rem;padding:5px 14px;border-radius:20px;}
-  .exc{background:var(--paper);border:1px solid var(--line);border-radius:9px;padding:13px 16px;margin-bottom:9px;}
-  .exc .top{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:flex-start;}
-  .exc .nm{font-family:Georgia,serif;font-size:1.02rem;color:var(--navy);font-weight:600;text-decoration:none;}
-  a.nm,a.gp-nm{text-decoration:none;}
-  a.nm:hover,a.gp-nm:hover{text-decoration:underline;}
-  .exc .right{display:flex;align-items:center;gap:4px;white-space:nowrap;}
-  .exc .pr{font-family:Georgia,serif;color:var(--navy);}
-  .exc .meta{font-size:.78rem;color:var(--muted);margin:3px 0 7px;}
+  .routemap .cap{font:600 .8rem/1.55 var(--d-body);color:#3a4f44;text-align:center;margin-top:8px;}
+  /* ---------- ACTIVITY-LEVEL KEY ---------- */
+  .levelkey{background:rgba(7,32,43,.7);border:1px solid var(--teal);border-radius:9px;
+    padding:16px 20px;margin-bottom:24px;}
+  .levelkey h4{font-size:1rem;margin-bottom:10px;}
+  .lk-row{font-size:.9rem;margin:7px 0;display:flex;gap:10px;align-items:baseline;color:var(--ink);}
+  .lk-note{font-size:.83rem;color:var(--ink-dim);margin-top:12px;
+    border-top:1px dotted var(--brass-dk);padding-top:11px;}
+  /* ---------- PORT CARDS ---------- */
+  .portcard{background:rgba(7,32,43,.7);border:1px solid var(--teal);border-radius:9px;
+    padding:14px 16px;}
+  .portcard h4{font-size:1.02rem;margin-bottom:3px;}
+  .portcard .ph{font:700 .63rem/1.3 var(--d-mono);text-transform:uppercase;letter-spacing:.11em;
+    color:var(--brass);margin-bottom:7px;}
+  .portcard p{font-size:.86rem;color:var(--ink);}
+  /* ---------- FINDER PANELS ---------- */
+  .panel{background:rgba(4,19,28,.55);border:1px solid var(--brass-dk);border-radius:9px;
+    padding:15px 17px;margin-bottom:14px;}
+  .panel h4{font:700 .7rem/1.5 var(--d-mono);text-transform:uppercase;letter-spacing:.13em;
+    color:var(--brass);margin-bottom:10px;}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;}
+  .chip{cursor:pointer;border:1px solid var(--teal);background:rgba(7,32,43,.6);
+    border-radius:20px;padding:0 14px;min-height:40px;display:inline-flex;align-items:center;
+    font:600 .8rem/1 var(--d-body);color:var(--ink);transition:.12s;}
+  .chip:hover{border-color:var(--teal-lt);}
+  .chip.on{background:var(--teal);color:var(--cream);border-color:var(--teal-lt);}
+  .chip.persona{border-color:var(--brass-dk);color:var(--brass-lt);font-weight:700;}
+  .chip.persona.on{background:var(--brass);color:#08161a;border-color:var(--brass-lt);}
+  .ctrls{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end;}
+  .ctrls label{font:700 .61rem/1 var(--d-mono);text-transform:uppercase;letter-spacing:.11em;
+    color:var(--ink-dim);display:block;margin-bottom:5px;}
+  .ctrls select,.ctrls input[type=text]{font:inherit;font-size:.86rem;padding:9px 11px;
+    min-height:var(--target-min);border:1px solid var(--teal);border-radius:6px;
+    background:rgba(7,32,43,.85);color:var(--ink);}
+  /* ---------- RESULTS ---------- */
+  .resbar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;
+    gap:10px;margin:8px 0 14px;}
+  .resbar .count{font-family:var(--d-serif);font-size:1.04rem;color:var(--cream);}
+  .reset{cursor:pointer;border:1px solid var(--brass);background:transparent;
+    color:var(--brass-lt);font:700 .72rem/1 var(--d-mono);text-transform:uppercase;
+    letter-spacing:.07em;padding:0 16px;min-height:var(--target-min);border-radius:20px;}
+  .reset:hover{background:rgba(200,155,74,.14);}
+  .exc{background:rgba(7,32,43,.7);border:1px solid var(--teal);border-radius:9px;
+    padding:14px 16px;margin-bottom:10px;}
+  .exc .top{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
+    align-items:flex-start;}
+  .exc .nm{font-family:var(--d-serif);font-size:1.04rem;color:var(--cream);font-weight:700;
+    text-decoration:none;}
+  a.nm:hover,a.gp-nm:hover{text-decoration:underline;color:var(--brass-lt);}
+  .exc .right{display:flex;align-items:center;gap:6px;white-space:nowrap;}
+  .exc .pr{font-family:var(--d-serif);color:var(--brass-lt);}
+  .exc .meta{font:600 .78rem/1.5 var(--d-mono);color:var(--ink-dim);margin:5px 0 8px;
+    display:flex;flex-wrap:wrap;gap:7px;align-items:center;}
   .exc .themes{display:flex;flex-wrap:wrap;gap:5px;}
-  .star{cursor:pointer;font-size:1.3rem;line-height:1;color:#cdbf99;background:none;border:none;padding:0 0 0 6px;}
-  .star:hover{color:var(--gold-dk);}
-  .star.on{color:var(--gold);}
-  .tt{display:inline-block;font-size:.68rem;font-weight:700;padding:2px 8px;border-radius:5px;color:#fff;letter-spacing:.3px;}
-  .t-history{background:#7d5a3c;}.t-landmark{background:#b4452f;}.t-scenery{background:#3f7d4e;}
+  .star{cursor:pointer;font-size:1.35rem;line-height:1;color:var(--ink-dim);background:none;
+    border:none;padding:4px;min-width:var(--target-min);min-height:var(--target-min);
+    display:inline-flex;align-items:center;justify-content:center;}
+  .star:hover{color:var(--brass-lt);}
+  .star.on{color:var(--brass-lt);}
+  .tt{display:inline-block;font:700 .65rem/1.4 var(--d-mono);padding:3px 8px;border-radius:5px;
+    color:#fff;letter-spacing:.03em;text-transform:uppercase;}
+  .t-history{background:#9c7440;}.t-landmark{background:#c0503a;}.t-scenery{background:#3f7d4e;}
   .t-wildlife{background:#5b8c5a;}.t-food{background:#c0612e;}.t-drinks{background:#8a4f9e;}
   .t-music{background:#2f6f8f;}.t-culture{background:#357a87;}.t-literary{background:#9e7b2f;}
   .t-water{background:#2f6f8f;}.t-walking{background:#6b7280;}.t-drive{background:#4a5a78;}
-  .t-active{background:#b4452f;}.t-handson{background:#a8842f;}.t-photo{background:#566b8a;}
-  .t-offbeat{background:#5a4a7d;}
-  .flag{font-size:.64rem;font-weight:700;padding:1px 7px;border-radius:4px;background:#e8eef6;
-    color:var(--navy2);text-transform:uppercase;letter-spacing:.4px;}
-  .empty{text-align:center;color:var(--muted);padding:28px;font-style:italic;}
-  #gpPanel{border-color:var(--gold);background:#fffaf0;}
-  .gp-empty{font-size:.86rem;color:var(--muted);font-style:italic;}
-  .gp-row{border:1px solid var(--line);border-radius:8px;background:#fff;padding:10px 13px;margin-bottom:8px;}
+  .t-active{background:#c0503a;}.t-handson{background:#a8842f;}.t-photo{background:#566b8a;}
+  .t-offbeat{background:#6a5a8d;}
+  .flag{font:700 .6rem/1.5 var(--d-mono);padding:2px 7px;border-radius:4px;
+    background:rgba(31,95,168,.22);color:var(--teal-lt);text-transform:uppercase;
+    letter-spacing:.05em;border:1px solid var(--teal);}
+  .empty{text-align:center;color:var(--ink-dim);padding:30px;font-style:italic;}
+  /* ---------- GROUP PICKS ---------- */
+  #gpPanel{border-color:var(--brass);background:rgba(200,155,74,.08);}
+  .gp-empty{font-size:.88rem;color:var(--ink-dim);font-style:italic;}
+  .gp-row{border:1px solid var(--teal);border-radius:8px;background:rgba(7,32,43,.7);
+    padding:11px 14px;margin-bottom:9px;}
   .gp-top{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline;}
-  .gp-nm{font-family:Georgia,serif;color:var(--navy);font-weight:600;font-size:.96rem;}
-  .gp-meta{font-size:.76rem;color:var(--muted);margin-top:2px;}
-  .gp-rooms{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;align-items:center;}
-  .rlbl{font-size:.68rem;text-transform:uppercase;letter-spacing:1px;color:var(--muted);}
-  .roomchip{cursor:pointer;border:1px solid var(--line);background:#fff;border-radius:20px;
-    padding:3px 11px;font-size:.74rem;color:var(--navy);user-select:none;}
-  .roomchip.on{background:var(--navy2);color:#fff;border-color:var(--navy2);}
-  .agree{font-size:.66rem;font-weight:700;padding:2px 9px;border-radius:20px;text-transform:uppercase;letter-spacing:.4px;}
-  .agree.all{background:#e4f0e6;color:var(--easy);}
-  .agree.some{background:#f6ebd4;color:var(--mod);}
-  .agree.none{background:#ececec;color:var(--muted);}
-  .gp-rm{cursor:pointer;color:var(--stren);font-size:.73rem;border:none;background:none;padding:0 0 0 8px;}
-  .gp-summary{margin-top:12px;border-top:1px solid var(--gold);padding-top:10px;}
-  .gp-sum-row{display:flex;justify-content:space-between;font-size:.85rem;padding:3px 0;flex-wrap:wrap;gap:4px;}
-  .gp-sum-row .rm{color:var(--navy);font-weight:600;}
-  .gp-sum-row .net{font-family:Georgia,serif;color:var(--navy);}
-  .gp-fine{color:var(--muted);font-size:.74rem;font-style:italic;}
-  .gp-actions{margin-top:11px;}
-  .gp-clear{cursor:pointer;border:1px solid var(--navy);background:#fff;color:var(--navy);
-    font-size:.74rem;padding:5px 14px;border-radius:20px;}
-  .syncstatus{font-size:.62rem;font-weight:700;letter-spacing:.6px;text-transform:uppercase;
-    padding:2px 9px;border-radius:20px;vertical-align:2px;margin-left:4px;}
-  .syncstatus.ok{background:#e4f0e6;color:var(--easy);}
-  .syncstatus.wait{background:#f6ebd4;color:var(--mod);}
-  .syncstatus.err{background:#f6e0da;color:var(--stren);}
-  footer{background:var(--navy);color:#c4cede;text-align:center;padding:26px 20px;
-    font-size:.82rem;}
-  footer .gold{color:var(--gold);}
+  .gp-nm{font-family:var(--d-serif);color:var(--cream);font-weight:700;font-size:.98rem;
+    text-decoration:none;}
+  .gp-meta{font:600 .74rem/1.4 var(--d-mono);color:var(--ink-dim);margin-top:3px;}
+  .gp-rooms{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px;align-items:center;}
+  .rlbl{font:700 .62rem/1 var(--d-mono);text-transform:uppercase;letter-spacing:.1em;
+    color:var(--ink-dim);}
+  .roomchip{cursor:pointer;border:1px solid var(--teal);background:rgba(7,32,43,.6);
+    border-radius:20px;padding:0 13px;min-height:36px;display:inline-flex;align-items:center;
+    font:600 .76rem/1 var(--d-body);color:var(--ink);}
+  .roomchip.on{background:var(--teal);color:var(--cream);border-color:var(--teal-lt);}
+  .agree{font:700 .62rem/1.4 var(--d-mono);padding:4px 10px;border-radius:20px;
+    text-transform:uppercase;letter-spacing:.04em;}
+  .agree.all{background:rgba(95,214,160,.16);color:var(--easy);}
+  .agree.some{background:rgba(239,178,40,.16);color:var(--mod);}
+  .agree.none{background:rgba(138,160,168,.16);color:var(--ink-dim);}
+  .gp-rm{cursor:pointer;color:var(--stren);font:700 .72rem/1 var(--d-mono);border:none;
+    background:none;padding:6px 8px;min-height:var(--target-min);}
+  .gp-rm:hover{text-decoration:underline;}
+  .gp-summary{margin-top:13px;border-top:1px solid var(--brass-dk);padding-top:11px;}
+  .gp-sum-row{display:flex;justify-content:space-between;font-size:.85rem;padding:4px 0;
+    flex-wrap:wrap;gap:4px;color:var(--ink);}
+  .gp-sum-row .rm{color:var(--cream);font-weight:600;}
+  .gp-sum-row .net{font-family:var(--d-serif);color:var(--brass-lt);}
+  .gp-fine{color:var(--ink-dim);font-size:.74rem;font-style:italic;}
+  .gp-actions{margin-top:12px;}
+  .gp-clear{cursor:pointer;border:1px solid var(--brass);background:transparent;
+    color:var(--brass-lt);font:700 .72rem/1 var(--d-mono);text-transform:uppercase;
+    letter-spacing:.07em;padding:0 16px;min-height:var(--target-min);border-radius:20px;}
+  .syncstatus{font:700 .58rem/1.4 var(--d-mono);letter-spacing:.07em;text-transform:uppercase;
+    padding:3px 9px;border-radius:20px;vertical-align:2px;margin-left:6px;display:inline-block;}
+  .syncstatus.ok{background:rgba(95,214,160,.16);color:var(--easy);}
+  .syncstatus.wait{background:rgba(239,178,40,.16);color:var(--mod);}
+  .syncstatus.err{background:rgba(224,121,90,.16);color:var(--stren);}
+  /* ---------- FOOTER ---------- */
+  footer{background:var(--deep);color:var(--ink-dim);text-align:center;padding:36px 22px;
+    font-size:.84rem;border-top:1px solid var(--brass-dk);}
+  footer .gold{color:var(--brass-lt);font-family:var(--d-serif);font-weight:700;}
+  footer a{color:var(--brass-lt);}
   @media(max-width:760px){
     .g2,.g3,.g4{grid-template-columns:1fr;}
-    header.hero h1{font-size:1.7rem;}
     nav .brand{width:100%;margin-right:0;padding-bottom:4px;}
-    nav a{padding:9px 8px;}
-    /* excursion tables reflow to stacked cards */
-    .port-body table,.port-body thead,.port-body tbody,.port-body tr,.port-body td{display:block;}
-    .port-body thead{display:none;}
-    .port-body table{border:none;background:none;}
-    .port-body tbody tr{border:1px solid var(--line);border-radius:8px;background:var(--paper);
-      margin-bottom:9px;padding:11px 14px;}
-    .port-body td{border:none!important;padding:0;background:none!important;}
-    .port-body td:first-child{font-family:Georgia,serif;font-size:1rem;color:var(--navy);
-      font-weight:600;line-height:1.34;margin-bottom:8px;}
-    .port-body td:not(:first-child){display:inline-block;font-size:.84rem;color:var(--muted);
-      margin-right:16px;}
-    .port-body td.price{font-family:Georgia,serif;color:var(--navy);}
+    nav a{padding:9px 7px;}
+    .sec-head h2{font-size:1.5rem;}
   }
 </style>
 </head>
 <body>
 
+<a class="skip" href="#glance">Skip to content</a>
+
+<div class="toolbar">
+  <button class="mtog" id="motionToggle" type="button" aria-pressed="true">
+    <span class="track" aria-hidden="true"></span><span class="ml">Animation on</span>
+  </button>
+</div>
+
 <nav>
   <div class="inner">
-    <span class="brand">&#9784; Canada &amp; New England 2026</span>
+    <span class="brand">&#9875; Canada &amp; New England 2026</span>
     <a href="#glance">At a Glance</a>
     <a href="#travel">Flights</a>
     <a href="#hotels">Hotels</a>
@@ -235,16 +310,18 @@
     <a href="#package">Package</a>
     <a href="#ports">Ports &amp; Excursions</a>
     <a href="#kbyg">Know Before You Go</a>
+    <a href="voyage-console.html" class="console">&#9875; Voyage Console</a>
   </div>
 </nav>
 
 <header class="hero">
+  <div class="hero-stars" id="stars" aria-hidden="true"></div>
   <div class="kicker">Holland America Line &bull; 7-Day Voyage</div>
   <h1>Canada &amp; New England: Unesco Sites &amp; Quebecois Nights</h1>
   <div class="route">Quebec City &nbsp;&rarr;&nbsp; Charlottetown &nbsp;&rarr;&nbsp; Sydney &nbsp;&rarr;&nbsp; Halifax &nbsp;&rarr;&nbsp; Portland &nbsp;&rarr;&nbsp; Boston</div>
   <div class="ship">ms ZUIDERDAM &bull; JUNE 13&ndash;20, 2026 &bull; BOOKING 4LMNGG</div>
   <div class="countdown" id="cd">
-    <div><span class="num" id="cd-d">--</span><span class="lbl">Days</span></div>
+    <div><span class="num" id="cd-d" aria-live="polite">--</span><span class="lbl">Days</span></div>
     <div><span class="num" id="cd-h">--</span><span class="lbl">Hours</span></div>
     <div><span class="num" id="cd-m">--</span><span class="lbl">Minutes</span></div>
   </div>
@@ -253,8 +330,8 @@
 <main>
 
 <!-- ============ AT A GLANCE ============ -->
-<section id="glance">
-  <div class="sec-head"><h2>Trip at a Glance</h2><span class="tag">The Essentials</span></div>
+<section id="glance" aria-labelledby="glance-h">
+  <div class="sec-head"><h2 id="glance-h">Trip at a Glance</h2><span class="tag">The Essentials</span></div>
   <p class="lead">Everything you and Laura need for the Canada &amp; New England voyage aboard Holland America's <em>ms Zuiderdam</em>. This hub pulls together your confirmed booking, flights, day-by-day itinerary, ship details, and every shore excursion offered in each port.</p>
   <div class="grid g4">
     <div class="card fact"><div class="k">Cruise Line / Ship</div><div class="v">Holland America &mdash; ms Zuiderdam</div></div>
@@ -274,45 +351,45 @@
 </section>
 
 <!-- ============ TRAVEL & FLIGHTS ============ -->
-<section id="travel">
-  <div class="sec-head"><h2>Travel &amp; Flights</h2><span class="tag">Getting There &amp; Back</span></div>
+<section id="travel" aria-labelledby="travel-h">
+  <div class="sec-head"><h2 id="travel-h">Travel &amp; Flights</h2><span class="tag">Getting There &amp; Back</span></div>
   <p class="lead">Both flights are ticketed for Jett and Laura. The cruise begins in Quebec City and ends in Boston, so the outbound and return airports differ.</p>
 
   <div class="grid g2">
     <div class="card">
       <span class="pill">Outbound &bull; Thu, June 11, 2026</span>
       <h3 style="margin-top:8px;">Greensboro &rarr; Montreal</h3>
-      <p style="font-size:.84rem;color:var(--muted);margin-bottom:12px;">Delta Air Lines &bull; Confirmation <strong>GYHRHV</strong> &bull; Total 5h 19m</p>
+      <p style="font-size:.84rem;color:var(--ink-dim);margin-bottom:12px;">Delta Air Lines &bull; Confirmation <strong>GYHRHV</strong> &bull; Total 5h 19m</p>
       <div class="flight" style="margin-bottom:8px;">
         <div class="seg"><div class="ap">GSO</div><div class="meta">Greensboro, NC &bull; 12:26 PM</div></div>
-        <span class="arrow">&#9992;</span>
+        <span class="arrow" aria-hidden="true">&#9992;</span>
         <div class="seg"><div class="ap">ATL</div><div class="meta">Atlanta, GA &bull; 1:50 PM</div></div>
       </div>
-      <p style="font-size:.8rem;color:var(--muted);margin:2px 0 8px;">DL 3052 (Boeing 717-200) &bull; layover 1h 8m at ATL</p>
+      <p style="font-size:.8rem;color:var(--ink-dim);margin:2px 0 8px;">DL 3052 (Boeing 717-200) &bull; layover 1h 8m at ATL</p>
       <div class="flight">
         <div class="seg"><div class="ap">ATL</div><div class="meta">Atlanta, GA &bull; 2:58 PM &bull; Intl Terminal</div></div>
-        <span class="arrow">&#9992;</span>
+        <span class="arrow" aria-hidden="true">&#9992;</span>
         <div class="seg"><div class="ap">YUL</div><div class="meta">Montreal, QC &bull; 5:45 PM</div></div>
       </div>
-      <p style="font-size:.8rem;color:var(--muted);margin-top:6px;">DL 2665 (Airbus A319) &bull; Seats 17E (Jett) &amp; 17D (Laura) &bull; Delta Main</p>
+      <p style="font-size:.8rem;color:var(--ink-dim);margin-top:6px;">DL 2665 (Airbus A319) &bull; Seats 17E (Jett) &amp; 17D (Laura) &bull; Delta Main</p>
     </div>
 
     <div class="card">
       <span class="pill">Return &bull; Sun, June 21, 2026</span>
       <h3 style="margin-top:8px;">Boston &rarr; Greensboro</h3>
-      <p style="font-size:.84rem;color:var(--muted);margin-bottom:12px;">American Airlines &bull; Confirmation <strong>MNUWWX</strong> &bull; Total 4h 30m</p>
+      <p style="font-size:.84rem;color:var(--ink-dim);margin-bottom:12px;">American Airlines &bull; Confirmation <strong>MNUWWX</strong> &bull; Total 4h 30m</p>
       <div class="flight" style="margin-bottom:8px;">
         <div class="seg"><div class="ap">BOS</div><div class="meta">Boston, MA &bull; 12:32 PM</div></div>
-        <span class="arrow">&#9992;</span>
+        <span class="arrow" aria-hidden="true">&#9992;</span>
         <div class="seg"><div class="ap">PHL</div><div class="meta">Philadelphia, PA &bull; 2:08 PM</div></div>
       </div>
-      <p style="font-size:.8rem;color:var(--muted);margin:2px 0 8px;">AA 3043 (Economy) &bull; connection 1h 12m at PHL</p>
+      <p style="font-size:.8rem;color:var(--ink-dim);margin:2px 0 8px;">AA 3043 (Economy) &bull; connection 1h 12m at PHL</p>
       <div class="flight">
         <div class="seg"><div class="ap">PHL</div><div class="meta">Philadelphia, PA &bull; 3:20 PM</div></div>
-        <span class="arrow">&#9992;</span>
+        <span class="arrow" aria-hidden="true">&#9992;</span>
         <div class="seg"><div class="ap">GSO</div><div class="meta">Greensboro, NC &bull; 5:02 PM</div></div>
       </div>
-      <p style="font-size:.8rem;color:var(--muted);margin-top:6px;">AA 5518 (Economy) &bull; operated by PSA Airlines as American Eagle</p>
+      <p style="font-size:.8rem;color:var(--ink-dim);margin-top:6px;">AA 5518 (Economy) &bull; operated by PSA Airlines as American Eagle</p>
     </div>
   </div>
 
@@ -330,15 +407,15 @@
 </section>
 
 <!-- ============ HOTELS ============ -->
-<section id="hotels">
-  <div class="sec-head"><h2>Where You're Staying</h2><span class="tag">Hotels &amp; Lodging</span></div>
+<section id="hotels" aria-labelledby="hotels-h">
+  <div class="sec-head"><h2 id="hotels-h">Where You're Staying</h2><span class="tag">Hotels &amp; Lodging</span></div>
   <p class="lead">Pre- and post-cruise accommodations for the trip. The Montreal and Quebec City stays are booked; the Boston night after disembarkation is still to be arranged.</p>
   <div class="grid g3">
     <div class="card">
       <span class="pill">Pre-Cruise &bull; Montreal</span>
       <h3 style="margin-top:8px;">Renaissance Montreal</h3>
       <p style="font-size:.9rem;">Renaissance by Marriott, Montreal &mdash; your first stop after landing at YUL on June 11.</p>
-      <p style="font-size:.82rem;color:var(--muted);margin-top:8px;">Booked for the travelling group.</p>
+      <p style="font-size:.82rem;color:var(--ink-dim);margin-top:8px;">Booked for the travelling group.</p>
     </div>
     <div class="card">
       <span class="pill">Pre-Cruise &bull; Quebec City</span>
@@ -349,8 +426,8 @@
         <li><strong>Unit SP109</strong> &mdash; Sandra, Becca &amp; Karen</li>
       </ul>
     </div>
-    <div class="card" style="border-color:var(--gold);">
-      <span class="pill" style="background:var(--gold-dk);">Post-Cruise &bull; Boston</span>
+    <div class="card">
+      <span class="pill">Post-Cruise &bull; Boston</span>
       <h3 style="margin-top:8px;">Boston &mdash; To Be Booked</h3>
       <p style="font-size:.9rem;">One night needed after disembarkation (<strong>June 20&ndash;21</strong>) before the flight home. Flagged as the <strong>birthday hotel</strong> &mdash; still gathering ideas.</p>
     </div>
@@ -363,50 +440,50 @@
 </section>
 
 <!-- ============ ITINERARY ============ -->
-<section id="itinerary">
-  <div class="sec-head"><h2>Day-by-Day Itinerary</h2><span class="tag">7 Nights</span></div>
+<section id="itinerary" aria-labelledby="itinerary-h">
+  <div class="sec-head"><h2 id="itinerary-h">Day-by-Day Itinerary</h2><span class="tag">7 Nights</span></div>
   <p class="lead">Two relaxed sea days open the voyage as the Zuiderdam glides down the St.&nbsp;Lawrence, followed by four full days in port and a morning arrival in Boston.</p>
 
   <div class="routemap">
-    <svg viewBox="0 0 720 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Map of the cruise route from Quebec City to Boston">
+    <svg viewBox="0 0 720 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Map of the cruise route, sailing in order from Quebec City down the St. Lawrence to Charlottetown, Sydney, Halifax, Portland, and Boston.">
       <defs>
         <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="#dde6ea"/><stop offset="1" stop-color="#c6d4da"/>
+          <stop offset="0" stop-color="#efe6c8"/><stop offset="1" stop-color="#e3d6ad"/>
         </linearGradient>
       </defs>
       <rect width="720" height="300" fill="url(#sea)"/>
       <!-- abstract landmasses -->
-      <path d="M0,0 H720 V34 Q560,58 452,104 Q360,142 250,138 Q132,134 0,196 Z" fill="#e7e0cb"/>
-      <path d="M720,300 V210 Q610,232 470,214 Q520,266 600,300 Z" fill="#e7e0cb"/>
-      <path d="M0,300 V268 Q70,250 120,300 Z" fill="#e7e0cb"/>
+      <path d="M0,0 H720 V34 Q560,58 452,104 Q360,142 250,138 Q132,134 0,196 Z" fill="#dccfa3" stroke="#b89a5e" stroke-width="1.2"/>
+      <path d="M720,300 V210 Q610,232 470,214 Q520,266 600,300 Z" fill="#dccfa3" stroke="#b89a5e" stroke-width="1.2"/>
+      <path d="M0,300 V268 Q70,250 120,300 Z" fill="#dccfa3" stroke="#b89a5e" stroke-width="1.2"/>
       <!-- sailing route -->
       <path d="M96,60 Q224,74 366,140 Q452,160 520,84 Q528,152 476,196 Q382,250 262,236 Q190,228 138,262"
-        fill="none" stroke="#0c2340" stroke-width="2.6" stroke-dasharray="7 6" stroke-linecap="round"/>
+        fill="none" stroke="#d8392b" stroke-width="2.8" stroke-dasharray="7 6" stroke-linecap="round"/>
       <!-- sea-day marker -->
-      <text x="232" y="86" font-family="Georgia" font-size="12" font-style="italic" fill="#1b3a63" text-anchor="middle">Days 2&ndash;3 &bull; two sea days</text>
+      <text x="232" y="86" font-family="Space Mono,monospace" font-size="11" fill="#163a4a" text-anchor="middle">Days 2&ndash;3 &bull; two sea days</text>
       <!-- port pins -->
-      <g font-family="Georgia" font-size="13" fill="#0c2340">
-        <circle cx="96" cy="60" r="8" fill="#0c2340" stroke="#fff" stroke-width="2"/>
-        <text x="96" y="44" text-anchor="middle">Quebec City</text>
-        <text x="96" y="84" text-anchor="middle" font-size="9.5" fill="#5d6470">Embark &bull; Jun 13</text>
-        <circle cx="366" cy="140" r="8" fill="#c9a14a" stroke="#0c2340" stroke-width="2"/>
-        <text x="366" y="124" text-anchor="middle">Charlottetown</text>
-        <text x="366" y="162" text-anchor="middle" font-size="9.5" fill="#5d6470">Jun 16</text>
-        <circle cx="520" cy="84" r="8" fill="#c9a14a" stroke="#0c2340" stroke-width="2"/>
-        <text x="520" y="68" text-anchor="middle">Sydney</text>
-        <text x="520" y="108" text-anchor="middle" font-size="9.5" fill="#5d6470">Jun 17</text>
-        <circle cx="476" cy="196" r="8" fill="#c9a14a" stroke="#0c2340" stroke-width="2"/>
+      <g font-family="Space Mono,monospace" font-weight="700" font-size="14" fill="#163a4a">
+        <circle cx="96" cy="60" r="8" fill="#0b2a3a" stroke="#c89b4a" stroke-width="2.4"/>
+        <text x="96" y="43" text-anchor="middle">Quebec City</text>
+        <text x="96" y="84" text-anchor="middle" font-size="11" font-weight="400" fill="#163a4a">Embark &bull; Jun 13</text>
+        <circle cx="366" cy="140" r="8" fill="#c89b4a" stroke="#0b2a3a" stroke-width="2.2"/>
+        <text x="366" y="123" text-anchor="middle">Charlottetown</text>
+        <text x="366" y="163" text-anchor="middle" font-size="11" font-weight="400" fill="#163a4a">Jun 16</text>
+        <circle cx="520" cy="84" r="8" fill="#c89b4a" stroke="#0b2a3a" stroke-width="2.2"/>
+        <text x="520" y="67" text-anchor="middle">Sydney</text>
+        <text x="520" y="108" text-anchor="middle" font-size="11" font-weight="400" fill="#163a4a">Jun 17</text>
+        <circle cx="476" cy="196" r="8" fill="#c89b4a" stroke="#0b2a3a" stroke-width="2.2"/>
         <text x="498" y="200" text-anchor="start">Halifax</text>
-        <text x="498" y="214" text-anchor="start" font-size="9.5" fill="#5d6470">Jun 18</text>
-        <circle cx="262" cy="236" r="8" fill="#c9a14a" stroke="#0c2340" stroke-width="2"/>
-        <text x="262" y="220" text-anchor="middle">Portland</text>
-        <text x="262" y="258" text-anchor="middle" font-size="9.5" fill="#5d6470">Jun 19</text>
-        <circle cx="138" cy="262" r="8" fill="#0c2340" stroke="#fff" stroke-width="2"/>
-        <text x="138" y="246" text-anchor="middle">Boston</text>
-        <text x="138" y="284" text-anchor="middle" font-size="9.5" fill="#5d6470">Disembark &bull; Jun 20</text>
+        <text x="498" y="215" text-anchor="start" font-size="11" font-weight="400" fill="#163a4a">Jun 18</text>
+        <circle cx="262" cy="236" r="8" fill="#c89b4a" stroke="#0b2a3a" stroke-width="2.2"/>
+        <text x="262" y="219" text-anchor="middle">Portland</text>
+        <text x="262" y="259" text-anchor="middle" font-size="11" font-weight="400" fill="#163a4a">Jun 19</text>
+        <circle cx="138" cy="262" r="8" fill="#0b2a3a" stroke="#c89b4a" stroke-width="2.4"/>
+        <text x="138" y="245" text-anchor="middle">Boston</text>
+        <text x="138" y="285" text-anchor="middle" font-size="11" font-weight="400" fill="#163a4a">Disembark &bull; Jun 20</text>
       </g>
     </svg>
-    <div class="cap">The voyage descends the St.&nbsp;Lawrence, rounds Atlantic Canada through Prince&nbsp;Edward&nbsp;Island and Nova&nbsp;Scotia, then turns south down the New England coast. Navy pins mark embarkation and disembarkation; gold pins are ports of call.</div>
+    <div class="cap">The voyage descends the St.&nbsp;Lawrence, rounds Atlantic Canada through Prince&nbsp;Edward&nbsp;Island and Nova&nbsp;Scotia, then turns south down the New England coast. Dark pins mark embarkation and disembarkation; brass pins are ports of call.</div>
   </div>
 
   <div class="timeline">
@@ -462,8 +539,8 @@
 </section>
 
 <!-- ============ THE SHIP ============ -->
-<section id="ship">
-  <div class="sec-head"><h2>The Ship &mdash; ms Zuiderdam</h2><span class="tag">Vista Class</span></div>
+<section id="ship" aria-labelledby="ship-h">
+  <div class="sec-head"><h2 id="ship-h">The Ship &mdash; ms Zuiderdam</h2><span class="tag">Vista Class</span></div>
   <p class="lead">The <em>Zuiderdam</em> is the lead ship of Holland America's Vista class &mdash; a mid-size, classically elegant vessel that completed a comprehensive dry-dock refresh in December 2025.</p>
   <div class="grid g4">
     <div class="card fact"><div class="k">Class / Entered Service</div><div class="v">Vista Class &bull; 2002</div></div>
@@ -493,7 +570,7 @@
         <li><strong>Seafood Boil</strong> &mdash; New England-style dinner. $41.30 pp</li>
         <li><strong>Club Orange</strong> &mdash; premium dining &amp; perks program</li>
       </ul>
-      <p style="font-size:.8rem;color:var(--muted);margin-top:8px;">Your Have It All package includes <strong>one specialty dinner</strong> per guest &mdash; already redeemed.</p>
+      <p style="font-size:.8rem;color:var(--ink-dim);margin-top:8px;">Your Have It All package includes <strong>one specialty dinner</strong> per guest &mdash; already redeemed.</p>
     </div>
   </div>
 
@@ -526,8 +603,8 @@
 </section>
 
 <!-- ============ PACKAGE ============ -->
-<section id="package">
-  <div class="sec-head"><h2>Your Package &amp; Onboard Credits</h2><span class="tag">Have It All</span></div>
+<section id="package" aria-labelledby="package-h">
+  <div class="sec-head"><h2 id="package-h">Your Package &amp; Onboard Credits</h2><span class="tag">Have It All</span></div>
   <p class="lead">Both Jett and Laura are booked on Holland America's premium <strong>Have It All</strong> package. Here is what is already included before you spend a cent on board.</p>
   <div class="grid g3">
     <div class="card"><h4>&#127863; Signature Beverage Package</h4><p style="font-size:.88rem;">Cocktails, wine, beer, soft drinks and specialty coffees included up to the daily limit, for both guests.</p></div>
@@ -545,8 +622,8 @@
 </section>
 
 <!-- ============ PORTS & EXCURSIONS ============ -->
-<section id="ports">
-  <div class="sec-head"><h2>Ports &amp; Excursions</h2><span class="tag">90 Tours Across 6 Calls</span></div>
+<section id="ports" aria-labelledby="ports-h">
+  <div class="sec-head"><h2 id="ports-h">Ports &amp; Excursions</h2><span class="tag">89 Tours Across 6 Calls</span></div>
   <p class="lead">A guide to all six ports, plus an interactive finder for every one of the 89 shore excursions offered on your sailing dates. Read the port summaries, then filter by traveller persona, theme tag, port, price, duration and effort &mdash; sort the results and star tours into the shared <strong>Group Picks</strong> board. Prices are per adult unless noted; "On-Your-Own" tours may price per party.</p>
 
   <div class="levelkey">
@@ -577,27 +654,27 @@
 
   <div class="panel">
     <h4>Quick start &mdash; traveller personas</h4>
-    <div class="chips" id="personaChips"></div>
+    <div class="chips" id="personaChips" role="group" aria-label="Traveller persona filters"></div>
   </div>
   <div class="panel">
     <h4>Theme tags</h4>
-    <div class="chips" id="themeChips"></div>
+    <div class="chips" id="themeChips" role="group" aria-label="Theme tag filters"></div>
   </div>
   <div class="panel">
     <div class="ctrls">
-      <div><label>Sort by</label><select id="fSort">
+      <div><label for="fSort">Sort by</label><select id="fSort">
         <option value="default">Recommended (by port)</option>
         <option value="price-asc">Price: low to high</option>
         <option value="price-desc">Price: high to low</option>
         <option value="dur-asc">Duration: short to long</option>
         <option value="dur-desc">Duration: long to short</option>
       </select></div>
-      <div><label>Port</label><select id="fPort"></select></div>
-      <div><label>Duration</label><select id="fDur"></select></div>
-      <div><label>Effort</label><select id="fEff"></select></div>
-      <div><label>Price</label><select id="fPrice"></select></div>
-      <div><label>Flag</label><select id="fFlag"></select></div>
-      <div><label>Search</label><input type="text" id="fSearch" placeholder="name contains&hellip;"></div>
+      <div><label for="fPort">Port</label><select id="fPort"></select></div>
+      <div><label for="fDur">Duration</label><select id="fDur"></select></div>
+      <div><label for="fEff">Effort</label><select id="fEff"></select></div>
+      <div><label for="fPrice">Price</label><select id="fPrice"></select></div>
+      <div><label for="fFlag">Flag</label><select id="fFlag"></select></div>
+      <div><label for="fSearch">Search</label><input type="text" id="fSearch" placeholder="name contains&hellip;"></div>
     </div>
   </div>
   <div class="panel" id="gpPanel">
@@ -605,15 +682,15 @@
     <div id="gpBoard"></div>
   </div>
   <div class="resbar">
-    <span class="count" id="resCount">&nbsp;</span>
-    <span class="reset" id="resetBtn">Reset all filters</span>
+    <span class="count" id="resCount" aria-live="polite">&nbsp;</span>
+    <button type="button" class="reset" id="resetBtn">Reset all filters</button>
   </div>
   <div id="results"></div>
 </section>
 
 <!-- ============ KNOW BEFORE YOU GO ============ -->
-<section id="kbyg">
-  <div class="sec-head"><h2>Know Before You Go</h2><span class="tag">Practical Info</span></div>
+<section id="kbyg" aria-labelledby="kbyg-h">
+  <div class="sec-head"><h2 id="kbyg-h">Know Before You Go</h2><span class="tag">Practical Info</span></div>
   <div class="grid g2">
     <div class="card">
       <h3>Documents &amp; Check-In</h3>
@@ -659,12 +736,38 @@
 </main>
 
 <footer>
-  <p><span class="gold">Canada &amp; New England 2026</span> &bull; ms Zuiderdam &bull; Booking 4LMNGG</p>
-  <p style="margin-top:6px;opacity:.8;">Personal trip knowledge hub for Jett &amp; Laura. Excursion prices and availability from Holland America and subject to change &mdash; verify in the Navigator app before booking.</p>
+  <p><span class="gold">Canada &amp; New England 2026</span> &bull; ms Zuiderdam &bull; Booking 4LMNGG &bull; <a href="voyage-console.html">Voyage Console</a></p>
+  <p style="margin-top:6px;opacity:.85;">Personal trip knowledge hub for Jett &amp; Laura. Excursion prices and availability from Holland America and subject to change &mdash; verify in the Navigator app before booking.</p>
 </footer>
 
 <script>
-  // Countdown to embarkation: June 13, 2026
+  /* ---- motion toggle (mirrors prefers-reduced-motion) ---- */
+  (function(){
+    var osR = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var off = osR, b = document.getElementById('motionToggle');
+    function apply(){
+      document.body.classList.toggle('motion-off', off);
+      if(b){ b.setAttribute('aria-pressed', String(!off));
+        b.querySelector('.ml').textContent = off ? 'Animation off' : 'Animation on'; }
+    }
+    apply();
+    if(b) b.addEventListener('click', function(){ off = !off; apply(); });
+  })();
+
+  /* ---- hero stars (decorative) ---- */
+  (function(){
+    var s = document.getElementById('stars');
+    if(!s) return;
+    for(var i=0;i<26;i++){
+      var d=document.createElement('i');
+      d.style.left=(Math.random()*100)+'%';
+      d.style.top=(Math.random()*92)+'%';
+      d.style.animationDelay=(-Math.random()*4)+'s';
+      s.appendChild(d);
+    }
+  })();
+
+  /* ---- countdown to embarkation: June 13, 2026 ---- */
   var target = new Date('2026-06-13T00:00:00').getTime();
   function tick(){
     var now = new Date().getTime();
@@ -795,31 +898,37 @@ window.__applyRemote=function(r){ picks=(r&&typeof r==='object')?r:{}; render();
 function exById(id){ return DATA.find(e=>e.id===id); }
 function clearPersona(){
   activePersona=null;
-  document.querySelectorAll('.chip.persona').forEach(x=>x.classList.remove('on'));
+  document.querySelectorAll('.chip.persona').forEach(x=>{
+    x.classList.remove('on'); x.setAttribute('aria-pressed','false'); });
 }
 const themeChips=document.getElementById('themeChips');
 Object.entries(THEMES).forEach(([k,v])=>{
-  const c=document.createElement('span');
-  c.className='chip'; c.dataset.theme=k; c.textContent=v[0];
+  const c=document.createElement('button');
+  c.type='button'; c.className='chip'; c.dataset.theme=k; c.textContent=v[0];
+  c.setAttribute('aria-pressed','false');
   c.onclick=()=>{ c.classList.toggle('on');
+    c.setAttribute('aria-pressed', String(c.classList.contains('on')));
     if(activeThemes.has(k)) activeThemes.delete(k); else activeThemes.add(k);
     clearPersona(); render(); };
   themeChips.appendChild(c);
 });
 const personaChips=document.getElementById('personaChips');
 Object.keys(PERSONAS).forEach(name=>{
-  const c=document.createElement('span');
-  c.className='chip persona'; c.dataset.persona=name; c.textContent=name;
+  const c=document.createElement('button');
+  c.type='button'; c.className='chip persona'; c.dataset.persona=name; c.textContent=name;
+  c.setAttribute('aria-pressed','false');
   c.onclick=()=>{
     const wasOn=c.classList.contains('on');
-    document.querySelectorAll('.chip.persona').forEach(x=>x.classList.remove('on'));
+    document.querySelectorAll('.chip.persona').forEach(x=>{
+      x.classList.remove('on'); x.setAttribute('aria-pressed','false'); });
     activeThemes.clear();
-    document.querySelectorAll('#themeChips .chip').forEach(x=>x.classList.remove('on'));
+    document.querySelectorAll('#themeChips .chip').forEach(x=>{
+      x.classList.remove('on'); x.setAttribute('aria-pressed','false'); });
     if(!wasOn){
-      c.classList.add('on'); activePersona=name;
+      c.classList.add('on'); c.setAttribute('aria-pressed','true'); activePersona=name;
       PERSONAS[name].forEach(t=>{ activeThemes.add(t);
         const tc=document.querySelector('#themeChips .chip[data-theme="'+t+'"]');
-        if(tc) tc.classList.add('on'); });
+        if(tc){ tc.classList.add('on'); tc.setAttribute('aria-pressed','true'); } });
     } else activePersona=null;
     render();
   };
@@ -837,7 +946,8 @@ document.getElementById('fSearch').oninput=render;
 document.getElementById('fSort').onchange=render;
 document.getElementById('resetBtn').onclick=()=>{
   activeThemes.clear(); clearPersona();
-  document.querySelectorAll('.chip').forEach(x=>x.classList.remove('on'));
+  document.querySelectorAll('.chip').forEach(x=>{
+    x.classList.remove('on'); x.setAttribute('aria-pressed','false'); });
   ['fPort','fDur','fEff','fPrice','fFlag'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('fSort').value='default';
   document.getElementById('fSearch').value=''; render();
@@ -875,7 +985,7 @@ function render(){
     const on=picks[e.id]?'on':'';
     return '<div class="exc"><div class="top"><a class="nm" href="https://www.hollandamerica.com/sf/excursions" target="_blank" rel="noopener">'+e.name+' ↗</a>'+
       '<span class="right"><span class="pr">'+price+'</span>'+
-      '<button class="star '+on+'" data-id="'+e.id+'" title="Add to Group Picks">'+(picks[e.id]?'★':'☆')+'</button></span></div>'+
+      '<button class="star '+on+'" data-id="'+e.id+'" aria-pressed="'+(picks[e.id]?'true':'false')+'" title="Add to Group Picks" aria-label="Add '+e.name.replace(/"/g,'&quot;')+' to Group Picks">'+(picks[e.id]?'★':'☆')+'</button></span></div>'+
       '<div class="meta">'+e.port+' · '+e.durationHrs+' hrs · '+e.durationBand+
       ' <span class="lvl '+e.effort+'">'+e.effort+'</span> '+flags+'</div>'+
       '<div class="themes">'+themes+'</div></div>';
@@ -893,7 +1003,7 @@ function renderBoard(){
   let html=ids.map(id=>{
     const e=exById(id); if(!e) return '';
     const votes=picks[id]||[];
-    const rooms=ROOMS.map(r=>'<span class="roomchip '+(votes.includes(r.key)?'on':'')+'" data-id="'+id+'" data-room="'+r.key+'">'+r.label+'</span>').join('');
+    const rooms=ROOMS.map(r=>'<button type="button" class="roomchip '+(votes.includes(r.key)?'on':'')+'" aria-pressed="'+(votes.includes(r.key)?'true':'false')+'" data-id="'+id+'" data-room="'+r.key+'">'+r.label+'</button>').join('');
     let ag='none',agt='No rooms yet';
     if(votes.length===3){ag='all';agt='All 3 rooms — book together';}
     else if(votes.length){ag='some';agt=votes.length+' of 3 rooms';}

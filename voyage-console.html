@@ -1,0 +1,1071 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ms Zuiderdam · Voyage Console — Canada &amp; New England</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="The Voyage Console — a maritime instrument-panel front door to the Canada & New England trip hub aboard Holland America's ms Zuiderdam, June 2026.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Voyage Console — ms Zuiderdam · June 2026">
+<meta property="og:description" content="A maritime instrument-panel front door to the Canada & New England trip hub: the route chart, the excursion sonar, and the ship by the dial.">
+<meta property="og:image" content="https://mondrianaire.github.io/Cruise/voyage-preview.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://mondrianaire.github.io/Cruise/voyage-console.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Voyage Console — ms Zuiderdam · June 2026">
+<meta name="twitter:description" content="A maritime instrument-panel front door to the Canada & New England trip hub.">
+<meta name="twitter:image" content="https://mondrianaire.github.io/Cruise/voyage-preview.png">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,900&family=Space+Mono:wght@400;700&display=swap');
+
+  :root{
+    --abyss:#061a26; --sea:#0b2a3a; --sea2:#103b4f; --deep:#04131c;
+    --brass:#c89b4a; --brass-lt:#e6c477; --brass-dk:#8f6a2c;
+    --teal:#1c6b7e; --teal-lt:#3fa0ad;
+    --cream:#f1e7cf; --paper:#f5eed7; --foam:#eef5f5;
+    --rope:#c79a5b; --rope-dk:#8a6535;
+    --radar:#5fd6a0; --radar-dk:#2a7d5c;
+    --sig-red:#d8392b; --sig-blue:#1f5fa8; --sig-yel:#efb228;
+    --sig-grn:#2f8a52; --sig-wht:#f4efe0; --sig-blk:#15212a;
+    --ink:#e8e2cc; --ink-dim:#8aa0a8;
+    --maple:#d8392b;
+    /* accessibility-remediation tokens */
+    --route-text:#f1e7cf;       /* was #3fa0ad — contrast + hierarchy fix */
+    --port-sub:#163a4a;         /* was #5f7a82 — chart sub-label contrast */
+    --filter-off:#b9b09a;       /* struck filter label — replaces opacity dim */
+    --focus-ring:#e6c477;       /* 2px solid, 2px offset, all interactives */
+    --target-min:44px;          /* min hit area, WCAG 2.5.5 */
+    --d-serif:"Fraunces",Georgia,serif;
+    --d-mono:"Space Mono",ui-monospace,Consolas,monospace;
+    --d-body:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,sans-serif;
+  }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    background:var(--abyss); color:var(--ink); font-family:var(--d-body);
+    overflow-x:hidden;
+  }
+  /* motion is gated on BOTH the OS query and the on-page toggle (body.motion-off) */
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; }
+  }
+  body.motion-off *{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; }
+
+  /* visible focus on every interactive element */
+  a:focus-visible, button:focus-visible{
+    outline:2px solid var(--focus-ring); outline-offset:2px;
+  }
+
+  /* ── SKIP LINK ── */
+  .skip{
+    position:absolute; left:10px; top:-60px; z-index:60;
+    background:var(--brass-lt); color:#08161a;
+    font:700 12px/1 var(--d-body); padding:11px 16px; border-radius:6px;
+    text-decoration:none; transition:top .12s ease;
+  }
+  .skip:focus{ top:10px; }
+
+  /* ── UTILITY BAR (motion toggle — early in DOM & tab order) ── */
+  .toolbar{
+    display:flex; justify-content:flex-end; align-items:center;
+    background:var(--deep); padding:6px 14px; gap:10px;
+  }
+  .mtog{
+    display:inline-flex; align-items:center; gap:9px; min-height:var(--target-min);
+    padding:0 13px; background:rgba(7,32,43,.7); border:1px solid var(--teal);
+    border-radius:6px; cursor:pointer; color:var(--ink); font:inherit;
+  }
+  .mtog .track{ width:38px; height:20px; border-radius:10px; background:var(--teal);
+    position:relative; flex:0 0 38px; }
+  .mtog .track::after{ content:""; position:absolute; top:2px; left:2px; width:16px; height:16px;
+    border-radius:50%; background:var(--brass-lt); transition:left .15s; }
+  .mtog[aria-pressed="false"] .track{ background:var(--radar-dk); }
+  .mtog[aria-pressed="false"] .track::after{ left:20px; }
+  .mtog .ml{ font:600 12.5px/1 var(--d-body); }
+
+  /* ── SIGNAL-FLAG BUNTING ── */
+  .bunting{ display:flex; height:46px; overflow:hidden; background:var(--deep); }
+  .bunting .flag{
+    flex:1; position:relative; transform-origin:top center;
+    animation:sway 3.4s ease-in-out infinite;
+  }
+  .bunting .flag::after{
+    content:""; position:absolute; left:50%; top:0; width:1px; height:6px; background:#000;
+  }
+  .bunting .flag i{
+    display:block; height:30px; margin-top:8px;
+    clip-path:polygon(0 0,100% 0,100% 60%,50% 100%,0 60%);
+  }
+  .bf-1 i{ background:linear-gradient(90deg,var(--sig-red) 50%,var(--sig-wht) 50%); }
+  .bf-2 i{ background:repeating-linear-gradient(45deg,var(--sig-blue) 0 8px,var(--sig-wht) 8px 16px); }
+  .bf-3 i{ background:radial-gradient(circle,var(--sig-red) 38%,var(--sig-yel) 39%); }
+  .bf-4 i{ background:linear-gradient(180deg,var(--sig-blue) 50%,var(--sig-yel) 50%); }
+  .bf-5 i{ background:conic-gradient(var(--sig-blk) 0 25%,var(--sig-wht) 0 50%,var(--sig-blk) 0 75%,var(--sig-wht) 0); }
+  .bf-6 i{ background:linear-gradient(90deg,var(--sig-yel) 33%,var(--sig-red) 33% 66%,var(--sig-yel) 66%); }
+  .bf-7 i{ background:var(--sig-grn); }
+  .bf-8 i{ background:repeating-linear-gradient(90deg,var(--sig-red) 0 7px,var(--sig-wht) 7px 14px); }
+  @keyframes sway{ 0%,100%{ transform:rotate(-2.2deg);} 50%{ transform:rotate(2.2deg);} }
+
+  /* ── ROPE DIVIDER ── */
+  .rope{
+    height:14px; margin:0;
+    background:
+      repeating-linear-gradient(70deg, var(--rope) 0 9px, var(--rope-dk) 9px 12px, var(--rope) 12px 18px);
+    border-top:2px solid var(--rope-dk); border-bottom:2px solid var(--rope-dk);
+    box-shadow:inset 0 3px 6px rgba(0,0,0,.4), inset 0 -3px 6px rgba(0,0,0,.4);
+  }
+
+  /* ── WAVE STRIP ── */
+  .waves{ display:block; width:100%; height:64px; }
+  .waves .w1{ animation:drift 14s linear infinite; }
+  .waves .w2{ animation:drift 9s linear infinite reverse; }
+  .waves .w3{ animation:drift 22s linear infinite; }
+  @keyframes drift{ from{ transform:translateX(0);} to{ transform:translateX(-240px);} }
+
+  /* ── SECTION SHELL ── */
+  section{ position:relative; }
+  .wrap{ max-width:1180px; margin:0 auto; padding:0 28px; }
+  .sec-title{
+    font-family:var(--d-serif); font-weight:600; font-size:34px; color:var(--cream);
+    margin:0 0 6px; letter-spacing:-.01em;
+  }
+  .sec-kicker{
+    font:700 11px/1 var(--d-mono); letter-spacing:.28em; text-transform:uppercase;
+    color:var(--brass); display:flex; align-items:center; gap:10px; margin-bottom:14px;
+  }
+  .sec-kicker::before,.sec-kicker::after{ content:""; height:1px; flex:1; max-width:60px; background:var(--brass-dk); }
+  .sec-intro{ color:var(--ink-dim); max-width:620px; margin:0 0 24px; font-size:14px; }
+
+  /* in-hub link CTAs */
+  .cta{
+    display:inline-flex; align-items:center; gap:8px; min-height:var(--target-min);
+    padding:0 18px; margin-top:8px; border-radius:6px; text-decoration:none;
+    font:700 12px/1 var(--d-mono); letter-spacing:.08em; text-transform:uppercase;
+    background:var(--brass-lt); color:#08161a; border:1px solid var(--brass-dk);
+  }
+  .cta.ghost{ background:transparent; color:var(--brass-lt); }
+  .cta:hover{ background:var(--brass); }
+  .cta.ghost:hover{ background:rgba(200,155,74,.14); }
+
+  /* reveal */
+  .rv{ opacity:0; transform:translateY(26px); transition:opacity .7s ease, transform .7s cubic-bezier(.2,.7,.2,1); }
+  .rv.in{ opacity:1; transform:none; }
+
+  /* ── HERO ── */
+  .hero{
+    position:relative; min-height:660px; overflow:hidden;
+    background:
+      radial-gradient(ellipse at 50% 12%, #1a4a5e 0%, var(--sea) 42%, var(--abyss) 100%);
+  }
+  .hero-stars{ position:absolute; inset:0; }
+  .hero-stars i{ position:absolute; width:2px; height:2px; border-radius:50%; background:#cfe6df; opacity:.5; animation:twinkle 4s ease-in-out infinite; }
+  @keyframes twinkle{ 0%,100%{ opacity:.15;} 50%{ opacity:.7;} }
+
+  .lighthouse{ position:absolute; right:6%; bottom:118px; width:54px; height:150px; z-index:3; }
+  .lh-tower{
+    position:absolute; bottom:0; left:50%; transform:translateX(-50%);
+    width:34px; height:120px; border-radius:5px 5px 0 0;
+    background:repeating-linear-gradient(180deg,var(--cream) 0 20px,var(--sig-red) 20px 40px);
+    border:2px solid #2a2118;
+  }
+  .lh-lamp{
+    position:absolute; top:6px; left:50%; transform:translateX(-50%);
+    width:22px; height:18px; background:var(--brass-lt); border:2px solid var(--brass-dk);
+    box-shadow:0 0 16px 4px rgba(240,200,110,.7);
+  }
+  .lh-beam{
+    position:absolute; top:8px; left:50%; width:340px; height:90px;
+    transform-origin:left center;
+    background:linear-gradient(90deg, rgba(244,214,130,.55), transparent 78%);
+    clip-path:polygon(0 46%,100% 0,100% 100%,0 54%);
+    animation:beam 7s linear infinite;
+  }
+  @keyframes beam{ from{ transform:rotate(20deg);} 50%{ transform:rotate(140deg);} to{ transform:rotate(20deg);} }
+
+  .hero-inner{ position:relative; z-index:4; text-align:center; padding:62px 28px 0; }
+  .hero-eyebrow{
+    font:700 12px/1 var(--d-mono); letter-spacing:.34em; text-transform:uppercase;
+    color:var(--brass-lt); margin-bottom:18px;
+  }
+  .hero-title{
+    font-family:var(--d-serif); font-weight:900; font-size:clamp(44px,8vw,90px);
+    line-height:.96; color:var(--cream); margin:0; letter-spacing:-.02em;
+    text-shadow:0 4px 24px rgba(0,0,0,.5);
+  }
+  .hero-title em{ font-style:italic; font-weight:500; color:var(--brass-lt); display:block; font-size:.46em; margin-top:8px; letter-spacing:0; }
+  .hero-route{
+    margin-top:16px; font:700 13px/1 var(--d-mono); letter-spacing:.16em; text-transform:uppercase;
+    color:var(--route-text); display:flex; gap:10px; justify-content:center; align-items:center; flex-wrap:wrap;
+  }
+  .hero-route .dot{ width:6px; height:6px; border-radius:50%; background:var(--brass); }
+
+  .compass{ position:absolute; left:5%; top:78px; width:118px; height:118px; z-index:4; opacity:.92; }
+  .compass .ring{ position:absolute; inset:0; border-radius:50%; border:2px solid var(--brass); box-shadow:0 0 0 5px rgba(200,155,74,.12); }
+  .compass .ring::before{ content:""; position:absolute; inset:9px; border-radius:50%; border:1px solid var(--brass-dk); }
+  .compass .needle{
+    position:absolute; left:50%; top:50%; width:0; height:0; transform-origin:center;
+    animation:swing 9s ease-in-out infinite;
+  }
+  .compass .needle::before,.compass .needle::after{
+    content:""; position:absolute; left:-5px; width:10px;
+  }
+  .compass .needle::before{ top:-46px; height:46px; background:linear-gradient(var(--sig-red),#7a1d16); clip-path:polygon(50% 0,100% 100%,0 100%); }
+  .compass .needle::after{ top:0; height:46px; background:linear-gradient(#dfe7e3,#9aa9a4); clip-path:polygon(0 0,100% 0,50% 100%); }
+  .compass .pt{ position:absolute; font:700 11px var(--d-mono); color:var(--brass-lt); }
+  .compass .n{ top:3px; left:50%; transform:translateX(-50%); }
+  .compass .s{ bottom:3px; left:50%; transform:translateX(-50%); }
+  .compass .e{ right:5px; top:50%; transform:translateY(-50%); }
+  .compass .w{ left:6px; top:50%; transform:translateY(-50%); }
+  @keyframes swing{ 0%,100%{ transform:rotate(-14deg);} 50%{ transform:rotate(11deg);} }
+
+  .countdown{ display:flex; gap:22px; justify-content:center; margin-top:34px; flex-wrap:wrap; }
+  .gauge{
+    width:128px; height:128px; border-radius:50%; position:relative;
+    background:radial-gradient(circle at 38% 32%, #16404f, #07202b 70%);
+    border:7px solid; border-color:var(--brass-lt) var(--brass-dk) var(--brass-dk) var(--brass-lt);
+    box-shadow:0 10px 30px rgba(0,0,0,.55), inset 0 0 22px rgba(0,0,0,.7);
+  }
+  .gauge::before{ content:""; position:absolute; inset:5px; border-radius:50%; border:2px solid rgba(200,155,74,.4); }
+  .gauge::after{ content:""; position:absolute; top:8px; left:14px; width:46px; height:30px; border-radius:50%;
+    background:linear-gradient(135deg, rgba(255,255,255,.28), transparent 70%); }
+  .gauge .num{
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    font-family:var(--d-serif); font-weight:700; font-size:42px; color:var(--brass-lt);
+    text-shadow:0 0 14px rgba(230,196,119,.5);
+  }
+  .gauge .lbl{
+    position:absolute; bottom:16px; left:0; right:0; text-align:center;
+    font:700 8.5px var(--d-mono); letter-spacing:.2em; text-transform:uppercase; color:var(--teal-lt);
+  }
+  .gauge .screw{ position:absolute; width:7px; height:7px; border-radius:50%; background:radial-gradient(var(--brass-lt),var(--brass-dk)); }
+  .gauge .screw.tl{ top:-3px; left:14px; } .gauge .screw.tr{ top:-3px; right:14px; }
+  .gauge .screw.bl{ bottom:-3px; left:14px; } .gauge .screw.br{ bottom:-3px; right:14px; }
+  .cd-colon{ align-self:center; font:700 38px var(--d-serif); color:var(--brass-dk); }
+
+  .hero-sea{ position:absolute; left:0; right:0; bottom:0; height:200px; z-index:2; }
+  .hero-ship{
+    position:absolute; bottom:96px; left:50%; width:150px; z-index:3;
+    transform-origin:bottom center; animation:bob 5.5s ease-in-out infinite;
+  }
+  @keyframes bob{ 0%,100%{ transform:translateX(-50%) rotate(-2.4deg) translateY(0);} 50%{ transform:translateX(-50%) rotate(2.4deg) translateY(-7px);} }
+  .scroll-cue{
+    position:absolute; left:50%; bottom:20px; transform:translateX(-50%); z-index:5;
+    font:700 9px var(--d-mono); letter-spacing:.24em; text-transform:uppercase; color:var(--ink-dim);
+    text-align:center;
+  }
+  .scroll-cue .arr{ display:block; margin:6px auto 0; width:9px; height:9px;
+    border-right:2px solid var(--brass); border-bottom:2px solid var(--brass);
+    transform:rotate(45deg); animation:cue 1.8s ease-in-out infinite; }
+  @keyframes cue{ 0%,100%{ transform:rotate(45deg) translate(0,0); opacity:.4;} 50%{ transform:rotate(45deg) translate(3px,3px); opacity:1;} }
+
+  /* ── CHART SECTION ── */
+  .s-chart{ background:linear-gradient(180deg,var(--abyss),var(--deep)); padding:54px 0 60px; }
+  .chart-panel{
+    background:var(--paper);
+    background-image:
+      repeating-linear-gradient(38deg, rgba(28,107,126,.07) 0 1px, transparent 1px 30px),
+      repeating-linear-gradient(-38deg, rgba(28,107,126,.07) 0 1px, transparent 1px 30px);
+    border:3px solid var(--brass-dk); border-radius:6px;
+    box-shadow:0 22px 50px rgba(0,0,0,.55), inset 0 0 60px rgba(120,90,40,.12);
+    padding:20px; position:relative;
+  }
+  .chart-panel .corner{ position:absolute; width:26px; height:26px; border:2px solid var(--brass-dk); }
+  .chart-panel .corner.tl{ top:7px; left:7px; border-right:0; border-bottom:0; }
+  .chart-panel .corner.tr{ top:7px; right:7px; border-left:0; border-bottom:0; }
+  .chart-panel .corner.bl{ bottom:7px; left:7px; border-right:0; border-top:0; }
+  .chart-panel .corner.br{ bottom:7px; right:7px; border-left:0; border-top:0; }
+  .chart-svg{ display:block; width:100%; height:auto; }
+  .route-guide{ stroke:#8a9c8e; stroke-width:1.5; fill:none; stroke-dasharray:6 6; opacity:.65; }
+  /* route is drawn by default (survives JS failure); .in only animates the draw-on */
+  .route-path{ stroke:var(--sig-red); stroke-width:2.8; fill:none; stroke-linecap:round; }
+  .in .route-path{ stroke-dasharray:1300; animation:draw 3.7s ease forwards; }
+  @keyframes draw{ from{ stroke-dashoffset:1300; } to{ stroke-dashoffset:0; } }
+  .route-ship{ offset-path:path("M 90 250 C 200 150, 360 120, 520 175 S 760 280, 940 200"); offset-distance:0%;
+    transition:offset-distance 3.8s cubic-bezier(.4,.1,.3,1); }
+  .in .route-ship{ offset-distance:100%; }
+  /* port pins visible by default; .in only animates the drop */
+  .port-pin{ transform-box:fill-box; transform-origin:bottom center; }
+  .in .port-pin{ animation:drop .5s cubic-bezier(.3,1.5,.5,1) backwards; }
+  .in .port-pin:nth-child(1){ animation-delay:.5s; } .in .port-pin:nth-child(2){ animation-delay:1.0s; }
+  .in .port-pin:nth-child(3){ animation-delay:1.5s; } .in .port-pin:nth-child(4){ animation-delay:2.1s; }
+  .in .port-pin:nth-child(5){ animation-delay:2.7s; } .in .port-pin:nth-child(6){ animation-delay:3.3s; }
+  @keyframes drop{ from{ opacity:0; transform:translateY(-14px) scale(.4);} to{ opacity:1; transform:translateY(0) scale(1);} }
+
+  .chart-stats{ display:flex; gap:14px; margin-top:18px; flex-wrap:wrap; }
+  .stat{
+    flex:1; min-width:150px; background:rgba(7,32,43,.7); border:1px solid var(--teal);
+    border-radius:5px; padding:14px 16px; position:relative; overflow:hidden;
+  }
+  .stat::after{ content:""; position:absolute; left:0; bottom:0; width:100%; height:3px;
+    background:linear-gradient(90deg,var(--brass),var(--teal-lt)); }
+  .stat .v{ font-family:var(--d-serif); font-weight:700; font-size:38px; color:var(--brass-lt); line-height:1; }
+  .stat .k{ font:700 9px var(--d-mono); letter-spacing:.18em; text-transform:uppercase; color:var(--teal-lt); margin-top:7px; }
+
+  /* ── SONAR SECTION ── */
+  .s-sonar{ background:radial-gradient(ellipse at 50% 0%, #0d2f33, var(--deep) 70%); padding:54px 0 64px; }
+  .sonar-grid{ display:grid; grid-template-columns:1fr 320px; gap:34px; align-items:start; }
+  @media (max-width:880px){ .sonar-grid{ grid-template-columns:1fr; } }
+  .scope{
+    position:relative; width:100%; max-width:480px; aspect-ratio:1; margin:0 auto;
+    border-radius:50%; background:radial-gradient(circle, #06231f 0%, #041713 78%);
+    border:9px solid; border-color:var(--brass-lt) var(--brass-dk) var(--brass-dk) var(--brass-lt);
+    box-shadow:0 16px 44px rgba(0,0,0,.6), inset 0 0 50px rgba(0,0,0,.8);
+    overflow:hidden;
+  }
+  .scope .rings{ position:absolute; inset:0; }
+  .scope .rings i{ position:absolute; border:1px solid rgba(95,214,160,.22); border-radius:50%; }
+  .scope .rings i:nth-child(1){ inset:12%; } .scope .rings i:nth-child(2){ inset:26%; }
+  .scope .rings i:nth-child(3){ inset:40%; }
+  .scope .cross{ position:absolute; background:rgba(95,214,160,.18); }
+  .scope .cross.h{ left:0; right:0; top:50%; height:1px; }
+  .scope .cross.v{ top:0; bottom:0; left:50%; width:1px; }
+  .scope .sweep{
+    position:absolute; inset:0; border-radius:50%;
+    background:conic-gradient(from 0deg, rgba(95,214,160,.42) 0deg, rgba(95,214,160,.10) 26deg, transparent 60deg);
+  }
+  .scope .blip{
+    position:absolute; width:9px; height:9px; margin:-4.5px; border-radius:50%;
+    background:var(--radar); box-shadow:0 0 6px var(--radar);
+    opacity:.32; transition:opacity .25s;
+  }
+  .scope .blip.lit{ opacity:1; transform:scale(1.7); box-shadow:0 0 14px 3px var(--radar); }
+  .scope .blip.hidden{ opacity:0 !important; pointer-events:none; }
+  .scope .hub{ position:absolute; left:50%; top:50%; width:14px; height:14px; margin:-7px;
+    border-radius:50%; background:radial-gradient(var(--brass-lt),var(--brass-dk)); border:1px solid #000; }
+  .scope .readout{
+    position:absolute; left:14px; bottom:14px; font:700 10px var(--d-mono); color:var(--radar);
+    letter-spacing:.06em; text-shadow:0 0 8px rgba(95,214,160,.6);
+  }
+
+  .flag-filters{ display:flex; flex-direction:column; gap:7px; }
+  .flag-btn{
+    display:flex; align-items:center; gap:11px; width:100%; min-height:var(--target-min);
+    padding:6px 12px; cursor:pointer; color:var(--ink); font:inherit; text-align:left;
+    background:rgba(7,32,43,.6); border:1px solid var(--teal); border-radius:6px;
+    transition:transform .1s ease, background .15s, border-color .15s;
+  }
+  .flag-btn:hover{ transform:translateX(3px); background:rgba(20,59,79,.85); border-color:var(--teal-lt); }
+  .flag-btn .pennant{
+    width:30px; height:20px; flex:0 0 30px;
+    clip-path:polygon(0 0,100% 50%,0 100%);
+  }
+  .flag-btn .fl-name{ font:700 12.5px/1.25 var(--d-body); color:var(--ink); min-width:0; flex:1; }
+  .flag-btn .fl-ct{ margin-left:auto; font:700 12px/1 var(--d-mono); color:var(--teal-lt); }
+  .flag-btn .fl-off{ margin-left:auto; display:none; align-items:center; gap:5px;
+    font:700 10px/1 var(--d-mono); letter-spacing:.06em; color:#9bb0b6; }
+  /* off-state: struck label + OFF marker — NOT opacity */
+  .flag-btn[aria-pressed="false"] .fl-name{ text-decoration:line-through; color:var(--filter-off); }
+  .flag-btn[aria-pressed="false"] .pennant{ opacity:.55; }
+  .flag-btn[aria-pressed="false"] .fl-ct{ display:none; }
+  .flag-btn[aria-pressed="false"] .fl-off{ display:flex; }
+
+  /* ── WATER-FILL THEME BARS ── */
+  .s-themes{ background:linear-gradient(180deg,var(--deep),var(--abyss)); padding:54px 0 60px; }
+  .wbar{ margin-bottom:13px; }
+  .wbar .wb-head{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:5px; }
+  .wbar .wb-name{ font:600 14px/1 var(--d-serif); color:var(--cream); }
+  .wbar .wb-val{ font:700 12px var(--d-mono); color:var(--brass-lt); }
+  .wbar .wb-track{
+    position:relative; height:30px; border-radius:5px; overflow:hidden;
+    background:rgba(7,32,43,.85); border:1px solid var(--teal);
+  }
+  .wbar .wb-fill{
+    position:absolute; left:0; top:0; bottom:0; width:0;
+    background:linear-gradient(180deg,var(--teal-lt),var(--teal));
+    transition:width 1.7s cubic-bezier(.3,.8,.3,1);
+    overflow:hidden;
+  }
+  .wbar .wb-fill::before,.wbar .wb-fill::after{
+    content:""; position:absolute; top:-7px; right:-60px; width:200%; height:14px;
+    background:radial-gradient(circle at 10px 10px, transparent 9px, var(--teal-lt) 9px);
+    background-size:20px 14px;
+  }
+  .wbar .wb-fill::before{ animation:swell 2.6s linear infinite; }
+  .wbar .wb-fill::after{ opacity:.5; animation:swell 1.7s linear infinite reverse; }
+  @keyframes swell{ to{ transform:translateX(-20px);} }
+
+  /* ── PORTHOLES — GROUP PICKS ── */
+  .s-crew{ background:radial-gradient(ellipse at 50% 0%,#0d2f33,var(--deep) 70%); padding:54px 0 62px; }
+  .portholes{ display:flex; gap:22px; justify-content:center; flex-wrap:wrap; }
+  .porthole{ width:170px; text-align:center; }
+  .ph-glass{
+    width:150px; height:150px; border-radius:50%; margin:0 auto; position:relative;
+    background:radial-gradient(circle at 36% 30%, #2f7c8a, #08222c 72%);
+    border:9px solid; border-color:var(--brass-lt) var(--brass-dk) var(--brass-dk) var(--brass-lt);
+    box-shadow:0 12px 26px rgba(0,0,0,.5), inset 0 0 26px rgba(0,0,0,.7);
+    overflow:hidden; display:flex; align-items:center; justify-content:center;
+  }
+  .ph-glass .water{
+    position:absolute; left:-30%; right:-30%; bottom:-10%; height:62%;
+    background:linear-gradient(180deg,rgba(63,160,173,.6),rgba(28,107,126,.85));
+    border-radius:44% 46% 0 0;
+    animation:slosh 6s ease-in-out infinite;
+  }
+  @keyframes slosh{ 0%,100%{ transform:rotate(-4deg) translateY(4px);} 50%{ transform:rotate(4deg) translateY(-3px);} }
+  .ph-glass .initials{
+    position:relative; z-index:2; font-family:var(--d-serif); font-weight:900; font-size:46px;
+    color:var(--cream); text-shadow:0 2px 10px rgba(0,0,0,.6);
+  }
+  .ph-glass .glint{ position:absolute; top:14px; left:24px; width:42px; height:26px; border-radius:50%;
+    background:linear-gradient(135deg,rgba(255,255,255,.4),transparent 70%); z-index:3; }
+  .ph-glass .screw{ position:absolute; width:9px; height:9px; border-radius:50%;
+    background:radial-gradient(var(--brass-lt),var(--brass-dk)); z-index:4; }
+  .ph-name{ font-family:var(--d-serif); font-weight:600; font-size:17px; color:var(--cream); margin-top:11px; }
+  .ph-room{ font:700 9px var(--d-mono); letter-spacing:.12em; text-transform:uppercase; color:var(--teal-lt); margin-top:3px; }
+
+  .bell-wrap{ text-align:center; margin-top:30px; }
+  .bell{ display:inline-block; transform-origin:top center; animation:ring 5s ease-in-out infinite; }
+  @keyframes ring{ 0%,72%,100%{ transform:rotate(0);} 78%{ transform:rotate(13deg);} 84%{ transform:rotate(-10deg);} 90%{ transform:rotate(6deg);} 95%{ transform:rotate(-3deg);} }
+  .bell-note{ font:italic 13px/1.5 var(--d-serif); color:var(--ink-dim); margin-top:6px; }
+
+  /* ── SHIP GAUGES ── */
+  .s-ship{ background:linear-gradient(180deg,var(--abyss),var(--sea)); padding:54px 0 64px; }
+  .dials{ display:flex; gap:22px; justify-content:center; flex-wrap:wrap; }
+  .dial{ width:200px; text-align:center; }
+  .dial .face{ width:180px; height:104px; margin:0 auto; position:relative; overflow:hidden; }
+  .dial svg{ display:block; }
+  .dial .needle{
+    position:absolute; left:50%; bottom:6px; width:3px; height:78px; background:linear-gradient(var(--sig-red),#6a1812);
+    transform-origin:bottom center; transform:rotate(-90deg);
+    transition:transform 1.8s cubic-bezier(.3,1.3,.4,1); border-radius:2px;
+  }
+  .dial .hub{ position:absolute; left:50%; bottom:0; width:18px; height:18px; margin-left:-9px;
+    border-radius:50%; background:radial-gradient(var(--brass-lt),var(--brass-dk)); border:1px solid #000; }
+  .dial .v{ font-family:var(--d-serif); font-weight:700; font-size:26px; color:var(--brass-lt); margin-top:4px; }
+  .dial .k{ font:700 9px var(--d-mono); letter-spacing:.14em; text-transform:uppercase; color:var(--teal-lt); margin-top:2px; }
+
+  .plimsoll{ max-width:240px; margin:30px auto 0; }
+  .plimsoll .pl-ring{ width:54px; height:54px; border-radius:50%; border:4px solid var(--cream); margin:0 auto; position:relative; }
+  .plimsoll .pl-ring::after{ content:""; position:absolute; left:-22px; right:-22px; top:50%; height:4px;
+    margin-top:-2px; background:var(--cream); }
+  .plimsoll .pl-cap{ text-align:center; font:700 9px var(--d-mono); letter-spacing:.16em;
+    text-transform:uppercase; color:var(--ink-dim); margin-top:10px; }
+
+  /* ── FOOTER ── */
+  footer{ background:var(--deep); text-align:center; padding:46px 28px 40px; position:relative; }
+  .anchor-drop{ display:inline-block; animation:adrop 6s ease-in-out infinite; transform-origin:top center; }
+  @keyframes adrop{ 0%,100%{ transform:translateY(0) rotate(-4deg);} 50%{ transform:translateY(9px) rotate(4deg);} }
+  .foot-title{ font-family:var(--d-serif); font-weight:700; font-size:22px; color:var(--cream); margin:14px 0 6px; }
+  .foot-sub{ font:700 9.5px var(--d-mono); letter-spacing:.2em; text-transform:uppercase; color:var(--brass); }
+  .foot-note{ font:italic 13px/1.6 var(--d-serif); color:var(--ink-dim); max-width:560px; margin:14px auto 0; }
+  .knot{ display:inline-block; width:22px; height:22px; border-radius:50%;
+    border:3px solid var(--rope); border-right-color:var(--rope-dk); border-bottom-color:var(--rope-dk); }
+
+  /* ── RESPONSIVE — small phones ── */
+  @media (max-width:600px){
+    .countdown{ gap:12px; }
+    .gauge{ width:96px; height:96px; border-width:5px; }
+    .gauge .num{ font-size:30px; }
+    .cd-colon{ font-size:26px; }
+    .dial{ width:160px; }
+    .sec-title{ font-size:26px; }
+  }
+  @media (max-width:420px){
+    /* decorative & overlapping the hero title at this width — both already aria-hidden */
+    .lighthouse,.compass{ display:none; }
+  }
+</style>
+</head>
+<body>
+
+<a class="skip" href="#chart">Skip to the voyage chart</a>
+
+<!-- ── UTILITY BAR — motion toggle, early in DOM & tab order ── -->
+<div class="toolbar">
+  <button class="mtog" id="motionToggle" type="button" aria-pressed="true">
+    <span class="track" aria-hidden="true"></span><span class="ml">Animation on</span>
+  </button>
+</div>
+
+<!-- ░░ SIGNAL-FLAG BUNTING (decorative) ░░ -->
+<div class="bunting" aria-hidden="true">
+  <div class="flag bf-1" style="animation-delay:-.2s"><i></i></div>
+  <div class="flag bf-2" style="animation-delay:-.6s"><i></i></div>
+  <div class="flag bf-3" style="animation-delay:-1.0s"><i></i></div>
+  <div class="flag bf-4" style="animation-delay:-1.4s"><i></i></div>
+  <div class="flag bf-5" style="animation-delay:-1.8s"><i></i></div>
+  <div class="flag bf-6" style="animation-delay:-2.2s"><i></i></div>
+  <div class="flag bf-7" style="animation-delay:-2.6s"><i></i></div>
+  <div class="flag bf-8" style="animation-delay:-3.0s"><i></i></div>
+  <div class="flag bf-1" style="animation-delay:-.4s"><i></i></div>
+  <div class="flag bf-4" style="animation-delay:-.9s"><i></i></div>
+  <div class="flag bf-2" style="animation-delay:-1.5s"><i></i></div>
+  <div class="flag bf-6" style="animation-delay:-2.1s"><i></i></div>
+</div>
+
+<main>
+
+<!-- ░░ HERO ░░ -->
+<section class="hero" aria-labelledby="heroH">
+  <div class="hero-stars" id="stars" aria-hidden="true"></div>
+
+  <div class="lighthouse" aria-hidden="true">
+    <div class="lh-beam"></div>
+    <div class="lh-tower"></div>
+    <div class="lh-lamp"></div>
+  </div>
+
+  <div class="compass" aria-hidden="true">
+    <div class="ring"></div>
+    <span class="pt n">N</span><span class="pt s">S</span><span class="pt e">E</span><span class="pt w">W</span>
+    <div class="needle"></div>
+  </div>
+
+  <div class="hero-inner">
+    <div class="hero-eyebrow">&#9875; Holland America Line · Booking 4LMNGG</div>
+    <h1 class="hero-title" id="heroH">Canada &amp; New England<em>aboard the ms Zuiderdam</em></h1>
+    <p class="hero-route">
+      <span>&#127464;&#127462; Qu&eacute;bec City</span><span class="dot" aria-hidden="true"></span>
+      <span>the St. Lawrence</span><span class="dot" aria-hidden="true"></span>
+      <span>&#127482;&#127480; Boston</span>
+    </p>
+    <div class="countdown" id="cd">
+      <div class="gauge">
+        <span class="screw tl"></span><span class="screw tr"></span><span class="screw bl"></span><span class="screw br"></span>
+        <div class="num" id="cd-d" aria-live="polite">&mdash;</div><div class="lbl">Days</div>
+      </div>
+      <div class="cd-colon" aria-hidden="true">:</div>
+      <div class="gauge">
+        <span class="screw tl"></span><span class="screw tr"></span><span class="screw bl"></span><span class="screw br"></span>
+        <div class="num" id="cd-h">&mdash;</div><div class="lbl">Hours</div>
+      </div>
+      <div class="cd-colon" aria-hidden="true">:</div>
+      <div class="gauge">
+        <span class="screw tl"></span><span class="screw tr"></span><span class="screw bl"></span><span class="screw br"></span>
+        <div class="num" id="cd-m">&mdash;</div><div class="lbl">Minutes</div>
+      </div>
+    </div>
+    <div style="font:700 9px var(--d-mono);letter-spacing:.2em;text-transform:uppercase;color:var(--ink-dim);margin-top:14px;">
+      Until the gangway lifts &mdash; departs <time datetime="2026-06-13">13 June 2026</time>
+    </div>
+  </div>
+
+  <svg class="hero-ship" viewBox="0 0 200 116" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <rect x="108" y="20" width="17" height="32" rx="3" fill="#0b2a3a"/>
+    <rect x="108" y="26" width="17" height="7" fill="#d8392b"/>
+    <rect x="132" y="14" width="17" height="38" rx="3" fill="#0b2a3a"/>
+    <rect x="132" y="20" width="17" height="7" fill="#d8392b"/>
+    <line x1="60" y1="52" x2="60" y2="8" stroke="#0b2a3a" stroke-width="2.4"/>
+    <path d="M60 9 L84 15 L60 21 Z" fill="#d8392b"/>
+    <rect x="46" y="50" width="120" height="20" rx="3" fill="#f1e7cf"/>
+    <rect x="58" y="38" width="92" height="14" rx="3" fill="#f1e7cf"/>
+    <rect x="72" y="28" width="58" height="12" rx="3" fill="#f1e7cf"/>
+    <g fill="#1c6b7e">
+      <rect x="52" y="56" width="6" height="6" rx="1"/><rect x="64" y="56" width="6" height="6" rx="1"/>
+      <rect x="76" y="56" width="6" height="6" rx="1"/><rect x="88" y="56" width="6" height="6" rx="1"/>
+      <rect x="100" y="56" width="6" height="6" rx="1"/><rect x="112" y="56" width="6" height="6" rx="1"/>
+      <rect x="124" y="56" width="6" height="6" rx="1"/><rect x="136" y="56" width="6" height="6" rx="1"/>
+      <rect x="148" y="56" width="6" height="6" rx="1"/>
+      <rect x="66" y="42" width="6" height="6" rx="1"/><rect x="80" y="42" width="6" height="6" rx="1"/>
+      <rect x="94" y="42" width="6" height="6" rx="1"/><rect x="108" y="42" width="6" height="6" rx="1"/>
+      <rect x="122" y="42" width="6" height="6" rx="1"/><rect x="136" y="42" width="6" height="6" rx="1"/>
+    </g>
+    <path d="M30 70 L180 70 L168 96 Q150 104 100 104 Q50 104 40 96 Z" fill="#0b2a3a"/>
+    <path d="M30 70 L180 70 L178 78 L31 78 Z" fill="#d8392b"/>
+    <text x="104" y="92" font-family="Fraunces,serif" font-weight="700" font-size="11" fill="#e6c477" text-anchor="middle" font-style="italic">Zuiderdam</text>
+  </svg>
+
+  <div class="hero-sea" aria-hidden="true">
+    <svg class="waves" viewBox="0 0 480 130" preserveAspectRatio="none" style="height:200px" xmlns="http://www.w3.org/2000/svg">
+      <path class="w3" d="M0 60 q60 -22 120 0 t120 0 t120 0 t120 0 t120 0 V130 H0 Z" fill="#103b4f"/>
+      <path class="w2" d="M0 78 q60 -20 120 0 t120 0 t120 0 t120 0 t120 0 V130 H0 Z" fill="#0d3346"/>
+      <path class="w1" d="M0 96 q60 -18 120 0 t120 0 t120 0 t120 0 t120 0 V130 H0 Z" fill="#0b2a3a"/>
+    </svg>
+  </div>
+
+  <div class="scroll-cue" aria-hidden="true">Chart a course<span class="arr"></span></div>
+</section>
+
+<div class="rope" aria-hidden="true"></div>
+
+<!-- ░░ THE CHART — ANIMATED ROUTE ░░ -->
+<section class="s-chart" id="chart" aria-labelledby="chartH">
+  <div class="wrap">
+    <div class="sec-kicker">Plot the Passage</div>
+    <h2 class="sec-title" id="chartH">The course, Qu&eacute;bec to Boston</h2>
+    <div class="chart-panel rv" id="chartPanel">
+      <span class="corner tl" aria-hidden="true"></span><span class="corner tr" aria-hidden="true"></span>
+      <span class="corner bl" aria-hidden="true"></span><span class="corner br" aria-hidden="true"></span>
+      <svg class="chart-svg" viewBox="0 0 1040 380" xmlns="http://www.w3.org/2000/svg"
+           role="img" aria-label="Voyage route map. The ms Zuiderdam sails in order from Quebec City to Charlottetown, Sydney, Halifax, Portland, and Boston, with two days cruising the St. Lawrence River and Gulf between Quebec City and Charlottetown.">
+        <path d="M-20 -20 H1060 V70 Q900 130 720 95 Q540 60 360 110 Q180 160 -20 110 Z" fill="#e3d6ad" stroke="#b89a5e" stroke-width="1.5"/>
+        <path d="M-20 380 H440 Q470 300 380 250 Q250 220 120 290 Q20 330 -20 300 Z" fill="#e3d6ad" stroke="#b89a5e" stroke-width="1.5"/>
+        <path d="M1040 380 H760 Q820 300 900 300 Q1000 300 1040 250 Z" fill="#e3d6ad" stroke="#b89a5e" stroke-width="1.5"/>
+        <g font-family="Space Mono,monospace" font-size="10" fill="#7a93a0">
+          <text x="320" y="230">42</text><text x="480" y="280">67</text>
+          <text x="650" y="160">88</text><text x="840" y="300">51</text>
+        </g>
+        <g transform="translate(620 300)">
+          <path d="M0 0 Q20 -14 40 0 Q44 8 38 12 Q20 20 2 12 Q-4 8 0 0 Z" fill="#2a4a5a"/>
+          <path d="M40 0 Q50 -8 52 2 Q48 6 40 4 Z" fill="#2a4a5a"/>
+          <circle cx="10" cy="3" r="1.6" fill="#e3d6ad"/>
+          <path d="M14 -10 Q12 -22 18 -26 M14 -10 Q18 -22 24 -24" stroke="#7fb0c0" stroke-width="2" fill="none" stroke-linecap="round"/>
+        </g>
+        <path class="route-guide" d="M 90 250 C 200 150, 360 120, 520 175 S 760 280, 940 200"/>
+        <path class="route-path"  d="M 90 250 C 200 150, 360 120, 520 175 S 760 280, 940 200"/>
+        <g class="route-ship">
+          <ellipse cx="0" cy="9" rx="15" ry="4" fill="#1c6b7e" opacity=".4"/>
+          <path d="M-11 1 L11 1 L8 7 Q0 9 -8 7 Z" fill="#0b2a3a"/>
+          <rect x="-6" y="-4" width="12" height="6" rx="1" fill="#f1e7cf"/>
+          <rect x="-1.5" y="-10" width="3.5" height="7" fill="#d8392b"/>
+        </g>
+        <g>
+          <g class="port-pin">
+            <circle cx="90" cy="250" r="8" fill="#0b2a3a" stroke="#c89b4a" stroke-width="2.4"/>
+            <circle cx="90" cy="250" r="3" fill="#d8392b"/>
+            <text x="90" y="228" text-anchor="middle" font-family="Space Mono,monospace" font-weight="700" font-size="17" fill="#163a4a">&#127809; Qu&eacute;bec City</text>
+            <text x="90" y="278" text-anchor="middle" font-family="Space Mono,monospace" font-size="13" fill="#163a4a">EMBARK · DAY 1</text>
+          </g>
+          <g class="port-pin">
+            <circle cx="255" cy="165" r="7" fill="#0b2a3a" stroke="#c89b4a" stroke-width="2.2"/>
+            <circle cx="255" cy="165" r="2.6" fill="#f1e7cf"/>
+            <text x="255" y="146" text-anchor="middle" font-family="Space Mono,monospace" font-weight="700" font-size="16" fill="#163a4a">Charlottetown</text>
+          </g>
+          <g class="port-pin">
+            <circle cx="430" cy="133" r="7" fill="#0b2a3a" stroke="#c89b4a" stroke-width="2.2"/>
+            <circle cx="430" cy="133" r="2.6" fill="#f1e7cf"/>
+            <text x="430" y="114" text-anchor="middle" font-family="Space Mono,monospace" font-weight="700" font-size="16" fill="#163a4a">Sydney</text>
+          </g>
+          <g class="port-pin">
+            <circle cx="560" cy="183" r="7" fill="#0b2a3a" stroke="#c89b4a" stroke-width="2.2"/>
+            <circle cx="560" cy="183" r="2.6" fill="#f1e7cf"/>
+            <text x="560" y="209" text-anchor="middle" font-family="Space Mono,monospace" font-weight="700" font-size="16" fill="#163a4a">Halifax</text>
+          </g>
+          <g class="port-pin">
+            <circle cx="775" cy="252" r="7" fill="#0b2a3a" stroke="#c89b4a" stroke-width="2.2"/>
+            <circle cx="775" cy="252" r="2.6" fill="#f1e7cf"/>
+            <text x="775" y="278" text-anchor="middle" font-family="Space Mono,monospace" font-weight="700" font-size="16" fill="#163a4a">Portland</text>
+          </g>
+          <g class="port-pin">
+            <circle cx="940" cy="200" r="8" fill="#0b2a3a" stroke="#c89b4a" stroke-width="2.4"/>
+            <circle cx="940" cy="200" r="3" fill="#d8392b"/>
+            <text x="940" y="178" text-anchor="middle" font-family="Space Mono,monospace" font-weight="700" font-size="17" fill="#163a4a">&#129438; Boston</text>
+            <text x="940" y="228" text-anchor="middle" font-family="Space Mono,monospace" font-size="13" fill="#163a4a">DISEMBARK · DAY 8</text>
+          </g>
+        </g>
+        <g transform="translate(965 80)" opacity=".9">
+          <circle r="34" fill="none" stroke="#b89a5e" stroke-width="1.5"/>
+          <circle r="26" fill="none" stroke="#b89a5e" stroke-width="1"/>
+          <path d="M0 -32 L7 0 L0 32 L-7 0 Z" fill="#163a4a"/>
+          <path d="M-32 0 L0 -7 L32 0 L0 7 Z" fill="#c89b4a"/>
+          <text x="0" y="-38" text-anchor="middle" font-family="Space Mono,monospace" font-weight="700" font-size="11" fill="#163a4a">N</text>
+        </g>
+        <g transform="translate(70 350)" font-family="Space Mono,monospace" font-size="9" fill="#5f7a82">
+          <rect x="0" y="0" width="40" height="5" fill="#163a4a"/>
+          <rect x="40" y="0" width="40" height="5" fill="none" stroke="#163a4a"/>
+          <text x="0" y="18">0</text><text x="68" y="18">200 nm</text>
+        </g>
+      </svg>
+      <div class="chart-stats">
+        <div class="stat"><div class="v" data-count="8">8</div><div class="k">Days, port to port</div></div>
+        <div class="stat"><div class="v" data-count="6">6</div><div class="k">Ports of call</div></div>
+        <div class="stat"><div class="v" data-count="2">2</div><div class="k">Scenic sea days</div></div>
+        <div class="stat"><div class="v" data-count="89">89</div><div class="k">Shore excursions</div></div>
+      </div>
+      <a class="cta ghost" href="index.html#itinerary">Open the full day-by-day itinerary &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<svg class="waves" viewBox="0 0 480 64" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" style="background:var(--deep)" aria-hidden="true">
+  <path class="w1" d="M0 30 q60 -16 120 0 t120 0 t120 0 t120 0 t120 0 V64 H0 Z" fill="#0d2f33"/>
+</svg>
+
+<!-- ░░ THE SONAR — EXCURSION SCOPE ░░ -->
+<section class="s-sonar" aria-labelledby="sonarH">
+  <div class="wrap">
+    <div class="sec-kicker">Sweep the Excursions</div>
+    <h2 class="sec-title" id="sonarH">All 89 shore excursions, on the scope</h2>
+    <p class="sec-intro">
+      Every contact is one of the voyage's 89 shore excursions. The sweep lights each as it
+      passes &mdash; raise or strike a signal flag to filter the scope by theme.
+    </p>
+    <div class="sonar-grid">
+      <div class="scope rv" id="scope" role="img"
+           aria-label="Sonar scope plotting all 89 shore excursions as contacts, grouped by theme.">
+        <div class="rings" aria-hidden="true"><i></i><i></i><i></i></div>
+        <div class="cross h" aria-hidden="true"></div><div class="cross v" aria-hidden="true"></div>
+        <div class="sweep" id="sweep" aria-hidden="true"></div>
+        <div class="hub" aria-hidden="true"></div>
+        <div class="readout" id="scopeReadout" aria-live="polite">CONTACTS · 89 / 89</div>
+      </div>
+      <div class="flag-filters" id="filters">
+        <button type="button" class="flag-btn" data-theme="history" aria-pressed="true" aria-label="History &amp; Heritage, 16 excursions">
+          <span class="pennant" style="background:#c89b4a" aria-hidden="true"></span><span class="fl-name">History &amp; Heritage</span><span class="fl-ct">16</span><span class="fl-off">&#9788; OFF</span></button>
+        <button type="button" class="flag-btn" data-theme="scenery" aria-pressed="true" aria-label="Scenery &amp; Views, 14 excursions">
+          <span class="pennant" style="background:#2f8a52" aria-hidden="true"></span><span class="fl-name">Scenery &amp; Views</span><span class="fl-ct">14</span><span class="fl-off">&#9788; OFF</span></button>
+        <button type="button" class="flag-btn" data-theme="wildlife" aria-pressed="true" aria-label="Wildlife &amp; Nature, 11 excursions">
+          <span class="pennant" style="background:#3fa0ad" aria-hidden="true"></span><span class="fl-name">Wildlife &amp; Nature</span><span class="fl-ct">11</span><span class="fl-off">&#9788; OFF</span></button>
+        <button type="button" class="flag-btn" data-theme="food" aria-pressed="true" aria-label="Food &amp; Drink, 13 excursions">
+          <span class="pennant" style="background:#d8392b" aria-hidden="true"></span><span class="fl-name">Food &amp; Drink</span><span class="fl-ct">13</span><span class="fl-off">&#9788; OFF</span></button>
+        <button type="button" class="flag-btn" data-theme="culture" aria-pressed="true" aria-label="Culture &amp; Music, 12 excursions">
+          <span class="pennant" style="background:#1f5fa8" aria-hidden="true"></span><span class="fl-name">Culture &amp; Music</span><span class="fl-ct">12</span><span class="fl-off">&#9788; OFF</span></button>
+        <button type="button" class="flag-btn" data-theme="active" aria-pressed="true" aria-label="Active &amp; Walking, 13 excursions">
+          <span class="pennant" style="background:#efb228" aria-hidden="true"></span><span class="fl-name">Active &amp; Walking</span><span class="fl-ct">13</span><span class="fl-off">&#9788; OFF</span></button>
+        <button type="button" class="flag-btn" data-theme="water" aria-pressed="true" aria-label="On the Water, 10 excursions">
+          <span class="pennant" style="background:#5fd6a0" aria-hidden="true"></span><span class="fl-name">On the Water</span><span class="fl-ct">10</span><span class="fl-off">&#9788; OFF</span></button>
+      </div>
+    </div>
+    <a class="cta" href="index.html#ports">Open the full Excursion Finder &rarr;</a>
+  </div>
+</section>
+
+<div class="rope" aria-hidden="true"></div>
+
+<!-- ░░ THE SOUNDINGS — THEME WATER BARS ░░ -->
+<section class="s-themes" aria-labelledby="themesH">
+  <div class="wrap">
+    <div class="sec-kicker">Take a Sounding</div>
+    <h2 class="sec-title" id="themesH">How the excursions break down</h2>
+    <p class="sec-intro">Depth of field by theme &mdash; each gauge floods to its share of the 89.</p>
+    <div class="rv" id="wbars">
+      <div class="wbar"><div class="wb-head"><span class="wb-name">History &amp; Heritage</span><span class="wb-val">16</span></div>
+        <div class="wb-track"><div class="wb-fill" data-pct="100"></div></div></div>
+      <div class="wbar"><div class="wb-head"><span class="wb-name">Scenery &amp; Views</span><span class="wb-val">14</span></div>
+        <div class="wb-track"><div class="wb-fill" data-pct="88"></div></div></div>
+      <div class="wbar"><div class="wb-head"><span class="wb-name">Food &amp; Drink</span><span class="wb-val">13</span></div>
+        <div class="wb-track"><div class="wb-fill" data-pct="81"></div></div></div>
+      <div class="wbar"><div class="wb-head"><span class="wb-name">Active &amp; Walking</span><span class="wb-val">13</span></div>
+        <div class="wb-track"><div class="wb-fill" data-pct="81"></div></div></div>
+      <div class="wbar"><div class="wb-head"><span class="wb-name">Culture &amp; Music</span><span class="wb-val">12</span></div>
+        <div class="wb-track"><div class="wb-fill" data-pct="75"></div></div></div>
+      <div class="wbar"><div class="wb-head"><span class="wb-name">Wildlife &amp; Nature</span><span class="wb-val">11</span></div>
+        <div class="wb-track"><div class="wb-fill" data-pct="69"></div></div></div>
+      <div class="wbar"><div class="wb-head"><span class="wb-name">On the Water</span><span class="wb-val">10</span></div>
+        <div class="wb-track"><div class="wb-fill" data-pct="63"></div></div></div>
+    </div>
+  </div>
+</section>
+
+<svg class="waves" viewBox="0 0 480 64" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" style="background:var(--abyss)" aria-hidden="true">
+  <path class="w2" d="M0 34 q60 -16 120 0 t120 0 t120 0 t120 0 t120 0 V64 H0 Z" fill="#0d2f33"/>
+</svg>
+
+<!-- ░░ THE CREW — GROUP PICKS PORTHOLES ░░ -->
+<section class="s-crew" aria-labelledby="crewH">
+  <div class="wrap">
+    <div class="sec-kicker">Muster the Crew</div>
+    <h2 class="sec-title" id="crewH">Five travellers, three staterooms</h2>
+    <p class="sec-intro">
+      Each porthole is one of the party. The Group Picks board in the hub syncs every
+      shortlist across all of their phones &mdash; a tick on one appears on them all.
+    </p>
+    <div class="portholes rv" id="crew">
+      <div class="porthole">
+        <div class="ph-glass">
+          <div class="water" aria-hidden="true"></div><div class="glint" aria-hidden="true"></div><div class="initials">JM</div>
+          <span class="screw" style="top:10px;left:18px"></span><span class="screw" style="top:10px;right:18px"></span>
+          <span class="screw" style="bottom:10px;left:18px"></span><span class="screw" style="bottom:10px;right:18px"></span>
+        </div>
+        <div class="ph-name">Jett</div><div class="ph-room">Stateroom 1 · 4LMNGG</div>
+      </div>
+      <div class="porthole">
+        <div class="ph-glass">
+          <div class="water" aria-hidden="true"></div><div class="glint" aria-hidden="true"></div><div class="initials">LB</div>
+          <span class="screw" style="top:10px;left:18px"></span><span class="screw" style="top:10px;right:18px"></span>
+          <span class="screw" style="bottom:10px;left:18px"></span><span class="screw" style="bottom:10px;right:18px"></span>
+        </div>
+        <div class="ph-name">Laura</div><div class="ph-room">Stateroom 1 · 4LMNGG</div>
+      </div>
+      <div class="porthole">
+        <div class="ph-glass">
+          <div class="water" aria-hidden="true"></div><div class="glint" aria-hidden="true"></div><div class="initials">SA</div>
+          <span class="screw" style="top:10px;left:18px"></span><span class="screw" style="top:10px;right:18px"></span>
+          <span class="screw" style="bottom:10px;left:18px"></span><span class="screw" style="bottom:10px;right:18px"></span>
+        </div>
+        <div class="ph-name">Sandra</div><div class="ph-room">Stateroom 2 · 4LMNGC</div>
+      </div>
+      <div class="porthole">
+        <div class="ph-glass">
+          <div class="water" aria-hidden="true"></div><div class="glint" aria-hidden="true"></div><div class="initials">BE</div>
+          <span class="screw" style="top:10px;left:18px"></span><span class="screw" style="top:10px;right:18px"></span>
+          <span class="screw" style="bottom:10px;left:18px"></span><span class="screw" style="bottom:10px;right:18px"></span>
+        </div>
+        <div class="ph-name">Becca</div><div class="ph-room">Stateroom 2 · 4LMNGC</div>
+      </div>
+      <div class="porthole">
+        <div class="ph-glass">
+          <div class="water" aria-hidden="true"></div><div class="glint" aria-hidden="true"></div><div class="initials">KA</div>
+          <span class="screw" style="top:10px;left:18px"></span><span class="screw" style="top:10px;right:18px"></span>
+          <span class="screw" style="bottom:10px;left:18px"></span><span class="screw" style="bottom:10px;right:18px"></span>
+        </div>
+        <div class="ph-name">Karen</div><div class="ph-room">Stateroom 3 · 4LMNGT</div>
+      </div>
+    </div>
+    <div class="bell-wrap rv">
+      <svg width="48" height="52" viewBox="0 0 46 52" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <g class="bell">
+          <rect x="21" y="3" width="4" height="6" rx="2" fill="#8f6a2c"/>
+          <path d="M9 36 Q9 12 23 10 Q37 12 37 36 Q37 39 34 39 L12 39 Q9 39 9 36 Z" fill="#e6c477" stroke="#8f6a2c" stroke-width="1.5"/>
+          <rect x="7" y="38" width="32" height="4.5" rx="2.2" fill="#c89b4a" stroke="#8f6a2c" stroke-width="1"/>
+          <circle cx="23" cy="46" r="3.6" fill="#8f6a2c"/>
+        </g>
+      </svg>
+      <div class="bell-note">Find where the rooms already agree &mdash; and book those departures together.</div>
+      <a class="cta" href="index.html#ports" style="margin-top:14px;">Open the live Group Picks board &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<div class="rope" aria-hidden="true"></div>
+
+<!-- ░░ THE SHIP — INSTRUMENT DIALS ░░ -->
+<section class="s-ship" aria-labelledby="shipH">
+  <div class="wrap">
+    <div class="sec-kicker">Read the Instruments</div>
+    <h2 class="sec-title" id="shipH">ms Zuiderdam, by the dial</h2>
+    <div class="dials rv" id="dials">
+      <div class="dial">
+        <div class="face">
+          <svg viewBox="0 0 180 108" width="180" height="108" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M14 102 A76 76 0 0 1 166 102" fill="none" stroke="#07202b" stroke-width="11" stroke-linecap="round"/>
+            <path d="M14 102 A76 76 0 0 1 166 102" fill="none" stroke="#1c6b7e" stroke-width="3.5"/>
+          </svg>
+          <div class="needle" data-angle="51" aria-hidden="true"></div><div class="hub" aria-hidden="true"></div>
+        </div>
+        <div class="v" data-count="1964">1,964</div><div class="k">Guests aboard</div>
+      </div>
+      <div class="dial">
+        <div class="face">
+          <svg viewBox="0 0 180 108" width="180" height="108" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M14 102 A76 76 0 0 1 166 102" fill="none" stroke="#07202b" stroke-width="11" stroke-linecap="round"/>
+            <path d="M14 102 A76 76 0 0 1 166 102" fill="none" stroke="#1c6b7e" stroke-width="3.5"/>
+          </svg>
+          <div class="needle" data-angle="42" aria-hidden="true"></div><div class="hub" aria-hidden="true"></div>
+        </div>
+        <div class="v" data-count="11">11</div><div class="k">Passenger decks</div>
+      </div>
+      <div class="dial">
+        <div class="face">
+          <svg viewBox="0 0 180 108" width="180" height="108" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M14 102 A76 76 0 0 1 166 102" fill="none" stroke="#07202b" stroke-width="11" stroke-linecap="round"/>
+            <path d="M14 102 A76 76 0 0 1 166 102" fill="none" stroke="#1c6b7e" stroke-width="3.5"/>
+          </svg>
+          <div class="needle" data-angle="57" aria-hidden="true"></div><div class="hub" aria-hidden="true"></div>
+        </div>
+        <div class="v" data-count="285">285</div><div class="k">Metres length overall</div>
+      </div>
+      <div class="dial">
+        <div class="face">
+          <svg viewBox="0 0 180 108" width="180" height="108" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M14 102 A76 76 0 0 1 166 102" fill="none" stroke="#07202b" stroke-width="11" stroke-linecap="round"/>
+            <path d="M14 102 A76 76 0 0 1 166 102" fill="none" stroke="#1c6b7e" stroke-width="3.5"/>
+          </svg>
+          <div class="needle" data-angle="58" aria-hidden="true"></div><div class="hub" aria-hidden="true"></div>
+        </div>
+        <div class="v" data-count="82">82</div><div class="k">Thousand gross tons</div>
+      </div>
+    </div>
+    <div class="plimsoll rv">
+      <div class="pl-ring" aria-hidden="true"></div>
+      <div class="pl-cap">Load line · Have-It-All package &mdash; 5 aboard, 3 rooms, $100/guest credit</div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<div class="rope" aria-hidden="true"></div>
+
+<!-- ░░ FOOTER ░░ -->
+<footer>
+  <svg class="anchor-drop" width="58" height="66" viewBox="0 0 58 66" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <circle cx="29" cy="9" r="6.5" fill="none" stroke="#c89b4a" stroke-width="3.4"/>
+    <line x1="29" y1="15.5" x2="29" y2="54" stroke="#c89b4a" stroke-width="4.4"/>
+    <line x1="16" y1="24" x2="42" y2="24" stroke="#c89b4a" stroke-width="4.4" stroke-linecap="round"/>
+    <path d="M29 54 Q12 54 9 35 L3 40 M9 35 L14 41" stroke="#c89b4a" stroke-width="4.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M29 54 Q46 54 49 35 L55 40 M49 35 L44 41" stroke="#c89b4a" stroke-width="4.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+  <div class="foot-title">Bon Voyage</div>
+  <div class="foot-sub">ms Zuiderdam · 13&ndash;20 June 2026 · Booking 4LMNGG</div>
+  <p class="foot-note">A maritime instrument-panel front door for the Canada &amp; New England trip hub &mdash; every gauge, scope and chart reads the voyage's own data.</p>
+  <a class="cta" href="index.html" style="margin-top:18px;">Enter the full trip hub &rarr;</a>
+  <div style="margin-top:18px;display:flex;gap:9px;justify-content:center;" aria-hidden="true">
+    <span class="knot"></span><span class="knot"></span><span class="knot"></span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var osReduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var motionOff = osReduce;            /* effective motion state */
+
+  /* ── motion toggle (WCAG 2.2.2) ── */
+  var mtog = document.getElementById('motionToggle');
+  function applyMotion(){
+    document.body.classList.toggle('motion-off', motionOff);
+    if(mtog){
+      mtog.setAttribute('aria-pressed', String(!motionOff));
+      mtog.querySelector('.ml').textContent = motionOff ? 'Animation off' : 'Animation on';
+    }
+  }
+  applyMotion();
+  if(mtog){
+    mtog.addEventListener('click', function(){
+      motionOff = !motionOff;
+      applyMotion();
+      if(motionOff) stopSonar(); else startSonar();
+    });
+  }
+
+  /* ── hero stars ── */
+  var stars = document.getElementById('stars');
+  if (stars) {
+    for (var i=0;i<26;i++){
+      var s=document.createElement('i');
+      s.style.left=(Math.random()*100)+'%';
+      s.style.top=(Math.random()*64)+'%';
+      s.style.animationDelay=(-Math.random()*4)+'s';
+      stars.appendChild(s);
+    }
+  }
+
+  /* ── countdown to 13 June 2026 ── */
+  function pad(n){ return (n<10?'0':'')+n; }
+  function tick(){
+    var sail=new Date(2026,5,13,0,0,0), now=new Date(), diff=sail-now;
+    var sailed = diff<0;
+    if(sailed) diff=0;
+    var d=Math.floor(diff/864e5), h=Math.floor(diff/36e5)%24, m=Math.floor(diff/6e4)%60;
+    var hEl=document.getElementById('cd-h'), mEl=document.getElementById('cd-m'),
+        dEl=document.getElementById('cd-d');
+    if(hEl) hEl.textContent=pad(h);
+    if(mEl) mEl.textContent=pad(m);
+    if(sailed && dEl){ dEl.textContent='⚓'; }   /* Bon Voyage — now under way */
+    return { d:d, sailed:sailed };
+  }
+  var cd=tick();
+  setInterval(tick,30000);
+
+  /* ── count-up helper ── */
+  function fmt(n){ return n>=1000 ? n.toLocaleString('en-US') : (''+n); }
+  function countUp(el,target,dur){
+    if(motionOff){ el.textContent=fmt(target); return; }
+    var t0=null;
+    function step(ts){
+      if(!t0) t0=ts;
+      var p=Math.min((ts-t0)/dur,1);
+      var e=1-Math.pow(1-p,3);
+      el.textContent=fmt(Math.round(target*e));
+      if(p<1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  var cdD=document.getElementById('cd-d');
+  if(cdD && !cd.sailed) countUp(cdD,cd.d,1300);
+
+  /* ── reveal observer ── */
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(!en.isIntersecting) return;
+      var el=en.target; el.classList.add('in');
+      el.querySelectorAll('[data-count]').forEach(function(c){
+        countUp(c,parseInt(c.getAttribute('data-count'),10),1500);
+      });
+      el.querySelectorAll('.wb-fill').forEach(function(f,idx){
+        setTimeout(function(){ f.style.width=f.getAttribute('data-pct')+'%'; }, 120+idx*110);
+      });
+      el.querySelectorAll('.needle').forEach(function(nd,idx){
+        setTimeout(function(){ nd.style.transform='rotate('+nd.getAttribute('data-angle')+'deg)'; }, 180+idx*160);
+      });
+      io.unobserve(el);
+    });
+  },{ threshold:0.25 });
+  document.querySelectorAll('.rv').forEach(function(el){ io.observe(el); });
+
+  /* ── sonar scope ── */
+  var scope=document.getElementById('scope'),
+      sweep=document.getElementById('sweep'),
+      readout=document.getElementById('scopeReadout');
+  var THEMES=[
+    {k:'history', n:16, c:'#c89b4a'},{k:'scenery', n:14, c:'#2f8a52'},
+    {k:'wildlife',n:11, c:'#3fa0ad'},{k:'food',    n:13, c:'#d8392b'},
+    {k:'culture', n:12, c:'#1f5fa8'},{k:'active',  n:13, c:'#efb228'},
+    {k:'water',   n:10, c:'#5fd6a0'}
+  ];
+  var blips=[], active={}, rafId=null, running=false;
+  THEMES.forEach(function(t){ active[t.k]=true; });
+
+  if(scope){
+    THEMES.forEach(function(t){
+      for(var i=0;i<t.n;i++){
+        var ang=Math.random()*360;
+        var r=8+Math.random()*36;
+        var b=document.createElement('div');
+        b.className='blip';
+        b.style.background=t.c; b.style.boxShadow='0 0 6px '+t.c;
+        b.style.left=(50+r*Math.sin(ang*Math.PI/180))+'%';
+        b.style.top =(50-r*Math.cos(ang*Math.PI/180))+'%';
+        b._ang=ang; b._theme=t.k; b._lit=t.c;
+        scope.insertBefore(b, sweep.nextSibling);
+        blips.push(b);
+      }
+    });
+  }
+
+  var period=4400, baseTs=null;
+  function frame(ts){
+    if(!running) return;
+    if(baseTs===null) baseTs=ts;
+    var ang=((ts-baseTs)%period)/period*360;
+    if(sweep) sweep.style.transform='rotate('+ang+'deg)';
+    blips.forEach(function(b){
+      var d=(ang-b._ang+360)%360;
+      if(d>=0 && d<=26 && active[b._theme]){
+        if(!b.classList.contains('lit')){
+          b.classList.add('lit'); b.style.boxShadow='0 0 15px 4px '+b._lit;
+        }
+      } else if(b.classList.contains('lit')){
+        b.classList.remove('lit'); b.style.boxShadow='0 0 6px '+b._lit;
+      }
+    });
+    rafId=requestAnimationFrame(frame);
+  }
+  function startSonar(){
+    if(running || motionOff || document.hidden || !scope) { staticBlips(); return; }
+    running=true; baseTs=null; rafId=requestAnimationFrame(frame);
+  }
+  function stopSonar(){
+    running=false; if(rafId) cancelAnimationFrame(rafId);
+    staticBlips();
+  }
+  function staticBlips(){
+    /* reduced-motion / paused: every visible blip shown static and lit */
+    blips.forEach(function(b){
+      if(active[b._theme]){ b.classList.add('lit'); }
+    });
+  }
+
+  /* pause the loop when the tab is backgrounded (battery) */
+  document.addEventListener('visibilitychange', function(){
+    if(document.hidden) stopSonar();
+    else if(!motionOff) startSonar();
+  });
+
+  /* filter buttons — native <button>, aria-pressed */
+  function refresh(){
+    var vis=0;
+    blips.forEach(function(b){
+      if(active[b._theme]){ b.classList.remove('hidden'); vis++; }
+      else b.classList.add('hidden');
+    });
+    if(readout) readout.textContent='CONTACTS · '+vis+' / 89';
+  }
+  document.querySelectorAll('#filters .flag-btn').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var th=btn.getAttribute('data-theme');
+      active[th]=!active[th];
+      btn.setAttribute('aria-pressed', String(active[th]));
+      refresh();
+      if(motionOff) staticBlips();
+    });
+  });
+
+  startSonar();
+})();
+</script>
+
+</body>
+</html>
