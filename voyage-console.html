@@ -466,44 +466,157 @@
     .lighthouse,.compass{ display:none; }
   }
 
-  /* ── ACCESS GATE ── */
+  /* ══ ACCESS SPLASH ══ */
   .gate{ position:fixed; inset:0; z-index:9999; display:flex; align-items:center;
-    justify-content:center; padding:24px;
-    background:radial-gradient(ellipse at 50% 14%, #1a4a5e 0%, var(--sea) 46%, var(--abyss) 100%); }
-  .gate-card{ max-width:430px; width:100%; text-align:center; background:rgba(7,32,43,.92);
-    border:1px solid var(--teal); border-radius:13px; padding:40px 32px;
-    box-shadow:0 26px 64px rgba(0,0,0,.62); }
-  .gate-badge{ font-size:36px; line-height:1; color:var(--brass-lt); }
+    justify-content:center; padding:24px; overflow:hidden;
+    background:radial-gradient(ellipse at 50% 11%, #1c5066 0%, var(--sea) 44%, var(--abyss) 100%);
+    transition:transform 1.2s cubic-bezier(.66,0,.32,1), opacity 1.2s ease; }
+  .gate.depart{ transform:translateY(-101%); opacity:0; pointer-events:none; }
+  /* bunting */
+  .g-bunting{ position:absolute; top:0; left:0; right:0; height:48px; display:flex; }
+  .g-bunting .g-flag{ flex:1; transform-origin:top center;
+    animation:sway 3.4s ease-in-out infinite; }
+  .g-bunting .g-flag i{ display:block; height:30px; margin-top:7px;
+    clip-path:polygon(0 0,100% 0,100% 60%,50% 100%,0 60%); }
+  /* starfield */
+  .g-stars{ position:absolute; inset:0; }
+  .g-stars i{ position:absolute; width:2px; height:2px; border-radius:50%;
+    background:#cfe6df; opacity:.5; animation:twinkle 4s ease-in-out infinite; }
+  /* lighthouse */
+  .g-lh{ position:absolute; left:7%; bottom:148px; width:44px; height:118px; }
+  .g-beam{ position:absolute; top:6px; left:50%; width:58vw; height:116px;
+    transform-origin:left center;
+    background:linear-gradient(90deg, rgba(244,214,130,.4), transparent 74%);
+    clip-path:polygon(0 46%,100% 0,100% 100%,0 54%); animation:beam 8s linear infinite; }
+  .g-tower{ position:absolute; bottom:0; left:50%; transform:translateX(-50%);
+    width:30px; height:100px; border-radius:5px 5px 0 0;
+    background:repeating-linear-gradient(180deg,var(--cream) 0 17px,var(--sig-red) 17px 34px);
+    border:2px solid #2a2118; }
+  .g-lamp{ position:absolute; top:3px; left:50%; transform:translateX(-50%);
+    width:18px; height:14px; background:var(--brass-lt); border:2px solid var(--brass-dk);
+    box-shadow:0 0 16px 4px rgba(240,200,110,.7); }
+  /* horizon ship + sea */
+  .g-ship{ position:absolute; bottom:92px; left:50%; width:118px;
+    transform-origin:bottom center; animation:bob 5.6s ease-in-out infinite; }
+  .g-sea{ position:absolute; left:0; right:0; bottom:0; height:160px; }
+  .g-sea .waves{ width:100%; height:160px; display:block; }
+  /* the login instrument card */
+  .gate-card{ position:relative; z-index:5; max-width:434px; width:100%; text-align:center;
+    background:linear-gradient(180deg, rgba(13,46,60,.97), rgba(7,32,43,.97));
+    border:1px solid var(--brass-dk); border-radius:15px; padding:38px 34px 30px;
+    box-shadow:0 30px 70px rgba(0,0,0,.66), inset 0 0 40px rgba(120,90,40,.1);
+    animation:cardIn .9s cubic-bezier(.2,.7,.2,1) both; }
+  .gate-card::before{ content:""; position:absolute; inset:6px; border-radius:11px;
+    border:1px solid rgba(200,155,74,.32); pointer-events:none; }
+  @keyframes cardIn{ from{ opacity:0; transform:translateY(28px) scale(.94); } to{ opacity:1; transform:none; } }
+  .gate-badge{ font-size:40px; line-height:1; color:var(--brass-lt);
+    text-shadow:0 0 22px rgba(230,196,119,.6); }
   .gate-kicker{ font:700 11px/1 var(--d-mono); letter-spacing:.26em; text-transform:uppercase;
-    color:var(--brass); margin:12px 0 14px; }
-  .gate-title{ font-family:var(--d-serif); font-weight:700; font-size:27px; color:var(--cream);
-    margin:0 0 12px; }
+    color:var(--brass); margin:11px 0 13px; }
+  .gate-title{ font-family:var(--d-serif); font-weight:700; font-size:28px; color:var(--cream);
+    margin:0 0 12px; letter-spacing:-.01em; }
   .gate-msg{ color:var(--ink-dim); font-size:14px; line-height:1.65; margin:0 0 22px; }
   .gate-err{ color:#e0795a; }
   .gate-pick{ display:flex; flex-direction:column; gap:9px; }
-  .gate-btn{ display:inline-flex; align-items:center; justify-content:center; gap:10px;
-    width:100%; min-height:46px; padding:0 18px; cursor:pointer; border-radius:8px;
-    font:700 13px/1 var(--d-body); border:1px solid var(--brass-dk);
-    background:var(--brass-lt); color:#08161a; }
-  .gate-btn:hover{ background:var(--brass); }
-  .gate-btn.sec{ background:transparent; color:var(--brass-lt); font-weight:600; }
+  .gate-btn{ position:relative; display:inline-flex; align-items:center; justify-content:center;
+    gap:10px; width:100%; min-height:48px; padding:0 18px; cursor:pointer; border-radius:9px;
+    font:700 13px/1 var(--d-body); border:1px solid var(--brass-dk); overflow:hidden;
+    background:linear-gradient(180deg,var(--brass-lt),var(--brass)); color:#08161a;
+    box-shadow:0 6px 18px rgba(0,0,0,.4); }
+  .gate-btn::after{ content:""; position:absolute; top:0; left:-60%; width:38%; height:100%;
+    background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);
+    animation:sheen 3.8s ease-in-out infinite; }
+  @keyframes sheen{ 0%,60%{ left:-60%; } 84%,100%{ left:135%; } }
+  .gate-btn:hover{ background:var(--brass-lt); }
+  .gate-btn.sec{ background:transparent; color:var(--brass-lt); font-weight:600; box-shadow:none; }
+  .gate-btn.sec::after{ display:none; }
   .gate-btn.sec:hover{ background:rgba(200,155,74,.14); }
   .gate-btn:focus-visible{ outline:2px solid var(--focus-ring); outline-offset:2px; }
-  .gate-foot{ margin-top:22px; font:700 9px/1 var(--d-mono); letter-spacing:.18em;
+  .gate-foot{ margin-top:20px; font:700 9px/1 var(--d-mono); letter-spacing:.18em;
     text-transform:uppercase; color:var(--ink-dim); }
+  /* confetti */
+  .g-confetti{ position:absolute; inset:0; z-index:9; pointer-events:none; }
+  /* ── celebration ── */
+  .gate.celebrate .g-beam{ animation-duration:1.7s; }
+  .gate.celebrate .g-bunting .g-flag{ animation-duration:1.1s; }
+  .gate-card.aboard{ border-color:var(--brass-lt);
+    box-shadow:0 30px 80px rgba(0,0,0,.7), 0 0 64px rgba(230,196,119,.4),
+      inset 0 0 52px rgba(230,196,119,.12);
+    animation:aboardPulse 1.8s ease-in-out infinite; }
+  @keyframes aboardPulse{ 0%,100%{ transform:scale(1); } 50%{ transform:scale(1.022); } }
+  .gate-badge.big{ font-size:48px; display:inline-block; animation:badgeSpin 1s ease both; }
+  @keyframes badgeSpin{ from{ transform:rotate(-220deg) scale(0); } to{ transform:none; } }
+  .welcome-name{ font-family:var(--d-serif); font-weight:900;
+    font-size:clamp(34px,9vw,52px); line-height:1.04; color:var(--brass-lt);
+    text-shadow:0 0 28px rgba(230,196,119,.55); margin:6px 0 4px;
+    animation:nameIn .7s cubic-bezier(.2,1.55,.4,1) both; }
+  @keyframes nameIn{ from{ opacity:0; transform:scale(.35); } to{ opacity:1; transform:none; } }
+  .welcome-sub{ font:italic 15px/1.5 var(--d-serif); color:var(--cream); margin-bottom:15px; }
+  .welcome-ribbon{ display:inline-block; font:700 11px/1 var(--d-mono); letter-spacing:.24em;
+    text-transform:uppercase; color:#08161a; padding:9px 22px;
+    background:linear-gradient(180deg,var(--brass-lt),var(--brass));
+    clip-path:polygon(9px 0,calc(100% - 9px) 0,100% 50%,calc(100% - 9px) 100%,9px 100%,0 50%);
+    animation:ribbonIn .6s .26s ease both; }
+  @keyframes ribbonIn{ from{ opacity:0; transform:translateY(9px); } to{ opacity:1; transform:none; } }
+  @media (max-width:520px){ .gate-card{ padding:30px 22px 26px; } .g-lh{ display:none; } }
 </style>
 </head>
 <body>
 
 <div id="gate" class="gate" role="dialog" aria-modal="true" aria-labelledby="gateTitle">
-  <div class="gate-card">
+  <div class="g-bunting" aria-hidden="true">
+    <div class="g-flag bf-1" style="animation-delay:-.2s"><i></i></div>
+    <div class="g-flag bf-2" style="animation-delay:-.6s"><i></i></div>
+    <div class="g-flag bf-3" style="animation-delay:-1.0s"><i></i></div>
+    <div class="g-flag bf-4" style="animation-delay:-1.4s"><i></i></div>
+    <div class="g-flag bf-5" style="animation-delay:-1.8s"><i></i></div>
+    <div class="g-flag bf-6" style="animation-delay:-2.2s"><i></i></div>
+    <div class="g-flag bf-7" style="animation-delay:-2.6s"><i></i></div>
+    <div class="g-flag bf-8" style="animation-delay:-3.0s"><i></i></div>
+    <div class="g-flag bf-2" style="animation-delay:-.4s"><i></i></div>
+    <div class="g-flag bf-1" style="animation-delay:-.9s"><i></i></div>
+    <div class="g-flag bf-4" style="animation-delay:-1.5s"><i></i></div>
+    <div class="g-flag bf-6" style="animation-delay:-2.1s"><i></i></div>
+    <div class="g-flag bf-3" style="animation-delay:-2.7s"><i></i></div>
+    <div class="g-flag bf-5" style="animation-delay:-3.2s"><i></i></div>
+  </div>
+  <div class="g-stars" id="gStars" aria-hidden="true"></div>
+  <div class="g-lh" aria-hidden="true">
+    <div class="g-beam"></div><div class="g-tower"></div><div class="g-lamp"></div>
+  </div>
+  <svg class="g-ship" viewBox="0 0 200 116" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <ellipse cx="100" cy="107" rx="64" ry="8" fill="#3a6c83" opacity=".55"/>
+    <rect x="116" y="33" width="15" height="31" rx="3" fill="#2c5168" stroke="#92b6c2" stroke-width="1.2"/>
+    <rect x="116" y="39" width="15" height="6" fill="#d8392b"/>
+    <line x1="73" y1="60" x2="73" y2="22" stroke="#c9b98a" stroke-width="2.2"/>
+    <path d="M73 23 L95 29 L73 35 Z" fill="#d8392b"/>
+    <rect x="55" y="57" width="108" height="19" rx="3" fill="#f1e7cf"/>
+    <rect x="69" y="46" width="80" height="13" rx="3" fill="#f1e7cf"/>
+    <g fill="#1c6b7e">
+      <rect x="62" y="63" width="6" height="6" rx="1"/><rect x="76" y="63" width="6" height="6" rx="1"/>
+      <rect x="90" y="63" width="6" height="6" rx="1"/><rect x="104" y="63" width="6" height="6" rx="1"/>
+      <rect x="118" y="63" width="6" height="6" rx="1"/><rect x="132" y="63" width="6" height="6" rx="1"/>
+      <rect x="146" y="63" width="6" height="6" rx="1"/>
+    </g>
+    <path d="M38 76 L172 76 L160 101 Q138 109 100 109 Q62 109 50 101 Z" fill="#2c5168" stroke="#92b6c2" stroke-width="1.4"/>
+    <path d="M38 76 L172 76 L170 84 L40 84 Z" fill="#d8392b"/>
+  </svg>
+  <div class="g-sea" aria-hidden="true">
+    <svg class="waves" viewBox="0 0 480 130" preserveAspectRatio="none" style="height:160px" xmlns="http://www.w3.org/2000/svg">
+      <path class="w3" d="M0 60 q60 -22 120 0 t120 0 t120 0 t120 0 t120 0 V130 H0 Z" fill="#103b4f"/>
+      <path class="w2" d="M0 78 q60 -20 120 0 t120 0 t120 0 t120 0 t120 0 V130 H0 Z" fill="#0d3346"/>
+      <path class="w1" d="M0 96 q60 -18 120 0 t120 0 t120 0 t120 0 t120 0 V130 H0 Z" fill="#0b2a3a"/>
+    </svg>
+  </div>
+  <div class="gate-card" id="gateCard">
     <div class="gate-badge" aria-hidden="true">&#9875;</div>
-    <div class="gate-kicker">ms Zuiderdam &middot; Crew Access</div>
+    <div class="gate-kicker">MS Zuiderdam &middot; Crew Access</div>
     <h2 class="gate-title" id="gateTitle">Canada &amp; New England</h2>
     <p class="gate-msg" id="gateMsg">Loading sign-in&hellip;</p>
     <div class="gate-pick" id="gateBody"></div>
     <div class="gate-foot">Booking 4LMNGG &middot; June 2026</div>
   </div>
+  <canvas class="g-confetti" id="gConfetti" aria-hidden="true"></canvas>
 </div>
 
 <a class="skip" href="#chart">Skip to the voyage chart</a>
@@ -1122,6 +1235,12 @@
     b.type='button'; b.className='gate-btn'+(cls?' '+cls:''); b.textContent=label;
     b.addEventListener('click',fn); return b; }
   function only(node){ gBody.innerHTML=''; if(node) gBody.appendChild(node); }
+  (function(){ var s=document.getElementById('gStars'); if(!s) return;
+    for(var i=0;i<34;i++){ var d=document.createElement('i');
+      d.style.left=(Math.random()*100)+'%'; d.style.top=(Math.random()*88)+'%';
+      d.style.animationDelay=(-Math.random()*4)+'s'; s.appendChild(d); } })();
+  function reduced(){ return document.body.classList.contains('motion-off')
+    || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches); }
   let auth,rosterRef;
   try{
     const app=initializeApp(cfg); auth=getAuth(app);
@@ -1139,7 +1258,64 @@
       only(btn('Try again','',doSignIn));
     });
   }
-  function reveal(name){ window.__crewName=name||null; if(gate) gate.remove(); }
+  function showWelcome(name){
+    const card=document.getElementById('gateCard'); if(!card) return;
+    card.classList.add('aboard');
+    card.innerHTML=
+      '<div class="gate-badge big" aria-hidden="true">⚓</div>'+
+      '<div class="gate-kicker">Crew Verified</div>'+
+      '<div class="welcome-name"></div>'+
+      '<div class="welcome-sub">Welcome aboard the ms Zuiderdam</div>'+
+      '<div class="welcome-ribbon">Bon Voyage</div>';
+    card.querySelector('.welcome-name').textContent=name||'Traveller';
+  }
+  function confettiBurst(){
+    const cv=document.getElementById('gConfetti'); if(!cv) return;
+    const ctx=cv.getContext('2d'); cv.width=innerWidth; cv.height=innerHeight;
+    const COL=['#d8392b','#1f5fa8','#efb228','#2f8a52','#f4efe0','#e6c477','#c89b4a'];
+    const cx=innerWidth/2, cy=innerHeight*0.42, P=[];
+    for(var i=0;i<130;i++){
+      var a=Math.random()*Math.PI*2, sp=4+Math.random()*12;
+      P.push({x:cx+(Math.random()-.5)*150,y:cy+(Math.random()-.5)*70,
+        vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-7,rot:Math.random()*6.3,
+        vr:(Math.random()-.5)*.42,sz:7+Math.random()*9,
+        col:COL[(Math.random()*COL.length)|0],
+        sh:Math.random()<.6?0:(Math.random()<.5?1:2),
+        life:0,ttl:150+Math.random()*100,sw:Math.random()*6.3});
+    }
+    var fr=0;
+    (function loop(){
+      ctx.clearRect(0,0,cv.width,cv.height); var alive=0;
+      for(var i=0;i<P.length;i++){ var p=P[i]; if(p.life>p.ttl) continue; alive++;
+        p.life++; p.vy+=.23; p.vx*=.992; p.sw+=.1;
+        p.x+=p.vx+Math.sin(p.sw)*.9; p.y+=p.vy; p.rot+=p.vr;
+        var fade=p.life>p.ttl-44?(p.ttl-p.life)/44:1;
+        ctx.save(); ctx.globalAlpha=Math.max(0,fade);
+        ctx.translate(p.x,p.y); ctx.rotate(p.rot); ctx.fillStyle=p.col;
+        if(p.sh===0){ ctx.beginPath(); ctx.moveTo(-p.sz,-p.sz*.6);
+          ctx.lineTo(p.sz,0); ctx.lineTo(-p.sz,p.sz*.6); ctx.closePath(); ctx.fill(); }
+        else if(p.sh===1){ ctx.beginPath();
+          for(var k=0;k<8;k++){ var r=k%2?p.sz*.34:p.sz*.95, an=k/8*Math.PI*2;
+            ctx[k?'lineTo':'moveTo'](Math.cos(an)*r,Math.sin(an)*r); }
+          ctx.closePath(); ctx.fill(); }
+        else ctx.fillRect(-p.sz*.5,-p.sz*.34,p.sz,p.sz*.68);
+        ctx.restore();
+      }
+      fr++;
+      if(alive>0 && fr<460) requestAnimationFrame(loop);
+      else ctx.clearRect(0,0,cv.width,cv.height);
+    })();
+  }
+  function reveal(name){
+    window.__crewName=name||null;
+    if(reduced()){ if(gate) gate.remove(); return; }
+    showWelcome(name);
+    if(gate) gate.classList.add('celebrate');
+    confettiBurst();
+    setTimeout(confettiBurst,480);
+    setTimeout(function(){ if(gate) gate.classList.add('depart'); },2200);
+    setTimeout(function(){ if(gate) gate.remove(); },3500);
+  }
   function showFull(){
     gMsg.innerHTML='All five crew berths are already claimed. If one is yours, sign in with the Google account you used the first time.';
     only(btn('Use a different account','sec',function(){ signOut(auth).then(showSignIn); }));

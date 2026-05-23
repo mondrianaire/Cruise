@@ -1,39 +1,31 @@
-FIRESTORE SECURITY RULES — Canada & New England cruise hub
-==========================================================
+// Firestore Security Rules — GTO Duel + Canada & New England cruise hub
+//
+// Paste the ENTIRE contents of this file into your Firebase project's
+// Firestore Rules tab (Firebase Console > Firestore Database > Rules) and
+// click Publish. This is the complete ruleset for project gto-poker-qui.
+//
+// Cruise hub: sign-in is Google SSO. The first five Google accounts to
+// sign in each claim one of five crew berths (trust-on-first-use); after
+// that the roster is closed. The Group Picks board can be read or written
+// only by accounts already on the roster. No email addresses are stored
+// in this file — the roster fills itself in as the travellers sign in.
+// Before this works, also enable the Google provider:
+//   Authentication > Sign-in method > Google > Enable.
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
 
-The cruise site uses two Firestore documents in collection "cruise":
-  - roster   : the 5-berth crew roster, a map of  email -> traveller name
-  - 4LMNGG   : the shared Group Picks board
-
-Sign-in is Google SSO. The first five Google accounts to sign in each
-claim one of the five berths (trust-on-first-use); after that the roster
-is closed. The Group Picks board can be read or written only by accounts
-already on the roster.
-
-SETUP — two one-time steps in the Firebase console (project gto-poker-qui)
---------------------------------------------------------------------------
-1. Authentication -> Sign-in method -> Add new provider -> Google -> Enable
-   -> Save. (Anonymous can stay enabled for the poker app; the cruise site
-   no longer uses it.)
-
-2. Firestore Database -> Rules -> merge the block below INSIDE your existing
-       match /databases/{database}/documents { ... }
-   block, alongside the existing  match /games/{shareCode}  rule. Do not
-   remove or change the games rule. Then Publish.
-
-------------------------------------------------------------------
-    // --- Canada & New England cruise ---
+    // ─── Canada & New England cruise: crew roster ───
+    // The 5-berth roster — a map of  email -> traveller name.
     match /cruise/roster {
       // Any signed-in guest may read the roster.
       allow read: if request.auth != null;
-
       // First claim: an email-verified guest creates the roster with
-      // exactly their own one entry.
+      // exactly their own single entry.
       allow create: if request.auth != null
         && request.auth.token.email_verified == true
         && request.resource.data.members.size() == 1
         && request.resource.data.members[request.auth.token.email] is string;
-
       // Later claims: an email-verified guest may add or change ONLY their
       // own email key, and only while the roster holds 5 or fewer berths.
       // No guest can edit or remove anyone else's entry.
@@ -44,23 +36,84 @@ SETUP — two one-time steps in the Firebase console (project gto-poker-qui)
              .affectedKeys().hasOnly([request.auth.token.email]);
     }
 
+    // ─── Canada & New England cruise: Group Picks board ───
+    // Readable/writable only by accounts already on the roster.
+    // Delete is not granted, so the board cannot be removed by a guest.
     match /cruise/4LMNGG {
-      // Group Picks board: only accounts already on the roster.
-      // Delete is not granted, so the board cannot be removed by a guest.
       allow read, create, update: if request.auth != null
         && request.auth.token.email_verified == true
         && request.auth.token.email in
            get(/databases/$(database)/documents/cruise/roster).data.members;
     }
-------------------------------------------------------------------
 
-Notes
------
-* No email addresses are stored in this file or anywhere in the site code.
-  The roster fills itself in as the five travellers sign in, and lives
-  only in Firestore data.
-* mondrianaire.github.io is already an authorized domain — no change needed.
-* Honest scope: this is a convenience gate. The page HTML is still served
-  publicly to anyone with the URL, so View-Source still reveals page text.
-  The real, server-enforced protection here is on the Firestore roster and
-  Group Picks board — those are genuinely limited to the five accounts.
+    match /games/{gameId} {
+      // get: a player may read their own game; a not-yet-joined player may
+      // read a game that still has an open slot (so the join transaction can
+      // read it before adding itself); reads of a non-existent doc are
+      // allowed and simply return "not found".
+      allow get: if request.auth != null
+                 && (resource == null
+                     || request.auth.uid in resource.data.participantUids
+                     || resource.data.participantUids.size() < 2);
+      // Signed-in users may list:
+      //   (a) OPEN lobbies (status == 'waiting_for_opponent') — powers the
+      //       Join screen lobby list. Reachable by anyone signed in.
+      //   (b) Games they're a PARTICIPANT in — powers the "Your active
+      //       games" panel on the landing screen, so users can resume or
+      //       cancel stale async games.
+      // Either branch must hold for every document the query returns, so
+      // queries must be constrained to one of these shapes:
+      //   where("status", "==", "waiting_for_opponent")
+      //   where("participantUids", "array-contains", request.auth.uid)
+      // In-progress and completed games belonging to OTHER players still
+      // can never be enumerated.
+      allow list: if request.auth != null
+                  && (resource.data.status == 'waiting_for_opponent'
+                      || request.auth.uid in resource.data.participantUids);
+      allow create: if request.auth != null
+                    && request.resource.data.participantUids.size() == 1
+                    && request.resource.data.participantUids[0] == request.auth.uid
+                    && request.resource.data.status == 'waiting_for_opponent';
+      allow update: if request.auth != null
+                    && (request.auth.uid in resource.data.participantUids
+                        || (resource.data.participantUids.size() == 1
+                            && request.resource.data.participantUids.size() == 2
+                            && request.auth.uid in request.resource.data.participantUids));
+      // Any signed-in user may delete a lobby that's still
+      // waiting_for_opponent, OR any doc with no participants (junk
+      // doc, malformed shape — safety-net escape hatch so future
+      // weird-shape orphans don't dead-end the lobby cleanup UI).
+      // In-progress and completed games can never be deleted; their
+      // participants still own the data.
+      allow delete: if request.auth != null
+                    && (resource.data.status == 'waiting_for_opponent'
+                        || resource.data.participantUids.size() < 1);
+    }
+    // users/{uid} — per-user profile doc (poker-knowledge level, and
+    // future account-level settings). A user may only read and write
+    // their OWN doc; the doc id IS their uid.
+    match /users/{userId} {
+      allow read: if request.auth != null && request.auth.uid == userId;
+      allow create, update: if request.auth != null && request.auth.uid == userId;
+      allow delete: if false;
+    }
+    // responses/{scenarioId__uid} — one doc per (scenario, player).
+    // Powers the crowd-distribution model: every player's answer to a
+    // scenario is recorded, and the reveal aggregates them into a
+    // "how others played" breakdown.
+    //
+    //   read   — any signed-in user may read ALL responses (the crowd
+    //            aggregation queries every response for a scenario).
+    //   create/update — a user may only write their OWN response; the
+    //            uid field in the doc must match the caller. The doc id
+    //            convention is `${scenario_id}__${uid}` so re-answering
+    //            overwrites rather than duplicates.
+    //   delete — never (responses are permanent data points).
+    match /responses/{responseId} {
+      allow read: if request.auth != null;
+      allow create, update: if request.auth != null
+                             && request.resource.data.uid == request.auth.uid;
+      allow delete: if false;
+    }
+  }
+}
