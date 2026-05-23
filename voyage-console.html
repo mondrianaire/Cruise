@@ -68,21 +68,23 @@
 
   /* ── UTILITY BAR (motion toggle — early in DOM & tab order) ── */
   .toolbar{
-    display:flex; justify-content:flex-end; align-items:center;
-    background:var(--deep); padding:6px 14px; gap:10px;
+    position:fixed; left:10px; bottom:10px; z-index:80;
+    display:flex; align-items:center; gap:8px;
   }
   .mtog{
-    display:inline-flex; align-items:center; gap:9px; min-height:var(--target-min);
-    padding:0 13px; background:rgba(7,32,43,.7); border:1px solid var(--teal);
-    border-radius:6px; cursor:pointer; color:var(--ink); font:inherit;
+    display:inline-flex; align-items:center; gap:9px; min-height:38px;
+    padding:0 12px; background:rgba(7,32,43,.82); border:1px solid var(--teal);
+    border-radius:8px; cursor:pointer; color:var(--ink); font:inherit;
+    opacity:.6; transition:opacity .15s;
   }
-  .mtog .track{ width:38px; height:20px; border-radius:10px; background:var(--teal);
-    position:relative; flex:0 0 38px; }
-  .mtog .track::after{ content:""; position:absolute; top:2px; left:2px; width:16px; height:16px;
+  .mtog:hover,.mtog:focus-visible{ opacity:1; }
+  .mtog .track{ width:34px; height:18px; border-radius:9px; background:var(--teal);
+    position:relative; flex:0 0 34px; }
+  .mtog .track::after{ content:""; position:absolute; top:2px; left:2px; width:14px; height:14px;
     border-radius:50%; background:var(--brass-lt); transition:left .15s; }
   .mtog[aria-pressed="false"] .track{ background:var(--radar-dk); }
-  .mtog[aria-pressed="false"] .track::after{ left:20px; }
-  .mtog .ml{ font:600 12.5px/1 var(--d-body); }
+  .mtog[aria-pressed="false"] .track::after{ left:18px; }
+  .mtog .ml{ font:600 11.5px/1 var(--d-body); }
 
   /* ── SIGNAL-FLAG BUNTING ── */
   .bunting{ display:flex; height:46px; overflow:hidden; background:var(--deep); }
@@ -725,6 +727,9 @@
   <button class="mtog" id="motionToggle" type="button" aria-pressed="true">
     <span class="track" aria-hidden="true"></span><span class="ml">Animation on</span>
   </button>
+  <button class="mtog replay" id="replayBtn" type="button">
+    <span class="ml">&#9875; Replay intro</span>
+  </button>
 </div>
 
 <!-- ░░ SIGNAL-FLAG BUNTING (decorative) ░░ -->
@@ -1345,7 +1350,7 @@
     const app=initializeApp(cfg); auth=getAuth(app);
     const db=initializeFirestore(app,{experimentalForceLongPolling:true});
     rosterRef=doc(db,"cruise","roster");
-  }catch(e){ if(gate) gate.remove(); }
+  }catch(e){ hideGate(); }
   function showSignIn(){
     gMsg.textContent='The voyage is locked. Tap the captain’s chest to sign in with Google.';
     only(null);
@@ -1402,9 +1407,18 @@
       else ctx.clearRect(0,0,cv.width,cv.height);
     })();
   }
+  function hideGate(){
+    if(!gate) return;
+    gate.style.display='none';
+    gate.classList.remove('celebrate','depart');
+    var c=document.getElementById('chestBtn'),
+        w=document.getElementById('welcomeWrap');
+    if(c){ c.classList.remove('unlocked','unlocking'); c.style.display=''; }
+    if(w) w.hidden=true;
+  }
   function reveal(name){
     window.__crewName=name||null;
-    if(reduced()){ if(gate) gate.remove(); return; }
+    if(reduced()){ hideGate(); return; }
     var c=document.getElementById('chestBtn'),
         cap=document.getElementById('chestCap'),
         w=document.getElementById('welcomeWrap'),
@@ -1421,7 +1435,18 @@
       if(c) c.style.display='none';
     },950);
     setTimeout(function(){ if(gate) gate.classList.add('depart'); },2500);
-    setTimeout(function(){ if(gate) gate.remove(); },3800);
+    setTimeout(hideGate,3800);
+  }
+  function replayIntro(){
+    if(!gate) return;
+    hideGate();
+    var c=document.getElementById('chestBtn'),
+        cap=document.getElementById('chestCap');
+    if(c) c.onclick=null;
+    if(cap){ cap.style.display=''; cap.textContent='Weighing anchor…'; }
+    if(gMsg) gMsg.textContent='Replaying your welcome aboard…';
+    gate.style.display='';
+    setTimeout(function(){ reveal(window.__crewName||'Traveller'); },850);
   }
   function showReject(dn){
     var c=document.getElementById('chestBtn'), cap=document.getElementById('chestCap');
@@ -1451,6 +1476,8 @@
     else showReject(dn);
   }
   if(auth) onAuthStateChanged(auth,onUser);
+  (function(){ var rb=document.getElementById('replayBtn');
+    if(rb) rb.addEventListener('click',replayIntro); })();
 </script>
 
 </body>

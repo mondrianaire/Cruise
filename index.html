@@ -58,18 +58,20 @@
     text-decoration:none;transition:top .12s ease;}
   .skip:focus{top:10px;}
   /* ---------- TOOLBAR / MOTION TOGGLE ---------- */
-  .toolbar{display:flex;justify-content:flex-end;align-items:center;
-    background:var(--deep);padding:6px 14px;}
-  .mtog{display:inline-flex;align-items:center;gap:9px;min-height:var(--target-min);
-    padding:0 13px;background:rgba(7,32,43,.7);border:1px solid var(--teal);
-    border-radius:6px;cursor:pointer;color:var(--ink);font:inherit;}
-  .mtog .track{width:38px;height:20px;border-radius:10px;background:var(--teal);
-    position:relative;flex:0 0 38px;}
-  .mtog .track::after{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;
+  .toolbar{position:fixed;left:10px;bottom:10px;z-index:80;
+    display:flex;align-items:center;gap:8px;}
+  .mtog{display:inline-flex;align-items:center;gap:9px;min-height:38px;
+    padding:0 12px;background:rgba(7,32,43,.82);border:1px solid var(--teal);
+    border-radius:8px;cursor:pointer;color:var(--ink);font:inherit;
+    opacity:.6;transition:opacity .15s;}
+  .mtog:hover,.mtog:focus-visible{opacity:1;}
+  .mtog .track{width:34px;height:18px;border-radius:9px;background:var(--teal);
+    position:relative;flex:0 0 34px;}
+  .mtog .track::after{content:"";position:absolute;top:2px;left:2px;width:14px;height:14px;
     border-radius:50%;background:var(--brass-lt);transition:left .15s;}
   .mtog[aria-pressed="false"] .track{background:var(--grn-dk);}
-  .mtog[aria-pressed="false"] .track::after{left:20px;}
-  .mtog .ml{font:600 12.5px/1 var(--d-body);}
+  .mtog[aria-pressed="false"] .track::after{left:18px;}
+  .mtog .ml{font:600 11.5px/1 var(--d-body);}
   /* ---------- NAV ---------- */
   nav{position:sticky;top:0;z-index:100;background:var(--deep);
     border-bottom:1px solid var(--brass-dk);box-shadow:0 2px 14px rgba(0,0,0,.5);}
@@ -315,17 +317,6 @@
 </style>
 </head>
 <body>
-
-<div id="gate" class="gate" role="dialog" aria-modal="true" aria-labelledby="gateTitle">
-  <div class="gate-card">
-    <div class="gate-badge" aria-hidden="true">&#9875;</div>
-    <div class="gate-kicker">ms Zuiderdam &middot; Crew Access</div>
-    <h2 class="gate-title" id="gateTitle">Canada &amp; New England</h2>
-    <p class="gate-msg" id="gateMsg">Loading sign-in&hellip;</p>
-    <div class="gate-pick" id="gateBody"></div>
-    <div class="gate-foot">Booking 4LMNGG &middot; June 2026</div>
-  </div>
-</div>
 
 <a class="skip" href="#glance">Skip to content</a>
 
@@ -1075,44 +1066,31 @@ render();
 renderBoard();
 </script>
 
-<!-- Firebase: Google SSO crew gate + live Group Picks sync -->
+<!-- Firebase: live Group Picks sync — sign-in is carried over from the Voyage Console -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
-  import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut }
-    from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
-  import { initializeFirestore, doc, getDoc, setDoc, onSnapshot }
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+  import { initializeFirestore, doc, setDoc, onSnapshot }
     from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
   const cfg={apiKey:"AIzaSyCxc5ICHwz4Fp_2kRwHogeLdgUeCGKgHss",authDomain:"gto-poker-qui.firebaseapp.com",
     projectId:"gto-poker-qui",storageBucket:"gto-poker-qui.firebasestorage.app",
     messagingSenderId:"607915389446",appId:"1:607915389446:web:5b1c777bf4fad0bc1c0987"};
-  const TRAVELLERS=["Jett","Laura","Sandra","Becca","Karen"];
-  const gate=document.getElementById('gate'),
-        gMsg=document.getElementById('gateMsg'),
-        gBody=document.getElementById('gateBody');
-  function btn(label,cls,fn){ const b=document.createElement('button');
-    b.type='button'; b.className='gate-btn'+(cls?' '+cls:''); b.textContent=label;
-    b.addEventListener('click',fn); return b; }
-  function only(node){ gBody.innerHTML=''; if(node) gBody.appendChild(node); }
-  let auth,rosterRef,boardRef;
+  function status(t,c){ const e=document.getElementById('syncStatus');
+    if(e){ e.textContent=t; e.className='syncstatus '+c; } }
+  let auth,boardRef,boardReady=false,firstSnap=true;
   try{
     const app=initializeApp(cfg); auth=getAuth(app);
     const db=initializeFirestore(app,{experimentalForceLongPolling:true});
-    rosterRef=doc(db,"cruise","roster");
     boardRef=doc(db,"cruise","4LMNGG");
-  }catch(e){ if(gate) gate.remove(); }
-  /* ---- Group Picks board sync (starts only once the gate clears) ---- */
-  function status(t,c){ const e=document.getElementById('syncStatus');
-    if(e){ e.textContent=t; e.className='syncstatus '+c; } }
-  let boardReady=false, firstSnap=true;
+  }catch(e){ status('offline · saved on this device','err'); }
   function startBoard(){
-    if(!boardRef) return;
+    if(!boardRef||boardReady) return;
+    boardReady=true;
     status('connecting…','wait');
     window.__cruisePush=function(p){
-      if(!boardReady) return;
       setDoc(boardRef,{picks:p,updatedAt:Date.now()})
         .then(()=>status('synced','ok')).catch(()=>status('sync error','err'));
     };
-    boardReady=true;
     onSnapshot(boardRef,function(snap){
       if(snap.exists() && snap.data() && snap.data().picks){
         if(window.__applyRemote) window.__applyRemote(snap.data().picks);
@@ -1123,44 +1101,13 @@ renderBoard();
       firstSnap=false;
     },function(){ status('offline · saved on this device','err'); });
   }
-  /* ---- Google SSO crew gate (trust-on-first-use, 5 berths) ---- */
-  function showSignIn(){
-    gMsg.textContent='This trip hub is for our five travellers. Sign in with Google to come aboard.';
-    only(btn('Sign in with Google','',doSignIn));
-  }
-  function doSignIn(){
-    gMsg.textContent='Opening Google sign-in…'; only(null);
-    signInWithPopup(auth,new GoogleAuthProvider()).catch(function(){
-      gMsg.innerHTML='<span class="gate-err">Sign-in didn’t finish. Allow pop-ups, then try again.</span>';
-      only(btn('Try again','',doSignIn));
+  if(auth){
+    status('connecting…','wait');
+    onAuthStateChanged(auth,function(user){
+      if(user) startBoard();
+      else status('sign in via the Voyage Console to sync','wait');
     });
   }
-  function reveal(name){ window.__crewName=name||null; if(gate) gate.remove(); startBoard(); }
-  function showReject(dn){
-    gMsg.textContent=(dn?('"'+dn+'" '):'That Google account ')
-      +'is not one of the five travellers. Sign in with the Google account whose first name is Jett, Laura, Sandra, Becca or Karen.';
-    only(btn('Use a different account','sec',function(){ signOut(auth).then(showSignIn); }));
-  }
-  function enter(name){
-    gMsg.textContent='Verified — welcome aboard, '+name+'.'; only(null);
-    const m={}; m[auth.currentUser.email]=name;
-    setDoc(rosterRef,{members:m},{merge:true})
-      .then(function(){ reveal(name); })
-      .catch(function(){ reveal(name); });
-  }
-  function onUser(user){
-    if(!user){ showSignIn(); return; }
-    gMsg.textContent='Verifying your sign-in...'; only(null);
-    const dn=(user.displayName||'').trim();
-    const first=(dn.split(/\s+/)[0]||'').toLowerCase();
-    let matched=null;
-    for(var i=0;i<TRAVELLERS.length;i++){
-      if(TRAVELLERS[i].toLowerCase()===first){ matched=TRAVELLERS[i]; break; }
-    }
-    if(matched) enter(matched);
-    else showReject(dn);
-  }
-  if(auth) onAuthStateChanged(auth,onUser);
 </script>
 </body>
 </html>
