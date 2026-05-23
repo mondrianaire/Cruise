@@ -1316,38 +1316,29 @@
     setTimeout(function(){ if(gate) gate.classList.add('depart'); },2200);
     setTimeout(function(){ if(gate) gate.remove(); },3500);
   }
-  function showFull(){
-    gMsg.innerHTML='All five crew berths are already claimed. If one is yours, sign in with the Google account you used the first time.';
+  function showReject(dn){
+    gMsg.textContent=(dn?('"'+dn+'" '):'That Google account ')
+      +'is not one of the five travellers. Sign in with the Google account whose first name is Jett, Laura, Sandra, Becca or Karen.';
     only(btn('Use a different account','sec',function(){ signOut(auth).then(showSignIn); }));
   }
-  function showPicker(taken){
-    const left=TRAVELLERS.filter(function(t){ return taken.indexOf(t)<0; });
-    gMsg.textContent='Welcome aboard! Tap your name to claim your berth — we’ll remember it next time.';
-    gBody.innerHTML='';
-    left.forEach(function(nm){ gBody.appendChild(btn(nm,'',function(){ claim(nm); })); });
-    gBody.appendChild(btn('None of these — sign out','sec',function(){ signOut(auth).then(showSignIn); }));
-  }
-  function claim(name){
-    gMsg.textContent='Claiming your berth…'; only(null);
+  function enter(name){
+    gMsg.textContent='Verified — welcome aboard, '+name+'.'; only(null);
     const m={}; m[auth.currentUser.email]=name;
     setDoc(rosterRef,{members:m},{merge:true})
       .then(function(){ reveal(name); })
-      .catch(function(){ gMsg.innerHTML='<span class="gate-err">Couldn’t save — try again.</span>';
-        only(btn('Retry','',function(){ claim(name); })); });
+      .catch(function(){ reveal(name); });
   }
   function onUser(user){
     if(!user){ showSignIn(); return; }
-    gMsg.textContent='Checking the crew roster…'; only(null);
-    getDoc(rosterRef).then(function(snap){
-      const members=(snap.exists()&&snap.data().members)||{};
-      if(members[user.email]){ reveal(members[user.email]); return; }
-      const taken=Object.values(members);
-      if(taken.length>=5){ showFull(); return; }
-      showPicker(taken);
-    }).catch(function(){
-      gMsg.innerHTML='<span class="gate-err">Couldn’t reach the roster.</span>';
-      only(btn('Retry','',function(){ onUser(auth.currentUser); }));
-    });
+    gMsg.textContent='Verifying your sign-in...'; only(null);
+    const dn=(user.displayName||'').trim();
+    const first=(dn.split(/\s+/)[0]||'').toLowerCase();
+    let matched=null;
+    for(var i=0;i<TRAVELLERS.length;i++){
+      if(TRAVELLERS[i].toLowerCase()===first){ matched=TRAVELLERS[i]; break; }
+    }
+    if(matched) enter(matched);
+    else showReject(dn);
   }
   if(auth) onAuthStateChanged(auth,onUser);
 </script>
