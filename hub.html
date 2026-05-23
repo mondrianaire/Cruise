@@ -73,16 +73,70 @@
   .mtog[aria-pressed="false"] .track::after{left:18px;}
   .mtog .ml{font:600 11.5px/1 var(--d-body);}
   /* ---------- NAV ---------- */
-  nav{position:sticky;top:0;z-index:100;background:var(--deep);
-    border-bottom:1px solid var(--brass-dk);box-shadow:0 2px 14px rgba(0,0,0,.5);}
-  nav .inner{max-width:1180px;margin:0 auto;display:flex;flex-wrap:wrap;
-    align-items:center;gap:2px;padding:0 16px;}
-  nav .brand{color:var(--cream);font-family:var(--d-serif);font-size:1rem;font-weight:700;
-    padding:13px 14px 13px 0;margin-right:auto;letter-spacing:.01em;}
-  nav a{color:var(--ink-dim);text-decoration:none;font:700 .7rem/1 var(--d-mono);
-    padding:14px 9px;text-transform:uppercase;letter-spacing:.11em;transition:.15s;}
-  nav a:hover{color:var(--brass-lt);}
-  nav a.console{color:var(--brass-lt);}
+  /* ---------- NAVIGATION ----------
+     Translucent glass surface (deepens on scroll), voyage-stop numbered links,
+     scrollspy-driven brass underline, horizontal-scroll overflow on narrow
+     screens, distinguished pill for the Voyage Console outlink. */
+  nav{position:sticky;top:0;z-index:100;
+    background:rgba(4,19,28,.72);
+    -webkit-backdrop-filter:blur(14px) saturate(140%);
+            backdrop-filter:blur(14px) saturate(140%);
+    border-bottom:1px solid rgba(200,155,74,.34);
+    transition:background .28s ease,border-color .28s ease,box-shadow .28s ease;}
+  body.nav-scrolled nav{background:rgba(4,19,28,.93);
+    border-bottom-color:var(--brass-dk);
+    box-shadow:0 4px 22px rgba(0,0,0,.42);}
+  nav .inner{max-width:1180px;margin:0 auto;display:flex;align-items:stretch;
+    gap:0;padding:0 18px;position:relative;}
+  /* brand — anchor glyph + label + year tag, doubles as scroll-to-top */
+  nav .brand{display:inline-flex;align-items:center;gap:10px;
+    color:var(--cream);font-family:var(--d-serif);font-size:.98rem;font-weight:700;
+    padding:13px 18px 13px 0;letter-spacing:.005em;text-decoration:none;
+    border-right:1px solid rgba(200,155,74,.18);margin-right:8px;flex:0 0 auto;}
+  nav .brand:hover{color:var(--brass-lt);}
+  nav .brand:hover .br-anchor{color:var(--cream);}
+  nav .br-anchor{font-size:1.18rem;color:var(--brass-lt);line-height:1;
+    transition:color .15s ease;}
+  nav .br-y{color:var(--ink-dim);font:700 .62rem/1 var(--d-mono);
+    letter-spacing:.22em;text-transform:uppercase;padding-top:2px;}
+  /* link strip — single row, h-scroll on overflow with right-edge fade */
+  nav .links{display:flex;flex:1 1 auto;align-items:stretch;gap:1px;
+    overflow-x:auto;overflow-y:hidden;scrollbar-width:none;
+    mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 30px),transparent 100%);
+    -webkit-mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 30px),transparent 100%);}
+  nav .links::-webkit-scrollbar{display:none;}
+  nav .links a{position:relative;display:inline-flex;align-items:center;gap:7px;
+    color:var(--ink-dim);text-decoration:none;
+    font:700 .72rem/1 var(--d-mono);text-transform:uppercase;letter-spacing:.10em;
+    padding:14px 11px;white-space:nowrap;transition:color .15s ease;}
+  nav .links a .n{font:700 .56rem/1 var(--d-mono);color:var(--brass-dk);
+    letter-spacing:.18em;transition:color .15s ease;
+    padding:3px 5px;border:1px solid rgba(200,155,74,.22);border-radius:3px;}
+  nav .links a:hover{color:var(--cream);}
+  nav .links a:hover .n{color:var(--brass);border-color:var(--brass-dk);}
+  nav .links a.active{color:var(--brass-lt);}
+  nav .links a.active .n{color:#08161a;background:var(--brass-lt);
+    border-color:var(--brass-lt);}
+  /* sliding underline indicator on the active link */
+  nav .links a.active::after{content:"";position:absolute;left:9px;right:9px;
+    bottom:0;height:2px;border-radius:1px;
+    background:linear-gradient(90deg,transparent,var(--brass-lt) 22%,var(--brass-lt) 78%,transparent);
+    box-shadow:0 0 8px rgba(230,196,119,.6);
+    animation:navSlide .26s cubic-bezier(.4,.0,.2,1);}
+  @keyframes navSlide{ from{ transform:scaleX(.55); opacity:0; } to{ transform:none; opacity:1; } }
+  /* Voyage Console — distinguished pill outlink */
+  nav .console{flex:0 0 auto;display:inline-flex;align-items:center;gap:6px;
+    align-self:center;
+    color:var(--brass-lt);
+    border:1px solid var(--brass-dk);border-radius:22px;
+    padding:8px 14px;margin-left:10px;
+    font:700 .66rem/1 var(--d-mono);text-transform:uppercase;letter-spacing:.14em;
+    text-decoration:none;
+    transition:background .15s ease,border-color .15s ease,color .15s ease;}
+  nav .console:hover{background:rgba(200,155,74,.16);border-color:var(--brass);
+    color:var(--cream);}
+  nav .console .cn-arrow{transition:transform .15s ease;}
+  nav .console:hover .cn-arrow{transform:translateX(2px);}
   /* ---------- HERO ---------- */
   header.hero{position:relative;text-align:center;padding:60px 20px 52px;overflow:hidden;
     background:radial-gradient(ellipse at 50% 6%, #1a4a5e 0%, var(--sea) 46%, var(--abyss) 100%);}
@@ -352,8 +406,13 @@
   footer a{color:var(--brass-lt);}
   @media(max-width:760px){
     .g2,.g3,.g4{grid-template-columns:1fr;}
-    nav .brand{width:100%;margin-right:0;padding-bottom:4px;}
-    nav a{padding:9px 7px;}
+    nav .inner{padding:0 12px;}
+    nav .brand{padding:11px 12px 11px 0;margin-right:6px;font-size:.86rem;}
+    nav .br-lbl{display:none;}            /* anchor + year only on phones */
+    nav .br-y{font-size:.58rem;}
+    nav .links a{padding:11px 9px;font-size:.66rem;letter-spacing:.08em;}
+    nav .links a .n{font-size:.50rem;padding:2px 4px;}
+    nav .console{padding:7px 11px;font-size:.60rem;margin-left:6px;}
     .sec-head h2{font-size:1.5rem;}
   }
   /* ---------- ACCESS GATE ---------- */
@@ -393,18 +452,26 @@
   </button>
 </div>
 
-<nav>
+<nav aria-label="Hub sections">
   <div class="inner">
-    <span class="brand">&#9875; Canada &amp; New England 2026</span>
-    <a href="#glance">At a Glance</a>
-    <a href="#travel">Flights</a>
-    <a href="#hotels">Hotels</a>
-    <a href="#itinerary">Itinerary</a>
-    <a href="#ship">The Ship</a>
-    <a href="#package">Package</a>
-    <a href="#ports">Ports &amp; Excursions</a>
-    <a href="#kbyg">Know Before You Go</a>
-    <a href="index.html" class="console">&#9875; Voyage Console</a>
+    <a href="#top" class="brand" aria-label="Top of page">
+      <span class="br-anchor" aria-hidden="true">&#9875;</span>
+      <span class="br-lbl">Canada &amp; New England</span>
+      <span class="br-y">2026</span>
+    </a>
+    <div class="links" role="list">
+      <a href="#glance"   role="listitem"><span class="n">01</span>At a Glance</a>
+      <a href="#travel"   role="listitem"><span class="n">02</span>Flights</a>
+      <a href="#hotels"   role="listitem"><span class="n">03</span>Hotels</a>
+      <a href="#itinerary"role="listitem"><span class="n">04</span>Itinerary</a>
+      <a href="#ship"     role="listitem"><span class="n">05</span>The Ship</a>
+      <a href="#package"  role="listitem"><span class="n">06</span>Package</a>
+      <a href="#ports"    role="listitem"><span class="n">07</span>Ports</a>
+      <a href="#kbyg"     role="listitem"><span class="n">08</span>Know Before You Go</a>
+    </div>
+    <a href="index.html" class="console" aria-label="Return to the Voyage Console">
+      <span aria-hidden="true">&#9875;</span>Console<span class="cn-arrow" aria-hidden="true">&rarr;</span>
+    </a>
   </div>
 </nav>
 
@@ -1126,6 +1193,76 @@
     }
     apply();
     if(b) b.addEventListener('click', function(){ off = !off; apply(); });
+  })();
+
+  /* ---- nav: shadow-on-scroll + section scrollspy ----
+     Toggles body.nav-scrolled past the hero (deepens nav background).
+     Uses IntersectionObserver to mark the link for the section currently
+     in the upper-middle of the viewport as .active. */
+  (function(){
+    var nav = document.querySelector('nav');
+    if(!nav) return;
+    var scrolled = false;
+    function onScroll(){
+      var s = window.scrollY > 90;
+      if(s !== scrolled){ scrolled = s;
+        document.body.classList.toggle('nav-scrolled', s); }
+    }
+    onScroll();
+    window.addEventListener('scroll', onScroll, {passive:true});
+
+    /* scroll-to-top on brand click */
+    var brand = nav.querySelector('.brand');
+    if(brand) brand.addEventListener('click', function(e){
+      e.preventDefault();
+      window.scrollTo({top:0, behavior:'smooth'});
+      history.replaceState(null, '', location.pathname + location.search);
+    });
+
+    if(!('IntersectionObserver' in window)) return;
+    var links = nav.querySelectorAll('.links a[href^="#"]');
+    var map = {};
+    links.forEach(function(a){
+      var id = a.getAttribute('href').slice(1);
+      if(id) map[id] = a;
+    });
+    var sections = Object.keys(map)
+      .map(function(id){ return document.getElementById(id); })
+      .filter(Boolean);
+    if(!sections.length) return;
+    var navH = nav.getBoundingClientRect().height || 56;
+    var current = null;
+    function setActive(id){
+      if(current === id) return;
+      current = id;
+      Object.keys(map).forEach(function(k){
+        map[k].classList.toggle('active', k === id);
+      });
+      /* keep the active link visible inside the scrolling .links strip */
+      var a = map[id];
+      if(a && a.scrollIntoView){
+        var strip = a.parentElement;
+        var aRect = a.getBoundingClientRect(), sRect = strip.getBoundingClientRect();
+        if(aRect.left < sRect.left + 8 || aRect.right > sRect.right - 8){
+          strip.scrollTo({left:strip.scrollLeft + (aRect.left - sRect.left) - 24,
+                          behavior:'smooth'});
+        }
+      }
+    }
+    var io = new IntersectionObserver(function(entries){
+      /* pick the entry whose top is closest below the nav and still on-screen */
+      var best = null;
+      entries.forEach(function(e){
+        if(e.isIntersecting) best = e;
+      });
+      if(best) setActive(best.target.id);
+    }, {
+      rootMargin: '-' + (navH + 4) + 'px 0px -55% 0px',
+      threshold: 0
+    });
+    sections.forEach(function(s){ io.observe(s); });
+    /* fallback initial highlight */
+    setActive(sections[0].id);
   })();
 
   /* ---- hero stars (decorative) ---- */
