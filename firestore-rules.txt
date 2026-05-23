@@ -1,36 +1,66 @@
-FIRESTORE SECURITY RULES — cruise Group Picks board
-====================================================
+FIRESTORE SECURITY RULES — Canada & New England cruise hub
+==========================================================
 
-The Group Picks board in explorer.html reads and writes ONE Firestore
-document:  collection "cruise", document "4LMNGG"  (the booking code).
+The cruise site uses two Firestore documents in collection "cruise":
+  - roster   : the 5-berth crew roster, a map of  email -> traveller name
+  - 4LMNGG   : the shared Group Picks board
 
-This rule is NOT auto-deployed. Paste the block below into:
-  Firebase Console -> project gto-poker-qui -> Firestore Database
-  -> Rules -> (merge into your existing rules) -> Publish.
+Sign-in is Google SSO. The first five Google accounts to sign in each
+claim one of the five berths (trust-on-first-use); after that the roster
+is closed. The Group Picks board can be read or written only by accounts
+already on the roster.
 
-Add the match /cruise block INSIDE your existing
-  match /databases/{database}/documents { ... }
-alongside the existing  match /games/{shareCode}  block. Do not remove
-or change the games rule.
+SETUP — two one-time steps in the Firebase console (project gto-poker-qui)
+--------------------------------------------------------------------------
+1. Authentication -> Sign-in method -> Add new provider -> Google -> Enable
+   -> Save. (Anonymous can stay enabled for the poker app; the cruise site
+   no longer uses it.)
+
+2. Firestore Database -> Rules -> merge the block below INSIDE your existing
+       match /databases/{database}/documents { ... }
+   block, alongside the existing  match /games/{shareCode}  rule. Do not
+   remove or change the games rule. Then Publish.
 
 ------------------------------------------------------------------
-    // --- Canada & New England cruise: Group Picks board ---
-    match /cruise/{boardId} {
-      // Any signed-in (anonymous) guest may read and write a board.
-      // Board data is non-sensitive (shore-excursion preferences) and
-      // the doc id is the booking code. Listing is not granted, so
-      // boards cannot be enumerated. Delete is denied by default.
-      allow read, create, update: if request.auth != null;
+    // --- Canada & New England cruise ---
+    match /cruise/roster {
+      // Any signed-in guest may read the roster.
+      allow read: if request.auth != null;
+
+      // First claim: an email-verified guest creates the roster with
+      // exactly their own one entry.
+      allow create: if request.auth != null
+        && request.auth.token.email_verified == true
+        && request.resource.data.members.size() == 1
+        && request.resource.data.members[request.auth.token.email] is string;
+
+      // Later claims: an email-verified guest may add or change ONLY their
+      // own email key, and only while the roster holds 5 or fewer berths.
+      // No guest can edit or remove anyone else's entry.
+      allow update: if request.auth != null
+        && request.auth.token.email_verified == true
+        && request.resource.data.members.size() <= 5
+        && request.resource.data.members.diff(resource.data.members)
+             .affectedKeys().hasOnly([request.auth.token.email]);
+    }
+
+    match /cruise/4LMNGG {
+      // Group Picks board: only accounts already on the roster.
+      // Delete is not granted, so the board cannot be removed by a guest.
+      allow read, create, update: if request.auth != null
+        && request.auth.token.email_verified == true
+        && request.auth.token.email in
+           get(/databases/$(database)/documents/cruise/roster).data.members;
     }
 ------------------------------------------------------------------
 
 Notes
 -----
-* Anonymous Auth must stay enabled (it already is, for the poker app):
-  Authentication -> Sign-in method -> Anonymous.
-* The site origin must be an authorized domain. mondrianaire.github.io
-  is already authorized because the existing app is hosted there, so
-  the cruise app at the same origin needs no change.
-* Opened as a local file (file://), Firebase auth will not connect and
-  the board falls back to this-device-only storage — this is expected
-  and harmless. Live sync works once served from GitHub Pages.
+* No email addresses are stored in this file or anywhere in the site code.
+  The roster fills itself in as the five travellers sign in, and lives
+  only in Firestore data.
+* mondrianaire.github.io is already an authorized domain — no change needed.
+* Honest scope: this is a convenience gate. The page HTML is still served
+  publicly to anyone with the URL, so View-Source still reveals page text.
+  The real, server-enforced protection here is on the Firestore roster and
+  Group Picks board — those are genuinely limited to the five accounts.
