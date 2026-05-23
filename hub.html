@@ -160,6 +160,73 @@
   .callout{background:rgba(200,155,74,.1);border-left:4px solid var(--brass);
     border-radius:0 6px 6px 0;padding:14px 18px;font-size:.9rem;margin:16px 0;color:var(--ink);}
   .callout strong{color:var(--brass-lt);}
+  /* ---------- DECK ELEVATION CHART ---------- */
+  /* A side-elevation of the ship: 11 horizontal deck strips stacked top-to-bottom,
+     with amenity glyphs placed at their actual fore/midship/aft positions, plus
+     pins for the group's three staterooms. Pure inline SVG — no JS. Hover/long-press
+     surfaces native <title> tooltips. Designed to compress into ~440px of vertical
+     real estate while showing every deck at once (Tufte small-multiples / shrink). */
+  .deckchart{background:rgba(4,19,28,.55);border:1px solid var(--brass-dk);
+    border-radius:9px;padding:18px 18px 14px;margin:18px 0 10px;
+    box-shadow:inset 0 0 0 1px rgba(200,155,74,.06);}
+  .deckchart h3{font:700 .72rem/1 var(--d-mono);text-transform:uppercase;
+    letter-spacing:.18em;color:var(--brass);margin-bottom:4px;}
+  .deckchart .dc-sub{font-size:.84rem;color:var(--ink-dim);margin:0 0 12px;max-width:780px;}
+  .deckchart svg.dc-svg{display:block;width:100%;height:auto;max-height:640px;}
+  .deckchart .deck-band{fill:rgba(200,155,74,.03);}
+  .deckchart .deck-band.odd{fill:rgba(200,155,74,.07);}
+  .deckchart .deck-band.you{fill:rgba(95,214,160,.13);}
+  .deckchart .deck-divider{stroke:rgba(200,155,74,.20);stroke-width:.6;}
+  .deckchart .ship-outline{fill:none;stroke:var(--brass-lt);stroke-width:1.6;
+    stroke-linejoin:round;}
+  .deckchart .waterline{stroke:var(--teal-lt);stroke-width:.8;
+    stroke-dasharray:5 4;opacity:.55;}
+  .deckchart .deck-num{font:700 13px/1 var(--d-serif);fill:var(--cream);}
+  .deckchart .deck-name{font:600 9.5px/1 var(--d-mono);fill:var(--ink-dim);
+    text-transform:uppercase;letter-spacing:.10em;}
+  .deckchart .deck-you .deck-num{fill:var(--brass-lt);}
+  .deckchart .deck-you .deck-name{fill:var(--brass-lt);}
+  .deckchart .axis-lbl{font:700 9px/1 var(--d-mono);fill:var(--ink-dim);
+    text-transform:uppercase;letter-spacing:.20em;}
+  .deckchart .avoid-zone{fill:rgba(216,57,43,.10);
+    stroke:rgba(216,57,43,.35);stroke-width:.6;stroke-dasharray:3 3;}
+  .deckchart .avoid-lbl{font:700 7.5px/1 var(--d-mono);fill:#e0795a;
+    text-transform:uppercase;letter-spacing:.12em;}
+  /* amenity glyphs — each <use> inherits .glyph then a category modifier */
+  .deckchart .glyph{cursor:default;transition:transform .14s ease,filter .14s ease;
+    transform-origin:center;transform-box:fill-box;}
+  .deckchart .glyph:hover{transform:scale(1.32);
+    filter:drop-shadow(0 0 4px rgba(230,196,119,.85));}
+  .deckchart .glyph title{cursor:help;}
+  .deckchart .cabin-you{cursor:default;}
+  .deckchart .cabin-you:hover .pin-body{filter:drop-shadow(0 0 5px rgba(95,214,160,.9));}
+  .deckchart .pin-body{fill:var(--brass-lt);stroke:#08161a;stroke-width:1.2;}
+  .deckchart .pin-body.tbd{fill:rgba(200,155,74,.18);
+    stroke:var(--brass-lt);stroke-dasharray:2.5 2.5;}
+  .deckchart .pin-cap{font:700 8.5px/1 var(--d-mono);fill:#08161a;
+    text-anchor:middle;dominant-baseline:central;}
+  .deckchart .pin-cap.tbd{fill:var(--brass-lt);}
+  .deckchart .funnel-band{fill:var(--sig-red);}
+  .deckchart .funnel-body{fill:var(--sea2);stroke:var(--brass-lt);stroke-width:1.3;}
+  .deckchart .mast{stroke:var(--brass-lt);stroke-width:1.4;}
+  /* legend */
+  .dc-legend{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:14px;
+    padding:11px 13px;border-top:1px dotted var(--brass-dk);font-size:.78rem;
+    color:var(--ink);align-items:center;}
+  .dc-legend .li{display:inline-flex;align-items:center;gap:6px;
+    font:600 .75rem/1 var(--d-mono);text-transform:uppercase;letter-spacing:.08em;
+    color:var(--ink-dim);}
+  .dc-legend svg{width:14px;height:14px;flex:0 0 14px;}
+  .dc-note{font-size:.76rem;color:var(--ink-dim);font-style:italic;
+    margin:8px 0 0;line-height:1.5;}
+  .dc-note strong{color:var(--brass-lt);font-style:normal;}
+  /* shrink labels on narrow screens — chart itself scales via viewBox */
+  @media(max-width:760px){
+    .deckchart{padding:14px 12px 10px;}
+    .deckchart .dc-sub{font-size:.78rem;}
+    .deckchart svg.dc-svg{max-height:none;}
+    .dc-legend{gap:5px 11px;font-size:.7rem;}
+  }
   /* ---------- ROUTE MAP — PARCHMENT CHART ---------- */
   .routemap{background:var(--paper);
     background-image:
@@ -574,6 +641,286 @@
     <div class="card fact"><div class="k">Guests</div><div class="v">~1,964 (double occ.)</div></div>
     <div class="card fact"><div class="k">Crew</div><div class="v">~840</div></div>
     <div class="card fact"><div class="k">Passenger Decks</div><div class="v">11</div></div>
+  </div>
+
+  <!-- ============ DECK ELEVATION CHART ============
+       Side-profile of the ship — all 11 passenger decks visible at once, with
+       every major amenity stamped at its actual fore/midship/aft position and
+       pins for the group's three staterooms. Hover any glyph for the venue's
+       full name, capacity, and post-Dec-2025 refit notes. -->
+  <div class="deckchart" aria-labelledby="dcH">
+    <h3 id="dcH">Deck Elevation &mdash; Every Amenity in One Glance</h3>
+    <p class="dc-sub">The <em>Zuiderdam</em> from the port side. Eleven passenger decks stacked top-to-bottom with the dining, music, pools, spa and bridge plotted at their actual position along the ship. Your three staterooms are pinned on <strong>Deck 5</strong>. Hover or long-press any glyph for the full venue name and detail.</p>
+
+    <svg class="dc-svg" viewBox="0 0 1000 580" xmlns="http://www.w3.org/2000/svg"
+         role="img" aria-label="Side-elevation diagram of ms Zuiderdam: 11 passenger decks numbered 11 down to 1, with amenities plotted at fore, midship and aft positions, and cabin pins for 5155 and 5161 on Deck 5.">
+      <defs>
+        <!-- ── amenity glyph library (each centred on 0,0 in a 14-unit box) ── -->
+        <symbol id="ic-din" viewBox="-7 -7 14 14" overflow="visible">
+          <path d="M0 -5 L5 0 L0 5 L-5 0 Z" fill="#e6c477"/>
+        </symbol>
+        <symbol id="ic-bar" viewBox="-7 -7 14 14" overflow="visible">
+          <path d="M0 -4.5 L4.5 0 L0 4.5 L-4.5 0 Z" fill="none" stroke="#f1e7cf" stroke-width="1.4"/>
+        </symbol>
+        <symbol id="ic-show" viewBox="-7 -7 14 14" overflow="visible">
+          <path d="M0 -5 L5 4 L-5 4 Z" fill="#d8392b"/>
+        </symbol>
+        <symbol id="ic-pool" viewBox="-7 -7 14 14" overflow="visible">
+          <path d="M-5 -1.5 Q-2.5 -4.5 0 -1.5 T5 -1.5" fill="none" stroke="#3fa0ad" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M-5 2.5 Q-2.5 -.5 0 2.5 T5 2.5" fill="none" stroke="#3fa0ad" stroke-width="1.5" stroke-linecap="round"/>
+        </symbol>
+        <symbol id="ic-spa" viewBox="-7 -7 14 14" overflow="visible">
+          <path d="M0 -5 Q3 -2 5 0 Q3 2 0 5 Q-3 2 -5 0 Q-3 -2 0 -5 Z" fill="none" stroke="#3fa0ad" stroke-width="1.3"/>
+          <circle r="1.5" fill="#3fa0ad"/>
+        </symbol>
+        <symbol id="ic-gym" viewBox="-7 -7 14 14" overflow="visible">
+          <rect x="-5" y="-2.4" width="2.2" height="4.8" fill="#5fd6a0"/>
+          <rect x="2.8" y="-2.4" width="2.2" height="4.8" fill="#5fd6a0"/>
+          <rect x="-3" y="-.9" width="6" height="1.8" fill="#5fd6a0"/>
+        </symbol>
+        <symbol id="ic-sport" viewBox="-7 -7 14 14" overflow="visible">
+          <circle r="4.4" fill="none" stroke="#5fd6a0" stroke-width="1.3"/>
+          <path d="M-4.4 0 H4.4 M0 -4.4 V4.4" stroke="#5fd6a0" stroke-width="1"/>
+        </symbol>
+        <symbol id="ic-svc" viewBox="-7 -7 14 14" overflow="visible">
+          <circle r="4.5" fill="none" stroke="#efb228" stroke-width="1.3"/>
+          <circle r="1.5" fill="#efb228"/>
+        </symbol>
+        <symbol id="ic-shop" viewBox="-7 -7 14 14" overflow="visible">
+          <rect x="-4.5" y="-3.5" width="9" height="7" fill="none" stroke="#c89b4a" stroke-width="1.3"/>
+          <rect x="-4.5" y="-3.5" width="9" height="2" fill="#c89b4a"/>
+        </symbol>
+        <symbol id="ic-cas" viewBox="-7 -7 14 14" overflow="visible">
+          <path d="M0 -5 C-3 -2.4 -5 -.4 -5 1.6 C-5 3.4 -3.4 4.4 -1.2 3.6 L-1.2 5 H1.2 L1.2 3.6 C3.4 4.4 5 3.4 5 1.6 C5 -.4 3 -2.4 0 -5 Z" fill="#d8392b"/>
+        </symbol>
+        <symbol id="ic-kid" viewBox="-7 -7 14 14" overflow="visible">
+          <circle cy="-2.5" r="1.9" fill="#efb228"/>
+          <path d="M-3 5 V0 Q-3 -1 0 -1 Q3 -1 3 0 V5 Z" fill="#efb228"/>
+        </symbol>
+        <symbol id="ic-obs" viewBox="-7 -7 14 14" overflow="visible">
+          <path d="M-5.5 0 Q0 -5 5.5 0 Q0 3 -5.5 0 Z" fill="none" stroke="#3fa0ad" stroke-width="1.3"/>
+          <circle r="1.5" fill="#3fa0ad"/>
+        </symbol>
+      </defs>
+
+      <!-- ── waterline (behind ship) ── -->
+      <g aria-hidden="true">
+        <path class="waterline" d="M40 524 Q200 519 360 524 T680 524 T1000 524"/>
+        <path class="waterline" d="M40 536 Q200 530 360 536 T680 536 T1000 536"/>
+      </g>
+
+      <!-- ── deck bands (background fills) ──
+           One 40-unit-tall band per deck; alternating subtle stripe for legibility,
+           green tint for the group's deck. -->
+      <g aria-hidden="true">
+        <rect class="deck-band odd" x="152" y="70"  width="688" height="42"/>  <!-- 11 -->
+        <rect class="deck-band"     x="180" y="112" width="700" height="40"/>  <!-- 10 -->
+        <rect class="deck-band odd" x="152" y="152" width="756" height="40"/>  <!-- 9  -->
+        <rect class="deck-band"     x="152" y="192" width="756" height="40"/>  <!-- 8  -->
+        <rect class="deck-band odd" x="152" y="232" width="756" height="40"/>  <!-- 7  -->
+        <rect class="deck-band"     x="152" y="272" width="756" height="40"/>  <!-- 6  -->
+        <rect class="deck-band you" x="152" y="312" width="756" height="40"/>  <!-- 5  YOU -->
+        <rect class="deck-band"     x="152" y="352" width="756" height="40"/>  <!-- 4  -->
+        <rect class="deck-band odd" x="152" y="392" width="756" height="40"/>  <!-- 3  -->
+        <rect class="deck-band"     x="152" y="432" width="756" height="40"/>  <!-- 2  -->
+        <rect class="deck-band odd" x="152" y="472" width="756" height="40"/>  <!-- 1  -->
+      </g>
+
+      <!-- ── ship outline (silhouette over the bands) ── -->
+      <path class="ship-outline" d="
+        M 220 512
+        L 152 432
+        L 152 152
+        L 180 152
+        L 180 112
+        L 220 112
+        L 220 70
+        L 840 70
+        L 840 112
+        L 880 112
+        L 880 152
+        L 908 152
+        L 908 502
+        L 870 512
+        Z"/>
+
+      <!-- ── funnel + mast ── -->
+      <rect class="funnel-body" x="612" y="12" width="42" height="58" rx="3"/>
+      <rect class="funnel-band" x="612" y="24" width="42" height="9"/>
+      <line class="mast" x1="246" y1="20" x2="246" y2="70"/>
+      <circle cx="246" cy="22" r="2.2" fill="#e6c477"/>
+
+      <!-- ── deck dividers (thin horizontal rules between strips) ── -->
+      <g aria-hidden="true">
+        <line class="deck-divider" x1="152" y1="112" x2="908" y2="112"/>
+        <line class="deck-divider" x1="152" y1="152" x2="908" y2="152"/>
+        <line class="deck-divider" x1="152" y1="192" x2="908" y2="192"/>
+        <line class="deck-divider" x1="152" y1="232" x2="908" y2="232"/>
+        <line class="deck-divider" x1="152" y1="272" x2="908" y2="272"/>
+        <line class="deck-divider" x1="152" y1="312" x2="908" y2="312"/>
+        <line class="deck-divider" x1="152" y1="352" x2="908" y2="352"/>
+        <line class="deck-divider" x1="152" y1="392" x2="908" y2="392"/>
+        <line class="deck-divider" x1="152" y1="432" x2="908" y2="432"/>
+        <line class="deck-divider" x1="152" y1="472" x2="908" y2="472"/>
+      </g>
+
+      <!-- ── left-column deck labels ── -->
+      <g>
+        <g><text class="deck-num" x="14" y="96">11</text><text class="deck-name" x="38" y="97">Sports&middot;Retreat</text></g>
+        <g><text class="deck-num" x="14" y="136">10</text><text class="deck-name" x="38" y="137">Observation</text></g>
+        <g><text class="deck-num" x="20" y="176">9</text><text class="deck-name" x="38" y="177">Lido</text></g>
+        <g><text class="deck-num" x="20" y="216">8</text><text class="deck-name" x="38" y="217">Navigation</text></g>
+        <g><text class="deck-num" x="20" y="256">7</text><text class="deck-name" x="38" y="257">Rotterdam</text></g>
+        <g><text class="deck-num" x="20" y="296">6</text><text class="deck-name" x="38" y="297">Upper Verandah</text></g>
+        <g class="deck-you"><text class="deck-num" x="20" y="336">5</text><text class="deck-name" x="38" y="337">Verandah &middot; YOU</text></g>
+        <g><text class="deck-num" x="20" y="376">4</text><text class="deck-name" x="38" y="377">Upper Promenade</text></g>
+        <g><text class="deck-num" x="20" y="416">3</text><text class="deck-name" x="38" y="417">Promenade</text></g>
+        <g><text class="deck-num" x="20" y="456">2</text><text class="deck-name" x="38" y="457">Lower Promenade</text></g>
+        <g><text class="deck-num" x="20" y="496">1</text><text class="deck-name" x="38" y="497">Main &middot; Atrium</text></g>
+      </g>
+
+      <!-- ── avoid-zone: cabins 4001-4050 sit directly above the World Stage ── -->
+      <rect class="avoid-zone" x="155" y="354" width="195" height="36"/>
+      <text class="avoid-lbl" x="252" y="376" text-anchor="middle">4001-4050 &middot; above theatre</text>
+
+      <!-- ── avoid-zone: cabins 8038-8147 sit directly below the Lido pools ── -->
+      <rect class="avoid-zone" x="430" y="194" width="290" height="36"/>
+      <text class="avoid-lbl" x="575" y="216" text-anchor="middle">8038-8147 &middot; below Lido pools</text>
+
+      <!-- ── DECK 11 · SPORTS / RETREAT ── y-mid 91 -->
+      <g><title>The Retreat &mdash; adults-only sundeck, 14 private cabanas (port + starboard, fee). Added 2023.</title>
+         <use class="glyph" href="#ic-spa" x="290" y="91" width="14" height="14"/></g>
+      <g><title>Pickleball court (since 2023, PPA partnership, free beginner lessons) &middot; Basketball court &mdash; aft sports deck</title>
+         <use class="glyph" href="#ic-sport" x="800" y="91" width="14" height="14"/></g>
+
+      <!-- ── DECK 10 · OBSERVATION ── y-mid 131 -->
+      <g><title>Crow's Nest &mdash; forward observation lounge with panoramic windows, own bar, 270 seats, DJ at night. NEW bandstand stage installed Dec 2025.</title>
+         <use class="glyph" href="#ic-obs" x="270" y="131" width="14" height="14"/></g>
+      <g><title>Explorations Central &amp; Caf&eacute; &mdash; patisserie / specialty coffee bar, library and Online Centre (100 seats)</title>
+         <use class="glyph" href="#ic-din" x="320" y="131" width="14" height="14"/></g>
+      <g><title>The Loft &mdash; teens 13-17, video games, ping-pong, PlayStations</title>
+         <use class="glyph" href="#ic-kid" x="540" y="131" width="14" height="14"/></g>
+      <g><title>Club HAL &mdash; supervised kids' program, two rooms by age group (3-12)</title>
+         <use class="glyph" href="#ic-kid" x="570" y="131" width="14" height="14"/></g>
+
+      <!-- ── DECK 9 · LIDO ── y-mid 171 -->
+      <g><title>Fitness Center &mdash; gymnasium with top-brand equipment, aerobics studio (6 am-9 pm, age 16+)</title>
+         <use class="glyph" href="#ic-gym" x="240" y="171" width="14" height="14"/></g>
+      <g><title>Lido Pool &mdash; main pool with retractable glass roof (deck 10 above) + 4 hot tubs/whirlpools</title>
+         <use class="glyph" href="#ic-pool" x="470" y="171" width="14" height="14"/></g>
+      <g><title>Lido Market &mdash; casual buffet, 5 themed food stations (breakfast/lunch/tea/dinner), 446 seats. Re-upholstered Dec 2025.</title>
+         <use class="glyph" href="#ic-din" x="510" y="171" width="14" height="14"/></g>
+      <g><title>Canaletto &mdash; relaxed Italian specialty restaurant in the evenings (Lido-section reflag), 72 seats, $29.50 pp. Re-carpeted &amp; re-upholstered Dec 2025.</title>
+         <use class="glyph" href="#ic-din" x="545" y="171" width="14" height="14"/></g>
+      <g><title>Dive-In &mdash; poolside burgers, hot dogs, fries, sandwiches, made-to-order</title>
+         <use class="glyph" href="#ic-din" x="580" y="171" width="14" height="14"/></g>
+      <g><title>New York Pizza &mdash; hand-tossed pizza by the slice</title>
+         <use class="glyph" href="#ic-din" x="615" y="171" width="14" height="14"/></g>
+      <g><title>Lido Bar &mdash; poolside cocktail bar (Signature beverage package applies)</title>
+         <use class="glyph" href="#ic-bar" x="650" y="171" width="14" height="14"/></g>
+      <g><title>Greenhouse Spa &amp; Salon &mdash; treatment rooms, heated-seawater hydrotherapy pool, thermal suite, sauna, steam, beauty salon. Book early for up to 30% off port-day treatments.</title>
+         <use class="glyph" href="#ic-spa" x="700" y="171" width="14" height="14"/></g>
+      <g><title>Sea View Pool &mdash; adults-only aft pool + 2 hot tubs + Sea View Bar + performance stage</title>
+         <use class="glyph" href="#ic-pool" x="830" y="171" width="14" height="14"/></g>
+
+      <!-- ── DECK 8 · NAVIGATION ── y-mid 211 -->
+      <g><title>Bridge &mdash; navigation, forward (no public access)</title>
+         <use class="glyph" href="#ic-svc" x="185" y="211" width="13" height="13"/></g>
+
+      <!-- ── DECK 7 · ROTTERDAM ── y-mid 251 -->
+      <g><title>Pinnacle Suites PS7045 &amp; PS7046 &mdash; whirlpool baths, premium amenities (the ship's two top suites)</title>
+         <use class="glyph" href="#ic-svc" x="200" y="251" width="13" height="13"/></g>
+      <g><title>Neptune Lounge &mdash; suite-guest concierge, breakfast room, priority dining reservations</title>
+         <use class="glyph" href="#ic-svc" x="555" y="251" width="13" height="13"/></g>
+
+      <!-- ── DECK 5 · VERANDAH · GROUP'S DECK ── y-mid 331 -->
+      <g class="cabin-you" transform="translate(660, 331)">
+        <title>Sandra &amp; Becca &middot; Cabin 5155 &middot; Deck 5 Verandah (starboard, mid-aft) &middot; booking 4LMNGC</title>
+        <path class="pin-body" d="M0 -11 C-8 -11 -11 -5 -11 0 C-11 6 -5 12 0 14 C5 12 11 6 11 0 C11 -5 8 -11 0 -11 Z"/>
+        <text class="pin-cap" y="0">5155</text>
+      </g>
+      <g class="cabin-you" transform="translate(700, 331)">
+        <title>Jett &amp; Laura &middot; Cabin 5161 &middot; Deck 5 Verandah (starboard, mid-aft) &middot; booking 4LMNGG</title>
+        <path class="pin-body" d="M0 -11 C-8 -11 -11 -5 -11 0 C-11 6 -5 12 0 14 C5 12 11 6 11 0 C11 -5 8 -11 0 -11 Z"/>
+        <text class="pin-cap" y="0">5161</text>
+      </g>
+      <g class="cabin-you" transform="translate(800, 331)">
+        <title>Karen &middot; cabin TBD &middot; booking 4LMNGT &mdash; pin will appear here once confirmed</title>
+        <path class="pin-body tbd" d="M0 -11 C-8 -11 -11 -5 -11 0 C-11 6 -5 12 0 14 C5 12 11 6 11 0 C11 -5 8 -11 0 -11 Z"/>
+        <text class="pin-cap tbd" y="0">?</text>
+      </g>
+
+      <!-- ── DECK 3 · PROMENADE ── y-mid 411 -->
+      <g><title>World Stage &mdash; upper balcony of the 3-tier main theatre (867 seats total). Shows, films, talks.</title>
+         <use class="glyph" href="#ic-show" x="240" y="411" width="14" height="14"/></g>
+      <g><title>Tasman Room cinema &mdash; 38 seats, intimate film screenings</title>
+         <use class="glyph" href="#ic-show" x="430" y="411" width="14" height="14"/></g>
+      <g><title>Marabella Luxury Shop &middot; Atrium Shops &middot; Photo Gallery (redesigned counter &amp; retail area, Dec 2025)</title>
+         <use class="glyph" href="#ic-shop" x="480" y="411" width="14" height="14"/></g>
+      <g><title>Half Moon &middot; Hudson &middot; Stuyvesant meeting rooms + Digital Workshop / Microsoft Studio</title>
+         <use class="glyph" href="#ic-svc" x="540" y="411" width="14" height="14"/></g>
+      <g><title>Ocean Bar &mdash; live music, dance floor, 147 seats</title>
+         <use class="glyph" href="#ic-bar" x="600" y="411" width="14" height="14"/></g>
+      <g><title>Promenade walking track &mdash; the wrap-around outdoor deck, ~4 laps per mile (port-side and aft)</title>
+         <use class="glyph" href="#ic-sport" x="660" y="411" width="14" height="14"/></g>
+      <g><title>The Dining Room &mdash; upper level (aft), open seating breakfast &amp; lunch, evening service. New carpeting Dec 2025.</title>
+         <use class="glyph" href="#ic-din" x="820" y="411" width="14" height="14"/></g>
+
+      <!-- ── DECK 2 · LOWER PROMENADE ── y-mid 451 -->
+      <g><title>World Stage &mdash; lower orchestra level of the 3-tier main theatre</title>
+         <use class="glyph" href="#ic-show" x="240" y="451" width="14" height="14"/></g>
+      <g><title>Pinnacle Grill &mdash; signature steak &amp; seafood, port-side of atrium L2. Lunch $29.50 pp, Dinner $61.36 pp. Have-It-All includes one specialty dinner per guest.</title>
+         <use class="glyph" href="#ic-din" x="430" y="451" width="14" height="14"/></g>
+      <g><title>Casino + Gallery Bar &mdash; slots, tables, 199 seats</title>
+         <use class="glyph" href="#ic-cas" x="470" y="451" width="14" height="14"/></g>
+      <g><title>Pinnacle Bar &mdash; premium champagne &amp; wine bar, 28 seats</title>
+         <use class="glyph" href="#ic-bar" x="505" y="451" width="14" height="14"/></g>
+      <g><title>Lincoln Center Stage &middot; Explorer's Lounge &mdash; live classical chamber music, wine tastings, 63 seats</title>
+         <use class="glyph" href="#ic-show" x="540" y="451" width="14" height="14"/></g>
+      <g><title>Billboard Onboard &mdash; dueling pianos &amp; chart-hit sing-along, midship-starboard</title>
+         <use class="glyph" href="#ic-show" x="580" y="451" width="14" height="14"/></g>
+      <g><title>B.B. King's Blues Club &amp; Culinary Arts Centre &mdash; Memphis-style soul &amp; blues evenings (170 seats), daytime culinary classes</title>
+         <use class="glyph" href="#ic-show" x="635" y="451" width="14" height="14"/></g>
+      <g><title>Art Gallery &mdash; exhibitions and on-board art auctions</title>
+         <use class="glyph" href="#ic-shop" x="685" y="451" width="14" height="14"/></g>
+      <g><title>The Dining Room &mdash; lower level (aft), 1,058 seats. Open seating or fixed time. Anchor venue for breakfast, lunch and most dinners. New carpeting Dec 2025.</title>
+         <use class="glyph" href="#ic-din" x="820" y="451" width="14" height="14"/></g>
+
+      <!-- ── DECK 1 · MAIN ── y-mid 491 -->
+      <g><title>Atrium &mdash; 3-deck-high lobby with the Waterford crystal seahorse sculpture, live music, fresh paint &amp; new carpeting Dec 2025</title>
+         <use class="glyph" href="#ic-svc" x="540" y="491" width="14" height="14"/></g>
+      <g><title>Front Office / Guest Services Desk &mdash; reception, billing, lost &amp; found</title>
+         <use class="glyph" href="#ic-svc" x="575" y="491" width="14" height="14"/></g>
+      <g><title>Shore Excursions Desk &mdash; book, modify or cancel tours; pick up tickets here</title>
+         <use class="glyph" href="#ic-svc" x="610" y="491" width="14" height="14"/></g>
+
+      <!-- ── fore / aft axis labels ── -->
+      <text class="axis-lbl" x="160" y="566">&larr; FORE</text>
+      <text class="axis-lbl" x="900" y="566" text-anchor="end">AFT &rarr;</text>
+      <text class="axis-lbl" x="500" y="566" text-anchor="middle">MIDSHIP</text>
+    </svg>
+
+    <!-- ── legend ── -->
+    <div class="dc-legend" aria-label="Deck-chart legend">
+      <span class="li"><svg viewBox="-7 -7 14 14"><use href="#ic-din"/></svg>Dining</span>
+      <span class="li"><svg viewBox="-7 -7 14 14"><use href="#ic-bar"/></svg>Bar</span>
+      <span class="li"><svg viewBox="-7 -7 14 14"><use href="#ic-show"/></svg>Stage</span>
+      <span class="li"><svg viewBox="-7 -7 14 14"><use href="#ic-pool"/></svg>Pool</span>
+      <span class="li"><svg viewBox="-7 -7 14 14"><use href="#ic-spa"/></svg>Spa</span>
+      <span class="li"><svg viewBox="-7 -7 14 14"><use href="#ic-gym"/></svg>Gym</span>
+      <span class="li"><svg viewBox="-7 -7 14 14"><use href="#ic-sport"/></svg>Sports</span>
+      <span class="li"><svg viewBox="-7 -7 14 14"><use href="#ic-obs"/></svg>Observation</span>
+      <span class="li"><svg viewBox="-7 -7 14 14"><use href="#ic-kid"/></svg>Kids/Teens</span>
+      <span class="li"><svg viewBox="-7 -7 14 14"><use href="#ic-shop"/></svg>Shops</span>
+      <span class="li"><svg viewBox="-7 -7 14 14"><use href="#ic-cas"/></svg>Casino</span>
+      <span class="li"><svg viewBox="-7 -7 14 14"><use href="#ic-svc"/></svg>Services</span>
+      <span class="li" style="color:var(--brass-lt);">
+        <svg viewBox="-12 -12 24 24"><path d="M0 -10 C-7 -10 -10 -5 -10 0 C-10 6 -4 11 0 13 C4 11 10 6 10 0 C10 -5 7 -10 0 -10 Z" fill="#e6c477" stroke="#08161a" stroke-width="1.2"/></svg>
+        Your cabin
+      </span>
+    </div>
+
+    <p class="dc-note">Vista-class cabin numbering: <strong>odd = starboard, even = port</strong>. 5155 and 5161 are both starboard, six doors apart &mdash; you're effectively neighbours. The chart shows port-side elevation, so port/starboard isn't visible here, but forward/midship/aft positions are accurate. Avoid-zones in red are the cabin ranges flagged by reviewers (4001-4050 sit above the World Stage; 8038-8147 sit below the Lido pools) &mdash; your Deck 5 cabins are clear of both. <strong>Karen's cabin TBD</strong> &mdash; the &ldquo;?&rdquo; pin will move to her actual deck once confirmed.</p>
   </div>
 
   <div class="grid g2" style="margin-top:16px;">
