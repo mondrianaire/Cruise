@@ -821,7 +821,7 @@ const PERSONAS={"History Buff":["history","landmark"],"Foodie":["food","drinks"]
  "Nature Lover":["scenery","wildlife","water"],"Culture & Music Fan":["music","culture","literary"],
  "Active Explorer":["active","walking"],"Easygoing Sightseer":["drive","scenery","landmark"],
  "Photographer":["photo","scenery","landmark"],"Celebration":["handson","music","food"]};
-const ROOMS=[{key:"jl",label:"Jett & Laura",size:2},{key:"sb",label:"Sandra & Becca",size:2},{key:"k",label:"Karen",size:1}];
+const PEOPLE=[{key:"jett",label:"Jett"},{key:"laura",label:"Laura"},{key:"sandra",label:"Sandra"},{key:"becca",label:"Becca"},{key:"karen",label:"Karen"}];
 const DATA=[
 {id:"qc-01",port:"Quebec City",name:"Embarkation Tour: Historic Quebec & Montmorency Falls",durationHrs:3,durationBand:"half-day",effort:"Moderate",price:149.95,priceBand:"mid",themes:["history","landmark","scenery","drive","walking"],flags:[]},
 {id:"char-01",port:"Charlottetown",name:"Panoramic Island Drive & Confederation Bridge",durationHrs:3.5,durationBand:"half-day",effort:"Easy",price:99.95,priceBand:"value",themes:["landmark","scenery","drive"],flags:[]},
@@ -922,6 +922,7 @@ function savePicks(){
 }
 window.__getPicks=function(){ return picks; };
 window.__applyRemote=function(r){ picks=(r&&typeof r==='object')?r:{}; render(); renderBoard(); };
+window.__rerender=function(){ render(); renderBoard(); };
 function exById(id){ return DATA.find(e=>e.id===id); }
 function clearPersona(){
   activePersona=null;
@@ -1019,41 +1020,40 @@ function render(){
   }).join('');
   box.querySelectorAll('.star').forEach(btn=>{
     btn.onclick=()=>{ const id=btn.dataset.id;
-      if(picks[id]) delete picks[id]; else picks[id]=['jl'];
+      if(picks[id]) delete picks[id]; else picks[id]=(window.__crewKey?[window.__crewKey]:[]);
       savePicks(); render(); renderBoard(); };
   });
 }
 function renderBoard(){
   const board=document.getElementById('gpBoard');
   const ids=Object.keys(picks);
-  if(!ids.length){ board.innerHTML='<div class="gp-empty">No tours picked yet. Tap the ☆ star on any excursion to add it here, then mark which of the three rooms wants it.</div>'; return; }
+  if(!ids.length){ board.innerHTML='<div class="gp-empty">No tours picked yet. Tap the ☆ star on any excursion to add it here, then tap each traveller who wants it.</div>'; return; }
+  const me=window.__crewKey||'';
   let html=ids.map(id=>{
     const e=exById(id); if(!e) return '';
     const votes=picks[id]||[];
-    const rooms=ROOMS.map(r=>'<button type="button" class="roomchip '+(votes.includes(r.key)?'on':'')+'" aria-pressed="'+(votes.includes(r.key)?'true':'false')+'" data-id="'+id+'" data-room="'+r.key+'">'+r.label+'</button>').join('');
-    let ag='none',agt='No rooms yet';
-    if(votes.length===3){ag='all';agt='All 3 rooms — book together';}
-    else if(votes.length){ag='some';agt=votes.length+' of 3 rooms';}
+    const chips=PEOPLE.map(p=>'<button type="button" class="roomchip '+(votes.includes(p.key)?'on':'')+'" aria-pressed="'+(votes.includes(p.key)?'true':'false')+'" data-id="'+id+'" data-who="'+p.key+'">'+p.label+(p.key===me?' (you)':'')+'</button>').join('');
+    let ag='none',agt='No-one marked yet';
+    if(votes.length===5){ag='all';agt='Everyone — all 5 keen';}
+    else if(votes.length){ag='some';agt=votes.length+' of 5 keen';}
     const price=e.price?('$'+e.price.toFixed(2)+' pp'):'price n/a';
     return '<div class="gp-row"><div class="gp-top"><div><a class="gp-nm" href="https://www.hollandamerica.com/sf/excursions" target="_blank" rel="noopener">'+e.name+'</a>'+
       '<div class="gp-meta">'+e.port+' · '+e.durationHrs+' hrs · '+e.effort+' · '+price+'</div></div>'+
       '<span><span class="agree '+ag+'">'+agt+'</span><button class="gp-rm" data-id="'+id+'">remove</button></span></div>'+
-      '<div class="gp-rooms"><span class="rlbl">Who wants it:</span>'+rooms+'</div></div>';
+      '<div class="gp-rooms"><span class="rlbl">Who wants it:</span>'+chips+'</div></div>';
   }).join('');
   html+='<div class="gp-summary">';
-  ROOMS.forEach(r=>{
-    let total=0,n=0;
-    ids.forEach(id=>{ if((picks[id]||[]).includes(r.key)){ const e=exById(id); if(e&&e.price){ total+=e.price*r.size; n++; } } });
-    const credit=r.size*100, applied=Math.min(credit,total), net=total-applied;
-    html+='<div class="gp-sum-row"><span class="rm">'+r.label+'</span><span>'+n+' tour'+(n!==1?'s':'')+
-      ' · $'+total.toFixed(2)+' − $'+applied.toFixed(2)+' credit = <span class="net">$'+net.toFixed(2)+' net</span></span></div>';
+  PEOPLE.forEach(p=>{
+    let n=0; ids.forEach(id=>{ if((picks[id]||[]).includes(p.key)) n++; });
+    html+='<div class="gp-sum-row"><span class="rm">'+p.label+(p.key===me?' (you)':'')+'</span><span>'+n+' tour'+(n!==1?'s':'')+' wanted</span></div>';
   });
-  html+='<div class="gp-sum-row gp-fine">Credit = the $100-per-guest Have It All shore-excursion credit (Jett &amp; Laura $200, Sandra &amp; Becca $200, Karen $100). Tour cost is counted per adult in each room. This board syncs live across everyone’s device.</div>';
+  let consensus=0; ids.forEach(id=>{ if((picks[id]||[]).length>=3) consensus++; });
+  html+='<div class="gp-sum-row gp-fine">'+consensus+' tour'+(consensus===1?' has':'s have')+' 3 or more travellers keen — the strongest candidates to book together. Every guest also has a $100 Have It All excursion credit (see Your Package). This board syncs live across everyone’s device.</div>';
   html+='</div><div class="gp-actions"><button class="gp-clear" id="gpClear">Clear all picks</button></div>';
   board.innerHTML=html;
   board.querySelectorAll('.roomchip').forEach(c=>{
-    c.onclick=()=>{ const id=c.dataset.id, rk=c.dataset.room, v=picks[id]||[];
-      picks[id]=v.includes(rk)?v.filter(x=>x!==rk):v.concat([rk]);
+    c.onclick=()=>{ const id=c.dataset.id, wk=c.dataset.who, v=picks[id]||[];
+      picks[id]=v.includes(wk)?v.filter(x=>x!==wk):v.concat([wk]);
       savePicks(); renderBoard(); };
   });
   board.querySelectorAll('.gp-rm').forEach(b=>{
@@ -1104,8 +1104,15 @@ renderBoard();
   if(auth){
     status('connecting…','wait');
     onAuthStateChanged(auth,function(user){
-      if(user) startBoard();
-      else status('sign in via the Voyage Console to sync','wait');
+      if(user){
+        var fk=((user.displayName||'').trim().split(/\s+/)[0]||'').toLowerCase();
+        if(['jett','laura','sandra','becca','karen'].indexOf(fk)>=0){
+          window.__crewKey=fk;
+          window.__crewName=fk.charAt(0).toUpperCase()+fk.slice(1);
+          if(window.__rerender) window.__rerender();
+        }
+        startBoard();
+      } else status('sign in via the Voyage Console to sync','wait');
     });
   }
 </script>
