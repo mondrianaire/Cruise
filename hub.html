@@ -440,6 +440,39 @@
   .gate-btn:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px;}
   .gate-foot{margin-top:22px;font:700 9px/1 var(--d-mono);letter-spacing:.18em;
     text-transform:uppercase;color:var(--ink-dim);}
+  /* ---------- DAY-BY-DAY PLAN ---------- */
+  .cal-actions{display:flex;flex-wrap:wrap;gap:10px;margin:6px 0 22px;}
+  .cta{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 18px;
+    border-radius:7px;text-decoration:none;font:700 .72rem/1 var(--d-mono);
+    letter-spacing:.08em;text-transform:uppercase;background:var(--brass-lt);
+    color:#08161a;border:1px solid var(--brass-dk);}
+  .cta.ghost{background:transparent;color:var(--brass-lt);}
+  .cta:hover{background:var(--brass);}
+  .cta.ghost:hover{background:rgba(200,155,74,.14);}
+  .cal-day{margin-bottom:18px;background:rgba(7,32,43,.7);border:1px solid var(--teal);
+    border-radius:9px;padding:16px 18px;position:relative;overflow:hidden;}
+  .cal-day::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:3px;
+    background:linear-gradient(90deg,var(--brass),var(--teal-lt));}
+  .cal-day-h{display:flex;flex-wrap:wrap;align-items:baseline;gap:12px;margin-bottom:10px;
+    padding-bottom:10px;border-bottom:1px dotted var(--brass-dk);}
+  .cal-date{font-family:var(--d-serif);font-weight:700;font-size:1.06rem;color:var(--cream);}
+  .cal-where{font:700 .66rem/1 var(--d-mono);text-transform:uppercase;letter-spacing:.16em;
+    color:var(--brass);}
+  .cal-anchor{margin-left:auto;font:600 .76rem/1.4 var(--d-mono);color:var(--ink-dim);
+    font-style:italic;text-align:right;}
+  .cal-evt{display:grid;grid-template-columns:96px 1fr;gap:14px;padding:8px 0;
+    border-top:1px solid rgba(28,107,126,.25);}
+  .cal-evt:first-of-type{border-top:none;padding-top:0;}
+  .cal-time{font:700 .76rem/1.4 var(--d-mono);color:var(--brass-lt);}
+  .cal-evt-body{font-size:.92rem;color:var(--ink);}
+  .cal-title{font-family:var(--d-serif);font-weight:600;color:var(--cream);font-size:1rem;}
+  .cal-loc{font:600 .73rem/1.4 var(--d-mono);color:var(--teal-lt);margin-top:3px;
+    text-transform:uppercase;letter-spacing:.05em;}
+  .cal-note{font-size:.85rem;color:var(--ink-dim);margin-top:4px;line-height:1.5;}
+  @media(max-width:560px){
+    .cal-evt{grid-template-columns:1fr;gap:2px;}
+    .cal-time{color:var(--brass-lt);font-size:.78rem;}
+  }
 </style>
 </head>
 <body>
@@ -464,10 +497,11 @@
       <a href="#travel"   role="listitem"><span class="n">02</span>Flights</a>
       <a href="#hotels"   role="listitem"><span class="n">03</span>Hotels</a>
       <a href="#itinerary"role="listitem"><span class="n">04</span>Itinerary</a>
-      <a href="#ship"     role="listitem"><span class="n">05</span>The Ship</a>
-      <a href="#package"  role="listitem"><span class="n">06</span>Package</a>
-      <a href="#ports"    role="listitem"><span class="n">07</span>Ports</a>
-      <a href="#kbyg"     role="listitem"><span class="n">08</span>Know Before You Go</a>
+      <a href="#plan"     role="listitem"><span class="n">05</span>Daily Plan</a>
+      <a href="#ship"     role="listitem"><span class="n">06</span>The Ship</a>
+      <a href="#package"  role="listitem"><span class="n">07</span>Package</a>
+      <a href="#ports"    role="listitem"><span class="n">08</span>Ports</a>
+      <a href="#kbyg"     role="listitem"><span class="n">09</span>Know Before You Go</a>
     </div>
     <a href="index.html" class="console" aria-label="Return to the Voyage Console">
       <span aria-hidden="true">&#9875;</span>Console<span class="cn-arrow" aria-hidden="true">&rarr;</span>
@@ -697,6 +731,17 @@
       <div class="note">Voyage ends. Disembark in the morning; a city tour with airport/hotel transfer is offered.</div>
     </div>
   </div>
+</section>
+
+<!-- ============ DAY-BY-DAY PLAN ============ -->
+<section id="plan" aria-labelledby="plan-h">
+  <div class="sec-head"><h2 id="plan-h">Day-by-Day Plan</h2><span class="tag">Detailed Schedule</span></div>
+  <p class="lead">The full 10-day plan pulled together from the group's itineraries &mdash; from landing in Montreal through disembarking in Boston. All times are local. Subscribe in iOS Calendar to keep it in sync, or download the .ics to add the events one-time.</p>
+  <div class="cal-actions">
+    <a class="cta" href="trip-calendar.ics" download="canada-new-england-2026.ics">&#11015;&nbsp; Download .ics</a>
+    <a class="cta ghost" href="webcal://mondrianaire.github.io/Cruise/trip-calendar.ics">&#9875;&nbsp; Subscribe in iOS / Mac Calendar</a>
+  </div>
+  <div id="planCal"></div>
 </section>
 
 <!-- ============ THE SHIP ============ -->
@@ -1548,6 +1593,80 @@ function renderBoard(){
 }
 render();
 renderBoard();
+
+// === Day-by-Day Plan calendar (from trip-calendar.ics) ===
+(function(){
+  var root=document.getElementById('planCal'); if(!root) return;
+  var P=[
+    {d:'2026-06-11',a:'Montreal',w:'Arrival day',t:'11:00 AM',e:'1:00 PM',n:'Becca & Sandra: land at YUL — pick up rental',l:'Montréal-Trudeau Airport (YUL)'},
+    {d:'2026-06-11',t:'1:00 PM',e:'5:00 PM',n:'Old Montreal walking tour',l:'Old Montreal',o:'Suggested adds: Notre-Dame Basilica · Place Jacques-Cartier · Mount Royal lookout.'},
+    {d:'2026-06-11',t:'5:00 PM',e:'6:00 PM',n:'Jett, Laura & Karen land at YUL',l:'YUL',o:'Uber, or Sandra returns to pick up.'},
+    {d:'2026-06-11',t:'evening',e:'',n:'Check in — Humaniti Hotel Montreal',l:'340 de la Gauchetière O, Montreal',o:'Autograph Collection (Marriott). Dinner.'},
+    {d:'2026-06-12',a:'Montreal → Québec City',w:'Scenic drive day',t:'9:45 AM',e:'11:30 AM',n:'Drive: Montreal → Trois-Rivières',l:'Autoroute 20 East',o:'~1h 45m, ~145 km.'},
+    {d:'2026-06-12',t:'11:30 AM',e:'12:45 PM',n:'Café Lewis — coffee + brunch',l:'Trois-Rivières area',o:'Latte / flat white, breakfast sandwich, pastries for the road. ~60–75 min.'},
+    {d:'2026-06-12',t:'12:45 PM',e:'2:00 PM',n:'Trois-Rivières walk — Rue des Forges',l:'Trois-Rivières',o:'Historic street, cafés, riverfront. Optional Amphithéâtre Cogeco.'},
+    {d:'2026-06-12',t:'2:30 PM',e:'3:30 PM',n:'Parc des Chutes-de-la-Chaudière',l:'Lévis, QC',o:'Suspension bridge, waterfall overlook, forest trails (~45–60 min). Optional Le Corsaire microbrasserie.'},
+    {d:'2026-06-12',t:'4:15 PM',e:'5:30 PM',n:'Arrive Old Québec — first walk',l:'Old Quebec',o:'Petit-Champlain · Château Frontenac · Terrasse Dufferin · Place Royale.'},
+    {d:'2026-06-12',t:'5:30 PM',e:'6:30 PM',n:'Check in — Les Lofts St-Pierre',l:'Old Quebec',o:'Unit SP304 Jett & Laura · Unit SP109 Sandra, Becca & Karen.'},
+    {d:'2026-06-12',t:'6:30 PM',e:'7:30 PM',n:'Return rental car at YQB airport',l:'Québec City Jean Lesage (YQB)',o:''},
+    {d:'2026-06-13',a:'Québec City + Embark',w:'Walking tour + sail-away',t:'8:30 AM',e:'9:30 AM',n:'Breakfast — Place Royale (Lower Town)',l:'Old Quebec',o:'Wander Place Royale, Notre-Dame-des-Victoires, Petit-Champlain.'},
+    {d:'2026-06-13',t:'9:30 AM',e:'10:30 AM',n:'Explore Petit-Champlain',l:'Quartier Petit-Champlain',o:'Boutiques, the famous Breakneck Stairs.'},
+    {d:'2026-06-13',t:'10:30 AM',e:'11:00 AM',n:'Ride the Funicular up to Upper Town',l:'Old Quebec Funicular',o:''},
+    {d:'2026-06-13',t:'11:00 AM',e:'12:00 PM',n:'Dufferin Terrace & Château Frontenac',l:'Fairmont Le Château Frontenac',o:'Optional: book afternoon tea at the Fairmont in advance.'},
+    {d:'2026-06-13',t:'12:00 PM',e:'1:30 PM',n:'Lunch — Upper Town',l:"Rue Saint-Jean / Place d'Armes",o:'Tourtière, French onion soup, Québec cheeses, maple desserts.'},
+    {d:'2026-06-13',t:'1:30 PM',e:'2:30 PM',n:'Historic Upper Town',l:'Cathedral-Basilica of Notre-Dame de Québec',o:'Cathedral · Morrin Centre · City Hall.'},
+    {d:'2026-06-13',t:'2:30 PM',e:'4:00 PM',n:'Citadelle & Plains of Abraham',l:'La Citadelle de Québec',o:'River views and Canadian history.'},
+    {d:'2026-06-13',t:'4:00 PM',e:'5:30 PM',n:'Walk the Fortifications',l:'Old Quebec city walls',o:'Saint-Louis Gate, Kent Gate.'},
+    {d:'2026-06-13',t:'5:30 PM',e:'6:30 PM',n:'Sunset on Dufferin Terrace',l:'Terrasse Dufferin',o:''},
+    {d:'2026-06-13',t:'6:30 PM',e:'10:00 PM',n:'Check out · Uber to ship · dinner onboard',l:'Quebec City cruise terminal',o:''},
+    {d:'2026-06-13',t:'11:00 PM',e:'',n:'⚓ Depart Quebec City — Bon Voyage',l:'ms Zuiderdam',o:''},
+    {d:'2026-06-14',a:'St. Lawrence River',w:'Sea day',allDay:true,n:'Cruising the Saint Lawrence River',l:'ms Zuiderdam',o:'Settling-in day — spa, ship exploration, scenic cruising.'},
+    {d:'2026-06-15',a:'Gulf of St. Lawrence',w:'Sea day',allDay:true,n:'Cruising the Gulf of St. Lawrence',l:'ms Zuiderdam',o:'Watch for whales — rich June habitat.'},
+    {d:'2026-06-16',a:'🍁 Charlottetown PEI',w:'In port 7am–5pm',t:'8:30 AM',e:'9:00 AM',n:'Becca: pick up GPS scavenger-hunt unit',l:'ms Zuiderdam',o:'Self-guided GPS walking tour with clues + crossword.'},
+    {d:'2026-06-16',t:'9:15 AM',e:'9:45 AM',n:'Pick up minivan rental',l:'PEI Car Rental, 18 Queen St',o:'PEI driving loop — ~1h 54m total (~119 km).'},
+    {d:'2026-06-16',t:'10:00 AM',e:'11:00 AM',n:'Cavendish & Anne of Green Gables',l:'Cavendish, PEI',o:'~40 min in Anne country.'},
+    {d:'2026-06-16',t:'11:00 AM',e:'11:45 AM',n:'PEI National Park',l:'PEI National Park',o:'Red shores and dunes.'},
+    {d:'2026-06-16',t:'11:45 AM',e:'1:00 PM',n:'North Rustico Harbour — lobster rolls',l:'North Rustico Harbour',o:'PEI mussels, lobster rolls, fresh oysters — best oyster destination in eastern Canada.'},
+    {d:'2026-06-16',t:'1:00 PM',e:'2:00 PM',n:'Gulf Shore Parkway + Dalvay-by-the-Sea',l:'Gulf Shore Parkway',o:'Optional: Covehead Harbour Lighthouse — very photogenic short detour.'},
+    {d:'2026-06-16',t:'2:00 PM',e:'3:30 PM',n:'Greenwich Dunes (if time)',l:'Greenwich Dunes, PEI',o:'Most impressive natural area on PEI. Skip if running tight.'},
+    {d:'2026-06-17',a:'🎻 Sydney, Nova Scotia',w:'In port 7am–4pm',t:'7:00 AM',e:'11:00 AM',n:"Free time — World's Largest Fiddle",l:'Sydney waterfront',o:'Classic Sydney photo.'},
+    {d:'2026-06-17',t:'11:30 AM',e:'3:00 PM',n:'Ship tour: Highland Village & Gaelic Experience',l:"Bras d'Or Lakes / Iona",o:'Scenic drive through the Bras d’Or Lakes. Living history museum on 43 acres — 11 buildings reflecting Gaelic settlement late 1700s–1800s.'},
+    {d:'2026-06-18',a:'🚢 Halifax',w:'In port 8am–4pm',t:'8:30 AM',e:'4:00 PM',n:"Viator: Halifax Coastal — Peggy's Cove & Lunenburg",l:'Halifax → coast → Halifax',o:'Full-day private tour: Lunenburg (UNESCO) → Mahone Bay → Peggy’s Cove Lighthouse & Swissair 111 Memorial → optional Fairview Lawn / Citadel → back to ship. ~3h 25m driving (~249 km via NS-103 W).'},
+    {d:'2026-06-18',t:'6:00 PM',e:'8:00 PM',n:'🍽 Pinnacle Grill dinner',l:'ms Zuiderdam — Pinnacle Grill',o:"Specialty dining — Laura's booking. Signature steak & seafood."},
+    {d:'2026-06-19',a:'🦞 Portland, Maine',w:'In port 12:30pm–10pm',t:'12:30 PM',e:'1:00 PM',n:'Arrive Portland',l:'Portland Port',o:'Long evening in port. Nothing booked yet.'},
+    {d:'2026-06-19',t:'1:00 PM',e:'6:00 PM',n:'Suggested: Portland Head Light + Old Port',l:'Cape Elizabeth + Portland Old Port',o:'One of the most photographed lighthouses in North America. Combine with the Old Port, a lobster-roll lunch, and a waterfront walk.'},
+    {d:'2026-06-20',a:'⚓ Boston',w:'Disembark · arrives 7am',t:'7:00 AM',e:'10:00 AM',n:'Arrive Boston — Disembark',l:'Boston Cruise Terminal',o:'Voyage ends.'},
+    {d:'2026-06-20',t:'10:00 AM',e:'6:00 PM',n:'Boston: Freedom Trail / Faneuil Hall / Quincy Market',l:'Boston, MA',o:'Suggested priorities before the hotel: Faneuil Hall, Quincy Market, Boston Common, Freedom Trail highlights.'},
+    {d:'2026-06-20',t:'evening',e:'',n:'🎂 Boston hotel — birthday night (TBD)',l:'Boston (Seaport or Back Bay)',o:'One night needed after disembarkation before the flight home.'},
+    {d:'2026-06-21',a:'Fly home',w:'Boston → Greensboro',t:'12:32 PM',e:'2:08 PM',n:'✈ Flight: BOS → PHL — AA 3043',l:'BOS → PHL',o:'Jett & Laura. Confirmation MNUWWX. 1h 12m connection at PHL.'},
+    {d:'2026-06-21',t:'3:20 PM',e:'5:02 PM',n:'✈ Flight: PHL → GSO — AA 5518',l:'PHL → GSO',o:'Jett & Laura. PSA Airlines as American Eagle.'}
+  ];
+  function esc(s){ return String(s||'').replace(/[<>&]/g,function(c){return {'<':'&lt;','>':'&gt;','&':'&amp;'}[c];}); }
+  function fmt(d){ var x=new Date(d+'T12:00');
+    return x.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'}); }
+  var by={}; P.forEach(function(e){ (by[e.d]=by[e.d]||[]).push(e); });
+  var keys=Object.keys(by).sort();
+  var html='';
+  keys.forEach(function(d){
+    var ev=by[d], head=ev.find(function(x){return x.a||x.w;}) || {};
+    html+='<div class="cal-day"><div class="cal-day-h">'
+      +'<div class="cal-date">'+esc(fmt(d))+'</div>'
+      +(head.a?'<div class="cal-where">'+esc(head.a)+'</div>':'')
+      +(head.w?'<div class="cal-anchor">'+esc(head.w)+'</div>':'')
+      +'</div>';
+    ev.forEach(function(x){
+      var when = x.allDay ? 'All day' : (x.t + (x.e?' – '+x.e:''));
+      html+='<div class="cal-evt"><div class="cal-time">'+esc(when)+'</div>'
+        +'<div class="cal-evt-body">'
+        +'<div class="cal-title">'+esc(x.n)+'</div>'
+        +(x.l?'<div class="cal-loc">'+esc(x.l)+'</div>':'')
+        +(x.o?'<div class="cal-note">'+esc(x.o)+'</div>':'')
+        +'</div></div>';
+    });
+    html+='</div>';
+  });
+  root.innerHTML=html;
+})();
 </script>
 
 <!-- Firebase: live Group Picks sync — sign-in is carried over from the Voyage Console -->

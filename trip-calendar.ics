@@ -1,0 +1,414 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//mondrianaire//Canada and New England Cruise 2026//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Canada & New England Cruise — June 2026
+X-WR-CALDESC:Day-by-day plan for the ms Zuiderdam cruise: Jett\, Laura\, Sandra\, Becca and Karen.
+X-WR-TIMEZONE:America/New_York
+BEGIN:VEVENT
+UID:cnen26-01@mondrianaire.github.io
+DTSTAMP:20260601T000000Z
+DTSTART:20260611T110000
+DTEND:20260611T130000
+SUMMARY:Becca & Sandra land at YUL — pick up rental
+LOCATION:Montréal-Trudeau Airport (YUL)
+DESCRIPTION:Becca & Sandra arrive\, pick up the rental car.
+END:VEVENT
+BEGIN:VEVENT
+UID:cnen26-02@mondrianaire.github.io
+DTSTAMP:20260601T000000Z
+DTSTART:20260611T130000
+DTEND:20260611T170000
+SUMMARY:Old Montreal walking tour
+LOCATION:Old Montreal
+DESCRIPTION:Walking tour of Old Montreal. Suggested additions: Notre-Dame Basilica\, Place Jacques-Cartier\, Mount Royal lookout if weather is clear.
+END:VEVENT
+BEGIN:VEVENT
+UID:cnen26-03@mondrianaire.github.io
+DTSTAMP:20260601T000000Z
+DTSTART:20260611T170000
+DTEND:20260611T180000
+SUMMARY:Jett\, Laura & Karen land at YUL
+LOCATION:Montréal-Trudeau Airport (YUL)
+DESCRIPTION:Karen / Jett / Laura arrive. Uber\, or Sandra returns to pick up.
+END:VEVENT
+BEGIN:VEVENT
+UID:cnen26-04@mondrianaire.github.io
+DTSTAMP:20260601T000000Z
+DTSTART:20260611T180000
+DTEND:20260611T220000
+SUMMARY:Check in — Humaniti Hotel Montreal
+LOCATION:340 de la Gauchetière O\, Montreal\, QC
+DESCRIPTION:Humaniti Hotel Montreal\, Autograph Collection (Marriott). Settle in + dinner.
+END:VEVENT
+BEGIN:VEVENT
+UID:cnen26-05@mondrianaire.github.io
+DTSTAMP:20260601T000000Z
+DTSTART:20260612T094500
+DTEND:20260612T113000
+SUMMARY:Drive: Montreal → Trois-Rivières
+LOCATION:Autoroute 20 East
+DESCRIPTION:Depart Montréal-Trudeau Airport. Autoroute 20 East toward Québec / Trois-Rivières. ~1h 45m\, ~145 km.
+END:VEVENT
+BEGIN:VEVENT
+UID:cnen26-06@mondrianaire.github.io
+DTSTAMP:20260601T000000Z
+DTSTART:20260612T113000
+DTEND:20260612T124500
+SUMMARY:Café Lewis — coffee + brunch
+LOCATION:Trois-Rivières area
+DESCRIPTION:Lattes / flat whites\, breakfast sandwiches\, pastries for the road. ~60–75 min stop.
+END:VEVENT
+BEGIN:VEVENT
+UID:cnen26-07@mondrianaire.github.io
+DTSTAMP:20260601T000000Z
+DTSTART:20260612T124500
+DTEND:20260612T140000
+SUMMARY:Trois-Rivières — short walk on Rue des Forges
+LOCATION:Trois-Rivières\, QC
+DESCRIPTION:Historic street with cafés\, patios\, boutiques\, riverfront atmosphere. Optional: Amphithéâtre Cogeco.
+END:VEVENT
+BEGIN:VEVENT
+UID:cnen26-08@mondrianaire.github.io
+DTSTAMP:20260601T000000Z
+DTSTART:20260612T143000
+DTEND:20260612T153000
+SUMMARY:Parc des Chutes-de-la-Chaudière
+LOCATION:Lévis\, QC
+DESCRIPTION:Suspension bridge\, waterfall overlook\, forest trails\, scenic photo stop (~45–60 min). Optional snack at Le Corsaire microbrasserie.
+END:VEVENT
+BEGIN:VEVENT
+UID:cnen26-09@mondrianaire.github.io
+DTSTAMP:20260601T000000Z
+DTSTART:20260612T161500
+DTEND:20260612T173000
+SUMMARY:Arrive Old Québec — first walk
+LOCATION:Old Quebec City
+DESCRIPTION:~20–25 min from the waterfall park. First walk: Petit-Champlain · Château Frontenac · Terrasse Dufferin · Place Royale.
+END:VEVENT
+BEGIN:VEVENT
+UID:cnen26-10@mondrianaire.github.io
+DTSTAMP:20260601T000000Z
+DTSTART:20260612T173000
+DTEND:20260612T183000
+SUMMARY:Check in — Les Lofts St-Pierre
+LOCATION:Old Quebec
+DESCRIPTION:Unit SP304 — Jett & Laura. Unit SP109 — Sandra\, Becca & Karen. loftsvieuxquebec.com.
+END:VEVENT
+BEGIN:VEVENT
+UID:cnen26-11@mondrianaire.github.io
+DTSTAMP:20260601T000000Z
+DTSTART:20260612T183000
+DTEND:20260612T193000
+SUMMARY:Return rental car at YQB airport
+LOCATION:Québec City Jean Lesage Airport (YQB)
+DESCRIPTION:Drop the rental at the airport before the cruise.
+END:VEVENT
+BEGIN:VEVENT
+UID:cnen26-12@mondrianaire.github.io
+DTSTAMP:20260601T000000Z
+DTSTART:20260613T083000
+DTEND:20260613T093000
+SUMMARY:Breakfast — Place Royale (Lower Town)
+LOCATION:Place Royale\, Old Quebec
+DESCRIPTION:Wander Place Royale\, Notre-Dame-des-Victoires\, the cobblestone streets of Petit-Champlain.
+END:VEVENT
+BEGIN:VEVENT
+UID:cnen26-13@mondrianaire.github.io
+DTSTAMP:20260601T000000Z
+DTSTART:20260613T093000
+DTEND:20260613T103000
+SUMMARY:Explore Petit-Champlain
+LOCATION:Quartier Petit-Champlain
+DESCRIPTION:Boutiques\, historic architecture\, the famous Breakneck Stairs (Escalier Casse-Cou).
+END:VEVENT
+BEGIN:VEVENT
+UID:cnen26-14@mondrianaire.github.io
+DTSTAMP:20260601T000000Z
+DTSTART:20260613T103000
+DTEND:20260613T110000
+SUMMARY:Ride the Funicular up to Upper Town
+LOCATION:Old Quebec Funicular
+DESCRIPTION:Views over the river and Lower Town.
+END:VEVENT
+BEGIN:VEVENT
+UID:cnen26-15@mondrianaire.github.io
+DTSTAMP:20260601T000000Z
+DTSTART:20260613T110000
+DTEND:20260613T120000
+SUMMARY:Dufferin Terrace & Château Frontenac
+LOCATION:Fairmont Le Château Frontenac
+DESCRIPTION:Boardwalk + St. Lawrence views. Optional: book afternoon tea at the Fairmont in advance.
+END:VEVENT
+BEGIN:VEVENT
+UID:cnen26-16@mondrianaire.github.io
+DTSTAMP:20260601T000000Z
+DTSTART:20260613T120000
+DTEND:20260613T133000
+SUMMARY:Lunch — Upper Town
+LOCATION:Rue Saint-Jean / Place d'Armes
+DESCRIPTION:Try tourtière\, French onion soup\, Québec cheeses\, maple desserts.
+END:VEVENT
+BEGIN:VEVENT
+UID:cnen26-17@mondrianaire.github.io
+DTSTAMP:20260601T000000Z
+DTSTART:20260613T133000
+DTEND:20260613T143000
+SUMMARY:Historic Upper Town
+LOCATION:Cathedral-Basilica of Notre-Dame de Québec
+DESCRIPTION:Cathedral-Basilica\, Morrin Centre\, Quebec City Hall. Wander narrow streets and plazas.
+END:VEVENT
+BEGIN:VEVENT
+UID:cnen26-18@mondrianaire.github.io
+DTSTAMP:20260601T000000Z
+DTSTART:20260613T143000
+DTEND:20260613T160000
+SUMMARY:Citadelle & Plains of Abraham
+LOCATION:La Citadelle de Québec
+DESCRIPTION:River views and significant Canadian history.
+END:VEVENT
+BEGIN:VEVENT
+UID:cnen26-19@mondrianaire.github.io
+DTSTAMP:20260601T000000Z
+DTSTART:20260613T160000
+DTEND:20260613T173000
+SUMMARY:Walk the Fortifications
+LOCATION:Old Quebec city walls
+DESCRIPTION:Saint-Louis Gate\, Kent Gate. Québec is the only fortified city north of Mexico.
+END:VEVENT
+BEGIN:VEVENT
+UID:cnen26-20@mondrianaire.github.io
+DTSTAMP:20260601T000000Z
+DTSTART:20260613T173000
+DTEND:20260613T183000
+SUMMARY:Sunset on Dufferin Terrace
+LOCATION:Terrasse Dufferin
+DESCRIPTION:Golden light on the river & Château Frontenac.
+END:VEVENT
+BEGIN:VEVENT
+UID:cnen26-21@mondrianaire.github.io
+DTSTAMP:20260601T000000Z
+DTSTART:20260613T183000
+DTEND:20260613T220000
+SUMMARY:Check out · Uber to the ship · dinner onboard
+LOCATION:Quebec City cruise terminal
+DESCRIPTION:Check out of the loft\, Uber to the ms Zuiderdam\, dinner onboard.
+END:VEVENT
+BEGIN:VEVENT
+UID:cnen26-22@mondrianaire.github.io
+DTSTAMP:20260601T000000Z
+DTSTART:20260613T230000
+DTEND:20260613T233000
+SUMMARY:⚓ Depart Quebec City — Bon Voyage
+LOCATION:ms Zuiderdam
+DESCRIPTION:The voyage begins.
+END:VEVENT
+BEGIN:VEVENT
+UID:cnen26-23@mondrianaire.github.io
+DTSTAMP:20260601T000000Z
+DTSTART;VALUE=DATE:20260614
+DTEND;VALUE=DATE:20260615
+SUMMARY:Cruising the Saint Lawrence River
+LOCATION:ms Zuiderdam
+DESCRIPTION:Sea day. Great for settling in\, spa\, exploring the ship.
+END:VEVENT
+BEGIN:VEVENT
+UID:cnen26-24@mondrianaire.github.io
+DTSTAMP:20260601T000000Z
+DTSTART;VALUE=DATE:20260615
+DTEND;VALUE=DATE:20260616
+SUMMARY:Cruising the Gulf of St. Lawrence
+LOCATION:ms Zuiderdam
+DESCRIPTION:Open-water cruising into the Gulf. Watch for whales — rich June habitat.
+END:VEVENT
+BEGIN:VEVENT
+UID:cnen26-25@mondrianaire.github.io
+DTSTAMP:20260601T000000Z
+DTSTART;VALUE=DATE:20260616
+DTEND;VALUE=DATE:20260617
+SUMMARY:🍁 In port: Charlottetown PEI · 7am–5pm
+LOCATION:Charlottetown\, Prince Edward Island
+DESCRIPTION:PEI driving loop day.
+END:VEVENT
+BEGIN:VEVENT
+UID:cnen26-26@mondrianaire.github.io
+DTSTAMP:20260601T000000Z
+DTSTART:20260616T083000
+DTEND:20260616T090000
+SUMMARY:Becca: pick up GPS scavenger-hunt unit
+LOCATION:ms Zuiderdam
+DESCRIPTION:Self-guided GPS walking tour — handheld unit + scavenger-hunt clues + crossword.
+END:VEVENT
+BEGIN:VEVENT
+UID:cnen26-27@mondrianaire.github.io
+DTSTAMP:20260601T000000Z
+DTSTART:20260616T091500
+DTEND:20260616T094500
+SUMMARY:Pick up minivan rental
+LOCATION:PEI Car Rental\, 18 Queen Street\, Charlottetown
+DESCRIPTION:PEI driving loop. ~1h 54m total (~119 km).
+END:VEVENT
+BEGIN:VEVENT
+UID:cnen26-28@mondrianaire.github.io
+DTSTAMP:20260601T000000Z
+DTSTART:20260616T100000
+DTEND:20260616T110000
+SUMMARY:Cavendish & Anne of Green Gables
+LOCATION:Cavendish\, PEI
+DESCRIPTION:~40 min stop in Anne country.
+END:VEVENT
+BEGIN:VEVENT
+UID:cnen26-29@mondrianaire.github.io
+DTSTAMP:20260601T000000Z
+DTSTART:20260616T110000
+DTEND:20260616T114500
+SUMMARY:PEI National Park
+LOCATION:PEI National Park
+DESCRIPTION:Red shores and dunes.
+END:VEVENT
+BEGIN:VEVENT
+UID:cnen26-30@mondrianaire.github.io
+DTSTAMP:20260601T000000Z
+DTSTART:20260616T114500
+DTEND:20260616T130000
+SUMMARY:North Rustico Harbour — lobster rolls
+LOCATION:North Rustico Harbour\, PEI
+DESCRIPTION:PEI mussels\, lobster rolls\, fresh oysters — PEI is arguably the best oyster destination in eastern Canada.
+END:VEVENT
+BEGIN:VEVENT
+UID:cnen26-31@mondrianaire.github.io
+DTSTAMP:20260601T000000Z
+DTSTART:20260616T130000
+DTEND:20260616T140000
+SUMMARY:Gulf Shore Parkway + Dalvay-by-the-Sea
+LOCATION:Gulf Shore Parkway\, PEI
+DESCRIPTION:Scenic coastal drive. Optional: Covehead Harbour Lighthouse — very photogenic short detour.
+END:VEVENT
+BEGIN:VEVENT
+UID:cnen26-32@mondrianaire.github.io
+DTSTAMP:20260601T000000Z
+DTSTART:20260616T140000
+DTEND:20260616T153000
+SUMMARY:Greenwich Dunes (if time)
+LOCATION:Greenwich Dunes\, PEI
+DESCRIPTION:Considered the most impressive natural area on PEI. Skip if running tight.
+END:VEVENT
+BEGIN:VEVENT
+UID:cnen26-33@mondrianaire.github.io
+DTSTAMP:20260601T000000Z
+DTSTART;VALUE=DATE:20260617
+DTEND;VALUE=DATE:20260618
+SUMMARY:🎻 In port: Sydney NS · 7am–4pm
+LOCATION:Sydney\, Nova Scotia
+DESCRIPTION:Cape Breton — Highland Village ship tour at midday.
+END:VEVENT
+BEGIN:VEVENT
+UID:cnen26-34@mondrianaire.github.io
+DTSTAMP:20260601T000000Z
+DTSTART:20260617T070000
+DTEND:20260617T110000
+SUMMARY:Free time — World's Largest Fiddle
+LOCATION:Sydney waterfront
+DESCRIPTION:Walk to the World's Largest Fiddle on the waterfront — classic Sydney photo.
+END:VEVENT
+BEGIN:VEVENT
+UID:cnen26-35@mondrianaire.github.io
+DTSTAMP:20260601T000000Z
+DTSTART:20260617T113000
+DTEND:20260617T150000
+SUMMARY:Ship tour: Highland Village & Gaelic Experience
+LOCATION:Bras d'Or Lakes / Iona\, NS
+DESCRIPTION:Scenic drive through Bras d'Or Lakes. Living history museum on 43 acres — 11 buildings reflecting Gaelic settlement late 1700s–1800s.
+END:VEVENT
+BEGIN:VEVENT
+UID:cnen26-36@mondrianaire.github.io
+DTSTAMP:20260601T000000Z
+DTSTART;VALUE=DATE:20260618
+DTEND;VALUE=DATE:20260619
+SUMMARY:🚢 In port: Halifax · 8am–4pm
+LOCATION:Port of Halifax\, 1215 Marginal Rd
+DESCRIPTION:Full-day private Viator tour today.
+END:VEVENT
+BEGIN:VEVENT
+UID:cnen26-37@mondrianaire.github.io
+DTSTAMP:20260601T000000Z
+DTSTART:20260618T083000
+DTEND:20260618T160000
+SUMMARY:Viator: Halifax Coastal — Peggy's Cove & Lunenburg
+LOCATION:Halifax → coast → Halifax
+DESCRIPTION:Full-day private tour: Lunenburg (UNESCO) → Mahone Bay → Peggy's Cove Lighthouse & Swissair 111 Memorial → optional Fairview Lawn / Halifax Citadel → back to ship. ~3h 25m driving (~249 km via NS-103 W).
+END:VEVENT
+BEGIN:VEVENT
+UID:cnen26-38@mondrianaire.github.io
+DTSTAMP:20260601T000000Z
+DTSTART:20260618T180000
+DTEND:20260618T200000
+SUMMARY:🍽 Pinnacle Grill dinner
+LOCATION:ms Zuiderdam — Pinnacle Grill
+DESCRIPTION:Specialty dining — Laura's booking. Signature steak & seafood.
+END:VEVENT
+BEGIN:VEVENT
+UID:cnen26-39@mondrianaire.github.io
+DTSTAMP:20260601T000000Z
+DTSTART;VALUE=DATE:20260619
+DTEND;VALUE=DATE:20260620
+SUMMARY:🦞 In port: Portland ME · 12:30pm–10pm
+LOCATION:Portland\, Maine
+DESCRIPTION:Long evening in port. Nothing booked yet.
+END:VEVENT
+BEGIN:VEVENT
+UID:cnen26-40@mondrianaire.github.io
+DTSTAMP:20260601T000000Z
+DTSTART:20260619T130000
+DTEND:20260619T180000
+SUMMARY:Suggested: Portland Head Light + Old Port
+LOCATION:Cape Elizabeth + Portland Old Port
+DESCRIPTION:One of the most photographed lighthouses in North America. Combine with the Old Port district\, a lobster-roll lunch\, and a waterfront walk.
+END:VEVENT
+BEGIN:VEVENT
+UID:cnen26-41@mondrianaire.github.io
+DTSTAMP:20260601T000000Z
+DTSTART:20260620T070000
+DTEND:20260620T100000
+SUMMARY:⚓ Arrive Boston — Disembark
+LOCATION:Boston Cruise Terminal
+DESCRIPTION:Voyage ends.
+END:VEVENT
+BEGIN:VEVENT
+UID:cnen26-42@mondrianaire.github.io
+DTSTAMP:20260601T000000Z
+DTSTART:20260620T100000
+DTEND:20260620T180000
+SUMMARY:Boston: Freedom Trail / Faneuil Hall / Quincy Market
+LOCATION:Boston\, MA
+DESCRIPTION:Suggested priorities before checking into the hotel: Faneuil Hall\, Quincy Market\, Boston Common\, Freedom Trail highlights.
+END:VEVENT
+BEGIN:VEVENT
+UID:cnen26-43@mondrianaire.github.io
+DTSTAMP:20260601T000000Z
+DTSTART;VALUE=DATE:20260620
+DTEND;VALUE=DATE:20260621
+SUMMARY:🎂 Boston hotel — birthday night (TBD)
+LOCATION:Boston (TBD — Seaport or Back Bay)
+DESCRIPTION:One night needed after disembarkation before the flight home. Birthday stay.
+END:VEVENT
+BEGIN:VEVENT
+UID:cnen26-44@mondrianaire.github.io
+DTSTAMP:20260601T000000Z
+DTSTART:20260621T123200
+DTEND:20260621T140800
+SUMMARY:✈ Flight: BOS → PHL (AA 3043)
+LOCATION:Boston Logan (BOS) → Philadelphia (PHL)
+DESCRIPTION:Jett & Laura. American AA 3043. Confirmation MNUWWX. 1h 12m connection at PHL.
+END:VEVENT
+BEGIN:VEVENT
+UID:cnen26-45@mondrianaire.github.io
+DTSTAMP:20260601T000000Z
+DTSTART:20260621T152000
+DTEND:20260621T170200
+SUMMARY:✈ Flight: PHL → GSO (AA 5518)
+LOCATION:Philadelphia (PHL) → Greensboro (GSO)
+DESCRIPTION:Jett & Laura. American AA 5518 (operated by PSA Airlines as American Eagle).
+END:VEVENT
+END:VCALENDAR
