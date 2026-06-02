@@ -322,6 +322,15 @@ LOCATION:Bras d'Or Lakes / Iona\, NS
 DESCRIPTION:Scenic drive through Bras d'Or Lakes. Living history museum on 43 acres — 11 buildings reflecting Gaelic settlement late 1700s–1800s.
 END:VEVENT
 BEGIN:VEVENT
+UID:cnen26-46@mondrianaire.github.io
+DTSTAMP:20260601T000000Z
+DTSTART:20260617T171500
+DTEND:20260617T190000
+SUMMARY:🍽 Seafood Boil dinner
+LOCATION:ms Zuiderdam — Seafood Boil
+DESCRIPTION:New England-style specialty dinner aboard the ship.
+END:VEVENT
+BEGIN:VEVENT
 UID:cnen26-36@mondrianaire.github.io
 DTSTAMP:20260601T000000Z
 DTSTART;VALUE=DATE:20260618
