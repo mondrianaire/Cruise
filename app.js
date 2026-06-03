@@ -67,3 +67,55 @@
     rb.setAttribute('href', 'index.html?replay=1&from=' + encodeURIComponent(here));
   }
 })();
+
+
+/* --- mobile hamburger nav sheet --- */
+(function(){
+  var burger = document.getElementById('navBurger');
+  if(!burger) return;
+  var navLinks = document.querySelectorAll('nav .links a');
+  var navConsole = document.querySelector('nav .console');
+  if(!navLinks.length) return;
+  var sheet = document.createElement('div');
+  sheet.id = 'navSheet';
+  sheet.className = 'nav-sheet';
+  sheet.setAttribute('role','dialog');
+  sheet.setAttribute('aria-modal','true');
+  sheet.setAttribute('aria-hidden','true');
+  var top = '<div class="nav-sheet-top">' +
+    '<span class="nav-sheet-brand">⚓ Canada &amp; New England</span>' +
+    '<button type="button" class="nav-sheet-close" id="navSheetClose" aria-label="Close menu">&times;</button>' +
+    '</div>';
+  var list = '<div class="nav-sheet-list">';
+  Array.prototype.forEach.call(navLinks, function(a){
+    var n = a.querySelector('.n');
+    var labelEl = a.cloneNode(true);
+    if(n){ var nClone = labelEl.querySelector('.n'); if(nClone) nClone.remove(); }
+    var label = labelEl.textContent.trim();
+    list += '<a href="' + a.getAttribute('href') + '"' + (a.classList.contains('active') ? ' class="active"' : '') + '>';
+    if(n) list += '<span class="n">' + n.textContent + '</span>';
+    list += '<span>' + label + '</span></a>';
+  });
+  list += '</div>';
+  var consoleHtml = '';
+  if(navConsole){
+    consoleHtml = '<div class="nav-sheet-console"><a href="' + navConsole.getAttribute('href') + '">' +
+      navConsole.innerHTML + '</a></div>';
+  }
+  sheet.innerHTML = top + list + consoleHtml;
+  document.body.appendChild(sheet);
+  function setOpen(open){
+    sheet.classList.toggle('open', open);
+    sheet.setAttribute('aria-hidden', String(!open));
+    burger.setAttribute('aria-expanded', String(open));
+    document.body.style.overflow = open ? 'hidden' : '';
+  }
+  burger.addEventListener('click', function(){ setOpen(!sheet.classList.contains('open')); });
+  document.getElementById('navSheetClose').addEventListener('click', function(){ setOpen(false); });
+  sheet.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){ setOpen(false); });
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && sheet.classList.contains('open')) setOpen(false);
+  });
+})();
