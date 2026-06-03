@@ -156,13 +156,13 @@
   <p class="lead">The full 10-day plan pulled together from the group's itineraries &mdash; from landing in Montreal through disembarking in Boston. All times are local. Each traveller has a personal iOS Calendar feed below &mdash; tap your name to subscribe.</p>
   <div class="cal-actions">
     <span class="cal-actions-label">&#9875; Subscribe your personal calendar:</span>
-    <a class="cta ghost" data-traveller="jett"   href="webcal://mondrianaire.github.io/Cruise/trip-calendar-jett.ics">Jett</a>
-    <a class="cta ghost" data-traveller="laura"  href="webcal://mondrianaire.github.io/Cruise/trip-calendar-laura.ics">Laura</a>
-    <a class="cta ghost" data-traveller="sandra" href="webcal://mondrianaire.github.io/Cruise/trip-calendar-sandra.ics">Sandra</a>
-    <a class="cta ghost" data-traveller="becca"  href="webcal://mondrianaire.github.io/Cruise/trip-calendar-becca.ics">Becca</a>
-    <a class="cta ghost" data-traveller="karen"  href="webcal://mondrianaire.github.io/Cruise/trip-calendar-karen.ics">Karen</a>
+    <a class="cta ghost" data-traveller="jett"   href="webcal://us-central1-gto-poker-qui.cloudfunctions.net/calendar?user=jett">Jett</a>
+    <a class="cta ghost" data-traveller="laura"  href="webcal://us-central1-gto-poker-qui.cloudfunctions.net/calendar?user=laura">Laura</a>
+    <a class="cta ghost" data-traveller="sandra" href="webcal://us-central1-gto-poker-qui.cloudfunctions.net/calendar?user=sandra">Sandra</a>
+    <a class="cta ghost" data-traveller="becca"  href="webcal://us-central1-gto-poker-qui.cloudfunctions.net/calendar?user=becca">Becca</a>
+    <a class="cta ghost" data-traveller="karen"  href="webcal://us-central1-gto-poker-qui.cloudfunctions.net/calendar?user=karen">Karen</a>
     </div>
-  <p class="cal-actions-note">Each link is a personal feed &mdash; only the events that traveller is attending. Tap your name; iOS Calendar will subscribe and refresh it automatically.</p>
+  <p class="cal-actions-note">Each link is a personal, live feed &mdash; only the events that traveller is attending, including newly-added user events. Tap your name once; iOS Calendar subscribes, then refreshes from Firestore on its own schedule.</p>
   <div style="display:none" aria-hidden="true">
   </div>
   <div id="addEvtBlock" class="add-evt-block">
@@ -198,7 +198,7 @@
         <label class="ae-c"><input type="checkbox" data-who="becca" checked> Becca</label>
         <label class="ae-c"><input type="checkbox" data-who="karen" checked> Karen</label>
       </div>
-      <p class="ae-foot">Saves instantly to Firestore &mdash; everyone's web calendar updates live. <em>iOS Calendar subscriptions won't auto-pick-up brand-new events.</em></p>
+      <p class="ae-foot">Saves instantly to Firestore. Everyone's web calendar updates live, and the iOS Calendar feeds above pick up the new event on their next refresh.</p>
       <div class="add-evt-actions">
         <button type="submit" class="cta">Save event</button>
         <button type="button" class="cta ghost" id="addEvtCancel">Cancel</button>
