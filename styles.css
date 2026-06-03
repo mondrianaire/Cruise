@@ -432,3 +432,51 @@ nav .links a:hover .sublabels,nav .links a.active .sublabels{color:var(--brass);
 .cal-actions a[data-traveller].is-me{background:var(--brass-lt);color:#08161a;
   border-color:var(--brass-dk);}
 .cal-actions-note{font-size:.78rem;color:var(--ink-dim);margin:0 0 22px;line-height:1.5;}
+
+/* ---- Create Event form (Daily Plan) ---- */
+.add-evt-block{margin:6px 0 22px;}
+#addEvtBtn{font:700 .8rem/1 var(--d-mono);letter-spacing:.08em;text-transform:uppercase;}
+.add-evt-form{background:rgba(7,32,43,.72);border:1px solid var(--teal);
+  border-radius:10px;padding:18px 18px 16px;margin-top:10px;}
+.add-evt-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 14px;}
+.ae-l{display:flex;flex-direction:column;gap:5px;
+  font:700 .64rem/1 var(--d-mono);letter-spacing:.12em;
+  text-transform:uppercase;color:var(--brass);}
+.ae-l.ae-full{grid-column:1/-1;}
+.ae-l input,.ae-l select,.ae-l textarea{
+  background:rgba(4,19,28,.85);border:1px solid var(--brass-dk);
+  border-radius:6px;padding:9px 10px;color:var(--ink);
+  font:inherit;font-size:.88rem;min-height:38px;
+  text-transform:none;letter-spacing:0;font-weight:400;}
+.ae-l textarea{min-height:62px;resize:vertical;font-family:inherit;}
+.ae-l input:focus,.ae-l select:focus,.ae-l textarea:focus{
+  outline:2px solid var(--brass);outline-offset:1px;border-color:var(--brass);}
+.add-evt-who{margin-top:14px;display:flex;align-items:center;flex-wrap:wrap;gap:8px;}
+.add-evt-who-l{font:700 .68rem/1 var(--d-mono);text-transform:uppercase;
+  letter-spacing:.12em;color:var(--brass);margin-right:6px;}
+.ae-c{display:inline-flex;align-items:center;gap:6px;color:var(--ink);
+  font-size:.85rem;cursor:pointer;padding:6px 11px;border-radius:18px;
+  border:1px solid var(--brass-dk);background:rgba(7,32,43,.6);
+  transition:background .12s,border-color .12s;user-select:none;}
+.ae-c input{accent-color:var(--brass);margin:0;}
+.ae-c:hover{border-color:var(--brass);}
+.ae-foot{margin:14px 0 0;font-size:.78rem;color:var(--ink-dim);line-height:1.55;}
+.ae-foot em{color:var(--brass);font-style:normal;}
+.add-evt-actions{margin-top:14px;display:flex;gap:8px;flex-wrap:wrap;}
+
+/* ---- User-created event styling ---- */
+.cal-user-evt{background:rgba(95,214,160,.07);border-color:rgba(95,214,160,.55);}
+.cal-user-tag{display:inline-block;margin-top:6px;
+  font:700 .66rem/1 var(--d-mono);letter-spacing:.12em;text-transform:uppercase;
+  color:var(--easy,#5fd6a0);}
+.cal-evt-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;}
+.cal-evt-rm{background:none;border:0;color:var(--ink-dim);cursor:pointer;
+  padding:2px 8px;border-radius:6px;font-size:1.1rem;line-height:1;
+  margin:-2px -4px 0 0;}
+.cal-evt-rm:hover{color:#e0795a;background:rgba(224,121,90,.14);}
+
+@media(max-width:560px){
+  .add-evt-grid{grid-template-columns:1fr;}
+  .add-evt-who{gap:6px;}
+  .ae-c{padding:5px 9px;font-size:.82rem;}
+}

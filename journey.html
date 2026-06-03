@@ -165,6 +165,46 @@
   <p class="cal-actions-note">Each link is a personal feed &mdash; only the events that traveller is attending. Tap your name; iOS Calendar will subscribe and refresh it automatically.</p>
   <div style="display:none" aria-hidden="true">
   </div>
+  <div id="addEvtBlock" class="add-evt-block">
+    <button type="button" class="cta" id="addEvtBtn">+ Add a new event</button>
+    <form class="add-evt-form" id="addEvtForm" hidden>
+      <div class="add-evt-grid">
+        <label class="ae-l ae-full">Title<input type="text" id="ae-title" required placeholder="e.g. Walking tour of Old Halifax"></label>
+        <label class="ae-l">Day
+          <select id="ae-date" required>
+            <option value="2026-06-11">Thu Jun 11 — Montreal arrival</option>
+            <option value="2026-06-12">Fri Jun 12 — Drive to Qu&eacute;bec</option>
+            <option value="2026-06-13">Sat Jun 13 — Embark</option>
+            <option value="2026-06-14">Sun Jun 14 — Sea day (St. Lawrence)</option>
+            <option value="2026-06-15">Mon Jun 15 — Sea day (Gulf)</option>
+            <option value="2026-06-16">Tue Jun 16 — Charlottetown PEI</option>
+            <option value="2026-06-17">Wed Jun 17 — Sydney NS</option>
+            <option value="2026-06-18">Thu Jun 18 — Halifax</option>
+            <option value="2026-06-19">Fri Jun 19 — Portland ME</option>
+            <option value="2026-06-20">Sat Jun 20 — Boston disembark</option>
+            <option value="2026-06-21">Sun Jun 21 — Fly home</option>
+          </select>
+        </label>
+        <label class="ae-l">Start time<input type="time" id="ae-start" required></label>
+        <label class="ae-l">End time (optional)<input type="time" id="ae-end"></label>
+        <label class="ae-l ae-full">Location (optional)<input type="text" id="ae-loc" placeholder="e.g. Old Port"></label>
+        <label class="ae-l ae-full">Notes (optional)<textarea id="ae-notes" rows="2" placeholder="Any details (booking confirmation, address, what to bring &hellip;)"></textarea></label>
+      </div>
+      <div class="add-evt-who">
+        <span class="add-evt-who-l">Who's attending?</span>
+        <label class="ae-c"><input type="checkbox" data-who="jett" checked> Jett</label>
+        <label class="ae-c"><input type="checkbox" data-who="laura" checked> Laura</label>
+        <label class="ae-c"><input type="checkbox" data-who="sandra" checked> Sandra</label>
+        <label class="ae-c"><input type="checkbox" data-who="becca" checked> Becca</label>
+        <label class="ae-c"><input type="checkbox" data-who="karen" checked> Karen</label>
+      </div>
+      <p class="ae-foot">Saves instantly to Firestore &mdash; everyone's web calendar updates live. <em>iOS Calendar subscriptions won't auto-pick-up brand-new events.</em></p>
+      <div class="add-evt-actions">
+        <button type="submit" class="cta">Save event</button>
+        <button type="button" class="cta ghost" id="addEvtCancel">Cancel</button>
+      </div>
+    </form>
+  </div>
   <div id="planCal"></div>
 </section>
 </main>
@@ -174,7 +214,7 @@
 </footer>
 <script src="app.js"></script>
 <script>
-// === Day-by-Day Plan calendar (per-traveller attendance + Firestore sync) ===
+// === Day-by-Day Plan calendar (per-traveller attendance + user-created events + Firestore sync) ===
 (function(){
   var root=document.getElementById('planCal'); if(!root) return;
   var PEOPLE=[
@@ -183,8 +223,6 @@
     {key:'karen',label:'Karen'}
   ];
   var ALL = PEOPLE.map(function(p){return p.key;});
-  // Each event has a stable key 'k'. 'w' = default attendees (omit = all 5).
-  // 'a' = port/place anchor for the day header. 'W' = day kicker.
   var P=[
     {d:'2026-06-11',k:'jun11-bs-yul',w:['becca','sandra'],a:'Montreal',W:'Arrival day',t:'11:00 AM',e:'1:00 PM',n:'Becca & Sandra: land at YUL — pick up rental',l:'Montréal-Trudeau Airport (YUL)'},
     {d:'2026-06-11',k:'jun11-oldmtl',w:['becca','sandra'],t:'1:00 PM',e:'5:00 PM',n:'Old Montreal walking tour',l:'Old Montreal',o:'Suggested adds: Notre-Dame Basilica · Place Jacques-Cartier · Mount Royal lookout.'},
@@ -232,41 +270,81 @@
     {d:'2026-06-21',k:'jun21-phl-gso',w:['jett','laura'],t:'3:20 PM',e:'5:02 PM',n:'✈ Flight: PHL → GSO — AA 5518',l:'PHL → GSO',o:'Jett & Laura. PSA Airlines as American Eagle.'}
   ];
 
-  var att={};
-  try{ att = JSON.parse(localStorage.getItem('cnen_attendance')||'{}')||{}; }catch(e){}
+  // Day-header lookup: anchor (a) + kicker (W) per date — preserves the existing day headers.
+  var DAY_HEADS = {};
+  P.forEach(function(e){ if(e.a||e.W){ DAY_HEADS[e.d]=DAY_HEADS[e.d]||{a:e.a,W:e.W}; if(e.a) DAY_HEADS[e.d].a=e.a; if(e.W) DAY_HEADS[e.d].W=e.W; } });
 
-  function evtByKey(k){ for(var i=0;i<P.length;i++){ if(P[i].k===k) return P[i]; } return null; }
+  var att={}, userEvents={};
+  try{ att = JSON.parse(localStorage.getItem('cnen_attendance')||'{}')||{}; }catch(e){}
+  try{ userEvents = JSON.parse(localStorage.getItem('cnen_userevents')||'{}')||{}; }catch(e){}
+
+  function allEvents(){
+    var list = P.slice();
+    Object.keys(userEvents).forEach(function(k){
+      var u = userEvents[k];
+      if(!u || !u.d) return;
+      list.push({d:u.d, k:k, t:u.t, e:u.e, n:u.n, l:u.l, o:u.o, w:u.w, _user:true, _by:u.by});
+    });
+    return list;
+  }
+  function evtByKey(k){ var L=allEvents(); for(var i=0;i<L.length;i++){ if(L[i].k===k) return L[i]; } return null; }
   function defaultWho(ev){ return (ev && ev.w) ? ev.w.slice() : ALL.slice(); }
   function whoFor(k){
     if(k in att) return att[k];
     return defaultWho(evtByKey(k));
   }
   function save(){
-    try{ localStorage.setItem('cnen_attendance', JSON.stringify(att)); }catch(e){}
-    if(window.__pushAttendance) window.__pushAttendance(att);
+    try{
+      localStorage.setItem('cnen_attendance', JSON.stringify(att));
+      localStorage.setItem('cnen_userevents', JSON.stringify(userEvents));
+    }catch(e){}
+    if(window.__pushSync) window.__pushSync({attendance: att, userEvents: userEvents});
   }
   window.__getAttendance = function(){ return att; };
+  window.__getUserEvents = function(){ return userEvents; };
   window.__applyAttendance = function(r){ att = (r && typeof r==='object') ? r : {}; render(); };
+  window.__applyUserEvents = function(r){ userEvents = (r && typeof r==='object') ? r : {}; render(); };
   window.__rerenderPlan = function(){ render(); };
 
   function esc(s){ return String(s||'').replace(/[<>&]/g,function(c){return {'<':'&lt;','>':'&gt;','&':'&amp;'}[c];}); }
   function fmt(d){ var x=new Date(d+'T12:00');
     return x.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'}); }
 
+  // Time sort helper — converts "10:30 AM" / "5:00 PM" / "evening" into minutes-from-midnight.
+  function timeKey(t){
+    if(!t) return 9999;
+    var s = String(t).trim();
+    if(s==='evening') return 18*60;
+    if(s==='morning') return 8*60;
+    var m = s.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+    if(!m) return 9999;
+    var h = parseInt(m[1],10), mi = parseInt(m[2],10), ap=m[3].toUpperCase();
+    if(ap==='PM' && h<12) h+=12;
+    if(ap==='AM' && h===12) h=0;
+    return h*60+mi;
+  }
+
   function render(){
-    var by={}; P.forEach(function(e){ (by[e.d]=by[e.d]||[]).push(e); });
+    var list = allEvents();
+    var by={}; list.forEach(function(e){ (by[e.d]=by[e.d]||[]).push(e); });
     var keys=Object.keys(by).sort();
     var me=window.__crewKey||'';
     var html='';
     keys.forEach(function(d){
-      var ev=by[d], head=ev.find(function(x){return x.a||x.W;}) || {};
+      var ev=by[d];
+      ev.sort(function(a,b){
+        if(a.allDay && !b.allDay) return -1;
+        if(b.allDay && !a.allDay) return 1;
+        return timeKey(a.t) - timeKey(b.t);
+      });
+      var head = DAY_HEADS[d] || {};
       html+='<div class="cal-day"><div class="cal-day-h">'
         +'<div class="cal-date">'+esc(fmt(d))+'</div>'
         +(head.a?'<div class="cal-where">'+esc(head.a)+'</div>':'')
         +(head.W?'<div class="cal-anchor">'+esc(head.W)+'</div>':'')
         +'</div>';
       ev.forEach(function(x){
-        var when = x.allDay ? 'All day' : (x.t + (x.e?' – '+x.e:''));
+        var when = x.allDay ? 'All day' : (x.t + (x.e?' &ndash; '+x.e:''));
         var who = whoFor(x.k);
         var isAll = who.length===5;
         var chips = PEOPLE.map(function(p){
@@ -279,19 +357,22 @@
         }).join('');
         var badge='';
         if(isAll){
-          badge='<span class="cal-everyone">🌟 Everyone aboard — all 5</span>';
+          badge='<span class="cal-everyone">&#127775; Everyone aboard &mdash; all 5</span>';
         } else if(who.length===0){
           badge='<span class="cal-nobody">No-one going yet</span>';
         } else {
-          var names = who.map(function(k){ for(var i=0;i<PEOPLE.length;i++){ if(PEOPLE[i].key===k) return PEOPLE[i].label; } return k; }).join(' · ');
-          badge='<span class="cal-subset">'+who.length+' of 5 · '+esc(names)+'</span>';
+          var names = who.map(function(k){ for(var i=0;i<PEOPLE.length;i++){ if(PEOPLE[i].key===k) return PEOPLE[i].label; } return k; }).join(' &middot; ');
+          badge='<span class="cal-subset">'+who.length+' of 5 &middot; '+esc(names)+'</span>';
         }
-        html+='<div class="cal-evt'+(isAll?' cal-everyone-row':'')+'">'
+        var rm = x._user ? '<button type="button" class="cal-evt-rm" data-evt="'+esc(x.k)+'" aria-label="Remove this event">&times;</button>' : '';
+        var byTag = x._user ? '<span class="cal-user-tag">+ added by '+esc(x._by||'a traveller')+'</span>' : '';
+        html+='<div class="cal-evt'+(isAll?' cal-everyone-row':'')+(x._user?' cal-user-evt':'')+'">'
           +'<div class="cal-time">'+esc(when)+'</div>'
           +'<div class="cal-evt-body">'
-          +'<div class="cal-title">'+esc(x.n)+'</div>'
+          +'<div class="cal-evt-top"><div class="cal-title">'+esc(x.n)+'</div>'+rm+'</div>'
           +(x.l?'<div class="cal-loc">'+esc(x.l)+'</div>':'')
           +(x.o?'<div class="cal-note">'+esc(x.o)+'</div>':'')
+          +byTag
           +'<div class="cal-attend">'+badge+'<div class="cal-chips">'+chips+'</div></div>'
           +'</div></div>';
       });
@@ -310,11 +391,68 @@
         render();
       });
     });
+    root.querySelectorAll('.cal-evt-rm').forEach(function(b){
+      b.addEventListener('click',function(){
+        if(!confirm('Remove this event for everyone?')) return;
+        var k=b.dataset.evt;
+        delete userEvents[k];
+        delete att[k];
+        save();
+        render();
+      });
+    });
   }
+
+  // -------- Create-Event form wiring --------
+  function fmtTime12(t){
+    if(!t) return '';
+    var parts=t.split(':'); var h=parseInt(parts[0],10), m=parseInt(parts[1],10);
+    var ap = h>=12 ? 'PM' : 'AM';
+    var h12 = h%12 || 12;
+    return h12+':'+(m<10?'0':'')+m+' '+ap;
+  }
+  var addBtn  = document.getElementById('addEvtBtn');
+  var form    = document.getElementById('addEvtForm');
+  var cancel  = document.getElementById('addEvtCancel');
+  if(addBtn && form){
+    addBtn.addEventListener('click', function(){
+      form.hidden=false; addBtn.hidden=true;
+      var t=document.getElementById('ae-title'); if(t) t.focus();
+    });
+    if(cancel) cancel.addEventListener('click', function(){
+      form.hidden=true; addBtn.hidden=false; form.reset();
+    });
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      var title = document.getElementById('ae-title').value.trim();
+      var date  = document.getElementById('ae-date').value;
+      var startV= document.getElementById('ae-start').value;
+      var endV  = document.getElementById('ae-end').value;
+      var loc   = document.getElementById('ae-loc').value.trim();
+      var notes = document.getElementById('ae-notes').value.trim();
+      var who = [];
+      form.querySelectorAll('input[data-who]').forEach(function(c){ if(c.checked) who.push(c.getAttribute('data-who')); });
+      if(!title || !date || !startV){ alert('Please fill in title, day, and start time.'); return; }
+      var key = 'usr-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2,6);
+      userEvents[key] = {
+        d:    date,
+        t:    fmtTime12(startV),
+        e:    endV ? fmtTime12(endV) : '',
+        n:    title,
+        l:    loc,
+        o:    notes,
+        w:    who,
+        by:   window.__crewName || window.__crewKey || 'a traveller',
+        ts:   Date.now()
+      };
+      save(); form.reset(); form.hidden=true; addBtn.hidden=false; render();
+    });
+  }
+
   render();
 })();
 </script>
-<!-- Firebase: live attendance sync — sign-in carried over from the Voyage Console -->
+<!-- Firebase: live attendance + user-events sync — sign-in carried over from the Voyage Console -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
   import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
@@ -329,10 +467,15 @@
     const db=initializeFirestore(app,{experimentalForceLongPolling:true});
     boardRef=doc(db,"cruise","4LMNGG");
   }catch(e){}
-  window.__pushAttendance = function(a){
-    if(!ready||!boardRef) return;
-    setDoc(boardRef,{attendance:a,updatedAt:Date.now()},{merge:true}).catch(function(){});
+  window.__pushSync = function(payload){
+    if(!ready||!boardRef||!payload) return;
+    var u = { updatedAt: Date.now() };
+    if(payload.attendance) u.attendance = payload.attendance;
+    if(payload.userEvents) u.userEvents = payload.userEvents;
+    setDoc(boardRef, u, {merge:true}).catch(function(){});
   };
+  // backwards-compat shim
+  window.__pushAttendance = function(a){ window.__pushSync({attendance:a}); };
   if(auth){
     onAuthStateChanged(auth,function(user){
       if(!user) return;
@@ -344,11 +487,17 @@
       }
       ready=true;
       onSnapshot(boardRef,function(snap){
-        if(snap.exists() && snap.data() && snap.data().attendance){
-          if(window.__applyAttendance) window.__applyAttendance(snap.data().attendance);
-        } else if(firstSnap && window.__getAttendance){
-          var cur=window.__getAttendance();
-          if(Object.keys(cur).length) window.__pushAttendance(cur);
+        if(snap.exists() && snap.data()){
+          var data = snap.data();
+          if(data.attendance && window.__applyAttendance) window.__applyAttendance(data.attendance);
+          if(data.userEvents && window.__applyUserEvents) window.__applyUserEvents(data.userEvents);
+        } else if(firstSnap){
+          var pay = {};
+          if(window.__getAttendance) pay.attendance = window.__getAttendance();
+          if(window.__getUserEvents) pay.userEvents = window.__getUserEvents();
+          if(Object.keys(pay.attendance||{}).length || Object.keys(pay.userEvents||{}).length){
+            window.__pushSync(pay);
+          }
         }
         firstSnap=false;
       },function(){});
