@@ -392,3 +392,36 @@ footer a{color:var(--brass-lt);}
   .toolbar{gap:6px;}
   .mtog{padding:0 11px;font-size:.7rem;}
 }
+
+/* ---------- DAY-BY-DAY ATTENDANCE ---------- */
+.cal-attend{margin-top:11px;display:flex;flex-direction:column;gap:7px;
+  padding-top:9px;border-top:1px dotted rgba(28,107,126,.35);}
+.cal-everyone{display:inline-flex;align-items:center;gap:6px;
+  font:700 .68rem/1 var(--d-mono);text-transform:uppercase;letter-spacing:.12em;
+  color:var(--easy);}
+.cal-subset{font:700 .66rem/1.4 var(--d-mono);text-transform:uppercase;letter-spacing:.09em;
+  color:var(--brass);}
+.cal-nobody{font:600 .66rem/1 var(--d-mono);text-transform:uppercase;letter-spacing:.06em;
+  color:var(--ink-dim);font-style:italic;}
+.cal-chips{display:flex;gap:5px;flex-wrap:wrap;}
+.cal-chip{cursor:pointer;border:1px solid var(--teal);background:rgba(7,32,43,.6);
+  border-radius:18px;padding:0 12px;min-height:32px;display:inline-flex;align-items:center;
+  font:600 .7rem/1 var(--d-body);color:var(--ink-dim);transition:.12s;}
+.cal-chip:hover{border-color:var(--teal-lt);color:var(--ink);}
+.cal-chip.on{background:var(--teal);color:var(--cream);border-color:var(--teal-lt);}
+.cal-chip.me{font-weight:700;}
+.cal-chip.me.on{background:var(--brass);color:#08161a;border-color:var(--brass-lt);}
+.cal-evt.cal-everyone-row{background:rgba(95,214,160,.04);}
+.cal-evt.cal-everyone-row .cal-title{color:var(--cream);}
+/* ---------- NAV SUB-LABELS (desktop + mobile sheet) ---------- */
+nav .links a{flex-direction:column;align-items:flex-start;gap:5px;
+  padding-top:11px;padding-bottom:11px;}
+nav .links a .nav-main{display:inline-flex;align-items:center;gap:7px;}
+nav .links a .sublabels{display:block;font:700 .5rem/1.4 var(--d-mono);
+  text-transform:uppercase;letter-spacing:.10em;color:var(--brass-dk);}
+nav .links a:hover .sublabels,nav .links a.active .sublabels{color:var(--brass);}
+.nav-sheet-list a{flex-direction:column;align-items:flex-start;}
+.nav-sheet-list a .nav-main{display:inline-flex;align-items:center;gap:14px;}
+.nav-sheet-list a .sublabels{display:block;font:600 .68rem/1.5 var(--d-mono);
+  text-transform:uppercase;letter-spacing:.08em;color:var(--ink-dim);
+  margin-top:4px;padding-left:34px;}

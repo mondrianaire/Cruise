@@ -69,6 +69,26 @@
 })();
 
 
+
+  /* --- nav sub-tab labels (desktop + mobile sheet) --- */
+  var SUBTABS = {
+    'overview.html': ['At a Glance','Flights','Hotels'],
+    'journey.html':  ['Itinerary','Daily Plan'],
+    'ship.html':     ['The Ship','Have It All'],
+    'ports.html':    ['Ports','Group Picks'],
+    'kbyg.html':     []
+  };
+  document.querySelectorAll('nav .links a').forEach(function(a){
+    var page = (a.getAttribute('href')||'').toLowerCase();
+    var subs = SUBTABS[page] || [];
+    var n = a.querySelector('.n');
+    var label = a.cloneNode(true);
+    var nc = label.querySelector('.n'); if(nc) nc.remove();
+    var labelTxt = label.textContent.trim();
+    a.innerHTML = '<span class="nav-main">' + (n?n.outerHTML:'') + '<span>'+labelTxt+'</span></span>'
+      + (subs.length ? '<span class="sublabels">'+subs.join(' · ')+'</span>' : '');
+  });
+
 /* --- mobile hamburger nav sheet --- */
 (function(){
   var burger = document.getElementById('navBurger');
