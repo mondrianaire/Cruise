@@ -917,7 +917,7 @@
         <div class="stat"><div class="v" data-count="2">2</div><div class="k">Scenic sea days</div></div>
         <div class="stat"><div class="v" data-count="89">89</div><div class="k">Shore excursions</div></div>
       </div>
-      <a class="cta ghost" href="hub.html#itinerary">Open the full day-by-day itinerary &rarr;</a>
+      <a class="cta ghost" href="journey.html#itinerary">Open the full day-by-day itinerary &rarr;</a>
     </div>
   </div>
 </section>
@@ -961,7 +961,7 @@
           <span class="pennant" style="background:#5fd6a0" aria-hidden="true"></span><span class="fl-name">On the Water</span><span class="fl-ct">10</span><span class="fl-off">&#9788; OFF</span></button>
       </div>
     </div>
-    <a class="cta" href="hub.html#ports">Open the full Excursion Finder &rarr;</a>
+    <a class="cta" href="ports.html#ports">Open the full Excursion Finder &rarr;</a>
   </div>
 </section>
 
@@ -1057,7 +1057,7 @@
         </g>
       </svg>
       <div class="bell-note">Find where the rooms already agree &mdash; and book those departures together.</div>
-      <a class="cta" href="hub.html#ports" style="margin-top:14px;">Open the live Group Picks board &rarr;</a>
+      <a class="cta" href="ports.html#ports" style="margin-top:14px;">Open the live Group Picks board &rarr;</a>
     </div>
   </div>
 </section>
@@ -1134,7 +1134,7 @@
   <div class="foot-title">Bon Voyage</div>
   <div class="foot-sub">ms Zuiderdam · 13&ndash;20 June 2026 · Booking 4LMNGG</div>
   <p class="foot-note">A maritime instrument-panel front door for the Canada &amp; New England trip hub &mdash; every gauge, scope and chart reads the voyage's own data.</p>
-  <a class="cta" href="hub.html" style="margin-top:18px;">Enter the full trip hub &rarr;</a>
+  <a class="cta" href="overview.html" style="margin-top:18px;font-size:.92rem;padding:0 26px;min-height:54px;letter-spacing:.13em;border-width:2px;box-shadow:0 12px 30px rgba(0,0,0,.45),0 0 28px rgba(230,196,119,.34);">&#9875;&nbsp; Enter the trip hub &nbsp;&rarr;</a>
   <div style="margin-top:18px;display:flex;gap:9px;justify-content:center;" aria-hidden="true">
     <span class="knot"></span><span class="knot"></span><span class="knot"></span>
   </div>
@@ -1418,7 +1418,7 @@
   }
   function reveal(name){
     window.__crewName=name||null;
-    if(reduced()){ hideGate(); return; }
+    if(reduced()){ hideGate(); try{ localStorage.setItem('cnen_booted','1'); }catch(e){} if(window.__cnenFrom){ try{ location.replace(window.__cnenFrom); }catch(e){} } return; }
     var c=document.getElementById('chestBtn'),
         cap=document.getElementById('chestCap'),
         w=document.getElementById('welcomeWrap'),
@@ -1435,7 +1435,11 @@
       if(c) c.style.display='none';
     },950);
     setTimeout(function(){ if(gate) gate.classList.add('depart'); },2500);
-    setTimeout(hideGate,3800);
+    setTimeout(function(){
+      hideGate();
+      try{ localStorage.setItem('cnen_booted','1'); }catch(e){}
+      if(window.__cnenFrom){ try{ location.replace(window.__cnenFrom); }catch(e){} }
+    },3800);
   }
   function replayIntro(){
     if(!gate) return;
@@ -1472,8 +1476,18 @@
     for(var i=0;i<TRAVELLERS.length;i++){
       if(TRAVELLERS[i].toLowerCase()===first){ matched=TRAVELLERS[i]; break; }
     }
-    if(matched) enter(matched);
-    else showReject(dn);
+    if(!matched){ showReject(dn); return; }
+    // Bootstrap-once: skip the splash on returning visits unless ?replay=1
+    var qp=new URLSearchParams(location.search);
+    var replay=qp.get('replay')==='1';
+    var booted=''; try{ booted=localStorage.getItem('cnen_booted')||''; }catch(e){}
+    window.__cnenFrom = (replay && qp.get('from')) ? qp.get('from') : null;
+    if(!replay && booted==='1'){
+      window.__crewName=matched;
+      hideGate();
+      return;
+    }
+    enter(matched);
   }
   if(auth) onAuthStateChanged(auth,onUser);
   (function(){ var rb=document.getElementById('replayBtn');
