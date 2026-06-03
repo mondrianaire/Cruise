@@ -61,9 +61,9 @@
     if(href === here) a.classList.add('active');
   });
 
-  /* --- console / replay link: send the user back to here after the animation --- */
-  document.querySelectorAll('a.console-replay').forEach(function(a){
-    var u = 'index.html?replay=1&from=' + encodeURIComponent(here);
-    a.setAttribute('href', u);
-  });
+  /* --- replay button: send the user back to here after the animation --- */
+  var rb = document.getElementById('replayBtn');
+  if(rb){
+    rb.setAttribute('href', 'index.html?replay=1&from=' + encodeURIComponent(here));
+  }
 })();
