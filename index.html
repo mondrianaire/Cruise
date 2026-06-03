@@ -1461,6 +1461,9 @@
     only(btn('Use a different account','sec',function(){ signOut(auth).then(showSignIn); }));
   }
   function enter(name){
+    // Mark bootstrap done IMMEDIATELY — even if the user closes the tab
+    // mid-animation, the next visit won't replay it.
+    try{ localStorage.setItem('cnen_booted','1'); }catch(e){}
     gMsg.textContent='Verified — welcome aboard, '+name+'.'; only(null);
     const m={}; m[auth.currentUser.email]=name;
     setDoc(rosterRef,{members:m},{merge:true})
