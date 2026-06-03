@@ -139,3 +139,22 @@
     if(e.key === 'Escape' && sheet.classList.contains('open')) setOpen(false);
   });
 })();
+
+/* --- mark the signed-in traveller's calendar-subscribe pill --- */
+(function(){
+  if(!window.__crewKey){
+    // wait until auth resolves on journey.html
+    var i = setInterval(function(){
+      if(window.__crewKey){ clearInterval(i); mark(); }
+    }, 250);
+    setTimeout(function(){ clearInterval(i); }, 8000);
+  } else { mark(); }
+  function mark(){
+    document.querySelectorAll('.cal-actions a[data-traveller]').forEach(function(a){
+      if(a.getAttribute('data-traveller') === window.__crewKey){
+        a.classList.add('is-me');
+        a.textContent = a.textContent + ' (you)';
+      }
+    });
+  }
+})();
