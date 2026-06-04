@@ -344,7 +344,7 @@
         +(head.W?'<div class="cal-anchor">'+esc(head.W)+'</div>':'')
         +'</div>';
       ev.forEach(function(x){
-        var when = x.allDay ? 'All day' : (x.t + (x.e?' &ndash; '+x.e:''));
+        var when = x.allDay ? 'All day' : (x.t + (x.e?' – '+x.e:''));
         var who = whoFor(x.k);
         var isAll = who.length===5;
         var chips = PEOPLE.map(function(p){
@@ -361,7 +361,7 @@
         } else if(who.length===0){
           badge='<span class="cal-nobody">No-one going yet</span>';
         } else {
-          var names = who.map(function(k){ for(var i=0;i<PEOPLE.length;i++){ if(PEOPLE[i].key===k) return PEOPLE[i].label; } return k; }).join(' &middot; ');
+          var names = who.map(function(k){ for(var i=0;i<PEOPLE.length;i++){ if(PEOPLE[i].key===k) return PEOPLE[i].label; } return k; }).join(' · ');
           badge='<span class="cal-subset">'+who.length+' of 5 &middot; '+esc(names)+'</span>';
         }
         var rm = x._user ? '<button type="button" class="cal-evt-rm" data-evt="'+esc(x.k)+'" aria-label="Remove this event">&times;</button>' : '';
