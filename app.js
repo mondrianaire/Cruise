@@ -109,12 +109,21 @@
   var list = '<div class="nav-sheet-list">';
   Array.prototype.forEach.call(navLinks, function(a){
     var n = a.querySelector('.n');
-    var labelEl = a.cloneNode(true);
-    if(n){ var nClone = labelEl.querySelector('.n'); if(nClone) nClone.remove(); }
-    var label = labelEl.textContent.trim();
+    // The SUBTABS step has already wrapped each link's content in .nav-main + (optional) .sublabels.
+    // Pull the *main* label text out of .nav-main only (sans the .n badge) so we don't
+    // concatenate the sublabels into the main text.
+    var mainSrc = a.querySelector('.nav-main') || a;
+    var clone = mainSrc.cloneNode(true);
+    var nClone = clone.querySelector('.n'); if(nClone) nClone.remove();
+    var label = clone.textContent.trim();
+    var subSpan = a.querySelector('.sublabels');
+    var subTxt = subSpan ? subSpan.textContent.trim() : '';
     list += '<a href="' + a.getAttribute('href') + '"' + (a.classList.contains('active') ? ' class="active"' : '') + '>';
+    list += '<span class="nav-main">';
     if(n) list += '<span class="n">' + n.textContent + '</span>';
-    list += '<span>' + label + '</span></a>';
+    list += '<span>' + label + '</span></span>';
+    if(subTxt) list += '<span class="sublabels">' + subTxt + '</span>';
+    list += '</a>';
   });
   list += '</div>';
   var consoleHtml = '';
