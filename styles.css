@@ -1069,3 +1069,97 @@ nav .links a:hover .sublabels,nav .links a.active .sublabels{color:var(--brass);
   letter-spacing:.02em;
 }
 .dc-note strong{color:var(--cream);}
+
+
+/* ============ Enriched floor-plan panels (sprite + venues + cabin card) ============ */
+.fp-panel-head{
+  display:flex;align-items:center;gap:14px;
+}
+.fp-sprite{
+  width:120px;height:auto;flex-shrink:0;
+  background:rgba(11,42,58,.55);
+  border:1px solid var(--brass-dk);
+  border-radius:5px;padding:4px 6px;
+  image-rendering:auto;
+}
+.fp-panel-titles{display:flex;flex-direction:column;gap:3px;flex:1;min-width:0;}
+.fp-deck-name .fp-you{
+  display:inline-block;margin-left:8px;
+  font:800 .58rem/1 var(--d-mono);letter-spacing:.16em;
+  background:linear-gradient(135deg,#e6c477 0%,#c89b4a 100%);
+  color:#08161a;padding:3px 7px;border-radius:3px;vertical-align:2px;
+}
+.fp-deck-note{
+  margin:8px 0 12px;
+  padding:7px 10px;
+  background:rgba(216,57,43,.10);
+  border:1px solid rgba(216,57,43,.45);
+  border-radius:5px;
+  font:500 .82rem/1.5 var(--d-mono);
+  color:#f1c2b3;
+  letter-spacing:.02em;
+}
+
+/* Cabin info card for the YOU deck */
+.fp-cabin-card{
+  margin:10px 0 14px;
+  padding:14px 16px;
+  background:linear-gradient(135deg, rgba(200,155,74,.16) 0%, rgba(11,42,58,.55) 100%);
+  border:1px solid var(--brass);
+  border-radius:9px;
+}
+.fp-cabin-title{
+  font:700 1rem/1.2 var(--d-display, "Fraunces",serif);
+  color:var(--cream);
+  font-style:italic;
+}
+.fp-cabin-kind{
+  margin-top:3px;
+  font:700 .68rem/1 var(--d-mono);
+  letter-spacing:.12em;text-transform:uppercase;
+  color:var(--brass);
+}
+.fp-cabin-bullets{
+  margin:9px 0 6px;
+  padding-left:18px;
+  font-size:.86rem;line-height:1.55;
+  color:var(--ink);
+}
+.fp-cabin-bullets li{margin:2px 0;}
+.fp-cabin-foot{
+  margin:8px 0 0;
+  padding-top:8px;border-top:1px dashed rgba(200,155,74,.4);
+  font:500 .76rem/1.5 var(--d-mono);
+  color:var(--ink-dim);letter-spacing:.02em;
+}
+
+/* Venues list */
+.fp-venues{margin-top:14px;}
+.fp-venues h4{
+  margin:0 0 8px;
+  font:800 .7rem/1 var(--d-mono);
+  letter-spacing:.16em;text-transform:uppercase;
+  color:var(--brass);
+}
+.dv-list{
+  list-style:none;margin:0;padding:0;
+  display:grid;gap:7px;
+}
+.dv-list li{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:8px 10px;
+  background:rgba(11,42,58,.45);
+  border-left:3px solid var(--brass-dk);
+  border-radius:0 5px 5px 0;
+  font-size:.86rem;line-height:1.45;color:var(--ink);
+}
+.dv-ic{
+  flex-shrink:0;font-size:1.1rem;line-height:1.2;width:22px;text-align:center;
+}
+.dv-l strong{color:var(--cream);font-weight:700;}
+
+@media(max-width:560px){
+  .fp-sprite{width:90px;}
+  .fp-cabin-card{padding:11px 12px;}
+  .dv-list li{font-size:.82rem;padding:7px 9px;}
+}
