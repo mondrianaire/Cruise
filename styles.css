@@ -751,3 +751,69 @@ nav .links a:hover .sublabels,nav .links a.active .sublabels{color:var(--brass);
   .fp-lbl{font-size:11px;}
   .fp-sub{font-size:8.5px;}
 }
+
+
+/* ============ Ship floor plans (image-based, HAL official) ============ */
+.fp-img-wrap{
+  background:linear-gradient(180deg,#f1e7cf 0%, #e8dab8 100%);
+  border:1px solid var(--brass);
+  border-radius:9px;
+  padding:12px 12px 8px;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+}
+.fp-img-stage{
+  position:relative;
+  width:100%;
+  max-width:430px;
+  max-height:640px;
+  overflow:auto;
+  border-radius:6px;
+  box-shadow:0 1px 3px rgba(0,0,0,.25), inset 0 0 0 1px rgba(0,0,0,.08);
+  background:#fbf6e6;
+}
+.fp-img-stage img{
+  display:block;
+  width:100%;
+  height:auto;
+}
+.fp-img-pin{
+  position:absolute;
+  width:36px;height:36px;
+  border-radius:50%;
+  font:800 .7rem/1 var(--d-mono);
+  letter-spacing:.02em;
+  display:flex;align-items:center;justify-content:center;
+  transform:translate(-50%,-50%);
+  cursor:help;
+  box-shadow:0 2px 5px rgba(0,0,0,.45);
+  z-index:5;
+}
+.fp-img-pin.ours{
+  background:radial-gradient(circle at 35% 30%, #ffe89a 0%, #c89b4a 70%, #8a6024 100%);
+  color:#08161a;
+  border:2px solid #08161a;
+}
+.fp-img-pin.tbd{
+  background:rgba(255,255,255,.92);
+  color:#e07a5a;
+  border:2px dashed #e07a5a;
+  font-size:1rem;
+}
+.fp-img-pin:hover{
+  transform:translate(-50%,-50%) scale(1.12);
+}
+.fp-img-note{
+  font:500 .76rem/1.5 var(--d-mono);
+  letter-spacing:.04em;
+  color:rgba(11,42,58,.78);
+  margin:4px 4px 0;text-align:center;max-width:430px;
+}
+.fp-img-note em{color:rgba(216,57,43,.85);font-style:italic;}
+
+@media(min-width:760px){
+  .fp-img-stage{max-width:520px;max-height:720px;}
+}
+@media(max-width:560px){
+  .fp-img-stage{max-height:520px;}
+  .fp-img-pin{width:30px;height:30px;font-size:.66rem;}
+}
