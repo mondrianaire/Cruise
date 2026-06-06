@@ -557,3 +557,197 @@ nav .links a:hover .sublabels,nav .links a.active .sublabels{color:var(--brass);
 @media(max-width:560px){
   .cal-day-map{height:200px;}
 }
+
+
+/* ============ Ship section — tabbed deck visualization ============ */
+.deckchart-head{
+  display:flex;justify-content:space-between;align-items:flex-end;gap:16px;
+  flex-wrap:wrap;margin:6px 0 14px;
+}
+.deckchart-head h3{margin:0 0 4px 0;}
+.deckchart-head .dc-sub{margin:0;color:var(--ink-dim);font-size:.92rem;max-width:600px;}
+.deckchart-head .dc-sub em{color:var(--brass);font-style:italic;}
+
+.ship-view-tabs{
+  display:inline-flex;
+  background:rgba(7,32,43,.7);
+  border:1px solid var(--brass-dk);
+  border-radius:999px;
+  padding:3px;
+  align-items:center;
+  gap:0;
+}
+.svt{
+  appearance:none;background:transparent;border:0;
+  font:700 .68rem/1 var(--d-mono);letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink-dim);
+  padding:9px 16px;border-radius:999px;cursor:pointer;
+  transition:background .18s, color .18s;
+}
+.svt:hover{color:var(--cream);}
+.svt.active{
+  background:linear-gradient(135deg, var(--brass) 0%, var(--brass-dk) 100%);
+  color:#08161a;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.18), 0 1px 2px rgba(0,0,0,.4);
+}
+
+/* ---- compact chip-style legend ---- */
+.dc-legend2{
+  display:flex;flex-wrap:wrap;gap:6px 7px;
+  margin:0 0 14px 0;
+}
+.lg-chip{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(11,42,58,.6);
+  border:1px solid var(--brass-dk);
+  border-radius:13px;
+  padding:5px 10px 5px 7px;
+  font:600 .72rem var(--d-mono);
+  letter-spacing:.04em;
+  color:var(--ink);
+  line-height:1;
+}
+.lg-chip svg{width:14px;height:14px;flex-shrink:0;}
+.lg-chip.lg-you{
+  border-color:var(--brass);
+  background:rgba(200,155,74,.18);
+  color:var(--cream);
+}
+
+/* ---- view containers (smooth crossfade) ---- */
+.ship-view-elev,.ship-view-floor{
+  animation:shipFade .25s ease both;
+}
+@keyframes shipFade{
+  from{opacity:0;transform:translateY(2px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+/* ---- floor-plan deck picker ---- */
+.fp-deck-picker{
+  display:flex;flex-wrap:wrap;gap:6px;
+  margin:0 0 14px 0;justify-content:center;
+}
+.fp-deck-btn{
+  appearance:none;
+  min-width:46px;height:38px;
+  background:rgba(7,32,43,.65);
+  border:1px solid var(--brass-dk);
+  color:var(--ink-dim);
+  font:700 1.05rem/1 var(--d-mono);
+  border-radius:8px;cursor:pointer;
+  display:inline-flex;align-items:center;justify-content:center;gap:3px;
+  transition:background .15s,color .15s,border-color .15s,transform .12s;
+}
+.fp-deck-btn:hover{color:var(--cream);border-color:var(--brass);}
+.fp-deck-btn.active{
+  background:linear-gradient(180deg, var(--brass) 0%, var(--brass-dk) 100%);
+  color:#08161a;
+  border-color:var(--brass);
+  transform:translateY(-1px);
+}
+.fp-star{color:#08161a;font-size:.7rem;line-height:1;margin-left:-1px;}
+
+/* ---- floor-plan panels ---- */
+.fp-panel{display:none;}
+.fp-panel.active{display:block;animation:shipFade .25s ease;}
+.fp-panel-head{
+  display:flex;align-items:baseline;gap:14px;
+  border-bottom:1px solid rgba(200,155,74,.25);
+  padding-bottom:7px;margin-bottom:6px;
+}
+.fp-deck-num{
+  font:800 1.5rem/1 var(--d-mono);
+  color:var(--brass);
+  letter-spacing:.06em;
+}
+.fp-deck-name{
+  font:600 1.0rem/1 var(--d-display, "Fraunces", serif);
+  color:var(--cream);
+  font-style:italic;
+}
+.fp-sub-note{
+  font-size:.85rem;color:var(--ink-dim);margin:0 0 12px 0;line-height:1.5;
+}
+
+.fp-svg{
+  width:100%;height:auto;display:block;
+  background:linear-gradient(180deg,#06212e 0%,#0a2e40 100%);
+  border-radius:9px;
+  border:1px solid var(--brass-dk);
+}
+.fp-axis{
+  font:700 13px var(--d-mono);
+  fill:var(--brass);
+  letter-spacing:.08em;
+}
+.fp-side{
+  font:700 10px var(--d-mono);
+  fill:#5d8090;
+  letter-spacing:.16em;
+}
+
+/* zones color palette per kind */
+.fp-zone{stroke:rgba(255,255,255,.08);stroke-width:.5;}
+.fp-din  {fill:rgba(230,196,119,.32);}      /* dining */
+.fp-bar  {fill:rgba(241,231,207,.18);}      /* bar */
+.fp-show {fill:rgba(216,57,43,.30);}        /* stage */
+.fp-pool {fill:rgba(63,160,173,.32);}       /* pool */
+.fp-spa  {fill:rgba(95,214,160,.22);}       /* spa */
+.fp-gym  {fill:rgba(95,214,160,.30);}       /* gym */
+.fp-sport{fill:rgba(95,214,160,.22);}       /* sports */
+.fp-obs  {fill:rgba(63,160,173,.22);}       /* observation */
+.fp-kid  {fill:rgba(239,178,40,.22);}       /* kids */
+.fp-shop {fill:rgba(200,155,74,.22);}       /* shops */
+.fp-cas  {fill:rgba(216,57,43,.22);}        /* casino */
+.fp-svc  {fill:rgba(239,178,40,.22);}       /* services */
+.fp-avoid{
+  fill:rgba(216,57,43,.18);
+  stroke:rgba(216,57,43,.6);
+  stroke-dasharray:4 3;
+  stroke-width:1;
+}
+.fp-lbl{
+  font:700 12.5px var(--d-mono);
+  fill:#f1e7cf;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+}
+.fp-sub{
+  font:500 10px var(--d-mono);
+  fill:rgba(241,231,207,.7);
+}
+.fp-warn{
+  font:700 10px var(--d-mono);
+  fill:#e07a5a;
+  letter-spacing:.06em;
+}
+
+.fp-cabin-strip{fill:url(#fp-cabin);stroke:#27576b;stroke-width:.8;}
+.fp-cabin-lbl{
+  font:700 9px var(--d-mono);
+  fill:rgba(241,231,207,.8);
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.fp-corridor{stroke:#c89b4a;stroke-width:1.6;stroke-dasharray:6 4;opacity:.55;}
+
+.fp-pin-lbl{
+  font:800 11px var(--d-mono);
+  fill:#08161a;
+  letter-spacing:.02em;
+}
+.fp-pin circle{transition:r .15s;}
+.fp-pin:hover circle{r:16;}
+
+/* ---- on mobile, stack the head and zoom the legend chips ---- */
+@media(max-width:560px){
+  .deckchart-head{flex-direction:column;align-items:stretch;}
+  .ship-view-tabs{align-self:flex-start;}
+  .lg-chip{font-size:.66rem;padding:4px 8px 4px 6px;}
+  .lg-chip svg{width:12px;height:12px;}
+  .fp-deck-btn{min-width:40px;height:34px;font-size:.95rem;}
+  .fp-axis{font-size:11px;}
+  .fp-lbl{font-size:11px;}
+  .fp-sub{font-size:8.5px;}
+}
