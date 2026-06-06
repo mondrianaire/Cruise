@@ -21,7 +21,11 @@ function pad(n) { return (n < 10 ? '0' : '') + n; }
 
 function fmtTime(date, time) {
   if(!time) return null;
-  const t = String(time).trim().toUpperCase();
+  let t = String(time).trim().toUpperCase();
+  // Map vague time strings to defaults so VEVENT doesn't break.
+  if(t === 'EVENING') t = '6:00 PM';
+  else if(t === 'MORNING') t = '8:00 AM';
+  else if(t === 'AFTERNOON') t = '2:00 PM';
   if(!/[0-9]/.test(t)) return null;
   const [y, m, d] = date.split('-').map(Number);
   const ampm = t.endsWith('PM') ? 1 : 0;
@@ -77,6 +81,7 @@ function genIcs(events, person) {
       lines.push('DTSTART:' + s);
       if(e) lines.push('DTEND:' + e);
     }
+    if(ev.tent) lines.push('STATUS:TENTATIVE');
     lines.push('SUMMARY:' + escIcs(ev.n));
     if(ev.l) lines.push('LOCATION:' + escIcs(ev.l));
     const descBits = [ev.o, ev._user ? 'Added by ' + (ev.by || 'a traveller') : ''].filter(Boolean);

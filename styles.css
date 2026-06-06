@@ -480,3 +480,80 @@ nav .links a:hover .sublabels,nav .links a.active .sublabels{color:var(--brass);
   .add-evt-who{gap:6px;}
   .ae-c{padding:5px 9px;font-size:.82rem;}
 }
+
+
+/* ---- Tentative ("MAYBE") events ---- */
+.cal-evt-tent{
+  border-style:dashed !important;
+  background:rgba(11,42,58,.35);
+  opacity:.86;
+}
+.cal-evt-tent .cal-title{color:var(--ink-dim);}
+.cal-tent-pill{
+  display:inline-block;
+  font:700 .58rem/1 var(--d-mono);
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  background:rgba(224,121,90,.18);
+  color:#e07a5a;
+  border:1px solid #e07a5a;
+  border-radius:3px;
+  padding:3px 6px;
+  margin-right:7px;
+  vertical-align:1px;
+}
+.ae-tent{background:rgba(224,121,90,.10);border-color:#e07a5a !important;color:#f1d6ca !important;}
+
+/* ---- Leaflet map for rental-car days ---- */
+.cal-day-map{
+  height:230px;
+  margin:6px 0 14px;
+  border:1px solid var(--teal);
+  border-radius:9px;
+  overflow:hidden;
+  background:#0e2a38;
+  position:relative;
+  z-index:0;
+}
+.cal-day-map .leaflet-container{
+  background:#0e2a38;
+  font-family:inherit;
+}
+.cal-day-map .leaflet-control-attribution{
+  background:rgba(11,42,58,.85);
+  color:var(--ink-dim);
+  font-size:9px;
+}
+.cal-day-map .leaflet-control-attribution a{color:var(--brass);}
+.cal-day-map .leaflet-control-zoom a{
+  background:rgba(11,42,58,.92);color:var(--brass);
+  border-color:var(--brass-dk);
+}
+.cal-day-map .leaflet-popup-content-wrapper{
+  background:#f1e7cf; color:#08161a; border-radius:6px;
+}
+.cal-day-map .leaflet-popup-tip{background:#f1e7cf;}
+.cal-day-map .leaflet-popup-content{margin:8px 12px;font-size:.85rem;line-height:1.45;}
+
+.cal-map-pin{
+  width:28px;height:28px;border-radius:50%;
+  background:#c89b4a;color:#08161a;
+  display:flex;align-items:center;justify-content:center;
+  font:800 .85rem var(--d-mono);
+  border:2px solid #08161a;
+  box-shadow:0 2px 6px rgba(0,0,0,.55);
+}
+.cal-map-pin.tent{
+  background:rgba(11,42,58,.92);
+  color:#e07a5a;
+  border:2px dashed #e07a5a;
+  box-shadow:0 1px 4px rgba(0,0,0,.4);
+}
+.cal-map-pin.user{
+  background:#5fd6a0;
+  border-color:#08161a;
+}
+
+@media(max-width:560px){
+  .cal-day-map{height:200px;}
+}
