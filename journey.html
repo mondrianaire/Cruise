@@ -228,6 +228,41 @@
     {key:'karen',label:'Karen'}
   ];
   var ALL = PEOPLE.map(function(p){return p.key;});
+  // Transit maps — keyed by date. Adds a map block with POIs + labeled route segments
+  // (separate concept from the rental-car "drive" maps).
+  var TRANSIT = {
+    '2026-06-20': {
+      title: 'Boston disembark day',
+      sub:   'Cruise terminal → Faneuil Hall → Boston Harbor Hotel',
+      pois: [
+        { lat:42.3438, lng:-71.0386, label:'⚓ Black Falcon Cruise Terminal', sub:'Disembark · ~7-10 AM',          kind:'origin'      },
+        { lat:42.3522, lng:-71.0552, label:'🚏 South Station',                sub:'Silver Line transfer hub',     kind:'transit'     },
+        { lat:42.3601, lng:-71.0568, label:'🍞 Faneuil Hall / Quincy Market',  sub:'Suggested midday stop',        kind:'attraction'  },
+        { lat:42.3589, lng:-71.0497, label:'🏨 Boston Harbor Hotel',           sub:'70 Rowes Wharf · check-in 3 PM', kind:'destination' },
+        { lat:42.3656, lng:-71.0096, label:'✈ Logan Airport (BOS)',            sub:'Flight tomorrow · 12:32 PM',   kind:'airport'     }
+      ],
+      routes: [
+        { mode:'bus',  color:'#9ca3af', weight:5, label:'Silver Line SL2 · Cruise → South Station (~12 min, free outbound from airport, $2.40)', points:[[42.3438,-71.0386],[42.3470,-71.0440],[42.3522,-71.0552]] },
+        { mode:'walk', color:'#5fd6a0', weight:3, dash:'2 6', label:'Walk · South Station → Faneuil Hall (~12 min, 0.6 mi)', points:[[42.3522,-71.0552],[42.3556,-71.0570],[42.3601,-71.0568]] },
+        { mode:'walk', color:'#5fd6a0', weight:3, dash:'2 6', label:'Walk · Faneuil Hall → Hotel (~10 min, 0.5 mi)', points:[[42.3601,-71.0568],[42.3595,-71.0530],[42.3589,-71.0497]] }
+      ]
+    },
+    '2026-06-21': {
+      title: 'Fly home day',
+      sub:   'Hotel → South Station → Logan (BOS) · or Uber straight to BOS',
+      pois: [
+        { lat:42.3589, lng:-71.0497, label:'🏨 Boston Harbor Hotel',  sub:'Check out by 12 PM',         kind:'origin'      },
+        { lat:42.3522, lng:-71.0552, label:'🚏 South Station',         sub:'Silver Line SL1 to BOS',    kind:'transit'     },
+        { lat:42.3656, lng:-71.0096, label:'✈ Logan Airport (BOS)',   sub:'Flight AA 3043 · 12:32 PM', kind:'destination' }
+      ],
+      routes: [
+        { mode:'walk', color:'#5fd6a0', weight:3, dash:'2 6', label:'Walk · Hotel → South Station (~12 min)', points:[[42.3589,-71.0497],[42.3556,-71.0530],[42.3522,-71.0552]] },
+        { mode:'bus',  color:'#9ca3af', weight:5, label:'Silver Line SL1 · South Station → BOS (~10 min, $2.40)', points:[[42.3522,-71.0552],[42.3565,-71.0340],[42.3656,-71.0096]] },
+        { mode:'car',  color:'#e07a5a', weight:3.5, dash:'8 4', label:'Uber/Lyft direct · Hotel → BOS (~15-25 min, ~$25-40) — recommended for the tight 12:32 PM flight', points:[[42.3589,-71.0497],[42.3625,-71.0290],[42.3656,-71.0096]] }
+      ]
+    }
+  };
+
   var P=[
     {d:'2026-06-11',k:'jun11-bs-yul',w:['becca','sandra'],a:'Montreal',W:'Arrival day',t:'11:00 AM',e:'1:00 PM',n:'Becca & Sandra: land at YUL — pick up rental',l:'Montréal-Trudeau Airport (YUL)',lat:45.4595,lng:-73.7497,drive:'qc'},
     {d:'2026-06-11',k:'jun11-oldmtl',w:['becca','sandra'],t:'1:00 PM',e:'5:00 PM',n:'Old Montreal walking tour',l:'Old Montreal',o:'Suggested adds: Notre-Dame Basilica · Place Jacques-Cartier · Mount Royal lookout.',lat:45.5079,lng:-73.5546,drive:'qc'},
@@ -332,7 +367,50 @@
   }
 
   var mapInstances = {};
-  function initMaps(list){
+
+  var transitInstances = {};
+  function initTransitMaps(){
+    if(typeof L === 'undefined') return;
+    Object.keys(TRANSIT).forEach(function(d){
+      var T = TRANSIT[d];
+      var id = 'cal-tmap-' + d.replace(/-/g,'');
+      var el = document.getElementById(id);
+      if(!el) return;
+      if(transitInstances[id]){ try{ transitInstances[id].remove(); }catch(e){} delete transitInstances[id]; }
+      var m = L.map(el, {scrollWheelZoom:false, attributionControl:true});
+      transitInstances[id] = m;
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom:18, attribution:'&copy; OpenStreetMap'}).addTo(m);
+      var bounds = L.latLngBounds([]);
+      // routes first (under markers)
+      T.routes.forEach(function(r){
+        var poly = L.polyline(r.points, {color:r.color, weight:r.weight, opacity:.92, dashArray:r.dash||null, lineJoin:'round', lineCap:'round'}).addTo(m);
+        poly.bindPopup('<strong>'+r.label+'</strong>');
+        poly.getLatLngs().forEach(function(p){ bounds.extend(p); });
+      });
+      // POI markers
+      var KIND = {
+        origin:      {color:'#5fd6a0', ring:'#08161a'},
+        destination: {color:'#e6c477', ring:'#08161a'},
+        attraction:  {color:'#e07a5a', ring:'#08161a'},
+        transit:     {color:'#9ca3af', ring:'#08161a'},
+        airport:     {color:'#3fa0ad', ring:'#08161a'}
+      };
+      T.pois.forEach(function(p){
+        var k = KIND[p.kind] || KIND.transit;
+        var icon = L.divIcon({
+          className:'',
+          html:'<div class="cal-tmap-pin" style="background:'+k.color+';border-color:'+k.ring+';"></div>',
+          iconSize:[20,20], iconAnchor:[10,10]
+        });
+        L.marker([p.lat,p.lng], {icon:icon, title:p.label}).addTo(m)
+          .bindPopup('<strong>'+p.label+'</strong>'+(p.sub?'<br><em>'+p.sub+'</em>':''));
+        bounds.extend([p.lat,p.lng]);
+      });
+      m.fitBounds(bounds, {padding:[30,30]});
+    });
+  }
+
+    function initMaps(list){
     if(typeof L === 'undefined') return; // Leaflet not yet loaded
     var groups = {};
     list.forEach(function(x){
@@ -395,6 +473,15 @@
         var mapId = 'cal-map-' + d.replace(/-/g,'');
         html += '<div class="cal-day-map" id="' + mapId + '" data-day="' + d + '"></div>';
       }
+      // Transit map block (Boston disembark + fly-home days, etc.)
+      if(TRANSIT[d]){
+        var tmapId = 'cal-tmap-' + d.replace(/-/g,'');
+        html += '<div class="cal-day-tmap"><div class="cal-tmap-head"><strong>'+TRANSIT[d].title+'</strong> <span>'+TRANSIT[d].sub+'</span></div><div class="cal-tmap-map" id="'+tmapId+'"></div><ul class="cal-tmap-legend">'+
+          TRANSIT[d].routes.map(function(r){
+            return '<li class="rt rt-'+r.mode+'"><span class="rt-swatch" style="background:'+r.color+';'+(r.dash?'background:repeating-linear-gradient(90deg,'+r.color+' 0 6px,transparent 6px 10px);':'')+'"></span>'+esc(r.label)+'</li>';
+          }).join('')+
+          '</ul></div>';
+      }
       ev.forEach(function(x){
         var when = x.allDay ? 'All day' : (x.t + (x.e?' – '+x.e:''));
         var who = whoFor(x.k);
@@ -444,6 +531,7 @@
       });
     });
     initMaps(list);
+    initTransitMaps();
     root.querySelectorAll('.cal-evt-rm').forEach(function(b){
       b.addEventListener('click',function(){
         if(!confirm('Remove this event for everyone?')) return;
