@@ -84,7 +84,7 @@ function genIcs(events, person) {
     if(ev.tent) lines.push('STATUS:TENTATIVE');
     lines.push('SUMMARY:' + escIcs(ev.n));
     if(ev.l) lines.push('LOCATION:' + escIcs(ev.l));
-    const descBits = [ev.o, ev._user ? 'Added by ' + (ev.by || 'a traveller') : ''].filter(Boolean);
+    const descBits = [ev.o, ev.cf || '', ev._user ? 'Added by ' + (ev.by || 'a traveller') : ''].filter(Boolean);
     if(descBits.length) lines.push('DESCRIPTION:' + escIcs(descBits.join(' \\n')));
     lines.push('END:VEVENT');
   });

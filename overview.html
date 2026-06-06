@@ -153,9 +153,7 @@
       <p style="font-size:.9rem;">70 Rowes Wharf, Boston MA 02110. Two <strong>City Superior</strong> rooms (1 King each) booked via Chase Travel for the <strong>birthday night</strong> &mdash; Jun 20 to Jun 21.</p>
       <ul class="clean" style="margin-top:6px;font-size:.85rem;">
         <li><strong>Check-in:</strong> Sat Jun 20, 3:00 PM &middot; <strong>Check-out:</strong> Sun Jun 21, 12:00 PM</li>
-        <li><strong>Rate:</strong> $689.93 / room (paid via Chase Travel)</li>
-        <li><strong>Primary guest:</strong> Karen Schaefer</li>
-        <li><strong>Confirmations:</strong> 26834SG340300 + 26834SG340301</li>
+        <li class="crew-only" hidden><strong>Confirmations:</strong> 26834SG340300 + 26834SG340301</li>
         <li><strong>Perks:</strong> daily breakfast for 2 per room, $100 property credit, welcome amenity, Wi-Fi, possible upgrade / early-late check-in</li>
         <li><strong>Free cancellation</strong> until Thu Jun 18, 12:00 AM (property local time)</li>
       </ul>
@@ -170,5 +168,19 @@
 </footer>
 <script src="app.js"></script>
 
+
+<script type="module">
+  /* Crew-only reveal — frontend gate, not a real security boundary. */
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+  const cfg={apiKey:"AIzaSyCxc5ICHwz4Fp_2kRwHogeLdgUeCGKgHss",authDomain:"gto-poker-qui.firebaseapp.com",projectId:"gto-poker-qui",storageBucket:"gto-poker-qui.firebasestorage.app",messagingSenderId:"607915389446",appId:"1:607915389446:web:5b1c777bf4fad0bc1c0987"};
+  try{
+    const auth = getAuth(initializeApp(cfg));
+    onAuthStateChanged(auth, function(user){
+      if(!user) return;
+      document.querySelectorAll('.crew-only').forEach(function(el){ el.hidden = false; });
+    });
+  }catch(e){}
+</script>
 </body>
 </html>

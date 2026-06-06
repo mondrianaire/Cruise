@@ -860,3 +860,19 @@ nav .links a:hover .sublabels,nav .links a.active .sublabels{color:var(--brass);
   .cal-tmap-map{height:220px;}
   .cal-tmap-legend{font-size:.72rem;}
 }
+
+
+/* ---- Confirmation row (crew-only, revealed by JS when signed in) ---- */
+.cal-conf{
+  display:inline-block;
+  margin-top:6px;
+  padding:4px 8px;
+  font:600 .72rem/1.2 var(--d-mono);
+  letter-spacing:.05em;
+  color:var(--brass);
+  background:rgba(200,155,74,.12);
+  border:1px dashed var(--brass-dk);
+  border-radius:4px;
+}
+.crew-only{display:none;}
+.crew-only[hidden=false],.crew-only:not([hidden]){display:list-item;}
