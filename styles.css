@@ -876,3 +876,74 @@ nav .links a:hover .sublabels,nav .links a.active .sublabels{color:var(--brass);
 }
 .crew-only{display:none;}
 .crew-only[hidden=false],.crew-only:not([hidden]){display:list-item;}
+
+
+/* ============ Cross-section diagram + legend hardening ============ */
+.dc-svg{
+  max-width:100% !important;
+  width:100%;
+  height:auto !important;
+  display:block;
+  margin:0 auto;
+}
+/* Make sure any stray SVG inside the legend can never explode */
+.dc-legend2 svg,
+.dc-legend-d svg,
+.lg-chip svg{
+  width:14px !important;
+  height:14px !important;
+  max-width:14px !important;
+  max-height:14px !important;
+  flex-shrink:0;
+}
+
+/* New collapsible legend */
+.dc-legend-d{
+  margin:0 0 12px;
+  background:rgba(11,42,58,.5);
+  border:1px solid var(--brass-dk);
+  border-radius:8px;
+  padding:0;
+  font:600 .74rem var(--d-mono);
+}
+.dc-legend-d summary{
+  cursor:pointer;
+  list-style:none;
+  padding:8px 12px;
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  color:var(--brass);
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+.dc-legend-d summary::-webkit-details-marker{display:none;}
+.dc-legend-d summary::before{
+  content:"▸";color:var(--brass);margin-right:4px;
+  transition:transform .15s;display:inline-block;
+}
+.dc-legend-d[open] summary::before{transform:rotate(90deg);}
+.dc-legend-count{
+  font-weight:500;color:var(--ink-dim);
+  letter-spacing:.06em;text-transform:none;font-size:.7rem;
+}
+.dc-legend-d .dc-legend2{
+  padding:6px 10px 10px;
+  margin:0;
+  border-top:1px solid rgba(200,155,74,.2);
+}
+.dc-legend2 .lg-chip{
+  padding:4px 9px 4px 6px;
+  font-size:.7rem;
+}
+.lg-ic{
+  display:inline-block;
+  font-family:"DejaVu Sans","Segoe UI Symbol",sans-serif;
+  font-size:1rem;
+  line-height:1;
+  width:14px;text-align:center;
+  margin-right:4px;
+}
+
+@media(max-width:560px){
+  .dc-legend2 .lg-chip{font-size:.66rem;padding:3px 7px 3px 5px;}
+  .lg-ic{font-size:.92rem;width:12px;}
+}
