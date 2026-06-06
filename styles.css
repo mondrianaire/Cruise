@@ -947,3 +947,125 @@ nav .links a:hover .sublabels,nav .links a.active .sublabels{color:var(--brass);
   .dc-legend2 .lg-chip{font-size:.66rem;padding:3px 7px 3px 5px;}
   .lg-ic{font-size:.92rem;width:12px;}
 }
+
+
+/* ============ Cross-section SVG render — nautical chart palette ============ */
+.dc-svg-wrap{
+  background:linear-gradient(180deg, #f4ecd2 0%, #e8dab3 100%);
+  border:1px solid var(--brass);
+  border-radius:10px;
+  padding:14px 10px 4px;
+  margin:6px 0;
+  overflow:hidden;
+}
+.dc-svg{
+  background:transparent !important;
+}
+
+/* Waterline strokes */
+.waterline{
+  fill:none;
+  stroke:#3b6a7f;
+  stroke-width:1.4;
+  opacity:.5;
+}
+
+/* Hull silhouette */
+.ship-outline{
+  fill:#fbf6e4;
+  stroke:#1a3a4a;
+  stroke-width:1.8;
+  stroke-linejoin:round;
+}
+
+/* Deck bands — alternating chart-paper stripes */
+.deck-band{ fill:#fbf6e4; opacity:1; }
+.deck-band.odd{ fill:#f0e3c3; }
+.deck-band.you{ fill:#e6c477; opacity:.72; }
+
+/* Deck divider thin lines */
+.deck-divider{
+  stroke:#b89a5e;
+  stroke-width:.6;
+  opacity:.55;
+}
+
+/* Deck labels in the left column */
+.deck-num{
+  font:800 13px/1 var(--d-mono, "Space Mono",monospace);
+  fill:#1a3a4a;
+  letter-spacing:.04em;
+}
+.deck-name{
+  font:600 10.5px/1 var(--d-mono, "Space Mono",monospace);
+  fill:#3b5a6c;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.deck-you .deck-num,
+.deck-you .deck-name{
+  fill:#8a3e1a;
+  font-weight:800;
+}
+
+/* Funnel + mast */
+.funnel-body{ fill:#1a3a4a; }
+.funnel-band{ fill:#d8392b; }
+.mast{ stroke:#1a3a4a; stroke-width:1.5; }
+
+/* Avoid-zone overlay */
+.avoid-zone{
+  fill:rgba(216,57,43,.18);
+  stroke:#d8392b;
+  stroke-width:1;
+  stroke-dasharray:4 3;
+}
+.avoid-lbl{
+  font:700 9.5px var(--d-mono);
+  fill:#a23323;
+  letter-spacing:.04em;
+}
+
+/* Cabin pins on the group's deck */
+.cabin-you .pin-body{
+  fill:#e6c477;
+  stroke:#1a3a4a;
+  stroke-width:1.5;
+}
+.cabin-you .pin-body.tbd{
+  fill:#fbf6e4;
+  stroke:#a23323;
+  stroke-dasharray:3 2;
+}
+.cabin-you .pin-cap{
+  font:800 9.5px var(--d-mono);
+  fill:#1a3a4a;
+  text-anchor:middle;
+  dominant-baseline:middle;
+}
+.cabin-you .pin-cap.tbd{ fill:#a23323; }
+
+/* Amenity glyphs sit on the cream chart — already colored inline in their SVG defs */
+.glyph{ filter:drop-shadow(0 .5px 0 rgba(255,255,255,.4)); }
+
+/* Fore / midship / aft axis labels */
+.axis-lbl{
+  font:700 11.5px var(--d-mono);
+  fill:#3b5a6c;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+
+/* Section title for the cross-section view */
+.ship-view-elev h3{margin:6px 0 4px;}
+.ship-view-elev .dc-sub{margin:0 0 12px;font-size:.92rem;color:var(--ink-dim);}
+.ship-view-elev .dc-sub em{color:var(--brass);font-style:italic;}
+
+/* Note text under the cross-section */
+.dc-note{
+  margin:10px 4px 0;
+  font:500 .82rem/1.55 var(--d-mono);
+  color:var(--ink-dim);
+  letter-spacing:.02em;
+}
+.dc-note strong{color:var(--cream);}

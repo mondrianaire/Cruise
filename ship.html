@@ -75,13 +75,13 @@
         <p class="dc-sub">Two views — toggle to see the <em>Zuiderdam</em> in side elevation, or pick a deck for its top-down floor plan.</p>
       </div>
       <div class="ship-view-tabs" role="tablist" aria-label="Ship view">
-        <button type="button" class="svt active" data-view="elev" role="tab" aria-selected="true">Cross-section</button>
-        <button type="button" class="svt" data-view="floor" role="tab" aria-selected="false">Floor plans</button>
+        <button type="button" class="svt" data-view="elev" role="tab" aria-selected="false">Cross-section</button>
+        <button type="button" class="svt active" data-view="floor" role="tab" aria-selected="true">Floor plans</button>
       </div>
     </div>
 
     <!-- ── VIEW: Cross-section (side elevation) ── -->
-    <div class="ship-view-elev active" data-view="elev">
+    <div class="ship-view-elev" data-view="elev" hidden>
       <details class="dc-legend-d">
         <summary><span>Legend</span><span class="dc-legend-count">12 amenity types</span></summary>
         <div class="dc-legend2" aria-label="Deck-chart legend">
@@ -353,7 +353,7 @@
     </div>
 
     <!-- ── VIEW: Floor plans (top-down, per deck) ── -->
-    <div class="ship-view-floor" data-view="floor" hidden>
+    <div class="ship-view-floor active" data-view="floor">
       <div class="fp-deck-picker" role="tablist" aria-label="Pick a deck">
         <button type="button" class="fp-deck-btn" data-deck="11">11</button><button type="button" class="fp-deck-btn" data-deck="10">10</button><button type="button" class="fp-deck-btn" data-deck="9">9</button><button type="button" class="fp-deck-btn" data-deck="8">8</button><button type="button" class="fp-deck-btn" data-deck="7">7</button><button type="button" class="fp-deck-btn" data-deck="6">6</button><button type="button" class="fp-deck-btn active" data-deck="5">5 <span class="fp-star">★</span></button><button type="button" class="fp-deck-btn" data-deck="4">4</button><button type="button" class="fp-deck-btn" data-deck="3">3</button><button type="button" class="fp-deck-btn" data-deck="2">2</button><button type="button" class="fp-deck-btn" data-deck="1">1</button>
       </div>
