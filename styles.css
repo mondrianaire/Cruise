@@ -1670,3 +1670,53 @@ nav .links a:hover .sublabels,nav .links a.active .sublabels{color:var(--brass);
   stroke-width:1.6;
   filter:drop-shadow(0 0 4px #c89b4a);
 }
+
+
+/* ============ Floor-plan hotspots ↔ venue list sync ============ */
+.fp-img-stage{position:relative;}
+.fp-hot{
+  position:absolute;
+  border:1.5px dashed rgba(200,155,74,.55);
+  background:rgba(200,155,74,.0);
+  border-radius:4px;
+  cursor:help;
+  transition:background .15s, border-color .15s, box-shadow .15s;
+  display:flex;align-items:flex-start;justify-content:flex-start;
+  overflow:hidden;
+}
+.fp-hot:hover, .fp-hot.is-hover{
+  background:rgba(200,155,74,.30);
+  border-color:#c89b4a;
+  box-shadow:0 0 0 1px rgba(200,155,74,.6), 0 2px 10px rgba(200,155,74,.45);
+  z-index:6;
+}
+.fp-hot-l{
+  display:block;
+  padding:1px 4px;
+  margin:1px;
+  background:rgba(8,22,26,.85);
+  color:#e6c477;
+  font:700 .58rem/1.1 var(--d-mono);
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  border-radius:2px;
+  opacity:0;
+  transition:opacity .15s;
+  pointer-events:none;
+  white-space:nowrap;
+  max-width:100%;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.fp-hot:hover .fp-hot-l, .fp-hot.is-hover .fp-hot-l{ opacity:1; }
+
+/* Venue list item highlight from hotspot hover */
+.dv-item.is-hover{
+  background:rgba(230,196,119,.30);
+  border-left-color:var(--brass);
+  box-shadow:0 0 0 1px rgba(230,196,119,.5);
+}
+
+@media(max-width:560px){
+  .fp-hot-l{font-size:.52rem;}
+}
