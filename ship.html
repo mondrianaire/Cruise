@@ -63,15 +63,11 @@
     <span class="mrh-l">Rotate your device to portrait for the floor plan</span>
     <button type="button" class="mrh-x" aria-label="Dismiss">&times;</button>
   </div>
-  <section id="ship" aria-labelledby="ship-h">
-  <div class="sec-head"><h2 id="ship-h">The Ship &mdash; ms Zuiderdam</h2><span class="tag">Vista Class</span></div>
-  <p class="lead">The <em>Zuiderdam</em> is the lead ship of Holland America's Vista class &mdash; a mid-size, classically elegant vessel that completed a comprehensive dry-dock refresh in December 2025.</p>
-  <div class="grid g4">
-    <div class="card fact"><div class="k">Class / Entered Service</div><div class="v">Vista Class &bull; 2002</div></div>
-    <div class="card fact"><div class="k">Guests</div><div class="v">~1,964 (double occ.)</div></div>
-    <div class="card fact"><div class="k">Crew</div><div class="v">~840</div></div>
-    <div class="card fact"><div class="k">Passenger Decks</div><div class="v">11</div></div>
-  </div>
+  <section id="ship" aria-labelledby="ship-h" class="ship-views-first">
+  <!-- v.107: views are the hero on this page; the descriptive h2 + 4 facts
+       were moved to AFTER the deckchart so the cross-section / deck plans
+       are immediately visible above the fold. -->
+  <h2 id="ship-h" class="sr-only">The Ship — ms Zuiderdam</h2>
 
   <!-- ============ DECK ELEVATION CHART ============
        Side-profile of the ship — all 11 passenger decks visible at once, with
@@ -274,12 +270,15 @@
         <rect class="win-strip" x="40" y="181.8" width="920" height="1.8"/>  <!-- Deck 6 -->
         <rect class="win-strip" x="40" y="201" width="920" height="3"/>  <!-- Deck 5 -->
         <rect class="win-strip" x="40" y="229.8" width="920" height="1.8"/>  <!-- Deck 4 -->
-        <rect class="win-strip" x="200" y="309" width="305" height="3"/>  <!-- Deck 1 cabin sub-zone only -->
+        <rect class="win-strip" x="200" y="309" width="270" height="3"/>  <!-- Deck 1 fore cabin block -->
+        <rect class="win-strip" x="580" y="309" width="300" height="3"/>  <!-- Deck 1 aft cabin block -->
       </g>
 
       <!-- ── lifeboats: hanging just under Deck 4 (the lifeboat deck on Vista-class).
            Clipped to hull so they stop at the bow/stern. ── -->
-      <g class="lifeboats" aria-hidden="true" clip-path="url(#hullShape)">
+      <!-- v.103: lifeboats removed — the silhouette shape already reads as a ship,
+           and the strip was adding visual noise without informational value. -->
+      <g class="lifeboats" aria-hidden="true" style="display:none">
         <rect class="lboat-strip" x="340" y="243.3" width="196" height="2.7"/>
         <rect class="lboat-strip" x="568" y="243.3" width="194" height="2.7"/>
         <rect class="lboat-strip" x="792" y="243.3" width="116" height="2.7"/>
@@ -290,12 +289,13 @@
            stateroom bands naturally narrow at the bow/stern just like real cruise-ship
            cabin layouts (the forward-most/aft-most rooms ARE the corner suites). ── -->
       <g class="cabin-zones" aria-hidden="true" clip-path="url(#hullShape)">
-        <g class="cz" data-deck="8"><rect x="40" y="144.9" width="920" height="16.2"/><text class="cz-l" x="515" y="154.8">STATEROOMS · Deck 8</text></g>
-        <g class="cz" data-deck="7"><rect x="40" y="162.9" width="920" height="16.2"/><text class="cz-l" x="515" y="172.8">STATEROOMS · Deck 7</text></g>
-        <g class="cz" data-deck="6"><rect x="40" y="180.9" width="920" height="16.2"/><text class="cz-l" x="515" y="190.8">STATEROOMS · Deck 6</text></g>
-        <g class="cz cz-you" data-deck="5"><rect x="40" y="199.5" width="920" height="27"/><text class="cz-l" x="515" y="216">★ STATEROOMS · Deck 5 · YOUR DECK</text></g>
-        <g class="cz" data-deck="4"><rect x="40" y="228.9" width="920" height="16.2"/><text class="cz-l" x="515" y="238.8">STATEROOMS · Deck 4</text></g>
-        <g class="cz" data-deck="1"><rect x="200" y="307.5" width="305" height="27"/><text class="cz-l" x="352" y="324">STATEROOMS · Deck 1</text></g>
+        <g class="cz" data-deck="8"><rect x="40" y="152" width="920" height="9"/><text class="cz-l" x="515" y="158.4">STATEROOMS · Deck 8</text></g>
+        <g class="cz" data-deck="7"><rect x="40" y="170" width="920" height="9"/><text class="cz-l" x="515" y="176.4">STATEROOMS · Deck 7</text></g>
+        <g class="cz" data-deck="6"><rect x="40" y="188" width="920" height="9"/><text class="cz-l" x="515" y="194.4">STATEROOMS · Deck 6</text></g>
+        <g class="cz cz-you" data-deck="5"><rect x="40" y="211" width="920" height="14"/><text class="cz-l" x="515" y="220.6">★ STATEROOMS · Deck 5 · YOUR DECK</text></g>
+        <g class="cz" data-deck="4"><rect x="40" y="236" width="920" height="9"/><text class="cz-l" x="515" y="242.4">STATEROOMS · Deck 4</text></g>
+        <g class="cz" data-deck="1"><rect x="200" y="320" width="270" height="14"/><text class="cz-l" x="335" y="329.6">STATEROOMS · Deck 1 (fore)</text></g>
+        <g class="cz" data-deck="1"><rect x="580" y="320" width="300" height="14"/><text class="cz-l" x="730" y="329.6">STATEROOMS · Deck 1 (aft)</text></g>
       </g>
       <!-- ── stairway / elevator banks (3 vertical shafts) ──
            v.090: clipped to silhouette so shafts don't paint past the boat outline. -->
@@ -364,17 +364,17 @@
         <g class="md-zone md-stage" data-deck="2" data-venue-name="World Stage" tabindex="0" role="button"><!-- hrs --><desc class="z-hours" data-247="0" data-late="0">Shows 8:00 PM &amp; 10:00 PM</desc><title>World Stage — 3-tier main theatre (stage / backstage Deck 1, orchestra seating Deck 2, balcony Deck 3)</title><path d="M 336 247.5 L 92.6 247.5 L 115.5 281.2 L 112.9 287.5 L 96.0 285.9 L 92.7 314.0 L 128.8 336 L 336 336 Z"/><text class="md-lbl" x="230" y="290">WORLD STAGE</text><text class="md-sub" x="230" y="300">enter Deck 2 (orch.)</text></g>
         <g class="md-zone md-atrium" data-deck="1" data-venue-name="Atrium" tabindex="0" role="button"><!-- hrs --><desc class="z-hours" data-247="1" data-late="0">24h lobby · Front Office 24h · live music 5:00–10:30 PM</desc><title>Atrium — 3-deck-high lobby with the Waterford crystal seahorse · re-carpeted &amp; re-painted Dec 2025</title><rect x="515" y="247.5" width="105" height="88.5" rx="3"/><text class="md-lbl" x="567" y="310.5">ATRIUM</text><text class="md-sub" x="567" y="320.2">3-deck lobby · enter Deck 1</text></g>
         <g class="md-zone md-pool" data-deck="9" data-venue-name="Lido Pool" tabindex="0" role="button"><!-- hrs --><desc class="z-hours" data-247="1" data-late="0">Pool deck 24h · service 6:00 AM–11:00 PM</desc><title>Lido Pool — retractable glass roof (Deck 10 above) + 4 hot tubs</title><rect x="448" y="85.5" width="86" height="58.5" rx="3"/><text class="md-lbl" x="491" y="129">LIDO POOL</text><text class="md-sub" x="491" y="138">enter Deck 9</text></g>
-        <g class="md-zone md-pool" data-deck="9" data-venue-name="Sea View Pool" tabindex="0" role="button"><!-- hrs --><desc class="z-hours" data-247="1" data-late="0">Pool deck 24h · Sea View Bar to ~midnight</desc><title>Sea View Pool — adults-only aft pool + 2 hot tubs + bar</title><path d="M 786 84 L 816 84 L 816 95.8 L 832.1 95.8 L 923.5 95.8 L 923.5 98.6 L 919.1 103.8 L 920.7 103.8 L 920.7 113.7 L 924.9 113.7 L 924.9 118.9 L 929.3 124.4 L 926.3 124.4 L 926.3 130.8 L 933.4 130.8 L 933.4 136.2 L 937.8 141.3 L 934.4 141.3 L 934.4 144 L 786 144 Z"/><text class="md-lbl" x="855" y="128">SEA VIEW</text><text class="md-sub" x="855" y="138">enter Deck 9</text></g>
+        <g class="md-zone md-pool" data-deck="9" data-venue-name="Sea View Pool" tabindex="0" role="button"><!-- hrs --><desc class="z-hours" data-247="1" data-late="0">Pool deck 24h · Sea View Bar to ~midnight</desc><title>Sea View Pool — adults-only aft pool + 2 hot tubs + bar</title><path d="M 786 84 L 821.5 84 L 832.1 95.8 L 923.5 95.8 L 923.5 98.6 L 919.1 103.9 L 920.7 103.9 L 920.7 113.8 L 924.9 113.8 L 924.9 119 L 929.3 124.5 L 926.3 124.5 L 926.3 130.9 L 933.4 130.9 L 933.4 136.3 L 937.8 141.5 L 934.4 141.5 L 934.4 144 L 786 144 Z"/><text class="md-lbl" x="855" y="128">SEA VIEW</text><text class="md-sub" x="855" y="138">enter Deck 9</text></g>
         <g class="md-zone md-din" data-deck="2" data-venue-name="The Dining Room (lower)" tabindex="0" role="button"><title>The Dining Room — two levels (upper Deck 3, lower Deck 2)</title><path d="M 786 246 L 940.7 246 L 940.4 248.7 L 945 284.5 L 925 306 L 786 306 Z"/><text class="md-lbl" x="855" y="275">DINING ROOM</text><text class="md-sub" x="855" y="285">enter Deck 2</text></g>
         <g class="md-zone md-cas" data-deck="2" data-venue-name="Casino + Gallery Bar" tabindex="0" role="button"><title>Casino + Gallery Bar — slots, tables, 199 seats</title><rect x="460" y="277.5" width="44" height="27" rx="3"/><text class="md-lbl-sm" x="482" y="293.2">CASINO</text></g>
-        <g class="md-zone md-obs" data-deck="10" data-venue-name="Crow's Nest" tabindex="0" role="button"><!-- hrs --><desc class="z-hours" data-247="0" data-late="1">Refit Dec 2025: new bandstand stage · live music + lectures by day · DJ from 10 PM · 10 AM – 1 AM</desc><title>Crow's Nest — forward observation lounge · redesigned Dec 2025 with bandstand stage &amp; upgraded lighting/audio for small live performances</title><path d="M 336 114 L 180.9 114 L 180.9 94.4 L 195.2 94.4 L 195.2 80.1 L 193.7 84 L 336 84 L 336 114 Z"/><text class="md-lbl-sm" x="262" y="99">CROW'S NEST</text><text class="md-sub-sm" x="262" y="109">bandstand · refit ’25</text></g>
-        <g class="md-zone md-retreat md-tent" data-deck="11" data-venue-name="The Retreat" tabindex="0" role="button"><!-- hrs --><desc class="z-hours" data-247="1" data-late="0">Cabanas 9 AM – 5 PM (HAL official) · ⚠ HAL flagged renovation for Jun 2026 — cabana availability unconfirmed · sundeck typically 24h</desc><title>The Retreat — adults-only sundeck, 14 private cabanas (port + starboard) · ⚠ HAL has flagged renovation work for the Jun 2026 sailing window; call Ship Services to verify</title><rect x="216" y="52.5" width="120" height="31.5" rx="3"/><text class="md-lbl-sm" x="276" y="67">THE RETREAT ⚠</text><text class="md-sub-sm" x="276" y="78">cabanas · refit ’26?</text></g>
+        <g class="md-zone md-obs" data-deck="10" data-venue-name="Crow's Nest" tabindex="0" role="button"><!-- hrs --><desc class="z-hours" data-247="0" data-late="1">Refit Dec 2025: new bandstand stage · live music + lectures by day · DJ from 10 PM · 10 AM – 1 AM</desc><title>Crow's Nest — forward observation lounge · redesigned Dec 2025 with bandstand stage &amp; upgraded lighting/audio for small live performances</title><path d="M 308 84 L 195.2 84 L 195.2 94.8 L 180.9 94.8 L 166.2 99 L 169 114 L 308 114 Z"/><text class="md-lbl-sm" x="240" y="99">CROW'S NEST</text><text class="md-sub-sm" x="240" y="109">bandstand · refit ’25</text></g>
+        <g class="md-zone md-retreat md-tent" data-deck="11" data-venue-name="The Retreat" tabindex="0" role="button"><!-- hrs --><desc class="z-hours" data-247="1" data-late="0">Cabanas 9 AM – 5 PM (HAL official) · ⚠ HAL flagged renovation for Jun 2026 — cabana availability unconfirmed · sundeck typically 24h</desc><title>The Retreat — adults-only sundeck, 14 private cabanas (port + starboard) · ⚠ HAL has flagged renovation work for the Jun 2026 sailing window; call Ship Services to verify</title><path d="M 336 52.5 L 216.4 52.5 L 216.4 53.1 L 208.1 66 L 201.5 66 L 193.7 78.1 L 195.2 80.4 L 195.2 84 L 336 84 Z"/><text class="md-lbl-sm" x="266" y="67">THE RETREAT ⚠</text><text class="md-sub-sm" x="266" y="78">cabanas · refit ’26?</text></g>
         <g class="md-zone md-pool" data-deck="11" data-venue-name="Sports Court" tabindex="0" role="button"><!-- hrs --><desc class="z-hours" data-247="1" data-late="0">Pickleball &amp; basketball · open 24h (lights timed)</desc><title>Sports Court — basketball + pickleball (PPA partnership, free beginner lessons) · open 24h, lights on a timer</title><rect x="561" y="52.5" width="203" height="31.5" rx="3"/><text class="md-lbl-sm" x="662" y="67">SPORTS COURT</text><text class="md-sub-sm" x="662" y="78">basketball · pickleball</text></g>
         <g class="md-zone md-spa" data-deck="9" data-venue-name="Greenhouse Spa &amp; Salon" tabindex="0" role="button"><title>Greenhouse Spa &amp; Salon — treatments, thermal suite, salon</title><rect x="666" y="115.5" width="76" height="27" rx="3"/><text class="md-lbl-sm" x="704" y="127.5">GREENHOUSE</text><text class="md-sub-sm" x="704" y="136.5">spa &amp; salon</text></g>
         <g class="md-zone md-din" data-deck="2" data-venue-name="Pinnacle Grill" tabindex="0" role="button"><!-- hrs --><desc class="z-hours" data-247="0" data-late="0">Lunch 12–1:30 · Dinner 5:30–9:30 PM</desc><title>Pinnacle Grill — signature steak &amp; seafood (specialty)</title><rect x="408" y="277.5" width="48" height="27" rx="3"/><text class="md-lbl-sm" x="432" y="289.5">PINNACLE</text><text class="md-sub-sm" x="432" y="298.5">GRILL</text></g>
-        <g class="md-zone md-din" data-deck="9" data-venue-name="Lido Market" tabindex="0" role="button"><!-- hrs --><desc class="z-hours" data-247="1" data-late="0">6:30 AM – 11:00 PM · coffee/tea 24h</desc><title>Lido Market — buffet, 5 themed stations</title><rect x="540" y="115.5" width="120" height="28.5" rx="3"/><text class="md-lbl-sm" x="600" y="128.2">LIDO MARKET</text><text class="md-sub-sm" x="600" y="137.2">buffet + grills</text></g>
-        <g class="md-zone md-gym" data-deck="9" data-venue-name="Fitness Center" tabindex="0" role="button"><!-- hrs --><desc class="z-hours" data-247="1" data-late="0">Staffed 6 AM – 9 PM · stateroom keycard access 24h</desc><title>Fitness Center — gym, aerobics studio · staffed hours 6 AM – 9 PM, keycard access outside those hours</title><path d="M 336 144 L 170 144 L 170 118.4 L 166.2 114 L 336 114 L 336 144 Z"/><text class="md-lbl-sm" x="253" y="128">FITNESS</text><text class="md-sub-sm" x="253" y="137">keycard 24h</text></g>
-        <g class="md-zone md-show" data-deck="2" data-venue-name="Lincoln Center Stage" tabindex="0" role="button"><!-- hrs --><desc class="z-hours" data-247="0" data-late="0">Music Walk 6:00 PM – ~midnight</desc><title>Music Walk — Lincoln Center · Billboard · B.B. King's, Deck 2 · forward of Atrium (adjacent, not inside)</title><rect x="312" y="279.8" width="98" height="22.5" rx="3"/><text class="md-lbl-sm" x="361" y="287.2">MUSIC WALK</text></g>
+        <g class="md-zone md-din" data-deck="9" data-venue-name="Lido Market" tabindex="0" role="button"><!-- hrs --><desc class="z-hours" data-247="1" data-late="0">6:30 AM – 11:00 PM · coffee/tea 24h</desc><title>Lido Market — buffet, 5 themed stations</title><rect x="540" y="115.5" width="120" height="27" rx="3"/><text class="md-lbl-sm" x="600" y="128">LIDO MARKET</text><text class="md-sub-sm" x="600" y="137">buffet + grills</text></g>
+        <g class="md-zone md-gym" data-deck="9" data-venue-name="Fitness Center" tabindex="0" role="button"><!-- hrs --><desc class="z-hours" data-247="1" data-late="0">Staffed 6 AM – 9 PM · stateroom keycard access 24h</desc><title>Fitness Center — gym, aerobics studio · staffed hours 6 AM – 9 PM, keycard access outside those hours</title><path d="M 336 114 L 169 114 L 170 119 L 151.7 144 L 336 144 Z"/><text class="md-lbl-sm" x="246" y="128">FITNESS</text><text class="md-sub-sm" x="246" y="137">keycard 24h</text></g>
+        <g class="md-zone md-show" data-deck="2" data-venue-name="Lincoln Center Stage" tabindex="0" role="button"><!-- hrs --><desc class="z-hours" data-247="0" data-late="0">Music Walk 6:00 PM – ~midnight</desc><title>Music Walk — Lincoln Center · Billboard · B.B. King's, Deck 2 · forward of Atrium (adjacent, not inside)</title><rect x="340" y="277.5" width="65" height="27" rx="3"/><text class="md-lbl-sm" x="372" y="289.5">MUSIC WALK</text><text class="md-sub-sm" x="372" y="298.5">Lincoln · BB King · Billboard</text></g>
         <g data-deck="2" data-venue-name="Lincoln Center Stage"><title>Lincoln Center Stage — live classical chamber music · 63 seats</title><use class="glyph" href="#ic-show" x="330" y="295.5" width="11" height="8.2"/></g>
         <g data-deck="2" data-venue-name="Billboard Onboard"><title>Billboard Onboard — dueling pianos &amp; chart-hit sing-along</title><use class="glyph" href="#ic-show" x="357" y="295.5" width="11" height="8.2"/></g>
         <g data-deck="2" data-venue-name="B.B. King's Blues Club"><title>B.B. King's Blues Club — Memphis soul &amp; blues · 170 seats</title><use class="glyph" href="#ic-show" x="384" y="295.5" width="11" height="8.2"/></g>
@@ -417,12 +417,12 @@
       </g>
       <g class="md-zone md-obs" data-deck="10" data-venue-name="Kids &amp; Teens" tabindex="0" role="button">
         <title>Kids &amp; Teens — Club HAL (ages 3–12) + The Loft (ages 13–17), Deck 10 midship</title>
-        <rect x="528" y="85.5" width="80" height="27" rx="3"/>
-        <text class="md-lbl-sm" x="568" y="93">KIDS &amp; TEENS</text>
+        <rect x="540" y="85.5" width="80" height="27" rx="3"/>
+        <text class="md-lbl-sm" x="580" y="93">KIDS &amp; TEENS</text>
         <g data-venue-name="Club HAL"><title>Club HAL — supervised kids' program, ages 3–12, two age-banded rooms</title>
-          <use class="glyph" href="#ic-kid" x="544" y="103.5" width="11" height="8.2"/></g>
+          <use class="glyph" href="#ic-kid" x="556" y="103.5" width="11" height="8.2"/></g>
         <g data-venue-name="The Loft"><title>The Loft — teens 13–17, video games, ping-pong, PlayStations</title>
-          <use class="glyph" href="#ic-kid" x="582" y="103.5" width="11" height="8.2"/></g>
+          <use class="glyph" href="#ic-kid" x="594" y="103.5" width="11" height="8.2"/></g>
       </g>
 
       <!-- ── DECK 9 · LIDO ── y-mid 171
@@ -478,29 +478,29 @@
              instead of leaving a half-empty stripe above and below. -->
       <g class="md-zone md-show" data-deck="3" data-venue-name="Tasman Cinema" tabindex="0" role="button">
         <title>Tasman Room cinema — 38 seats, intimate film screenings · forward of midship on Deck 3</title>
-        <rect x="320" y="248" width="45" height="26" rx="3"/>
-        <text class="md-lbl-sm" x="342" y="259">TASMAN</text>
-        <text class="md-sub-sm" x="342" y="270">cinema · 38 seats</text>
+        <rect x="340" y="247.5" width="45" height="27" rx="3"/>
+        <text class="md-lbl-sm" x="362" y="259">TASMAN</text>
+        <text class="md-sub-sm" x="362" y="270">cinema · 38 seats</text>
       </g>
       <g class="md-zone md-svc" data-deck="3" data-venue-name="Meeting Rooms" tabindex="0" role="button">
         <title>Meeting Rooms — Half Moon, Hudson, Stuyvesant + Digital Workshop · Deck 3 forward-of-midship, NOT inside the Atrium (the Atrium opening is starboard at x=515-620)</title>
-        <rect x="370" y="248" width="65" height="26" rx="3"/>
-        <text class="md-lbl-sm" x="402" y="259">MEETING RMS</text>
+        <rect x="390" y="247.5" width="60" height="27" rx="3"/>
+        <text class="md-lbl-sm" x="420" y="259">MEETING RMS</text>
         <g data-venue-name="Meeting rooms"><title>Half Moon · Hudson · Stuyvesant — three bookable meeting rooms</title>
-          <use class="glyph" href="#ic-svc" x="386" y="266" width="10" height="8"/></g>
+          <use class="glyph" href="#ic-svc" x="406" y="266" width="10" height="8"/></g>
         <g data-venue-name="Digital Workshop"><title>Digital Workshop / Microsoft Studio — guided classes on photography, video, devices</title>
-          <use class="glyph" href="#ic-shop" x="414" y="266" width="10" height="8"/></g>
+          <use class="glyph" href="#ic-shop" x="430" y="266" width="10" height="8"/></g>
       </g>
       <g class="md-zone md-shop" data-deck="3" data-venue-name="Atrium Shops &amp; Photo" tabindex="0" role="button">
         <title>Atrium Shops cluster — Merabella, Atrium Shops, Photo Gallery, Effy Jewelry. Adjacent to Atrium on Deck 3 (between the Meeting Rooms and the Atrium ring); NOT inside the Atrium opening</title>
-        <rect x="440" y="248" width="65" height="26" rx="3"/>
-        <text class="md-lbl-sm" x="472" y="258">SHOPS · PHOTO</text>
+        <rect x="455" y="247.5" width="55" height="27" rx="3"/>
+        <text class="md-lbl-sm" x="482" y="258">SHOPS · PHOTO</text>
         <g data-venue-name="Merabella Luxury Shop"><title>Merabella Luxury Shop — fine jewellery, watches, accessories</title>
-          <use class="glyph" href="#ic-shop" x="448" y="266" width="10" height="8"/></g>
+          <use class="glyph" href="#ic-shop" x="461" y="266" width="10" height="8"/></g>
         <g data-venue-name="Atrium Shops"><title>Atrium Shops — duty-free, logo wear, sundries</title>
-          <use class="glyph" href="#ic-shop" x="468" y="266" width="10" height="8"/></g>
+          <use class="glyph" href="#ic-shop" x="478" y="266" width="10" height="8"/></g>
         <g data-venue-name="Photo Gallery"><title>Photo Gallery — onboard portraits &amp; daily photo retail (redesigned Dec 2025)</title>
-          <use class="glyph" href="#ic-svc" x="488" y="266" width="10" height="8"/></g>
+          <use class="glyph" href="#ic-svc" x="495" y="266" width="10" height="8"/></g>
       </g>
       <g data-deck="3" data-venue-name="Ocean Bar"><title>Ocean Bar — live music, dance floor, 147 seats. Standalone glyph: single lounge venue, no sub-spaces.</title>
          <use class="glyph" href="#ic-bar" x="610" y="260.2" width="14" height="10.5"/></g>
@@ -514,12 +514,12 @@
          <use class="glyph" href="#ic-bar" x="505" y="290.2" width="14" height="10.5"/></g>
       <g class="md-zone md-shop" data-deck="2" data-venue-name="Art Gallery" tabindex="0" role="button">
         <title>Art Gallery — exhibitions during the day, on-board art auctions on auction days. One room, two functions on different schedules.</title>
-        <rect x="670" y="279.8" width="50" height="22.5" rx="3"/>
-        <text class="md-lbl-sm" x="695" y="287.2">ART GALLERY</text>
+        <rect x="670" y="277.5" width="50" height="27" rx="3"/>
+        <text class="md-lbl-sm" x="695" y="287.5">ART GALLERY</text>
         <g data-venue-name="Exhibitions"><title>Exhibitions — rotating curated displays</title>
-          <use class="glyph" href="#ic-shop" x="678" y="293.2" width="11" height="8.2"/></g>
+          <use class="glyph" href="#ic-shop" x="678" y="293.5" width="11" height="8.2"/></g>
         <g data-venue-name="Art auctions"><title>Art auctions — scheduled auction days, on-board art programme</title>
-          <use class="glyph" href="#ic-cas" x="700" y="293.2" width="11" height="8.2"/></g>
+          <use class="glyph" href="#ic-cas" x="700" y="293.5" width="11" height="8.2"/></g>
       </g>
       <!-- ── DECK 1 · MAIN ── y-mid 491
            v.077: Front Office and Shore Excursions Desk are inside the Atrium zone
@@ -561,6 +561,24 @@
 
     <!-- ── VIEW: Deck plans (top-down, per deck) ── -->
     <div class="ship-view-floor" data-view="floor" hidden>
+      <!-- v.107: mobile/tablet compact deck picker (a <select> shown only on
+           narrow viewports). The full button row is hidden on mobile via CSS. -->
+      <div class="fp-deck-mobile" aria-label="Pick a deck (mobile)">
+        <label for="fpDeckMobile" class="fp-deck-mobile-lbl">Deck</label>
+        <select id="fpDeckMobile" class="fp-deck-mobile-sel">
+          <option value="11">Deck 11 — Sports</option>
+          <option value="10">Deck 10 — Observation</option>
+          <option value="9">Deck 9 — Lido</option>
+          <option value="8">Deck 8 — Navigation</option>
+          <option value="7">Deck 7 — Rotterdam</option>
+          <option value="6">Deck 6 — Upper Verandah</option>
+          <option value="5" selected>Deck 5 ★ — Verandah (your deck)</option>
+          <option value="4">Deck 4 — Upper Promenade</option>
+          <option value="3">Deck 3 — Promenade</option>
+          <option value="2">Deck 2 — Lower Promenade</option>
+          <option value="1">Deck 1 — Main</option>
+        </select>
+      </div>
       <div class="fp-deck-picker" role="tablist" aria-label="Pick a deck">
         <button type="button" class="fp-deck-btn" data-deck="11">11</button><button type="button" class="fp-deck-btn" data-deck="10">10</button><button type="button" class="fp-deck-btn" data-deck="9">9</button><button type="button" class="fp-deck-btn" data-deck="8">8</button><button type="button" class="fp-deck-btn" data-deck="7">7</button><button type="button" class="fp-deck-btn" data-deck="6">6</button><button type="button" class="fp-deck-btn active" data-deck="5">5 <span class="fp-star">★</span></button><button type="button" class="fp-deck-btn" data-deck="4">4</button><button type="button" class="fp-deck-btn" data-deck="3">3</button><button type="button" class="fp-deck-btn" data-deck="2">2</button><button type="button" class="fp-deck-btn" data-deck="1">1</button>
       </div>
@@ -990,6 +1008,16 @@
     </div>
   </div>
 
+  <!-- v.107: relocated descriptive header for the ship — appears after the views. -->
+  <div class="sec-head ship-relocated-head"><h2>The Ship &mdash; ms Zuiderdam</h2><span class="tag">Vista Class</span></div>
+  <p class="lead">The <em>Zuiderdam</em> is the lead ship of Holland America's Vista class &mdash; a mid-size, classically elegant vessel that completed a comprehensive dry-dock refresh in December 2025.</p>
+  <div class="grid g4">
+    <div class="card fact"><div class="k">Class / Entered Service</div><div class="v">Vista Class &bull; 2002</div></div>
+    <div class="card fact"><div class="k">Guests</div><div class="v">~1,964 (double occ.)</div></div>
+    <div class="card fact"><div class="k">Crew</div><div class="v">~840</div></div>
+    <div class="card fact"><div class="k">Passenger Decks</div><div class="v">11</div></div>
+  </div>
+
   <div class="grid g2" style="margin-top:16px;">
     <div class="card">
       <h3>Dining &mdash; Included</h3>
@@ -1227,6 +1255,98 @@
     });
   }
   deckBtns.forEach(function(b){ b.addEventListener('click', function(){ setDeck(b.dataset.deck); }); });
+
+  /* v.107: mobile/tablet compact deck picker (a <select>). Two-way sync with
+     the button row so the existing setDeck() handles all state. */
+  var mobileSel = document.getElementById('fpDeckMobile');
+  if(mobileSel){
+    mobileSel.addEventListener('change', function(){ setDeck(mobileSel.value); });
+    // Mirror button-row clicks back into the <select>.
+    var _origSetDeck = setDeck;
+    setDeck = function(d){
+      _origSetDeck(d);
+      if(mobileSel && mobileSel.value !== String(d)) mobileSel.value = String(d);
+    };
+  }
+
+  /* v.107: view-switch confirmation dialog. When the user taps a tab on
+     mobile/tablet, we intercept and confirm — the dialog tells them which
+     orientation the target view prefers and lets them go back. Desktop
+     (wide viewports) keeps the old direct-switch behavior. */
+  var dlg = document.getElementById('viewSwitchDialog');
+  var dlgMsg = document.getElementById('vsdMsg');
+  var dlgGo = document.getElementById('vsdContinue');
+  var dlgCancel = document.getElementById('vsdCancel');
+  var dlgPendingTarget = null;
+  function showSwitchDialog(target){
+    if(!dlg) return;
+    dlgPendingTarget = target;
+    var orient = target === 'floor' ? 'portrait' : 'landscape';
+    var name   = target === 'floor' ? 'Deck plans' : 'Cross-section';
+    dlgMsg.innerHTML = 'Switching to <strong>' + name + '</strong>. ' +
+      'This view is best in <strong>' + orient + '</strong> — rotate your device when you continue.';
+    dlg.hidden = false;
+    requestAnimationFrame(function(){ dlg.classList.add('visible'); });
+  }
+  function closeSwitchDialog(){
+    if(!dlg) return;
+    dlg.classList.remove('visible');
+    setTimeout(function(){ dlg.hidden = true; }, 180);
+    dlgPendingTarget = null;
+  }
+  if(dlgGo)     dlgGo.addEventListener('click', function(){
+    if(dlgPendingTarget){
+      try{ sessionStorage.setItem('shipViewOverride', '1'); }catch(e){}
+      setTab(dlgPendingTarget);
+    }
+    closeSwitchDialog();
+  });
+  if(dlgCancel) dlgCancel.addEventListener('click', closeSwitchDialog);
+  if(dlg) dlg.addEventListener('click', function(e){ if(e.target === dlg) closeSwitchDialog(); });
+  // Intercept tab clicks on mobile/tablet -> show confirm. Use capture phase so we
+  // run before the inline handler bound earlier (which directly calls setTab).
+  tabs.forEach(function(b){
+    b.addEventListener('click', function(e){
+      if(!window.matchMedia('(max-width:1100px)').matches) return; // desktop: direct
+      var target = b.dataset.view;
+      var current = document.querySelector('.ship-view-tabs .svt.active');
+      if(current && current.dataset.view === target) return;
+      e.stopImmediatePropagation();
+      e.preventDefault();
+      showSwitchDialog(target);
+    }, true);
+  });
+
+  /* v.107: auto-collapse the sticky nav once the user scrolls into the
+     deck-chart area (gives the cross-section more vertical room). A small
+     peek button drops in at top-right to bring the nav back. */
+  var navEl  = document.querySelector('nav');
+  var peekBtn = document.getElementById('navPeek');
+  var deckChartEl = document.querySelector('.deckchart');
+  if(navEl && peekBtn && deckChartEl){
+    var collapsed = false;
+    function setCollapsed(v){
+      if(v === collapsed) return;
+      collapsed = v;
+      document.body.classList.toggle('nav-auto-collapsed', v);
+      peekBtn.hidden = !v;
+    }
+    function onScroll(){
+      var rect = deckChartEl.getBoundingClientRect();
+      // collapse once the deckchart is at/above the navigation bar
+      setCollapsed(rect.top < 64);
+    }
+    window.addEventListener('scroll', onScroll, { passive:true });
+    onScroll();
+    peekBtn.addEventListener('click', function(){
+      document.body.classList.add('nav-peeked');
+      // hide the peek button momentarily; on next scroll we'll re-evaluate
+      setTimeout(function(){
+        document.body.classList.remove('nav-peeked');
+        onScroll();
+      }, 4000);
+    });
+  }
 
   /* ---- Night Owl toggle: highlights 24-hour + late-night zones ---- */
   (function(){
@@ -1542,5 +1662,23 @@
   if(x){ x.addEventListener('click', function(){ banner.style.display='none'; }); }
 })();
 </script>
+<!-- v.107: tiny floating button to re-open the nav after auto-collapse. -->
+<button type="button" id="navPeek" class="nav-peek" aria-label="Show menu" hidden>
+  <span aria-hidden="true">≡</span>
+</button>
+
+<!-- v.107: view-switch confirmation dialog. Shown when the user taps a view
+     tab on mobile/tablet — gives them a chance to cancel before the view flips. -->
+<div id="viewSwitchDialog" class="view-switch-dlg" role="dialog" aria-modal="true" aria-labelledby="vsdTitle" hidden>
+  <div class="vsd-card">
+    <div class="vsd-ic" aria-hidden="true">📱↻</div>
+    <h3 id="vsdTitle" class="vsd-title">Switch view?</h3>
+    <p class="vsd-msg" id="vsdMsg">This view looks best in <strong>portrait</strong>. Rotate your device, then continue.</p>
+    <div class="vsd-actions">
+      <button type="button" id="vsdContinue" class="vsd-go">Switch &amp; continue</button>
+      <button type="button" id="vsdCancel" class="vsd-cancel">← Go back</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
