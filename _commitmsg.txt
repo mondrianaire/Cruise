@@ -1,0 +1,14 @@
+v.119: fix orientation gate not appearing on first load (DOM order)
+
+Root cause: the orientationGate modal markup was added near the bottom
+of <body> (line ~1725) but the inline IIFE that calls
+showOrientationGate() runs much earlier (line ~1087). When the IIFE
+parses, document.getElementById('orientationGate') returns null and
+the function bails silently.
+
+Snap-to-top still worked because autoOrientView doesn't depend on the
+modal element - that's why the user saw the snap but not the prompt.
+
+Moved orientationGate + viewSwitchDialog + navPeek button to BEFORE
+the IIFE script so they exist in DOM at parse time. The functions
+can now find them on the very first execution.
