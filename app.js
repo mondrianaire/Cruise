@@ -1,4 +1,4 @@
-﻿/* Canada & New England 2026 â€” shared app shell (motion toggle, countdown, stars, scrollspy) */
+/* Canada & New England 2026 â€” shared app shell (motion toggle, countdown, stars, scrollspy) */
 (function(){
   'use strict';
 
@@ -86,7 +86,7 @@
     var nc = label.querySelector('.n'); if(nc) nc.remove();
     var labelTxt = label.textContent.trim();
     a.innerHTML = '<span class="nav-main">' + (n?n.outerHTML:'') + '<span>'+labelTxt+'</span></span>'
-      + (subs.length ? '<span class="sublabels">'+subs.join(' Â· ')+'</span>' : '');
+      + (subs.length ? '<span class="sublabels">'+subs.join(' · ')+'</span>' : '');
   });
 
 /* --- mobile hamburger nav sheet --- */
@@ -169,7 +169,7 @@
 })();
 
 /* ===== Site version badge in nav (visible across all pages) ===== */
-window.SITE_VERSION = 'v.077';
+window.SITE_VERSION = 'v.078';
 (function(){
   document.querySelectorAll('nav .brand .br-y').forEach(function(y){
     if(!y.querySelector('.br-ver')){

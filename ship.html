@@ -1026,8 +1026,14 @@
       if(noBtn) noBtn.setAttribute('aria-pressed', 'false');
       if(wrap)  wrap.classList.remove('night-owl');
     }
+    /* v.078: Mark the active view on the body so CSS can scope the mobile rotate-hint
+       (the hint is only relevant for the cross-section; floor plans now work in portrait). */
+    document.body.classList.toggle('view-floor', v === 'floor');
+    document.body.classList.toggle('view-elev',  v === 'elev');
   }
   tabs.forEach(function(b){ b.addEventListener('click', function(){ setTab(b.dataset.view); }); });
+  /* v.078: prime the body class so the mobile rotate-hint CSS scopes correctly on first paint */
+  document.body.classList.add('view-elev');
 
   var deckBtns = document.querySelectorAll('.fp-deck-btn');
   var panels   = document.querySelectorAll('.fp-panel');

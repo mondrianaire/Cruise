@@ -1570,18 +1570,40 @@ nav .links a:hover .sublabels,nav .links a.active .sublabels{color:var(--brass);
 /* Hide the now-defunct "View deck plan" button if any panel still has it */
 .fp-show-plan{display:none !important;}
 
-/* On mobile: stack so plan sits on top (taller image), then data below */
+/* v.078: On mobile portrait, keep floor plans side-by-side (small deck thumbnail on
+   the left, venue list on the right). The deck images are very tall (320×1449 native),
+   so a narrow column reads fine even at 140px wide, and the venue list — which is the
+   real "data" of the floor-plan view — keeps the rest of the horizontal real estate.
+   Touch highlight (.is-touched bidirectional sync) is preserved. */
 @media(max-width:760px){
   .fp-panel{
-    grid-template-columns:1fr;
-    gap:14px;
+    grid-template-columns:140px 1fr;
+    gap:10px;
   }
   .fp-plan-col{
-    position:static;
-    max-width:340px;
-    margin:0 auto;
+    position:sticky; top:8px;
+    max-width:none;
+    margin:0;
   }
+  .fp-img-stage{ padding:4px 3px 3px !important; }
+  .fp-img-stage::before{ font-size:.56rem; padding:4px 6px; margin:-4px -3px 4px; }
+  /* The hot-zone labels would crowd the tiny thumbnail — let the rect colour and
+     touch carry the meaning instead, and let the venue-list row supply the name. */
+  .fp-hot .fp-hot-l{ display:none; }
+  /* Scale cabin pins so they don't dwarf the thumbnail */
+  .fp-img-pin{ width:18px; height:18px; font-size:.5rem; border-width:1.5px; }
+  /* Tighten the deck picker row so 11 tabs fit a 390px viewport */
+  .fp-deck-picker{ gap:3px; margin-bottom:8px; flex-wrap:wrap; }
+  .fp-deck-btn{ min-width:32px; padding:5px 6px; font-size:.78rem; }
 }
+/* On narrow phones drop the deck column further; the list is what the user reads */
+@media(max-width:420px){
+  .fp-panel{ grid-template-columns:112px 1fr; gap:8px; }
+  .fp-img-pin{ width:15px; height:15px; font-size:.46rem; }
+}
+/* Hide the "rotate to landscape" hint when the floor-plan view is active —
+   portrait now works for floor plans, the hint is misleading there. */
+body.view-floor .mobile-rotate-hint{ display:none !important; }
 
 
 /* ============ Floor-plan panel visibility (only active one shows) ============ */
