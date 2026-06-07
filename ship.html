@@ -1148,11 +1148,8 @@
     if(!g) return;
     if(!window.matchMedia('(max-width:1100px)').matches) return; // desktop bail
     if(!window.matchMedia('(orientation:portrait)').matches) return;
-    /* v.116: show on EVERY portrait load — no sessionStorage suppression.
-       The escape hatch still dismisses for this load + switches the view,
-       but the next load will prompt again. */
-    g.hidden = false;
-    requestAnimationFrame(function(){ g.classList.add('visible'); });
+    /* v.118: visibility is CSS-controlled via .visible class (iOS-safe). */
+    g.classList.add('visible');
     document.body.style.overflow = 'hidden';
   }
   function hideOrientationGate(){
@@ -1160,7 +1157,6 @@
     if(!g) return;
     g.classList.remove('visible');
     document.body.style.overflow = '';
-    setTimeout(function(){ g.hidden = true; }, 220);
   }
   var roAlt = document.getElementById('roUseDeckPlans');
   if(roAlt){
@@ -1247,10 +1243,9 @@
       pendingDeckJump = null;
       hint.classList.remove('visible');
       document.body.style.overflow = '';
-      setTimeout(function(){ hint.hidden = true; }, 200);
     });
-    hint.hidden = false;
-    requestAnimationFrame(function(){ hint.classList.add('visible'); });
+    /* v.118: visibility is CSS-controlled via .visible class (iOS-safe). */
+    hint.classList.add('visible');
     document.body.style.overflow = 'hidden';
     clearTimeout(window._landscapeHintTimer);  /* v.117: no auto-dismiss timer */
   }
@@ -1282,7 +1277,6 @@
       if(hint){
         hint.classList.remove('visible');
         document.body.style.overflow = '';
-        setTimeout(function(){ hint.hidden = true; }, 200);
       }
     }
   };
@@ -1728,7 +1722,7 @@
 <!-- v.113: blocking orientation gate. Shown on initial load when the user is
      on a mobile/tablet in portrait. Auto-dismisses the moment the device flips
      to landscape; the user can also tap "Use deck plans (portrait) instead". -->
-<div id="orientationGate" class="rotate-overlay" role="dialog" aria-modal="true" aria-labelledby="roTitle" hidden>
+<div id="orientationGate" class="rotate-overlay" role="dialog" aria-modal="true" aria-labelledby="roTitle">
   <div class="ro-backdrop" aria-hidden="true"></div>
   <div class="ro-card">
     <div class="ro-phone" aria-hidden="true">
