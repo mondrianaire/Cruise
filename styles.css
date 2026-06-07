@@ -1958,3 +1958,27 @@ nav .links a:hover .sublabels,nav .links a.active .sublabels{color:var(--brass);
   filter:drop-shadow(0 0 6px #7af0b8);
   animation:moonGlow 3s ease-in-out infinite;
 }
+
+
+/* ============ Site version badge in nav ============ */
+.br-ver{
+  display:inline-block;
+  margin-left:5px;
+  padding:1px 4px;
+  font:600 .55rem/1 var(--d-mono);
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  color:rgba(200,155,74,.70);
+  background:rgba(200,155,74,.10);
+  border:1px solid rgba(200,155,74,.20);
+  border-radius:3px;
+  vertical-align:2px;
+}
+@media(max-width:760px){
+  .br-ver{
+    margin-left:3px;
+    padding:1px 3px;
+    font-size:.48rem;
+    vertical-align:1px;
+  }
+}
