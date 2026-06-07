@@ -171,18 +171,20 @@
         <pattern id="lifeboat-strip" patternUnits="userSpaceOnUse" width="13" height="6" x="0" y="0">
           <rect x="1" y="1" width="11" height="4" rx="1.5" fill="#e07a3a" stroke="#7a3a10" stroke-width="0.45"/>
         </pattern>
-        <!-- v.079: Hull-shape clipPath. The whole point of this is to stop rendering the
-             cross-section as a giant rectangle with a thin curved outline drawn around it.
-             Every deck band, divider, cabin zone, window strip and lifeboat row gets
-             clipped to this silhouette, so the boat shape EMERGES from the data instead
-             of being painted around it. The silhouette: top deck (Deck 11) narrow forward
-             and aft so the upper decks visibly step in; cabin decks 5-8 are the widest
-             "barrel" — the part of the ship that actually has the most rooms; lower decks
-             taper as the hull curves toward the keel; bow rakes forward at the upper decks,
-             stern hangs slightly aft. Same path is used as the ship-outline stroke below
-             so the silhouette and the clip mask are pixel-identical. -->
+        <!-- v.082: Sprite-shape hull. The previous "barrel" shape still read as a
+             rectangle because both ends fanned outward symmetrically — there was no
+             raked bow, just a slightly-rounded barrel. Replaced with the actual
+             cruise-ship side-profile geometry from the deck-position sprite:
+             SHARP RAKED BOW (top forward edge at x=200, bow tip at the waterline at
+             x=50 — the forward edge slopes outward as it goes down), flat top deck
+             (x=200 to x=880, the whole superstructure roof), nearly-vertical stern
+             (x=880 to x=905 with a small upper curve, then straight down to the
+             waterline), waterline at y=540. Bow tip at x=50 sits clear of the
+             left-margin deck-row labels (which end at x=50). Stern at x=905 sits
+             clear of the right side. Top at y=80 leaves room above for the funnel
+             stack (y=2-70). Same path is used as the ship-outline stroke below. -->
         <clipPath id="hullShape">
-          <path d="M 215 70 L 880 70 Q 910 75 925 105 Q 935 130 935 155 L 935 380 Q 935 470 880 500 Q 820 515 740 515 L 280 515 Q 200 515 130 500 Q 95 470 95 380 L 95 155 Q 95 130 110 105 Q 130 80 170 75 Q 195 71 215 70 Z"/>
+          <path d="M 50 540 Q 70 380 130 220 Q 165 130 200 80 L 880 80 Q 900 100 905 200 L 905 540 Z"/>
         </clipPath>
       </defs>
 
@@ -213,9 +215,11 @@
       </g>
 
       <!-- ── ship outline (silhouette stroke; matches the clipPath geometry exactly) ──
-           v.079: Real boat profile — top deck narrower than mid decks (Decks 5-8 are the
-           widest "barrel"), bilge curves at the bottom, raked bow, slightly swept stern. -->
-      <path class="ship-outline" d="M 215 70 L 880 70 Q 910 75 925 105 Q 935 130 935 155 L 935 380 Q 935 470 880 500 Q 820 515 740 515 L 280 515 Q 200 515 130 500 Q 95 470 95 380 L 95 155 Q 95 130 110 105 Q 130 80 170 75 Q 195 71 215 70 Z"/>
+           v.082: Sprite-shape cruise-liner side profile. Bow tip sits at the waterline
+           at x=50, top forward corner is at x=200 — that 150-unit horizontal offset is
+           what creates the unmistakable raked-bow silhouette. Stern is near-vertical
+           with a small flare at the top. Same path used for the clipPath above. -->
+      <path class="ship-outline" d="M 50 540 Q 70 380 130 220 Q 165 130 200 80 L 880 80 Q 900 100 905 200 L 905 540 Z"/>
 
       <!-- ── hull contrast: navy boot-stripe + red waterline accent ──
            Also clipped to the hull silhouette so the boot-stripe follows the bilge curve. -->
@@ -224,15 +228,17 @@
         <rect class="hull-waterline-red" x="40" y="500" width="920" height="3"/>
       </g>
 
-      <!-- ── funnel + mast (v.076: bigger, with a rim cap + accent band) ── -->
+      <!-- ── funnel + mast — v.082: extended to sit flush on top of the new boat
+           outline (Deck 11 top is at y=80), so the funnel reads as part of the ship
+           instead of a floating rectangle. -->
       <g class="funnel-group" aria-hidden="true">
-        <rect class="funnel-cap"      x="600" y="2"  width="64" height="6" rx="2"/>
-        <rect class="funnel-body"     x="608" y="8"  width="48" height="62" rx="4"/>
-        <rect class="funnel-band"     x="608" y="22" width="48" height="11"/>
-        <rect class="funnel-band-sm"  x="608" y="38" width="48" height="3"/>
+        <rect class="funnel-cap"      x="600" y="12" width="64" height="6" rx="2"/>
+        <rect class="funnel-body"     x="608" y="18" width="48" height="62" rx="4"/>
+        <rect class="funnel-band"     x="608" y="32" width="48" height="11"/>
+        <rect class="funnel-band-sm"  x="608" y="48" width="48" height="3"/>
       </g>
-      <line class="mast" x1="246" y1="20" x2="246" y2="70"/>
-      <circle cx="246" cy="22" r="2.2" fill="#e6c477"/>
+      <line class="mast" x1="246" y1="30" x2="246" y2="80"/>
+      <circle cx="246" cy="32" r="2.2" fill="#e6c477"/>
 
       <!-- ── deck dividers (thin horizontal rules between strips) ──
            v.079: lines extend full viewBox width and get clipped to the hull shape, so

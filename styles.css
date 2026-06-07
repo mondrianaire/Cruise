@@ -983,12 +983,15 @@ nav .links a:hover .sublabels,nav .links a.active .sublabels{color:var(--brass);
   opacity:.5;
 }
 
-/* Hull silhouette */
+/* Hull silhouette — v.082: stroke bumped to 2.6 and no-fill so the boat outline
+   reads as a real ship outline drawn over the deck content rather than another
+   pale beige rectangle on top of more pale beige. */
 .ship-outline{
-  fill:#fbf6e4;
+  fill:none;
   stroke:#1a3a4a;
-  stroke-width:1.8;
+  stroke-width:2.6;
   stroke-linejoin:round;
+  stroke-linecap:round;
 }
 
 /* Deck bands — alternating chart-paper stripes */
