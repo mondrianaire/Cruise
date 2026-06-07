@@ -1076,7 +1076,7 @@ nav .links a:hover .sublabels,nav .links a.active .sublabels{color:var(--brass);
   stroke-dasharray:3 2;
 }
 .cabin-you .pin-cap{
-  font:800 9.5px var(--d-mono);
+  font:800 11px var(--d-mono);
   fill:#1a3a4a;
   text-anchor:middle;
   dominant-baseline:middle;
@@ -2060,35 +2060,4 @@ body.view-floor .mobile-rotate-hint{ display:none !important; }
   font:600 .55rem/1 var(--d-mono);
   letter-spacing:.06em;
   text-transform:uppercase;
-  color:rgba(200,155,74,.70);
-  background:rgba(200,155,74,.10);
-  border:1px solid rgba(200,155,74,.20);
-  border-radius:3px;
-  vertical-align:2px;
-}
-@media(max-width:760px){
-  .br-ver{
-    margin-left:3px;
-    padding:1px 3px;
-    font-size:.48rem;
-    vertical-align:1px;
-  }
-}
-
-
-/* Tap-hint pill — real DOM element so it survives the night-owl ::before starfield */
-.dc-tap-hint{
-  display:block;
-  font:600 .72rem var(--d-mono);letter-spacing:.06em;
-  color:#1a3a4a;background:rgba(230,196,119,.6);
-  border-radius:5px;padding:6px 10px;margin:0 0 10px;
-  text-align:center;
-  position:relative;
-  z-index:2;
-}
-.dc-svg-wrap.night-owl .dc-tap-hint{
-  color:#aef0d0;
-  background:rgba(11,42,58,.55);
-  border:1px solid rgba(95,214,160,.35);
-  box-shadow:0 0 12px rgba(95,214,160,.18);
-}
+  color:rgba(200
