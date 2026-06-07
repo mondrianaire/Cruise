@@ -1387,6 +1387,11 @@ nav .links a:hover .sublabels,nav .links a.active .sublabels{color:var(--brass);
 .md-svc rect    { fill:rgba(239,178,40,.18); stroke:rgba(179,133,29,.7); }
 .md-svc .md-lbl, .md-svc .md-lbl-sm { fill:#5a3e08; }
 .md-svc .md-sub, .md-svc .md-sub-sm { fill:#7a5410; }
+/* v.077: shops cluster (Art Gallery, Atrium Shops + Photo). Slightly warmer
+   amber than .md-svc so the two categories differentiate at a glance. */
+.md-shop rect   { fill:rgba(200,155,74,.18); stroke:rgba(138,96,36,.7); }
+.md-shop .md-lbl, .md-shop .md-lbl-sm { fill:#5a3a08; }
+.md-shop .md-sub, .md-shop .md-sub-sm { fill:#7a4a14; }
 
 .md-gym rect    { fill:rgba(95,214,160,.20); stroke:rgba(50,140,100,.7); }
 .md-gym .md-lbl, .md-gym .md-lbl-sm { fill:#0e3d28; }

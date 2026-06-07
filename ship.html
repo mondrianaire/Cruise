@@ -339,7 +339,7 @@
       <!-- ── multi-deck venue zones (behind amenity glyphs) ── -->
       <g class="multi-deck">
         <g class="md-zone md-stage" data-deck="3" data-venue-name="World Stage" tabindex="0" role="button"><!-- hrs --><desc class="z-hours" data-247="0" data-late="0">Shows 8:00 PM &amp; 10:00 PM</desc><title>World Stage — 3-tier main theatre (orchestra Deck 2, balcony Deck 3, backstage Deck 4)</title><rect x="212" y="354" width="98" height="118" rx="3"/><text class="md-lbl" x="261" y="411">WORLD STAGE</text><text class="md-sub" x="261" y="424">enter Deck 3</text></g>
-        <g class="md-zone md-atrium" data-deck="1" data-venue-name="Atrium" tabindex="0" role="button"><!-- hrs --><desc class="z-hours" data-247="1" data-late="0">24h lobby · Front Office 24h · live music 5:00–10:30 PM</desc><title>Atrium — 3-deck-high lobby with the Waterford crystal seahorse · re-carpeted &amp; re-painted Dec 2025</title><rect x="515" y="394" width="105" height="118" rx="3"/><text class="md-lbl" x="567" y="491">ATRIUM</text><text class="md-sub" x="567" y="504">enter Deck 1</text></g>
+        <g class="md-zone md-atrium" data-deck="1" data-venue-name="Atrium" tabindex="0" role="button"><!-- hrs --><desc class="z-hours" data-247="1" data-late="0">24h lobby · Front Office 24h · live music 5:00–10:30 PM</desc><title>Atrium — 3-deck-high lobby with the Waterford crystal seahorse · re-carpeted &amp; re-painted Dec 2025</title><rect x="515" y="394" width="105" height="118" rx="3"/><text class="md-lbl" x="567" y="478">ATRIUM</text><text class="md-sub" x="567" y="491">3-deck lobby · enter Deck 1</text></g>
         <g class="md-zone md-pool" data-deck="9" data-venue-name="Lido Pool" tabindex="0" role="button"><!-- hrs --><desc class="z-hours" data-247="1" data-late="0">Pool deck 24h · service 6:00 AM–11:00 PM</desc><title>Lido Pool — retractable glass roof (Deck 10 above) + 4 hot tubs</title><rect x="448" y="114" width="86" height="78" rx="3"/><text class="md-lbl" x="491" y="172">LIDO POOL</text><text class="md-sub" x="491" y="184">enter Deck 9</text></g>
         <g class="md-zone md-pool" data-deck="9" data-venue-name="Sea View Pool" tabindex="0" role="button"><!-- hrs --><desc class="z-hours" data-247="1" data-late="0">Pool deck 24h · Sea View Bar to ~midnight</desc><title>Sea View Pool — adults-only aft pool + 2 hot tubs + bar</title><rect x="796" y="114" width="82" height="78" rx="3"/><text class="md-lbl" x="837" y="172">SEA VIEW</text><text class="md-sub" x="837" y="184">enter Deck 9</text></g>
         <g class="md-zone md-din" data-deck="2" data-venue-name="The Dining Room (lower)" tabindex="0" role="button"><title>The Dining Room — two levels (upper Deck 3, lower Deck 2)</title><rect x="790" y="394" width="100" height="78" rx="3"/><text class="md-lbl" x="840" y="451">DINING ROOM</text><text class="md-sub" x="840" y="464">enter Deck 2</text></g>
@@ -383,25 +383,43 @@
 
       <!-- ── DECK 11 · SPORTS / RETREAT ── y-mid 91 (sports court promoted to multi-deck zone above) -->
 
-      <!-- ── DECK 10 · OBSERVATION ── y-mid 131 -->
-      <g><title>Explorations Central &amp; Caf&eacute; &mdash; patisserie / specialty coffee bar, library and Online Centre (100 seats)</title>
-         <use class="glyph" href="#ic-din" x="320" y="131" width="14" height="14"/></g>
-      <g><title>The Loft &mdash; teens 13-17, video games, ping-pong, PlayStations</title>
-         <use class="glyph" href="#ic-kid" x="540" y="131" width="14" height="14"/></g>
-      <g><title>Club HAL &mdash; supervised kids' program, two rooms by age group (3-12)</title>
-         <use class="glyph" href="#ic-kid" x="570" y="131" width="14" height="14"/></g>
+      <!-- ── DECK 10 · OBSERVATION ── y-mid 131
+           v.077: Explorations Central and Kids & Teens promoted from naked glyphs to
+           md-zone containers; each named space gets its own labelled box. -->
+      <g class="md-zone md-obs" data-deck="10" data-venue-name="Explorations Central" tabindex="0" role="button">
+        <title>Explorations Central — café/patisserie + library + Online Centre (100 seats). Standalone container: three sub-spaces share a single Vista-class room.</title>
+        <rect x="310" y="114" width="98" height="36" rx="3"/>
+        <text class="md-lbl-sm" x="359" y="128">EXPLORATIONS</text>
+        <text class="md-sub-sm" x="359" y="140">café · library · web</text>
+      </g>
+      <g class="md-zone md-obs" data-deck="10" data-venue-name="Kids &amp; Teens" tabindex="0" role="button">
+        <title>Kids &amp; Teens — Club HAL (ages 3–12) + The Loft (ages 13–17), Deck 10 midship</title>
+        <rect x="528" y="114" width="80" height="36" rx="3"/>
+        <text class="md-lbl-sm" x="568" y="124">KIDS &amp; TEENS</text>
+        <g data-venue-name="Club HAL"><title>Club HAL — supervised kids' program, ages 3–12, two age-banded rooms</title>
+          <use class="glyph" href="#ic-kid" x="544" y="138" width="11" height="11"/></g>
+        <g data-venue-name="The Loft"><title>The Loft — teens 13–17, video games, ping-pong, PlayStations</title>
+          <use class="glyph" href="#ic-kid" x="582" y="138" width="11" height="11"/></g>
+      </g>
 
-      <!-- ── DECK 9 · LIDO ── y-mid 171 -->
-      <g><title>Canaletto &mdash; relaxed Italian specialty restaurant in the evenings (Lido-section reflag), 72 seats, $29.50 pp. Re-carpeted &amp; re-upholstered Dec 2025.</title>
-         <use class="glyph" href="#ic-din" x="545" y="171" width="14" height="14"/></g>
-      <g><title>Dive-In &mdash; poolside burgers, hot dogs, fries, sandwiches, made-to-order</title>
-         <use class="glyph" href="#ic-din" x="580" y="171" width="14" height="14"/></g>
-      <g><title>New York Pizza &mdash; hand-tossed pizza by the slice</title>
-         <use class="glyph" href="#ic-din" x="615" y="171" width="14" height="14"/></g>
-      <g><title>Lido Bar &mdash; poolside cocktail bar (Signature beverage package applies)</title>
-         <use class="glyph" href="#ic-bar" x="650" y="171" width="14" height="14"/></g>
-      <!-- ── DECK 8 · NAVIGATION ── y-mid 211 -->
-      <g><title>Bridge &mdash; navigation, forward (no public access)</title>
+      <!-- ── DECK 9 · LIDO ── y-mid 171
+           v.077: poolside grills + Lido Bar moved INSIDE the Lido Pool md-zone (they ARE
+           part of the pool deck). Canaletto stays inside the Lido Market zone — defendable:
+           Canaletto is literally a partition of the Lido Market space (evening reflag of
+           the Italian-themed buffet station). -->
+      <g data-deck="9" data-venue-name="Canaletto" data-parent="Lido Market"><title>Canaletto — relaxed Italian specialty restaurant in the evenings (Lido-section reflag), 72 seats, $29.50 pp. Re-carpeted &amp; re-upholstered Dec 2025. Defendable reason for sitting inside Lido Market: Canaletto IS a partition of the buffet space, reflagged for evening service.</title>
+         <use class="glyph" href="#ic-din" x="548" y="174" width="11" height="11"/></g>
+      <g data-deck="9" data-venue-name="Dive-In" data-parent="Lido Pool"><title>Dive-In — poolside burgers, hot dogs, fries, sandwiches, made-to-order. Sits inside Lido Pool zone: grab-and-go station along the pool edge.</title>
+         <use class="glyph" href="#ic-din" x="464" y="174" width="11" height="11"/></g>
+      <g data-deck="9" data-venue-name="New York Pizza" data-parent="Lido Pool"><title>New York Pizza — hand-tossed pizza by the slice, poolside. Sits inside Lido Pool zone: walk-up window on the Lido deck.</title>
+         <use class="glyph" href="#ic-din" x="486" y="174" width="11" height="11"/></g>
+      <g data-deck="9" data-venue-name="Lido Bar" data-parent="Lido Pool"><title>Lido Bar — poolside cocktail bar (Signature beverage package applies). Sits inside Lido Pool zone: bar at the Lido pool edge.</title>
+         <use class="glyph" href="#ic-bar" x="508" y="174" width="11" height="11"/></g>
+
+      <!-- ── DECK 8 · NAVIGATION ── y-mid 211
+           Bridge is a standalone glyph. Defendable: ship-operations space, single function
+           (navigation), no public access, no sub-venues to enumerate. -->
+      <g data-deck="8" data-venue-name="Bridge"><title>Bridge — navigation, forward, no public access. Standalone glyph: single ship-operations space, no sub-venues.</title>
          <use class="glyph" href="#ic-svc" x="185" y="211" width="13" height="13"/></g>
 
       <!-- ── DECK 7 · ROTTERDAM ── y-mid 251 -->
@@ -422,29 +440,65 @@
         <text class="pin-cap" y="0">5165</text>
       </g>
 
-      <!-- ── DECK 3 · PROMENADE ── y-mid 411 -->
-      <g><title>Tasman Room cinema &mdash; 38 seats, intimate film screenings</title>
-         <use class="glyph" href="#ic-show" x="430" y="411" width="14" height="14"/></g>
-      <g><title>Marabella Luxury Shop &middot; Atrium Shops &middot; Photo Gallery (redesigned counter &amp; retail area, Dec 2025)</title>
-         <use class="glyph" href="#ic-shop" x="480" y="411" width="14" height="14"/></g>
-      <g><title>Half Moon &middot; Hudson &middot; Stuyvesant meeting rooms + Digital Workshop / Microsoft Studio</title>
-         <use class="glyph" href="#ic-svc" x="540" y="411" width="14" height="14"/></g>
-      <g><title>Ocean Bar &mdash; live music, dance floor, 147 seats</title>
-         <use class="glyph" href="#ic-bar" x="600" y="411" width="14" height="14"/></g>
-      <g><title>Promenade Deck &mdash; full teak wraparound outdoor walking deck, ~4 laps per mile (port-side and aft) &middot; open 24h</title>
+      <!-- ── DECK 3 · PROMENADE ── y-mid 411
+           v.077: shop block (Marabella + Atrium Shops + Photo Gallery) and meeting-room
+           block (Half Moon + Hudson + Stuyvesant + Digital Workshop) promoted to
+           md-zone containers with sub-glyphs. Tasman Cinema becomes its own small
+           container. Ocean Bar and Promenade Deck remain standalone with reasons. -->
+      <g class="md-zone md-show" data-deck="3" data-venue-name="Tasman Cinema" tabindex="0" role="button">
+        <title>Tasman Room cinema — 38 seats, intimate film screenings. Single-room container.</title>
+        <rect x="418" y="400" width="40" height="22" rx="3"/>
+        <text class="md-lbl-sm" x="438" y="410">TASMAN</text>
+        <text class="md-sub-sm" x="438" y="419">cinema · 38 seats</text>
+      </g>
+      <g class="md-zone md-shop" data-deck="3" data-venue-name="Atrium Shops &amp; Photo" tabindex="0" role="button">
+        <title>Atrium Shops cluster — Marabella Luxury, the general Atrium Shops, and the Photo Gallery (redesigned counter &amp; retail area, Dec 2025). Three retail spaces sharing one Deck 3 promenade corner.</title>
+        <rect x="462" y="400" width="68" height="22" rx="3"/>
+        <text class="md-lbl-sm" x="496" y="409">SHOPS · PHOTO</text>
+        <g data-venue-name="Marabella Luxury Shop"><title>Marabella Luxury Shop — fine jewellery, watches, accessories</title>
+          <use class="glyph" href="#ic-shop" x="470" y="414" width="9" height="9"/></g>
+        <g data-venue-name="Atrium Shops"><title>Atrium Shops — duty-free, logo wear, sundries</title>
+          <use class="glyph" href="#ic-shop" x="491" y="414" width="9" height="9"/></g>
+        <g data-venue-name="Photo Gallery"><title>Photo Gallery — onboard portraits &amp; daily photo retail (redesigned Dec 2025)</title>
+          <use class="glyph" href="#ic-svc" x="512" y="414" width="9" height="9"/></g>
+      </g>
+      <g class="md-zone md-svc" data-deck="3" data-venue-name="Meeting Rooms" tabindex="0" role="button">
+        <title>Meeting Rooms — Half Moon, Hudson, Stuyvesant (three flexible rooms) plus the Digital Workshop / Microsoft Studio for hands-on classes</title>
+        <rect x="534" y="400" width="60" height="22" rx="3"/>
+        <text class="md-lbl-sm" x="564" y="409">MEETING RMS</text>
+        <g data-venue-name="Meeting rooms"><title>Half Moon · Hudson · Stuyvesant — three bookable meeting rooms, flexible seating</title>
+          <use class="glyph" href="#ic-svc" x="546" y="414" width="9" height="9"/></g>
+        <g data-venue-name="Digital Workshop"><title>Digital Workshop / Microsoft Studio — guided classes on photography, video, devices</title>
+          <use class="glyph" href="#ic-shop" x="572" y="414" width="9" height="9"/></g>
+      </g>
+      <g data-deck="3" data-venue-name="Ocean Bar"><title>Ocean Bar — live music, dance floor, 147 seats. Standalone glyph: single lounge venue, no sub-spaces.</title>
+         <use class="glyph" href="#ic-bar" x="610" y="411" width="14" height="14"/></g>
+      <g data-deck="3" data-venue-name="Promenade Deck"><title>Promenade Deck — full teak wraparound outdoor walking deck, ~4 laps per mile (port-side and aft), open 24h. Standalone glyph: the open-air deck IS the venue; no enclosed sub-spaces to enumerate.</title>
          <use class="glyph" href="#ic-sport" x="660" y="411" width="14" height="14"/></g>
-      <!-- ── DECK 2 · LOWER PROMENADE ── y-mid 451 -->
-      <g hidden><title>x</title>
-         </g>
-      <g><title>Pinnacle Bar &mdash; premium champagne &amp; wine bar, 28 seats</title>
+      <!-- ── DECK 2 · LOWER PROMENADE ── y-mid 451
+           v.077: Art Gallery promoted to a container (exhibitions + auctions, both
+           function in the same room on different days). Pinnacle Bar remains standalone
+           with reason. -->
+      <g data-deck="2" data-venue-name="Pinnacle Bar"><title>Pinnacle Bar — premium champagne &amp; wine bar, 28 seats. Standalone glyph: single intimate bar, no sub-spaces.</title>
          <use class="glyph" href="#ic-bar" x="505" y="451" width="14" height="14"/></g>
-      <g><title>Art Gallery &mdash; exhibitions and on-board art auctions</title>
-         <use class="glyph" href="#ic-shop" x="685" y="451" width="14" height="14"/></g>
-      <!-- ── DECK 1 · MAIN ── y-mid 491 -->
-      <g><title>Front Office / Guest Services Desk &mdash; reception, billing, lost &amp; found</title>
-         <use class="glyph" href="#ic-svc" x="575" y="491" width="14" height="14"/></g>
-      <g><title>Shore Excursions Desk &mdash; book, modify or cancel tours; pick up tickets here</title>
-         <use class="glyph" href="#ic-svc" x="610" y="491" width="14" height="14"/></g>
+      <g class="md-zone md-shop" data-deck="2" data-venue-name="Art Gallery" tabindex="0" role="button">
+        <title>Art Gallery — exhibitions during the day, on-board art auctions on auction days. One room, two functions on different schedules.</title>
+        <rect x="670" y="437" width="50" height="30" rx="3"/>
+        <text class="md-lbl-sm" x="695" y="447">ART GALLERY</text>
+        <g data-venue-name="Exhibitions"><title>Exhibitions — rotating curated displays</title>
+          <use class="glyph" href="#ic-shop" x="678" y="455" width="11" height="11"/></g>
+        <g data-venue-name="Art auctions"><title>Art auctions — scheduled auction days, on-board art programme</title>
+          <use class="glyph" href="#ic-cas" x="700" y="455" width="11" height="11"/></g>
+      </g>
+      <!-- ── DECK 1 · MAIN ── y-mid 491
+           v.077: Front Office and Shore Excursions Desk are inside the Atrium zone
+           (which IS the container). Glyphs repositioned to y=506 (below the Atrium
+           label) and shrunk to 8×8 so they don't collide with the ATRIUM /
+           "enter Deck 1" label stack. -->
+      <g data-deck="1" data-venue-name="Front Office" data-parent="Atrium"><title>Front Office / Guest Services Desk — reception, billing, lost &amp; found, 24h-staffed. Sub-glyph of Atrium: service desk inside the Deck 1 atrium space.</title>
+         <use class="glyph" href="#ic-svc" x="545" y="506" width="8" height="8"/></g>
+      <g data-deck="1" data-venue-name="Shore Excursions Desk" data-parent="Atrium"><title>Shore Excursions Desk — book, modify or cancel tours; pick up tickets here. Sub-glyph of Atrium: service desk inside the Deck 1 atrium space.</title>
+         <use class="glyph" href="#ic-svc" x="582" y="506" width="8" height="8"/></g>
 
       <!-- ── fore / aft axis labels ── -->
       <text class="axis-lbl" x="105" y="566">&larr; FORE</text>
@@ -962,6 +1016,16 @@
     });
     if(viewElev){ viewElev.classList.toggle('active', v==='elev'); viewElev.hidden = v!=='elev'; }
     if(viewFloor){ viewFloor.classList.toggle('active', v==='floor'); viewFloor.hidden = v!=='floor'; }
+    /* v.077: Night-owl mode is a cross-section-only concept (highlights 24h zones on
+       the side elevation). Hide the toggle on the floor-plan view and auto-disable
+       night-owl if the user switches away while it's on. */
+    var noBtn = document.getElementById('shipNightOwl');
+    var wrap  = document.querySelector('.dc-svg-wrap');
+    if(noBtn){ noBtn.hidden = (v !== 'elev'); }
+    if(v !== 'elev'){
+      if(noBtn) noBtn.setAttribute('aria-pressed', 'false');
+      if(wrap)  wrap.classList.remove('night-owl');
+    }
   }
   tabs.forEach(function(b){ b.addEventListener('click', function(){ setTab(b.dataset.view); }); });
 
