@@ -217,10 +217,15 @@
         <rect class="deck-band odd" x="40" y="306" width="920" height="30"/>  <!-- 1  -->
       </g>
 
-      <!-- ── ship outline (silhouette stroke; matches the clipPath geometry exactly) ──
-           v.083: Two-tier silhouette — narrow superstructure on top, wide hull barrel
-           below, with explicit shoulder step at y=185. -->
-      <path class="ship-outline" d="M 50 357 Q 80 240.6 130 147.6 L 220 52.5 L 855 52.5 L 905 147.6 Q 920 240.6 905 357 Z"/>
+      <!-- ── ship outline — v.086: ACTUAL VECTOR SILHOUETTE traced from the HAL deck-plan
+           PDF (hal-uu-deckplan-11f93a91.pdf). 98 anchor points extracted via pdfminer
+           and scaled to fit our viewBox at x=50-950, y=10-380. Includes the bow rake,
+           hull deck steps, two full funnel stacks, mast/antenna spire and aft bridge
+           wing — the actual Vista-class side profile, not a hand-drawn approximation.
+           The path's natural aspect is 5:1 (276.5 wide × 55 tall in PDF points); fit
+           to our 1000×387 viewBox stretches it ~2× vertically, which makes the funnels
+           taller than reality but preserves every silhouette characteristic. -->
+      <path class="ship-outline" d="M948.9 220.5 L950.0 224.0 L884.5 323.1 L887.1 329.6 L904.0 327.9 L907.3 356.8 L870.2 380.0 L103.5 380.0 L55.0 326.6 L59.6 289.8 L53.0 232.3 L53.0 214.2 L50.0 214.2 L54.3 209.0 L54.3 203.6 L60.3 203.6 L60.3 196.9 L55.0 196.9 L59.5 191.3 L59.5 186.0 L65.6 186.0 L65.6 179.4 L62.2 179.4 L66.6 174.1 L66.6 168.6 L73.7 168.6 L73.7 162.0 L70.7 162.0 L75.1 156.3 L75.1 151.0 L79.3 151.0 L79.3 140.8 L80.9 140.8 L76.5 135.4 L76.5 132.5 L167.9 132.5 L184.0 114.1 L201.4 114.1 L201.4 96.7 L230.8 96.7 L230.8 89.2 L294.2 89.2 L294.2 10.0 L321.8 10.0 L321.8 89.2 L340.3 89.2 L340.3 10.0 L367.8 10.0 L367.8 89.2 L376.7 89.2 L376.7 93.8 L376.7 102.2 L411.6 102.2 L411.6 95.7 L445.1 95.7 L445.1 79.2 L456.3 79.2 L456.3 95.7 L487.5 95.7 L487.5 121.0 L509.8 121.0 L509.8 111.5 L527.7 111.5 L527.7 108.2 L545.6 108.2 L545.6 104.7 L581.3 104.7 L581.3 108.0 L599.1 108.0 L599.1 111.2 L616.7 111.2 L616.7 121.0 L621.4 121.0 L621.4 84.0 L696.4 84.0 L696.4 68.5 L707.4 68.5 L707.4 46.4 L713.1 46.4 L713.1 41.9 L717.6 41.9 L718.6 46.4 L718.6 67.3 L729.5 67.3 L736.1 84.0 L742.4 84.0 L744.4 88.6 L783.6 88.6 L791.9 101.8 L798.5 101.8 L806.3 114.3 L804.8 116.7 L804.8 131.5 L819.1 131.5 L833.8 135.8 L830.0 156.3 L875.7 220.5 L948.9 220.5 Z"/>
 
       <!-- ── hull contrast: navy boot-stripe + red waterline accent ──
            Also clipped to the hull silhouette so the boot-stripe follows the bilge curve. -->
@@ -229,17 +234,17 @@
         <rect class="hull-waterline-red" x="40" y="327" width="920" height="2.2"/>
       </g>
 
-      <!-- ── funnel + mast — v.082: extended to sit flush on top of the new boat
-           outline (Deck 11 top is at y=80), so the funnel reads as part of the ship
-           instead of a floating rectangle. -->
-      <g class="funnel-group" aria-hidden="true">
+      <!-- ── funnel + mast — v.086: HIDDEN. The new vector-traced silhouette
+           includes both funnels and the mast/antenna as part of the outline path,
+           so the separate rects would draw over the silhouette and look duplicated. -->
+      <g class="funnel-group" aria-hidden="true" style="display:none">
         <rect class="funnel-cap"      x="600" y="9" width="64" height="4.5" rx="2"/>
         <rect class="funnel-body"     x="608" y="13.5" width="48" height="46.5" rx="4"/>
         <rect class="funnel-band"     x="608" y="24" width="48" height="8.2"/>
         <rect class="funnel-band-sm"  x="608" y="36" width="48" height="2.2"/>
       </g>
-      <line class="mast" x1="246" y1="22.5" x2="246" y2="60"/>
-      <circle cx="246" cy="24" r="2.2" fill="#e6c477"/>
+      <line class="mast" x1="246" y1="22.5" x2="246" y2="60" style="display:none"/>
+      <circle cx="246" cy="24" r="2.2" fill="#e6c477" style="display:none"/>
 
       <!-- ── deck dividers (thin horizontal rules between strips) ──
            v.079: lines extend full viewBox width and get clipped to the hull shape, so
