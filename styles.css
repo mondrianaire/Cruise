@@ -1345,6 +1345,14 @@ nav .links a:hover .sublabels,nav .links a.active .sublabels{color:var(--brass);
 .md-retreat rect{ fill:rgba(95,214,160,.22); stroke:rgba(50,140,100,.7); }
 .md-retreat .md-lbl, .md-retreat .md-lbl-sm { fill:#0e3d28; }
 .md-retreat .md-sub, .md-retreat .md-sub-sm { fill:#1a5538; }
+/* Renovation / cabana availability unconfirmed — match the tentative MAYBE coral */
+.md-zone.md-tent rect{
+  stroke:rgba(224,122,90,.85);
+  stroke-width:1.4;
+  stroke-dasharray:5 3;
+}
+.md-zone.md-tent .md-lbl, .md-zone.md-tent .md-lbl-sm{ fill:#7a2e10; }
+.md-zone.md-tent .md-sub, .md-zone.md-tent .md-sub-sm{ fill:#a3431e; }
 
 .md-spa rect    { fill:rgba(95,214,160,.20); stroke:rgba(50,140,100,.7); }
 .md-spa .md-lbl, .md-spa .md-lbl-sm { fill:#0e3d28; }
