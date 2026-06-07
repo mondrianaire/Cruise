@@ -1519,10 +1519,21 @@ nav .links a:hover .sublabels,nav .links a.active .sublabels{color:var(--brass);
   gap:22px;
   align-items:start;
 }
+/* v.080: centre the deck-plan column so the ship outline isn't hugging the
+   left edge of its container. The image itself is also `margin:0 auto`'d so
+   the bounding-box hotspots line up consistently with the ship outline below. */
 .fp-plan-col{
   position:sticky; top:14px;
   align-self:start;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
 }
+.fp-plan-col .fp-img-stage{ margin:0 auto; }
+.fp-plan-col .fp-deck-img{ margin:0 auto; }
+/* v.080: hot-zone overlays clip to the image bounds so a misjudged percentage
+   can't paint past the visual ship outline. */
+.fp-img-stage{ overflow:hidden !important; }
 .fp-img-stage{
   position:relative;
   width:100%;
