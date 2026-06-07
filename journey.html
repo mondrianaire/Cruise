@@ -57,51 +57,106 @@
   </header>
 <section id="itinerary" aria-labelledby="itinerary-h">
   <div class="sec-head"><h2 id="itinerary-h">Day-by-Day Itinerary</h2><span class="tag">7 Nights</span></div>
-  <p class="lead">Two relaxed sea days open the voyage as the Zuiderdam glides down the St.&nbsp;Lawrence, followed by four full days in port and a morning arrival in Boston.</p>
+  <p class="lead">The wider trip starts in Montreal on Jun 11 and ends with two nights in Boston after the cruise. The 7-night sailing itself begins in Qu&eacute;bec with two sea days down the St.&nbsp;Lawrence, then four port days through Atlantic Canada and Maine before a morning arrival in Boston.</p>
 
   <div class="routemap">
-    <svg viewBox="0 0 720 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Map of the cruise route, sailing in order from Quebec City down the St. Lawrence to Charlottetown, Sydney, Halifax, Portland, and Boston.">
+    <svg viewBox="0 0 800 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Map of the wider June 2026 trip, from Montreal pre-cruise through the cruise route Quebec City → Charlottetown → Sydney → Halifax → Portland → Boston, ending with two nights in Boston post-cruise.">
       <defs>
         <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0" stop-color="#efe6c8"/><stop offset="1" stop-color="#e3d6ad"/>
         </linearGradient>
       </defs>
-      <rect width="720" height="300" fill="url(#sea)"/>
-      <!-- abstract landmasses -->
-      <path d="M0,0 H720 V34 Q560,58 452,104 Q360,142 250,138 Q132,134 0,196 Z" fill="#dccfa3" stroke="#b89a5e" stroke-width="1.2"/>
-      <path d="M720,300 V210 Q610,232 470,214 Q520,266 600,300 Z" fill="#dccfa3" stroke="#b89a5e" stroke-width="1.2"/>
-      <path d="M0,300 V268 Q70,250 120,300 Z" fill="#dccfa3" stroke="#b89a5e" stroke-width="1.2"/>
-      <!-- sailing route -->
-      <path d="M96,60 Q224,74 366,140 Q452,160 520,84 Q528,152 476,196 Q382,250 262,236 Q190,228 138,262"
+      <rect width="800" height="320" fill="url(#sea)"/>
+      <!-- Top landmass (Quebec + Canadian interior) — extended west to cover Montreal. -->
+      <path d="M0,0 H800 V40 Q620,66 510,118 Q400,158 280,154 Q140,150 0,212 Z" fill="#dccfa3" stroke="#b89a5e" stroke-width="1.2"/>
+      <!-- Nova Scotia bottom-right -->
+      <path d="M800,320 V230 Q680,252 510,236 Q570,288 670,320 Z" fill="#dccfa3" stroke="#b89a5e" stroke-width="1.2"/>
+      <!-- Cape Cod / Boston bottom-left -->
+      <path d="M0,320 V288 Q80,268 140,320 Z" fill="#dccfa3" stroke="#b89a5e" stroke-width="1.2"/>
+
+      <!-- Drive route Montreal → Quebec City (brown, land-based dashes) -->
+      <path d="M52,90 Q90,82 138,70" fill="none" stroke="#8a6024" stroke-width="2.4" stroke-dasharray="3 4" stroke-linecap="round"/>
+      <text x="92" y="62" font-family="Space Mono,monospace" font-size="10" fill="#5a3e0a" text-anchor="middle">drive · Jun 12</text>
+
+      <!-- Sailing route -->
+      <path d="M138,70 Q256,84 376,148 Q462,168 530,92 Q538,160 486,204 Q392,258 272,244 Q200,236 148,272"
         fill="none" stroke="#d8392b" stroke-width="2.8" stroke-dasharray="7 6" stroke-linecap="round"/>
-      <!-- sea-day marker -->
-      <text x="232" y="86" font-family="Space Mono,monospace" font-size="11" fill="#163a4a" text-anchor="middle">Days 2&ndash;3 &bull; two sea days</text>
-      <!-- port pins -->
+
+      <!-- Sea-day marker -->
+      <text x="252" y="100" font-family="Space Mono,monospace" font-size="11" fill="#163a4a" text-anchor="middle">Days 2&ndash;3 &bull; two sea days</text>
+
+      <!-- Post-cruise stay indicator near Boston -->
+      <rect x="42" y="284" width="160" height="30" rx="5" fill="#0b2a3a" fill-opacity=".88" stroke="#c89b4a" stroke-width="1.2"/>
+      <text x="122" y="298" font-family="Space Mono,monospace" font-size="10" font-weight="700" fill="#e6c477" text-anchor="middle">Boston Harbor Hotel</text>
+      <text x="122" y="310" font-family="Space Mono,monospace" font-size="9" fill="#f1e7cf" text-anchor="middle">Jun 20–21 · fly home Jun 21</text>
+
+      <!-- Pins -->
       <g font-family="Space Mono,monospace" font-weight="700" font-size="14" fill="#163a4a">
-        <circle cx="96" cy="60" r="8" fill="#0b2a3a" stroke="#c89b4a" stroke-width="2.4"/>
-        <text x="96" y="43" text-anchor="middle">Quebec City</text>
-        <text x="96" y="84" text-anchor="middle" font-size="11" font-weight="400" fill="#163a4a">Embark &bull; Jun 13</text>
-        <circle cx="366" cy="140" r="8" fill="#c89b4a" stroke="#0b2a3a" stroke-width="2.2"/>
-        <text x="366" y="123" text-anchor="middle">Charlottetown</text>
-        <text x="366" y="163" text-anchor="middle" font-size="11" font-weight="400" fill="#163a4a">Jun 16</text>
-        <circle cx="520" cy="84" r="8" fill="#c89b4a" stroke="#0b2a3a" stroke-width="2.2"/>
-        <text x="520" y="67" text-anchor="middle">Sydney</text>
-        <text x="520" y="108" text-anchor="middle" font-size="11" font-weight="400" fill="#163a4a">Jun 17</text>
-        <circle cx="476" cy="196" r="8" fill="#c89b4a" stroke="#0b2a3a" stroke-width="2.2"/>
-        <text x="498" y="200" text-anchor="start">Halifax</text>
-        <text x="498" y="215" text-anchor="start" font-size="11" font-weight="400" fill="#163a4a">Jun 18</text>
-        <circle cx="262" cy="236" r="8" fill="#c89b4a" stroke="#0b2a3a" stroke-width="2.2"/>
-        <text x="262" y="219" text-anchor="middle">Portland</text>
-        <text x="262" y="259" text-anchor="middle" font-size="11" font-weight="400" fill="#163a4a">Jun 19</text>
-        <circle cx="138" cy="262" r="8" fill="#0b2a3a" stroke="#c89b4a" stroke-width="2.4"/>
-        <text x="138" y="245" text-anchor="middle">Boston</text>
-        <text x="138" y="285" text-anchor="middle" font-size="11" font-weight="400" fill="#163a4a">Disembark &bull; Jun 20</text>
+        <!-- Montreal — pre-cruise (sage green to differentiate from cruise ports) -->
+        <circle cx="52" cy="90" r="7" fill="#5a8b6a" stroke="#0b2a3a" stroke-width="2"/>
+        <text x="52" y="76" text-anchor="middle">Montreal</text>
+        <text x="52" y="110" text-anchor="middle" font-size="10" font-weight="400" fill="#163a4a">Jun 11 &bull; Land</text>
+
+        <!-- Quebec City — embark (dark pin) -->
+        <circle cx="138" cy="70" r="8" fill="#0b2a3a" stroke="#c89b4a" stroke-width="2.4"/>
+        <text x="138" y="54" text-anchor="middle">Quebec City</text>
+        <text x="138" y="92" text-anchor="middle" font-size="10" font-weight="400" fill="#163a4a">Embark &bull; Jun 13</text>
+
+        <!-- Charlottetown -->
+        <circle cx="376" cy="148" r="8" fill="#c89b4a" stroke="#0b2a3a" stroke-width="2.2"/>
+        <text x="376" y="132" text-anchor="middle">Charlottetown</text>
+        <text x="376" y="170" text-anchor="middle" font-size="10" font-weight="400" fill="#163a4a">Jun 16</text>
+
+        <!-- Sydney -->
+        <circle cx="530" cy="92" r="8" fill="#c89b4a" stroke="#0b2a3a" stroke-width="2.2"/>
+        <text x="530" y="76" text-anchor="middle">Sydney</text>
+        <text x="530" y="115" text-anchor="middle" font-size="10" font-weight="400" fill="#163a4a">Jun 17</text>
+
+        <!-- Halifax -->
+        <circle cx="486" cy="204" r="8" fill="#c89b4a" stroke="#0b2a3a" stroke-width="2.2"/>
+        <text x="508" y="208" text-anchor="start">Halifax</text>
+        <text x="508" y="222" text-anchor="start" font-size="10" font-weight="400" fill="#163a4a">Jun 18</text>
+
+        <!-- Portland -->
+        <circle cx="272" cy="244" r="8" fill="#c89b4a" stroke="#0b2a3a" stroke-width="2.2"/>
+        <text x="272" y="228" text-anchor="middle">Portland</text>
+        <text x="272" y="266" text-anchor="middle" font-size="10" font-weight="400" fill="#163a4a">Jun 19</text>
+
+        <!-- Boston — disembark (dark pin) -->
+        <circle cx="148" cy="272" r="8" fill="#0b2a3a" stroke="#c89b4a" stroke-width="2.4"/>
+        <text x="148" y="256" text-anchor="middle">Boston</text>
+        <text x="148" y="284" text-anchor="middle" font-size="10" font-weight="400" fill="#163a4a">Disembark &bull; Jun 20</text>
+      </g>
+
+      <!-- Legend -->
+      <g font-family="Space Mono,monospace" font-size="9" fill="#163a4a" transform="translate(640,270)">
+        <rect x="-6" y="-12" width="160" height="44" rx="4" fill="#efe6c8" stroke="#b89a5e" stroke-width=".8"/>
+        <line x1="0" y1="-2" x2="22" y2="-2" stroke="#8a6024" stroke-width="2.4" stroke-dasharray="3 4" stroke-linecap="round"/>
+        <text x="28" y="1">drive route</text>
+        <line x1="0" y1="12" x2="22" y2="12" stroke="#d8392b" stroke-width="2.6" stroke-dasharray="6 5" stroke-linecap="round"/>
+        <text x="28" y="15">cruise route</text>
+        <circle cx="100" cy="-2" r="4" fill="#5a8b6a" stroke="#0b2a3a" stroke-width="1.4"/>
+        <text x="108" y="1">pre / post</text>
+        <circle cx="100" cy="12" r="4" fill="#c89b4a" stroke="#0b2a3a" stroke-width="1.4"/>
+        <text x="108" y="15">port of call</text>
       </g>
     </svg>
-    <div class="cap">The voyage descends the St.&nbsp;Lawrence, rounds Atlantic Canada through Prince&nbsp;Edward&nbsp;Island and Nova&nbsp;Scotia, then turns south down the New England coast. Dark pins mark embarkation and disembarkation; brass pins are ports of call.</div>
+    <div class="cap">Dark pins mark embarkation (Qu&eacute;bec) and disembarkation (Boston). Brass pins are ports of call. The sage pin and the brown dashed line show the pre-cruise leg from Montreal, and the navy strip at the bottom-left marks the two-night post-cruise stay at the Boston Harbor Hotel before flying home Jun 21.</div>
   </div>
 
   <div class="timeline">
+    <div class="stop pre">
+      <div class="day">Pre &bull; Thursday, June 11</div>
+      <h3>Arrive Montreal</h3>
+      <div class="when">Group converges at YUL &bull; Humaniti Hotel</div>
+      <div class="note">Becca &amp; Sandra land at YUL late morning and pick up the rental. Jett, Laura &amp; Karen land in the evening. Check in at the Humaniti (Autograph Collection) and dinner in Old Montreal.</div>
+    </div>
+    <div class="stop pre">
+      <div class="day">Pre &bull; Friday, June 12</div>
+      <h3>Drive Montreal &rarr; Qu&eacute;bec City</h3>
+      <div class="when">~145 km via Autoroute 20 &bull; Les Lofts St-Pierre</div>
+      <div class="note">Scenic drive day with stops at Trois-Rivi&egrave;res and Parc des Chutes-de-la-Chaudi&egrave;re. Check in at Les Lofts St-Pierre in Old Qu&eacute;bec; return the rental at YQB by evening.</div>
+    </div>
     <div class="stop">
       <div class="day">Day 1 &bull; Saturday, June 13</div>
       <h3>Quebec City, Quebec &mdash; Embarkation</h3>
@@ -147,8 +202,14 @@
     <div class="stop">
       <div class="day">Day 8 &bull; Saturday, June 20</div>
       <h3>Boston, Massachusetts &mdash; Disembarkation</h3>
-      <div class="when">Arrives 7:00 AM</div>
-      <div class="note">Voyage ends. Disembark in the morning; a city tour with airport/hotel transfer is offered.</div>
+      <div class="when">Arrives 7:00 AM &bull; Boston Harbor Hotel check-in 3 PM</div>
+      <div class="note">Voyage ends. Disembark in the morning, then explore Faneuil Hall / Freedom Trail before checking in to the Boston Harbor Hotel for the post-cruise night (a birthday night for Jett).</div>
+    </div>
+    <div class="stop post">
+      <div class="day">Post &bull; Sunday, June 21</div>
+      <h3>Fly home</h3>
+      <div class="when">Boston Harbor Hotel check-out 12 PM &bull; AA 3043 BOS&rarr;PHL 12:32 PM</div>
+      <div class="note">Hotel check-out by 12, then Silver Line or Uber to BOS for the 12:32 PM flight. Jett &amp; Laura connect through PHL on AA 5518 (3:20 PM) to GSO.</div>
     </div>
   </div>
 </section>

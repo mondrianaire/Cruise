@@ -2483,3 +2483,12 @@ body.view-floor .ship-no-toggle{ display:none !important; }
 @media (min-width:1101px){
   .rotate-overlay{ display:none !important; }
 }
+
+
+/* v.114: pre-cruise / post-cruise timeline stops on journey page.
+   Sage-green dot for pre-cruise (matches Montreal pin colour on the map),
+   soft brass for the post-cruise hotel night. */
+.stop.pre::before{ background:#5a8b6a; border-color:#5a8b6a; }
+.stop.post::before{ background:#c89b4a; border-color:#c89b4a; }
+.stop.pre .day,
+.stop.post .day{ color:#8aa6a2; }

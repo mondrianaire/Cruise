@@ -1,0 +1,23 @@
+v.114: Journey map now covers the wider trip (Montreal + Boston stay)
+
+Map redesign:
+- viewBox extended to 800x320 and the top landmass widened so there is
+  room for Montreal on the left without crowding Quebec City.
+- New sage-green Montreal pin (Jun 11 Land) with a brown dashed drive
+  arrow to Quebec (Jun 12 drive).
+- Post-cruise Boston Harbor Hotel strip at bottom-left noting "Jun 20-21
+  fly home Jun 21" - calls out the two-night stay that was missing.
+- Quebec embarkation pin shifted slightly right to sit at the end of the
+  drive arrow.
+- New legend in the bottom-right corner: drive route, cruise route, pre
+  / post pin, port-of-call pin.
+
+Lead text updated to mention the wider trip starts in Montreal and ends
+with two Boston nights, not just the 7-night cruise.
+
+Timeline additions:
+- Pre-cruise Thursday Jun 11 (arrive Montreal, Humaniti Hotel) and
+  Friday Jun 12 (drive to Quebec City) stops before Day 1.
+- Post-cruise Sunday Jun 21 (fly home) stop after Day 8.
+- Pre-cruise dot is sage green to match the Montreal map pin; post-
+  cruise dot is brass.
