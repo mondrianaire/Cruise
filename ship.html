@@ -53,7 +53,12 @@
     <h1>The Ship &amp; Your Package</h1>
     <p class="page-lead">Vista-class ship details, dining, entertainment, the deck plan, and what is included in the Have It All package.</p>
   </header>
-<section id="ship" aria-labelledby="ship-h">
+<div class="mobile-rotate-hint" role="status" aria-live="polite">
+    <span class="mrh-ic" aria-hidden="true">📱↻</span>
+    <span class="mrh-l">Rotate your device to landscape for the full ship cross-section</span>
+    <button type="button" class="mrh-x" aria-label="Dismiss">&times;</button>
+  </div>
+  <section id="ship" aria-labelledby="ship-h">
   <div class="sec-head"><h2 id="ship-h">The Ship &mdash; ms Zuiderdam</h2><span class="tag">Vista Class</span></div>
   <p class="lead">The <em>Zuiderdam</em> is the lead ship of Holland America's Vista class &mdash; a mid-size, classically elegant vessel that completed a comprehensive dry-dock refresh in December 2025.</p>
   <div class="grid g4">
@@ -80,13 +85,13 @@
         <span class="no-sub">show 24h locations</span>
       </button>
       <div class="ship-view-tabs" role="tablist" aria-label="Ship view">
-        <button type="button" class="svt" data-view="elev" role="tab" aria-selected="false">Cross-section</button>
-        <button type="button" class="svt active" data-view="floor" role="tab" aria-selected="true">Floor plans</button>
+        <button type="button" class="svt active" data-view="elev" role="tab" aria-selected="true">Cross-section</button>
+        <button type="button" class="svt" data-view="floor" role="tab" aria-selected="false">Floor plans</button>
       </div>
     </div>
 
     <!-- ── VIEW: Cross-section (side elevation) ── -->
-    <div class="ship-view-elev" data-view="elev" hidden>
+    <div class="ship-view-elev active" data-view="elev">
       <details class="dc-legend-d">
         <summary><span>Legend</span><span class="dc-legend-count">12 amenity types</span></summary>
         <div class="dc-legend2" aria-label="Deck-chart legend">
@@ -423,7 +428,7 @@
     </div>
 
     <!-- ── VIEW: Floor plans (top-down, per deck) ── -->
-    <div class="ship-view-floor active" data-view="floor">
+    <div class="ship-view-floor" data-view="floor" hidden>
       <div class="fp-deck-picker" role="tablist" aria-label="Pick a deck">
         <button type="button" class="fp-deck-btn" data-deck="11">11</button><button type="button" class="fp-deck-btn" data-deck="10">10</button><button type="button" class="fp-deck-btn" data-deck="9">9</button><button type="button" class="fp-deck-btn" data-deck="8">8</button><button type="button" class="fp-deck-btn" data-deck="7">7</button><button type="button" class="fp-deck-btn" data-deck="6">6</button><button type="button" class="fp-deck-btn active" data-deck="5">5 <span class="fp-star">★</span></button><button type="button" class="fp-deck-btn" data-deck="4">4</button><button type="button" class="fp-deck-btn" data-deck="3">3</button><button type="button" class="fp-deck-btn" data-deck="2">2</button><button type="button" class="fp-deck-btn" data-deck="1">1</button>
       </div>
@@ -1207,6 +1212,15 @@
     clearTimeout(holdTimer);
     holdEl = null; holdFired = false;
   });
+})();
+</script>
+
+<script id="rotateHintHandler">
+(function(){
+  var banner = document.querySelector('.mobile-rotate-hint');
+  if(!banner) return;
+  var x = banner.querySelector('.mrh-x');
+  if(x){ x.addEventListener('click', function(){ banner.style.display='none'; }); }
 })();
 </script>
 </body>

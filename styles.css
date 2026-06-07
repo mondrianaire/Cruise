@@ -1782,3 +1782,179 @@ nav .links a:hover .sublabels,nav .links a.active .sublabels{color:var(--brass);
   .fp-hot,
   .dv-item{ cursor:default; }
 }
+
+
+/* ============ Mobile-portrait rotate hint (ship page) ============ */
+.mobile-rotate-hint{display:none;}
+@media (max-width:760px) and (orientation:portrait){
+  .mobile-rotate-hint{
+    display:flex;align-items:center;gap:10px;
+    margin:10px 0 14px;
+    padding:10px 14px;
+    background:linear-gradient(135deg, rgba(200,155,74,.22) 0%, rgba(11,42,58,.7) 100%);
+    border:1px solid var(--brass);
+    border-radius:8px;
+    color:var(--cream);
+    font:600 .78rem/1.4 var(--d-mono);
+    letter-spacing:.04em;
+    animation:rotateHintPulse 2.4s ease-in-out infinite;
+  }
+  .mrh-ic{font-size:1.2rem;}
+  .mrh-l{flex:1;}
+  .mrh-x{
+    background:transparent;border:0;
+    color:var(--ink-dim);cursor:pointer;
+    font-size:1.2rem;line-height:1;padding:4px 8px;
+  }
+  .mrh-x:hover{color:var(--cream);}
+}
+@keyframes rotateHintPulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(200,155,74,0);}
+  50%{box-shadow:0 0 14px 2px rgba(200,155,74,.35);}
+}
+
+/* ============ Mobile-landscape ship-page optimisation ============ */
+@media (max-width:900px) and (orientation:landscape){
+  /* ship.html only — auto via .deckchart presence */
+  .deckchart-head{flex-wrap:nowrap;gap:8px;}
+  .deckchart-head h3{font-size:1rem;}
+  .deckchart-head .dc-sub{display:none;}
+  .ship-view-tabs{margin-left:auto;}
+  .svt{padding:6px 11px;font-size:.6rem;}
+  .ship-no-toggle{padding:4px 9px;}
+  .ship-no-toggle .no-l{font-size:.58rem;}
+  .ship-no-toggle .no-sub{display:none;}
+  .dc-legend-d summary{padding:5px 10px;font-size:.66rem;}
+  .dc-svg{max-height:78vh;}
+  .fn-legend{padding:6px 9px;font-size:.62rem;}
+  .fnl-chip{font-size:.6rem;}
+  /* Floor plans on landscape — keep side-by-side */
+  .fp-panel{grid-template-columns:240px 1fr;gap:14px;}
+  .fp-img-stage{max-height:78vh;}
+  .fp-deck-img{max-height:74vh;width:auto;margin:0 auto;}
+  /* Tabs row + tab content tightened */
+  .fp-deck-picker{gap:4px;margin-bottom:8px;}
+  .fp-deck-btn{min-width:36px;height:32px;font-size:.85rem;}
+}
+
+/* ============ Night Owl mode — dialled up ============ */
+/* When active, transform the whole cross-section wrap into a night scene */
+.dc-svg-wrap.night-owl{
+  background:
+    radial-gradient(ellipse at top, rgba(255,255,255,.06) 0%, transparent 40%),
+    radial-gradient(ellipse at 80% 30%, rgba(200,200,255,.04) 0%, transparent 50%),
+    linear-gradient(180deg, #0a1929 0%, #051018 100%) !important;
+  border-color:#1f3548 !important;
+  position:relative;
+  overflow:hidden;
+}
+/* Animated starfield */
+.dc-svg-wrap.night-owl::before{
+  content:"";
+  position:absolute;inset:0;
+  background-image:
+    radial-gradient(1px 1px at 12% 18%, rgba(255,255,255,.7) 50%, transparent),
+    radial-gradient(1.2px 1.2px at 28% 64%, rgba(255,255,255,.9) 50%, transparent),
+    radial-gradient(1px 1px at 47% 82%, rgba(255,255,255,.6) 50%, transparent),
+    radial-gradient(1.4px 1.4px at 68% 22%, rgba(255,255,255,.85) 50%, transparent),
+    radial-gradient(1px 1px at 82% 56%, rgba(255,255,255,.7) 50%, transparent),
+    radial-gradient(1px 1px at 90% 12%, rgba(255,255,255,.7) 50%, transparent);
+  pointer-events:none;
+  animation:starsTwinkle 5s ease-in-out infinite;
+  z-index:0;
+}
+/* Moon top-right */
+.dc-svg-wrap.night-owl::after{
+  content:"🌙";
+  position:absolute;top:14px;right:18px;
+  font-size:1.6rem;
+  text-shadow:0 0 14px rgba(230,230,255,.45), 0 0 28px rgba(230,230,255,.25);
+  z-index:1;
+  pointer-events:none;
+  animation:moonGlow 4s ease-in-out infinite;
+}
+@keyframes starsTwinkle{
+  0%,100%{opacity:.85;}
+  50%{opacity:1;}
+}
+@keyframes moonGlow{
+  0%,100%{filter:drop-shadow(0 0 10px rgba(230,230,255,.4));}
+  50%{filter:drop-shadow(0 0 18px rgba(230,230,255,.7));}
+}
+
+/* Closed venues fade to near-black */
+.dc-svg-wrap.night-owl .multi-deck .md-zone:not([data-247-on="1"]):not([data-late-on="1"]) rect{
+  opacity:.06 !important;
+}
+.dc-svg-wrap.night-owl .multi-deck .md-zone:not([data-247-on="1"]):not([data-late-on="1"]) text{
+  opacity:.12 !important;
+}
+/* Deck bands and ship outline go inky */
+.dc-svg-wrap.night-owl .deck-band{opacity:.18 !important;}
+.dc-svg-wrap.night-owl .deck-band.you{opacity:.32 !important;}
+.dc-svg-wrap.night-owl .ship-outline{opacity:.55 !important;}
+.dc-svg-wrap.night-owl .deck-divider{opacity:.18 !important;}
+.dc-svg-wrap.night-owl .deck-num,
+.dc-svg-wrap.night-owl .deck-name{opacity:.38;}
+.dc-svg-wrap.night-owl .axis-lbl{opacity:.35;}
+.dc-svg-wrap.night-owl .funnel-body,
+.dc-svg-wrap.night-owl .funnel-band{opacity:.40;}
+.dc-svg-wrap.night-owl .stairways .sw-shaft{opacity:.30 !important;}
+.dc-svg-wrap.night-owl .cabin-zones .cz rect{opacity:.18;}
+.dc-svg-wrap.night-owl .cabin-zones .cz-l{opacity:.30;}
+/* Amenity glyphs dim */
+.dc-svg-wrap.night-owl .glyph{opacity:.18;}
+
+/* 24h venues GLOW STRONG with a pulsing green halo */
+.dc-svg-wrap.night-owl .multi-deck .md-zone[data-247-on="1"] rect{
+  stroke:#7af0b8 !important;
+  stroke-width:2.4 !important;
+  fill:rgba(95,214,160,.55) !important;
+  filter:drop-shadow(0 0 8px #5fd6a0) drop-shadow(0 0 18px rgba(95,214,160,.7));
+  animation:no24Pulse 2.6s ease-in-out infinite;
+}
+.dc-svg-wrap.night-owl .multi-deck .md-zone[data-247-on="1"] text{
+  fill:#031c10 !important;
+  font-weight:800 !important;
+  font-size:9px !important;
+  letter-spacing:.16em !important;
+  opacity:1 !important;
+}
+@keyframes no24Pulse{
+  0%,100%{filter:drop-shadow(0 0 8px #5fd6a0) drop-shadow(0 0 18px rgba(95,214,160,.7));}
+  50%{filter:drop-shadow(0 0 14px #aef0d0) drop-shadow(0 0 28px rgba(170,240,200,.9));}
+}
+
+/* Late-night (until 1AM+) — softer indigo highlight */
+.dc-svg-wrap.night-owl .multi-deck .md-zone[data-late-on="1"] rect{
+  stroke:#a8b4ff !important;
+  stroke-width:1.8 !important;
+  fill:rgba(124,137,224,.42) !important;
+  filter:drop-shadow(0 0 5px rgba(168,180,255,.55));
+}
+.dc-svg-wrap.night-owl .multi-deck .md-zone[data-late-on="1"] text{
+  fill:#08124a !important;
+  font-weight:700 !important;
+  opacity:1 !important;
+}
+
+/* Hint label below the SVG when night owl is on */
+.dc-svg-wrap.night-owl + .dc-note,
+.dc-svg-wrap.night-owl .dc-note{
+  background:linear-gradient(90deg, rgba(95,214,160,.10) 0%, transparent 70%);
+  border-left:3px solid #5fd6a0;
+  padding:8px 12px;
+  border-radius:0 4px 4px 0;
+}
+
+/* Toggle button gets brighter when active */
+.ship-no-toggle[aria-pressed="true"]{
+  background:linear-gradient(135deg, #1a2a3e 0%, #08141f 100%);
+  border-color:#7af0b8;
+  color:#aef0d0;
+  box-shadow:0 0 16px rgba(95,214,160,.5), inset 0 1px 0 rgba(255,255,255,.12);
+}
+.ship-no-toggle[aria-pressed="true"] .no-ic{
+  filter:drop-shadow(0 0 6px #7af0b8);
+  animation:moonGlow 3s ease-in-out infinite;
+}
