@@ -171,6 +171,19 @@
         <pattern id="lifeboat-strip" patternUnits="userSpaceOnUse" width="13" height="6" x="0" y="0">
           <rect x="1" y="1" width="11" height="4" rx="1.5" fill="#e07a3a" stroke="#7a3a10" stroke-width="0.45"/>
         </pattern>
+        <!-- v.079: Hull-shape clipPath. The whole point of this is to stop rendering the
+             cross-section as a giant rectangle with a thin curved outline drawn around it.
+             Every deck band, divider, cabin zone, window strip and lifeboat row gets
+             clipped to this silhouette, so the boat shape EMERGES from the data instead
+             of being painted around it. The silhouette: top deck (Deck 11) narrow forward
+             and aft so the upper decks visibly step in; cabin decks 5-8 are the widest
+             "barrel" — the part of the ship that actually has the most rooms; lower decks
+             taper as the hull curves toward the keel; bow rakes forward at the upper decks,
+             stern hangs slightly aft. Same path is used as the ship-outline stroke below
+             so the silhouette and the clip mask are pixel-identical. -->
+        <clipPath id="hullShape">
+          <path d="M 215 70 L 880 70 Q 910 75 925 105 Q 935 130 935 155 L 935 380 Q 935 470 880 500 Q 820 515 740 515 L 280 515 Q 200 515 130 500 Q 95 470 95 380 L 95 155 Q 95 130 110 105 Q 130 80 170 75 Q 195 71 215 70 Z"/>
+        </clipPath>
       </defs>
 
       <!-- ── waterline (behind ship) ── -->
@@ -181,45 +194,34 @@
 
       <!-- ── deck bands (background fills) ──
            One 40-unit-tall band per deck; alternating subtle stripe for legibility,
-           green tint for the group's deck. -->
-      <g aria-hidden="true">
-        <rect class="deck-band odd" x="152" y="70"  width="688" height="42"/>  <!-- 11 -->
-        <rect class="deck-band"     x="180" y="112" width="700" height="40"/>  <!-- 10 -->
-        <rect class="deck-band odd" x="152" y="152" width="756" height="40"/>  <!-- 9  -->
-        <rect class="deck-band"     x="152" y="192" width="756" height="40"/>  <!-- 8  -->
-        <rect class="deck-band odd" x="152" y="232" width="756" height="40"/>  <!-- 7  -->
-        <rect class="deck-band"     x="152" y="272" width="756" height="40"/>  <!-- 6  -->
-        <rect class="deck-band you" x="152" y="312" width="756" height="40"/>  <!-- 5  YOU -->
-        <rect class="deck-band"     x="152" y="352" width="756" height="40"/>  <!-- 4  -->
-        <rect class="deck-band odd" x="152" y="392" width="756" height="40"/>  <!-- 3  -->
-        <rect class="deck-band"     x="152" y="432" width="756" height="40"/>  <!-- 2  -->
-        <rect class="deck-band odd" x="152" y="472" width="756" height="40"/>  <!-- 1  -->
+           green tint for the group's deck. v.079: every band rect spans the full viewBox
+           width (40..960). The hull-shape clipPath above cuts each band to the actual
+           silhouette at that Y, so wider decks naturally render wider and narrower decks
+           render narrower — the boat shape is generated, not painted around. -->
+      <g aria-hidden="true" clip-path="url(#hullShape)">
+        <rect class="deck-band odd" x="40" y="70"  width="920" height="42"/>  <!-- 11 -->
+        <rect class="deck-band"     x="40" y="112" width="920" height="40"/>  <!-- 10 -->
+        <rect class="deck-band odd" x="40" y="152" width="920" height="40"/>  <!-- 9  -->
+        <rect class="deck-band"     x="40" y="192" width="920" height="40"/>  <!-- 8  -->
+        <rect class="deck-band odd" x="40" y="232" width="920" height="40"/>  <!-- 7  -->
+        <rect class="deck-band"     x="40" y="272" width="920" height="40"/>  <!-- 6  -->
+        <rect class="deck-band you" x="40" y="312" width="920" height="40"/>  <!-- 5  YOU -->
+        <rect class="deck-band"     x="40" y="352" width="920" height="40"/>  <!-- 4  -->
+        <rect class="deck-band odd" x="40" y="392" width="920" height="40"/>  <!-- 3  -->
+        <rect class="deck-band"     x="40" y="432" width="920" height="40"/>  <!-- 2  -->
+        <rect class="deck-band odd" x="40" y="472" width="920" height="40"/>  <!-- 1  -->
       </g>
 
-      <!-- ── ship outline (silhouette over the bands) ──
-           v.076: explicit stepped taper at the bow to make the upper decks read as
-           narrower than the main hull — the single strongest "cruise-liner" cue. -->
-      <path class="ship-outline" d="
-        M 90 512
-        Q 78 480 95 444
-        Q 115 390 138 320
-        Q 148 240 152 152
-        Q 158 132 200 116
-        L 254 116
-        Q 274 92 302 70
-        L 880 70
-        Q 920 76 930 112
-        L 950 152
-        L 950 488
-        Q 945 504 920 512
-        Z"/>
+      <!-- ── ship outline (silhouette stroke; matches the clipPath geometry exactly) ──
+           v.079: Real boat profile — top deck narrower than mid decks (Decks 5-8 are the
+           widest "barrel"), bilge curves at the bottom, raked bow, slightly swept stern. -->
+      <path class="ship-outline" d="M 215 70 L 880 70 Q 910 75 925 105 Q 935 130 935 155 L 935 380 Q 935 470 880 500 Q 820 515 740 515 L 280 515 Q 200 515 130 500 Q 95 470 95 380 L 95 155 Q 95 130 110 105 Q 130 80 170 75 Q 195 71 215 70 Z"/>
 
       <!-- ── hull contrast: navy boot-stripe + red waterline accent ──
-           Sits inside the hull, just above the painted waterline. Subtle bands
-           — high enough up to read as paint, low enough not to touch Deck 1 labels. -->
-      <g class="hull-bands" aria-hidden="true">
-        <rect class="hull-boot" x="92" y="506" width="828" height="6"/>
-        <rect class="hull-waterline-red" x="92" y="500" width="828" height="3"/>
+           Also clipped to the hull silhouette so the boot-stripe follows the bilge curve. -->
+      <g class="hull-bands" aria-hidden="true" clip-path="url(#hullShape)">
+        <rect class="hull-boot" x="40" y="506" width="920" height="9"/>
+        <rect class="hull-waterline-red" x="40" y="500" width="920" height="3"/>
       </g>
 
       <!-- ── funnel + mast (v.076: bigger, with a rim cap + accent band) ── -->
@@ -232,50 +234,53 @@
       <line class="mast" x1="246" y1="20" x2="246" y2="70"/>
       <circle cx="246" cy="22" r="2.2" fill="#e6c477"/>
 
-      <!-- ── deck dividers (thin horizontal rules between strips) ── -->
-      <g aria-hidden="true">
-        <line class="deck-divider" x1="152" y1="112" x2="908" y2="112"/>
-        <line class="deck-divider" x1="152" y1="152" x2="908" y2="152"/>
-        <line class="deck-divider" x1="152" y1="192" x2="908" y2="192"/>
-        <line class="deck-divider" x1="152" y1="232" x2="908" y2="232"/>
-        <line class="deck-divider" x1="152" y1="272" x2="908" y2="272"/>
-        <line class="deck-divider" x1="152" y1="312" x2="908" y2="312"/>
-        <line class="deck-divider" x1="152" y1="352" x2="908" y2="352"/>
-        <line class="deck-divider" x1="152" y1="392" x2="908" y2="392"/>
-        <line class="deck-divider" x1="152" y1="432" x2="908" y2="432"/>
-        <line class="deck-divider" x1="152" y1="472" x2="908" y2="472"/>
+      <!-- ── deck dividers (thin horizontal rules between strips) ──
+           v.079: lines extend full viewBox width and get clipped to the hull shape, so
+           shorter dividers naturally appear at top/bottom decks where the hull narrows. -->
+      <g aria-hidden="true" clip-path="url(#hullShape)">
+        <line class="deck-divider" x1="40" y1="112" x2="960" y2="112"/>
+        <line class="deck-divider" x1="40" y1="152" x2="960" y2="152"/>
+        <line class="deck-divider" x1="40" y1="192" x2="960" y2="192"/>
+        <line class="deck-divider" x1="40" y1="232" x2="960" y2="232"/>
+        <line class="deck-divider" x1="40" y1="272" x2="960" y2="272"/>
+        <line class="deck-divider" x1="40" y1="312" x2="960" y2="312"/>
+        <line class="deck-divider" x1="40" y1="352" x2="960" y2="352"/>
+        <line class="deck-divider" x1="40" y1="392" x2="960" y2="392"/>
+        <line class="deck-divider" x1="40" y1="432" x2="960" y2="432"/>
+        <line class="deck-divider" x1="40" y1="472" x2="960" y2="472"/>
       </g>
 
 
       <!-- ── cabin-window strips: one row per cabin deck, just below the deck divider.
-           Pattern-filled rects so the stairway shafts (dashed outlines) sit cleanly on top.
-           Decks 4–8 use the full hull width; Deck 1 only the cabin sub-zone. ── -->
-      <g class="window-rows" aria-hidden="true">
-        <rect class="win-strip" x="160" y="196" width="744" height="4"/>  <!-- Deck 8 -->
-        <rect class="win-strip" x="160" y="236" width="744" height="4"/>  <!-- Deck 7 -->
-        <rect class="win-strip" x="160" y="276" width="744" height="4"/>  <!-- Deck 6 -->
-        <rect class="win-strip" x="160" y="316" width="744" height="4"/>  <!-- Deck 5 -->
-        <rect class="win-strip" x="160" y="356" width="744" height="4"/>  <!-- Deck 4 -->
+           v.079: strips run full width and get clipped to the hull, so the windows
+           naturally stop at the bow and stern. ── -->
+      <g class="window-rows" aria-hidden="true" clip-path="url(#hullShape)">
+        <rect class="win-strip" x="40" y="196" width="920" height="4"/>  <!-- Deck 8 -->
+        <rect class="win-strip" x="40" y="236" width="920" height="4"/>  <!-- Deck 7 -->
+        <rect class="win-strip" x="40" y="276" width="920" height="4"/>  <!-- Deck 6 -->
+        <rect class="win-strip" x="40" y="316" width="920" height="4"/>  <!-- Deck 5 -->
+        <rect class="win-strip" x="40" y="356" width="920" height="4"/>  <!-- Deck 4 -->
         <rect class="win-strip" x="200" y="476" width="305" height="4"/>  <!-- Deck 1 cabin sub-zone only -->
       </g>
 
       <!-- ── lifeboats: hanging just under Deck 4 (the lifeboat deck on Vista-class).
-           Three segments skip the World Stage zone and the stairway shafts. ── -->
-      <g class="lifeboats" aria-hidden="true">
+           Clipped to hull so they stop at the bow/stern. ── -->
+      <g class="lifeboats" aria-hidden="true" clip-path="url(#hullShape)">
         <rect class="lboat-strip" x="340" y="386" width="196" height="6"/>
         <rect class="lboat-strip" x="568" y="386" width="194" height="6"/>
         <rect class="lboat-strip" x="792" y="386" width="116" height="6"/>
       </g>
 
-      <!-- ── stateroom-area markers: identifies cabin sections on the cross-section ── -->
-      <g class="cabin-zones" aria-hidden="true">
-        
-        
-        <g class="cz" data-deck="8"><rect x="155" y="194" width="753" height="36"/><text class="cz-l" x="530" y="216">STATEROOMS · Deck 8</text></g>
-        <g class="cz" data-deck="7"><rect x="155" y="234" width="753" height="36"/><text class="cz-l" x="530" y="256">STATEROOMS · Deck 7</text></g>
-        <g class="cz" data-deck="6"><rect x="155" y="274" width="753" height="36"/><text class="cz-l" x="530" y="296">STATEROOMS · Deck 6 (verandahs)</text></g>
-        <g class="cz cz-you" data-deck="5"><rect x="155" y="314" width="753" height="36"/><text class="cz-l" x="530" y="336">★ STATEROOMS · Deck 5 · YOUR DECK (K5155 · K5161 · K5165)</text></g>
-        <g class="cz" data-deck="4"><rect x="155" y="354" width="753" height="36"/><text class="cz-l" x="530" y="376">STATEROOMS · Deck 4 (verandahs)</text></g>
+      <!-- ── stateroom-area markers: identifies cabin sections on the cross-section.
+           v.079: cabin rects span full hull width and clip to the silhouette, so the
+           stateroom bands naturally narrow at the bow/stern just like real cruise-ship
+           cabin layouts (the forward-most/aft-most rooms ARE the corner suites). ── -->
+      <g class="cabin-zones" aria-hidden="true" clip-path="url(#hullShape)">
+        <g class="cz" data-deck="8"><rect x="40" y="194" width="920" height="36"/><text class="cz-l" x="515" y="216">STATEROOMS · Deck 8</text></g>
+        <g class="cz" data-deck="7"><rect x="40" y="234" width="920" height="36"/><text class="cz-l" x="515" y="256">STATEROOMS · Deck 7</text></g>
+        <g class="cz" data-deck="6"><rect x="40" y="274" width="920" height="36"/><text class="cz-l" x="515" y="296">STATEROOMS · Deck 6 (verandahs)</text></g>
+        <g class="cz cz-you" data-deck="5"><rect x="40" y="314" width="920" height="36"/><text class="cz-l" x="515" y="336">★ STATEROOMS · Deck 5 · YOUR DECK (K5155 · K5161 · K5165)</text></g>
+        <g class="cz" data-deck="4"><rect x="40" y="354" width="920" height="36"/><text class="cz-l" x="515" y="376">STATEROOMS · Deck 4 (verandahs)</text></g>
         <g class="cz" data-deck="1"><rect x="200" y="474" width="305" height="36"/><text class="cz-l" x="352" y="496">STATEROOMS · Deck 1</text></g>
       </g>
       <!-- ── stairway / elevator banks (3 vertical shafts) ── -->
