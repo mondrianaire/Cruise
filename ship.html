@@ -1216,26 +1216,43 @@
     if(!hint){
       hint = document.createElement('div');
       hint.id = 'landscapeDeckHint';
-      hint.className = 'landscape-deck-hint';
-      hint.setAttribute('role', 'status');
-      hint.setAttribute('aria-live', 'polite');
+      hint.className = 'rotate-overlay landscape-deck-hint';
+      hint.setAttribute('role', 'dialog');
+      hint.setAttribute('aria-modal', 'true');
+      hint.setAttribute('aria-labelledby', 'ldhTitle');
       document.body.appendChild(hint);
     }
+    var deckLabel = 'Deck ' + deck;
     var name;
-    try { name = (DECKS && DECKS[String(deck)] && DECKS[String(deck)].name) || ('Deck ' + deck); }
-    catch(e){ name = 'Deck ' + deck; }
-    hint.innerHTML = '<span class="ldh-ic" aria-hidden="true">📱↻</span>' +
-                     '<span class="ldh-l">Rotate to portrait to see <strong>' + name + '</strong></span>' +
-                     '<button type="button" class="ldh-x" aria-label="Dismiss">&times;</button>';
-    hint.querySelector('.ldh-x').addEventListener('click', function(){
-      hint.classList.remove('visible');
+    try { name = (DECKS && DECKS[String(deck)] && DECKS[String(deck)].name) || deckLabel; }
+    catch(e){ name = deckLabel; }
+    /* v.117: full-screen overlay (screen-relative via position:fixed, inset:0)
+       so the prompt doesn't depend on scroll position, current view, or
+       pinch-zoom. Big CANCEL button returns the user to the previous view. */
+    hint.innerHTML = '<div class="ro-backdrop" aria-hidden="true"></div>' +
+      '<div class="ro-card">' +
+        '<div class="ro-phone" aria-hidden="true">' +
+          '<div class="ro-phone-body" style="animation-direction:reverse"></div>' +
+          '<div class="ro-phone-screen" style="animation-direction:reverse"></div>' +
+          '<svg class="ro-arrow" viewBox="0 0 60 40" aria-hidden="true">' +
+            '<path d="M 8 28 A 22 22 0 0 1 52 28" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>' +
+            '<path d="M 50 14 L 52 28 L 38 28" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>' +
+          '</svg>' +
+        '</div>' +
+        '<h2 id="ldhTitle" class="ro-title">To view ' + deckLabel + '</h2>' +
+        '<p class="ro-msg">Rotate your device to <strong>portrait mode</strong>. We\'ll load <em>' + name + '</em> the moment you turn it.</p>' +
+        '<button type="button" class="ro-alt" id="ldhCancel">[ CANCEL ]</button>' +
+      '</div>';
+    hint.querySelector('#ldhCancel').addEventListener('click', function(){
       pendingDeckJump = null;
-    });
-    hint.classList.add('visible');
-    clearTimeout(window._landscapeHintTimer);
-    window._landscapeHintTimer = setTimeout(function(){
       hint.classList.remove('visible');
-    }, 6000);
+      document.body.style.overflow = '';
+      setTimeout(function(){ hint.hidden = true; }, 200);
+    });
+    hint.hidden = false;
+    requestAnimationFrame(function(){ hint.classList.add('visible'); });
+    document.body.style.overflow = 'hidden';
+    clearTimeout(window._landscapeHintTimer);  /* v.117: no auto-dismiss timer */
   }
   function jumpToDeck(deck, venueId){
     preloadDeckImage(deck);
@@ -1262,7 +1279,11 @@
         setTimeout(function(){ highlightVenue(pending.deck, pending.venueId); }, 120);
       }
       var hint = document.getElementById('landscapeDeckHint');
-      if(hint) hint.classList.remove('visible');
+      if(hint){
+        hint.classList.remove('visible');
+        document.body.style.overflow = '';
+        setTimeout(function(){ hint.hidden = true; }, 200);
+      }
     }
   };
 
