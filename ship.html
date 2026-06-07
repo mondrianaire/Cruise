@@ -1148,7 +1148,9 @@
     if(!g) return;
     if(!window.matchMedia('(max-width:1100px)').matches) return; // desktop bail
     if(!window.matchMedia('(orientation:portrait)').matches) return;
-    try{ if(sessionStorage.getItem('orientationGateDismissed')) return; }catch(e){}
+    /* v.116: show on EVERY portrait load — no sessionStorage suppression.
+       The escape hatch still dismisses for this load + switches the view,
+       but the next load will prompt again. */
     g.hidden = false;
     requestAnimationFrame(function(){ g.classList.add('visible'); });
     document.body.style.overflow = 'hidden';
@@ -1163,7 +1165,7 @@
   var roAlt = document.getElementById('roUseDeckPlans');
   if(roAlt){
     roAlt.addEventListener('click', function(){
-      try{ sessionStorage.setItem('orientationGateDismissed', '1'); }catch(e){}
+      /* v.116: don't persist the dismissal — user wants the prompt on every load. */
       try{ sessionStorage.setItem('shipViewOverride', '1'); }catch(e){}
       setTab('floor');
       hideOrientationGate();
@@ -1174,11 +1176,8 @@
     if(window.matchMedia('(min-width:1101px)').matches) return; // desktop: no auto
     var portrait = window.matchMedia('(orientation:portrait)').matches;
     var targetView = portrait ? 'floor' : 'elev';
-    /* Landscape always dismisses the gate. */
-    if(!portrait){
-      try{ sessionStorage.setItem('orientationGateDismissed', '1'); }catch(e){}
-      hideOrientationGate();
-    }
+    /* Landscape always dismisses the gate (visually — no need to persist). */
+    if(!portrait){ hideOrientationGate(); }
     var activeTab = document.querySelector('.ship-view-tabs .svt.active');
     var needSwitch = !activeTab || activeTab.dataset.view !== targetView;
     if(needSwitch) setTab(targetView);

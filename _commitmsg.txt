@@ -1,0 +1,8 @@
+v.116: orientation gate shows on every portrait load
+
+Removed the sessionStorage.orientationGateDismissed suppression. The
+rotate-to-landscape modal now appears on every portrait load — not just
+the first one of the session. Landscape still auto-dismisses it
+visually, and the "Use deck plans (portrait) instead" escape hatch
+still works for the current load (it just no longer remembers the
+choice across reloads).
