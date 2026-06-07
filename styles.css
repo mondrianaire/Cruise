@@ -1439,14 +1439,16 @@ nav .links a:hover .sublabels,nav .links a.active .sublabels{color:var(--brass);
 .ship-no-toggle[aria-pressed="true"] .no-sub{color:#7ad9a8;}
 
 /* Night-owl-mode applied to the diagram */
-.dc-svg-wrap.night-owl .multi-deck .md-zone:not([data-247-on="1"]):not([data-late-on="1"]) rect{
+.dc-svg-wrap.night-owl .multi-deck .md-zone:not([data-247-on="1"]):not([data-late-on="1"]) rect,
+.dc-svg-wrap.night-owl .multi-deck .md-zone:not([data-247-on="1"]):not([data-late-on="1"]) path{
   opacity:.18;
 }
 .dc-svg-wrap.night-owl .multi-deck .md-zone:not([data-247-on="1"]):not([data-late-on="1"]) text{
   opacity:.25;
 }
 /* 24h zones glow green */
-.dc-svg-wrap.night-owl .multi-deck .md-zone[data-247-on="1"] rect{
+.dc-svg-wrap.night-owl .multi-deck .md-zone[data-247-on="1"] rect,
+.dc-svg-wrap.night-owl .multi-deck .md-zone[data-247-on="1"] path{
   stroke:#5fd6a0 !important;
   stroke-width:2 !important;
   fill:rgba(95,214,160,.30) !important;
@@ -1457,7 +1459,8 @@ nav .links a:hover .sublabels,nav .links a.active .sublabels{color:var(--brass);
   font-weight:800;
 }
 /* late-night zones get a softer indigo border */
-.dc-svg-wrap.night-owl .multi-deck .md-zone[data-late-on="1"] rect{
+.dc-svg-wrap.night-owl .multi-deck .md-zone[data-late-on="1"] rect,
+.dc-svg-wrap.night-owl .multi-deck .md-zone[data-late-on="1"] path{
   stroke:#7c89e0 !important;
   stroke-width:1.5 !important;
   fill:rgba(124,137,224,.22) !important;
@@ -1999,7 +2002,8 @@ body.view-elev  .mobile-rotate-hint.mrh-portrait { display:none !important; }
 }
 
 /* Closed venues fade to near-black */
-.dc-svg-wrap.night-owl .multi-deck .md-zone:not([data-247-on="1"]):not([data-late-on="1"]) rect{
+.dc-svg-wrap.night-owl .multi-deck .md-zone:not([data-247-on="1"]):not([data-late-on="1"]) rect,
+.dc-svg-wrap.night-owl .multi-deck .md-zone:not([data-247-on="1"]):not([data-late-on="1"]) path{
   opacity:.06 !important;
 }
 .dc-svg-wrap.night-owl .multi-deck .md-zone:not([data-247-on="1"]):not([data-late-on="1"]) text{
@@ -2022,7 +2026,8 @@ body.view-elev  .mobile-rotate-hint.mrh-portrait { display:none !important; }
 .dc-svg-wrap.night-owl .glyph{opacity:.18;}
 
 /* 24h venues GLOW STRONG with a pulsing green halo */
-.dc-svg-wrap.night-owl .multi-deck .md-zone[data-247-on="1"] rect{
+.dc-svg-wrap.night-owl .multi-deck .md-zone[data-247-on="1"] rect,
+.dc-svg-wrap.night-owl .multi-deck .md-zone[data-247-on="1"] path{
   stroke:#7af0b8 !important;
   stroke-width:2.4 !important;
   fill:rgba(95,214,160,.55) !important;
@@ -2042,7 +2047,8 @@ body.view-elev  .mobile-rotate-hint.mrh-portrait { display:none !important; }
 }
 
 /* Late-night (until 1AM+) — softer indigo highlight */
-.dc-svg-wrap.night-owl .multi-deck .md-zone[data-late-on="1"] rect{
+.dc-svg-wrap.night-owl .multi-deck .md-zone[data-late-on="1"] rect,
+.dc-svg-wrap.night-owl .multi-deck .md-zone[data-late-on="1"] path{
   stroke:#a8b4ff !important;
   stroke-width:1.8 !important;
   fill:rgba(124,137,224,.42) !important;
@@ -2326,3 +2332,48 @@ body.view-floor .ship-no-toggle{ display:none !important; }
 
 /* Below 900px the old single-column stack is correct (image-left/info-right
    inside the panel) — no override needed. */
+
+
+/* ============================================================
+   v.112: Mobile cross-section polish + Night-Owl for polygons.
+   ============================================================ */
+
+/* Top tap hint — was unstyled, so it inherited the page font and
+   spread across the diagram. Make it a compact, low-contrast caption
+   that sits ON TOP of the SVG without obscuring it. */
+.dc-tap-hint{
+  position:absolute;
+  top:4px; left:50%; transform:translateX(-50%);
+  z-index:2;
+  padding:4px 10px;
+  border-radius:999px;
+  background:rgba(11,42,58,.78);
+  border:1px solid rgba(200,155,74,.45);
+  color:#e6c477;
+  font:600 .68rem/1.2 var(--d-mono, monospace);
+  letter-spacing:.04em;
+  text-align:center;
+  max-width:88%;
+  pointer-events:none;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+/* Stage needs to be the offset parent. */
+.dc-svg-wrap{ position:relative; }
+
+@media (max-width:760px){
+  .dc-tap-hint{
+    font-size:.6rem;
+    padding:3px 8px;
+    max-width:94%;
+  }
+}
+
+/* Bottom hint pseudo ("Tap deck numbers on the left to jump to that
+   deck's floor plan") collides with the fixed bottom-left toolbar on
+   mobile. Hide it on small screens — the deck-row labels are clearly
+   highlighted on hover/tap and don't need the caption. */
+@media (max-width:900px){
+  .ship-view-elev .dc-svg-wrap::after{ display:none; }
+}
