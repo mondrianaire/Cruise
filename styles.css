@@ -1188,14 +1188,7 @@ nav .links a:hover .sublabels,nav .links a.active .sublabels{color:var(--brass);
 .dc-svg .xs-clickable:focus-visible use.glyph{filter:drop-shadow(0 0 5px #e6c477);}
 
 /* Hint pill above the cross-section about clickable icons */
-.ship-view-elev .dc-svg-wrap::before{
-  content:"✦  Tap any amenity or cabin pin to jump to that deck's floor plan";
-  display:block;
-  font:600 .72rem var(--d-mono);letter-spacing:.06em;
-  color:#1a3a4a;background:rgba(230,196,119,.6);
-  border-radius:5px;padding:6px 10px;margin:0 0 10px;
-  text-align:center;
-}
+
 
 /* "View deck plan" button on each floor-plan panel */
 .fp-show-plan{
@@ -2010,4 +2003,22 @@ nav .links a:hover .sublabels,nav .links a.active .sublabels{color:var(--brass);
     font-size:.48rem;
     vertical-align:1px;
   }
+}
+
+
+/* Tap-hint pill — real DOM element so it survives the night-owl ::before starfield */
+.dc-tap-hint{
+  display:block;
+  font:600 .72rem var(--d-mono);letter-spacing:.06em;
+  color:#1a3a4a;background:rgba(230,196,119,.6);
+  border-radius:5px;padding:6px 10px;margin:0 0 10px;
+  text-align:center;
+  position:relative;
+  z-index:2;
+}
+.dc-svg-wrap.night-owl .dc-tap-hint{
+  color:#aef0d0;
+  background:rgba(11,42,58,.55);
+  border:1px solid rgba(95,214,160,.35);
+  box-shadow:0 0 12px rgba(95,214,160,.18);
 }
