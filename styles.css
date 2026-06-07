@@ -1344,30 +1344,30 @@ nav .links a:hover .sublabels,nav .links a.active .sublabels{color:var(--brass);
 }
 
 /* per-category palette — keyed to the cream chart base */
-.md-stage rect  { fill:rgba(216,57,43,.20);  stroke:rgba(162,51,35,.7); }
+.md-stage rect, .md-stage path  { fill:rgba(216,57,43,.20);  stroke:rgba(162,51,35,.7); }
 .md-stage .md-lbl, .md-stage .md-lbl-sm { fill:#6a1e15; }
 .md-stage .md-sub, .md-stage .md-sub-sm { fill:#8a2c1e; }
 
-.md-atrium rect { fill:rgba(239,178,40,.22); stroke:rgba(179,133,29,.7); }
+.md-atrium rect, .md-atrium path { fill:rgba(239,178,40,.22); stroke:rgba(179,133,29,.7); }
 .md-atrium .md-lbl, .md-atrium .md-lbl-sm { fill:#5a3e08; }
 .md-atrium .md-sub, .md-atrium .md-sub-sm { fill:#7a5410; }
 
-.md-pool rect   { fill:rgba(63,160,173,.22); stroke:rgba(45,116,128,.7); }
+.md-pool rect, .md-pool path   { fill:rgba(63,160,173,.22); stroke:rgba(45,116,128,.7); }
 .md-pool .md-lbl, .md-pool .md-lbl-sm { fill:#1a4248; }
 .md-pool .md-sub, .md-pool .md-sub-sm { fill:#2a565e; }
 
-.md-din rect    { fill:rgba(230,196,119,.30); stroke:rgba(184,154,94,.7); }
+.md-din rect, .md-din path    { fill:rgba(230,196,119,.30); stroke:rgba(184,154,94,.7); }
 .md-din .md-lbl, .md-din .md-lbl-sm { fill:#5a3e10; }
 .md-din .md-sub, .md-din .md-sub-sm { fill:#7c561e; }
 
-.md-cas rect    { fill:rgba(216,57,43,.18);  stroke:rgba(140,40,30,.7); }
+.md-cas rect, .md-cas path    { fill:rgba(216,57,43,.18);  stroke:rgba(140,40,30,.7); }
 .md-cas .md-lbl, .md-cas .md-lbl-sm { fill:#5a1810; }
 
-.md-obs rect    { fill:rgba(63,160,173,.18); stroke:rgba(45,116,128,.7); }
+.md-obs rect, .md-obs path    { fill:rgba(63,160,173,.18); stroke:rgba(45,116,128,.7); }
 .md-obs .md-lbl, .md-obs .md-lbl-sm { fill:#1a4248; }
 .md-obs .md-sub, .md-obs .md-sub-sm { fill:#2a565e; }
 
-.md-retreat rect{ fill:rgba(95,214,160,.22); stroke:rgba(50,140,100,.7); }
+.md-retreat rect, .md-retreat path{ fill:rgba(95,214,160,.22); stroke:rgba(50,140,100,.7); }
 .md-retreat .md-lbl, .md-retreat .md-lbl-sm { fill:#0e3d28; }
 .md-retreat .md-sub, .md-retreat .md-sub-sm { fill:#1a5538; }
 /* Renovation / cabana availability unconfirmed — match the tentative MAYBE coral */
@@ -1379,24 +1379,24 @@ nav .links a:hover .sublabels,nav .links a.active .sublabels{color:var(--brass);
 .md-zone.md-tent .md-lbl, .md-zone.md-tent .md-lbl-sm{ fill:#7a2e10; }
 .md-zone.md-tent .md-sub, .md-zone.md-tent .md-sub-sm{ fill:#a3431e; }
 
-.md-spa rect    { fill:rgba(95,214,160,.20); stroke:rgba(50,140,100,.7); }
+.md-spa rect, .md-spa path    { fill:rgba(95,214,160,.20); stroke:rgba(50,140,100,.7); }
 .md-spa .md-lbl, .md-spa .md-lbl-sm { fill:#0e3d28; }
 .md-spa .md-sub, .md-spa .md-sub-sm { fill:#1a5538; }
 
-.md-show rect   { fill:rgba(216,57,43,.16);  stroke:rgba(162,51,35,.65); }
+.md-show rect, .md-show path   { fill:rgba(216,57,43,.16);  stroke:rgba(162,51,35,.65); }
 .md-show .md-lbl, .md-show .md-lbl-sm { fill:#6a1e15; }
 .md-show .md-sub, .md-show .md-sub-sm { fill:#8a2c1e; }
 
-.md-svc rect    { fill:rgba(239,178,40,.18); stroke:rgba(179,133,29,.7); }
+.md-svc rect, .md-svc path    { fill:rgba(239,178,40,.18); stroke:rgba(179,133,29,.7); }
 .md-svc .md-lbl, .md-svc .md-lbl-sm { fill:#5a3e08; }
 .md-svc .md-sub, .md-svc .md-sub-sm { fill:#7a5410; }
 /* v.077: shops cluster (Art Gallery, Atrium Shops + Photo). Slightly warmer
    amber than .md-svc so the two categories differentiate at a glance. */
-.md-shop rect   { fill:rgba(200,155,74,.18); stroke:rgba(138,96,36,.7); }
+.md-shop rect, .md-shop path   { fill:rgba(200,155,74,.18); stroke:rgba(138,96,36,.7); }
 .md-shop .md-lbl, .md-shop .md-lbl-sm { fill:#5a3a08; }
 .md-shop .md-sub, .md-shop .md-sub-sm { fill:#7a4a14; }
 
-.md-gym rect    { fill:rgba(95,214,160,.20); stroke:rgba(50,140,100,.7); }
+.md-gym rect, .md-gym path    { fill:rgba(95,214,160,.20); stroke:rgba(50,140,100,.7); }
 .md-gym .md-lbl, .md-gym .md-lbl-sm { fill:#0e3d28; }
 .md-gym .md-sub, .md-gym .md-sub-sm { fill:#1a5538; }
 
@@ -1617,7 +1617,10 @@ nav .links a:hover .sublabels,nav .links a.active .sublabels{color:var(--brass);
 }
 /* Hide the "rotate to landscape" hint when the floor-plan view is active —
    portrait now works for floor plans, the hint is misleading there. */
-body.view-floor .mobile-rotate-hint{ display:none !important; }
+/* v.078/v.100: the landscape hint should only show on cross-section in portrait;
+   the portrait hint should only show on floor-plan in landscape. */
+body.view-floor .mobile-rotate-hint.mrh-landscape{ display:none !important; }
+body.view-elev  .mobile-rotate-hint.mrh-portrait { display:none !important; }
 
 
 /* ============ Floor-plan panel visibility (only active one shows) ============ */
@@ -1847,10 +1850,14 @@ body.view-floor .mobile-rotate-hint{ display:none !important; }
 }
 
 
-/* ============ Mobile-portrait rotate hint (ship page) ============ */
+/* ============ Mobile rotate hints (ship page) ============
+   v.100: Two hint variants - mrh-landscape (for cross-section, shown in portrait)
+   and mrh-portrait (for floor plans, shown in landscape). Body classes view-elev
+   and view-floor scope which hint shows. */
 .mobile-rotate-hint{display:none;}
+/* Landscape hint: visible on cross-section view when device is portrait */
 @media (max-width:760px) and (orientation:portrait){
-  .mobile-rotate-hint{
+  body.view-elev .mobile-rotate-hint.mrh-landscape{
     display:flex;align-items:center;gap:10px;
     margin:10px 0 14px;
     padding:10px 14px;
@@ -1862,15 +1869,30 @@ body.view-floor .mobile-rotate-hint{ display:none !important; }
     letter-spacing:.04em;
     animation:rotateHintPulse 2.4s ease-in-out infinite;
   }
-  .mrh-ic{font-size:1.2rem;}
-  .mrh-l{flex:1;}
-  .mrh-x{
-    background:transparent;border:0;
-    color:var(--ink-dim);cursor:pointer;
-    font-size:1.2rem;line-height:1;padding:4px 8px;
-  }
-  .mrh-x:hover{color:var(--cream);}
 }
+/* Portrait hint: visible on floor-plan view when device is landscape */
+@media (max-width:900px) and (orientation:landscape){
+  body.view-floor .mobile-rotate-hint.mrh-portrait{
+    display:flex;align-items:center;gap:10px;
+    margin:10px 0 14px;
+    padding:10px 14px;
+    background:linear-gradient(135deg, rgba(200,155,74,.22) 0%, rgba(11,42,58,.7) 100%);
+    border:1px solid var(--brass);
+    border-radius:8px;
+    color:var(--cream);
+    font:600 .78rem/1.4 var(--d-mono);
+    letter-spacing:.04em;
+    animation:rotateHintPulse 2.4s ease-in-out infinite;
+  }
+}
+.mrh-ic{font-size:1.2rem;}
+.mrh-l{flex:1;}
+.mrh-x{
+  background:transparent;border:0;
+  color:var(--ink-dim);cursor:pointer;
+  font-size:1.2rem;line-height:1;padding:4px 8px;
+}
+.mrh-x:hover{color:var(--cream);}
 @keyframes rotateHintPulse{
   0%,100%{box-shadow:0 0 0 0 rgba(200,155,74,0);}
   50%{box-shadow:0 0 14px 2px rgba(200,155,74,.35);}

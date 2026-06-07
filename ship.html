@@ -53,9 +53,14 @@
     <h1>The Ship &amp; Your Package</h1>
     <p class="page-lead">Vista-class ship details, dining, entertainment, the deck plan, and what is included in the Have It All package.</p>
   </header>
-<div class="mobile-rotate-hint" role="status" aria-live="polite">
+<div class="mobile-rotate-hint mrh-landscape" role="status" aria-live="polite">
     <span class="mrh-ic" aria-hidden="true">📱↻</span>
     <span class="mrh-l">Rotate your device to landscape for the full ship cross-section</span>
+    <button type="button" class="mrh-x" aria-label="Dismiss">&times;</button>
+  </div>
+  <div class="mobile-rotate-hint mrh-portrait" role="status" aria-live="polite">
+    <span class="mrh-ic" aria-hidden="true">📱↻</span>
+    <span class="mrh-l">Rotate your device to portrait for the floor plan</span>
     <button type="button" class="mrh-x" aria-label="Dismiss">&times;</button>
   </div>
   <section id="ship" aria-labelledby="ship-h">
@@ -1417,6 +1422,13 @@
 
 <script id="rotateHintHandler">
 (function(){
+  /* v.100: dismiss handlers for both landscape and portrait variant banners */
+  document.querySelectorAll('.mobile-rotate-hint .mrh-x').forEach(function(x){
+    x.addEventListener('click', function(){
+      x.closest('.mobile-rotate-hint').style.display='none';
+    });
+  });
+  // Legacy single-banner handler kept below for safety
   var banner = document.querySelector('.mobile-rotate-hint');
   if(!banner) return;
   var x = banner.querySelector('.mrh-x');
