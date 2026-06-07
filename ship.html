@@ -171,20 +171,23 @@
         <pattern id="lifeboat-strip" patternUnits="userSpaceOnUse" width="13" height="6" x="0" y="0">
           <rect x="1" y="1" width="11" height="4" rx="1.5" fill="#e07a3a" stroke="#7a3a10" stroke-width="0.45"/>
         </pattern>
-        <!-- v.082: Sprite-shape hull. The previous "barrel" shape still read as a
-             rectangle because both ends fanned outward symmetrically — there was no
-             raked bow, just a slightly-rounded barrel. Replaced with the actual
-             cruise-ship side-profile geometry from the deck-position sprite:
-             SHARP RAKED BOW (top forward edge at x=200, bow tip at the waterline at
-             x=50 — the forward edge slopes outward as it goes down), flat top deck
-             (x=200 to x=880, the whole superstructure roof), nearly-vertical stern
-             (x=880 to x=905 with a small upper curve, then straight down to the
-             waterline), waterline at y=540. Bow tip at x=50 sits clear of the
-             left-margin deck-row labels (which end at x=50). Stern at x=905 sits
-             clear of the right side. Top at y=80 leaves room above for the funnel
-             stack (y=2-70). Same path is used as the ship-outline stroke below. -->
+        <!-- v.083: Sprite-shape with hull/superstructure SHOULDER. v.082 had the right
+             bow rake but no shoulder, so the silhouette still read as a wedge. The HAL
+             sprite shows two tiers separated by a clear step: a NARROW superstructure
+             on top (Decks 9-11 roughly) and a WIDE hull barrel below (Decks 1-8). New
+             path traces that two-tier geometry:
+               • Bow tip at the waterline at x=50
+               • Hull side rises from bow tip with a curve, widening as it goes up
+               • At y=185 the hull side reaches its widest forward extent (x=70-ish)
+               • SHOULDER: the forward edge steps INWARD from x=85 to x=215 between
+                 y=185 (hull shoulder) and y=70 (superstructure roof)
+               • Top deck flat from x=215 to x=850 at y=70
+               • Aft superstructure steps out at the matching shoulder to x=918
+               • Hull aft barrel from x=918 down to x=905 at the waterline
+               • Stern wall at x=905 down to y=540
+             The shoulder is the single feature that converts "wedge" to "ship". -->
         <clipPath id="hullShape">
-          <path d="M 50 540 Q 70 380 130 220 Q 165 130 200 80 L 880 80 Q 900 100 905 200 L 905 540 Z"/>
+          <path d="M 50 540 Q 80 380 130 200 L 220 70 L 855 70 L 905 200 Q 920 380 905 540 Z"/>
         </clipPath>
       </defs>
 
@@ -215,11 +218,9 @@
       </g>
 
       <!-- ── ship outline (silhouette stroke; matches the clipPath geometry exactly) ──
-           v.082: Sprite-shape cruise-liner side profile. Bow tip sits at the waterline
-           at x=50, top forward corner is at x=200 — that 150-unit horizontal offset is
-           what creates the unmistakable raked-bow silhouette. Stern is near-vertical
-           with a small flare at the top. Same path used for the clipPath above. -->
-      <path class="ship-outline" d="M 50 540 Q 70 380 130 220 Q 165 130 200 80 L 880 80 Q 900 100 905 200 L 905 540 Z"/>
+           v.083: Two-tier silhouette — narrow superstructure on top, wide hull barrel
+           below, with explicit shoulder step at y=185. -->
+      <path class="ship-outline" d="M 50 540 Q 80 380 130 200 L 220 70 L 855 70 L 905 200 Q 920 380 905 540 Z"/>
 
       <!-- ── hull contrast: navy boot-stripe + red waterline accent ──
            Also clipped to the hull silhouette so the boot-stripe follows the bilge curve. -->
