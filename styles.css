@@ -1469,3 +1469,75 @@ nav .links a:hover .sublabels,nav .links a.active .sublabels{color:var(--brass);
   .fnl-chip{font-size:.62rem;}
   .fnl-247, .fnl-late{font-size:.6rem;}
 }
+
+
+/* ============ Floor-plan panels: side-by-side sticky layout ============ */
+.fp-panel{
+  display:grid;
+  grid-template-columns:300px 1fr;
+  gap:22px;
+  align-items:start;
+}
+.fp-plan-col{
+  position:sticky; top:14px;
+  align-self:start;
+}
+.fp-img-stage{
+  position:relative;
+  width:100%;
+  background:linear-gradient(180deg, rgba(11,42,58,.85) 0%, rgba(7,32,43,.95) 100%);
+  border:1px solid var(--brass-dk);
+  border-radius:8px;
+  padding:10px 8px;
+  box-shadow:0 2px 10px rgba(0,0,0,.45), inset 0 0 0 1px rgba(200,155,74,.18);
+}
+.fp-deck-img{
+  display:block;
+  width:100%;
+  height:auto;
+  /* The transparent PNGs let the dark stage gradient show through corridors */
+  filter:drop-shadow(0 1px 2px rgba(0,0,0,.6));
+}
+.fp-img-note{
+  margin:8px 4px 0;
+  font:500 .68rem/1.4 var(--d-mono);
+  letter-spacing:.04em;
+  color:var(--ink-dim);
+  text-align:center;
+}
+.fp-img-note em{color:var(--brass);font-style:italic;}
+
+/* Pin overlays sit on the deck plan */
+.fp-img-pin{
+  position:absolute;
+  width:32px;height:32px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font:800 .64rem/1 var(--d-mono);
+  letter-spacing:.02em;
+  transform:translate(-50%,-50%);
+  z-index:5;
+  box-shadow:0 2px 6px rgba(0,0,0,.6), 0 0 12px rgba(230,196,119,.4);
+  cursor:help;
+}
+.fp-img-pin.ours{
+  background:radial-gradient(circle at 35% 30%, #ffe89a 0%, #c89b4a 70%, #8a6024 100%);
+  color:#08161a;
+  border:2px solid #08161a;
+}
+.fp-img-pin:hover{ transform:translate(-50%,-50%) scale(1.18); }
+
+/* Hide the now-defunct "View deck plan" button if any panel still has it */
+.fp-show-plan{display:none !important;}
+
+/* On mobile: stack so plan sits on top (taller image), then data below */
+@media(max-width:760px){
+  .fp-panel{
+    grid-template-columns:1fr;
+    gap:14px;
+  }
+  .fp-plan-col{
+    position:static;
+    max-width:340px;
+    margin:0 auto;
+  }
+}
