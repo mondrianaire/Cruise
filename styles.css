@@ -1163,3 +1163,124 @@ nav .links a:hover .sublabels,nav .links a.active .sublabels{color:var(--brass);
   .fp-cabin-card{padding:11px 12px;}
   .dv-list li{font-size:.82rem;padding:7px 9px;}
 }
+
+
+/* ============ Ship rework — clickable cross-section + deck-plan modal ============ */
+
+/* Cross-section glyphs become clickable */
+.dc-svg .xs-clickable{transition:transform .12s, opacity .12s;}
+.dc-svg .xs-clickable:hover{transform:translateY(-1px); opacity:1;}
+.dc-svg .xs-clickable:hover use.glyph{filter:drop-shadow(0 0 4px #c89b4a);}
+.dc-svg .xs-clickable:focus{outline:none;}
+.dc-svg .xs-clickable:focus-visible use.glyph{filter:drop-shadow(0 0 5px #e6c477);}
+
+/* Hint pill above the cross-section about clickable icons */
+.ship-view-elev .dc-svg-wrap::before{
+  content:"✦  Tap any amenity or cabin pin to jump to that deck's floor plan";
+  display:block;
+  font:600 .72rem var(--d-mono);letter-spacing:.06em;
+  color:#1a3a4a;background:rgba(230,196,119,.6);
+  border-radius:5px;padding:6px 10px;margin:0 0 10px;
+  text-align:center;
+}
+
+/* "View deck plan" button on each floor-plan panel */
+.fp-show-plan{
+  appearance:none;
+  display:inline-flex;align-items:center;gap:8px;
+  margin-top:16px;
+  padding:10px 16px;
+  background:linear-gradient(135deg,#c89b4a 0%, #8a6024 100%);
+  border:1px solid var(--brass);
+  border-radius:7px;
+  color:#08161a;cursor:pointer;
+  font:700 .76rem/1 var(--d-mono);letter-spacing:.1em;text-transform:uppercase;
+  box-shadow:0 2px 4px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.2);
+  transition:transform .12s, box-shadow .12s;
+}
+.fp-show-plan:hover{ transform:translateY(-1px); box-shadow:0 4px 8px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.25); }
+.fp-show-plan-ic{font-size:1rem;}
+
+/* Empty-deck placeholder */
+.fp-empty{
+  margin:14px 0 0;padding:10px 14px;
+  background:rgba(11,42,58,.45);border-left:3px solid var(--brass-dk);
+  border-radius:0 5px 5px 0;
+  font:500 .82rem/1.4 var(--d-mono);color:var(--ink-dim);
+}
+
+/* Venue highlight flash when navigated from cross-section */
+.dv-item{transition:background .25s, border-color .25s, transform .25s;}
+.dv-item.is-flash{
+  background:rgba(230,196,119,.22);
+  border-left-color:var(--brass);
+  transform:translateX(4px);
+  box-shadow:0 0 0 1px rgba(230,196,119,.45);
+}
+
+/* ============ Deck-plan modal/lightbox ============ */
+.fp-modal{
+  position:fixed;inset:0;
+  background:rgba(8,22,26,.92);
+  display:none;
+  flex-direction:column;align-items:center;
+  z-index:1000;
+  padding:14px 14px 60px;
+  overflow:hidden;
+}
+.fp-modal.is-open{display:flex;}
+.fp-modal-head{
+  display:flex;align-items:baseline;gap:14px;
+  margin:6px auto 12px;
+  padding:0 50px;
+}
+.fp-modal-deck-num{
+  font:800 1.4rem/1 var(--d-mono);color:var(--brass);letter-spacing:.06em;
+}
+.fp-modal-deck-name{
+  font:600 1rem/1 var(--d-display,"Fraunces",serif);color:var(--cream);font-style:italic;
+}
+.fp-modal-close{
+  position:absolute;top:14px;right:14px;
+  width:44px;height:44px;border-radius:50%;
+  background:rgba(200,155,74,.3);
+  color:var(--cream);border:1px solid var(--brass);
+  font:700 1.6rem/1 sans-serif;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .15s;
+}
+.fp-modal-close:hover{background:rgba(200,155,74,.55);}
+.fp-modal-stage{
+  flex:1 1 auto;
+  display:flex;align-items:flex-start;justify-content:center;
+  overflow:auto;
+  background:linear-gradient(180deg,#f4ecd2 0%, #e8dab3 100%);
+  border:1px solid var(--brass);border-radius:9px;
+  padding:14px;
+  width:100%;max-width:520px;
+  max-height:calc(100vh - 130px);
+  -webkit-overflow-scrolling:touch;
+}
+.fp-modal-img{
+  display:block;
+  width:auto;height:auto;
+  max-width:100%;
+}
+.fp-modal-hint{
+  position:absolute;bottom:14px;left:50%;transform:translateX(-50%);
+  margin:0;font:600 .68rem/1.3 var(--d-mono);
+  color:var(--ink-dim);letter-spacing:.08em;text-transform:uppercase;
+  background:rgba(7,32,43,.65);padding:6px 12px;border-radius:5px;
+  border:1px solid var(--brass-dk);
+}
+.fp-modal-hint kbd{
+  background:#08161a;color:var(--brass);
+  padding:1px 5px;border-radius:3px;font-size:.7rem;
+  border:1px solid var(--brass-dk);text-transform:none;
+}
+
+@media(max-width:560px){
+  .fp-modal-stage{max-height:calc(100vh - 150px); padding:8px;}
+  .fp-modal-head{padding:0 50px 0 0;}
+  .fp-modal-deck-num{font-size:1.1rem;}
+}
