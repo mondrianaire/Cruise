@@ -1,0 +1,25 @@
+
+[1m[37m===[39m Deploying to 'gto-poker-qui'...[22m
+
+[36m[1mi [22m[39m deploying [1mfunctions[22m
+[36m[1mi  functions:[22m[39m preparing codebase [1mdefault[22m for deployment
+[36m[1mi  functions:[22m[39m ensuring required API [1mcloudfunctions.googleapis.com[22m is enabled...
+[36m[1mi  functions:[22m[39m ensuring required API [1mcloudbuild.googleapis.com[22m is enabled...
+[36m[1mi  artifactregistry:[22m[39m ensuring required API [1martifactregistry.googleapis.com[22m is enabled...
+[33m[1m! [22m[39m [1m[33mfunctions: [39m[22mpackage.json indicates an outdated version of firebase-functions. Please upgrade using [1mnpm install --save firebase-functions@latest[22m in your functions directory.
+[33m[1m! [22m[39m [1m[33mfunctions: [39m[22mPlease note that there will be breaking changes when you upgrade.
+[36m[1mi  functions:[22m[39m Loading and analyzing source code for codebase default to determine what to deploy
+Serving at port 8989
+
+[36m[1mi  extensions:[22m[39m ensuring required API [1mfirebaseextensions.googleapis.com[22m is enabled...
+[36m[1mi  functions:[22m[39m preparing [1mfunctions[22m directory for uploading...
+[36m[1mi [22m[39m [36m[1mfunctions:[22m[39m packaged [1mC:\Users\mondr\Documents\Claude\Projects\Cruise\functions[22m (37 KB) for uploading
+[32m[1m+  functions:[22m[39m [1mfunctions[22m source uploaded successfully
+[36m[1mi  functions:[22m[39m updating Node.js 22 (1st Gen) function [1mcalendar(us-central1)[22m...
+[32m[1m+ [22m[39m [1m[32mfunctions[calendar(us-central1)][39m[22m Successful update operation.
+[1mFunction URL[22m (calendar(us-central1)): https://us-central1-gto-poker-qui.cloudfunctions.net/calendar
+
+[32m[1m+ [22m[39m [1m[4mDeploy complete![24m[22m
+
+[1mProject Console:[22m https://console.firebase.google.com/project/gto-poker-qui/overview
+EXITCODE 0 

@@ -1,0 +1,6 @@
+﻿
+user=jett  events=40  pinnacle=yes  couples-massage=no  GPS-pickup=no
+user=laura  events=41  pinnacle=yes  couples-massage=yes  GPS-pickup=no
+user=sandra  events=37  pinnacle=no  couples-massage=no  GPS-pickup=no
+user=becca  events=39  pinnacle=no  couples-massage=yes  GPS-pickup=yes
+user=karen  events=36  pinnacle=no  couples-massage=no  GPS-pickup=no

@@ -1140,6 +1140,81 @@
   window.addEventListener('orientationchange', function(){ setTimeout(autoOrientView, 80); });
   window.matchMedia('(orientation:portrait)').addEventListener('change', autoOrientView);
 
+  /* v.103: pending deck/venue jump from landscape cross-section.
+     User taps a deck label or venue while in landscape on mobile/tablet -> we
+     show a hint to rotate to portrait + preload the deck image, and remember
+     the jump so it auto-applies when they rotate. */
+  var pendingDeckJump = null;
+  function isLandscapeMobile(){
+    return window.matchMedia('(max-width:1100px)').matches &&
+           window.matchMedia('(orientation:landscape)').matches;
+  }
+  var preloadedDecks = {};
+  function preloadDeckImage(deck){
+    var d = String(deck);
+    if(preloadedDecks[d]) return;
+    var n = parseInt(d, 10);
+    if(isNaN(n) || n < 1 || n > 11) return;
+    var nn = n < 10 ? '0'+n : ''+n;
+    var img = new Image();
+    img.src = 'deck-' + nn + '.png';
+    preloadedDecks[d] = true;
+  }
+  function showLandscapeDeckHint(deck){
+    var hint = document.getElementById('landscapeDeckHint');
+    if(!hint){
+      hint = document.createElement('div');
+      hint.id = 'landscapeDeckHint';
+      hint.className = 'landscape-deck-hint';
+      hint.setAttribute('role', 'status');
+      hint.setAttribute('aria-live', 'polite');
+      document.body.appendChild(hint);
+    }
+    var name;
+    try { name = (DECKS && DECKS[String(deck)] && DECKS[String(deck)].name) || ('Deck ' + deck); }
+    catch(e){ name = 'Deck ' + deck; }
+    hint.innerHTML = '<span class="ldh-ic" aria-hidden="true">📱↻</span>' +
+                     '<span class="ldh-l">Rotate to portrait to see <strong>' + name + '</strong></span>' +
+                     '<button type="button" class="ldh-x" aria-label="Dismiss">&times;</button>';
+    hint.querySelector('.ldh-x').addEventListener('click', function(){
+      hint.classList.remove('visible');
+      pendingDeckJump = null;
+    });
+    hint.classList.add('visible');
+    clearTimeout(window._landscapeHintTimer);
+    window._landscapeHintTimer = setTimeout(function(){
+      hint.classList.remove('visible');
+    }, 6000);
+  }
+  function jumpToDeck(deck, venueId){
+    preloadDeckImage(deck);
+    if(isLandscapeMobile()){
+      pendingDeckJump = { deck: String(deck), venueId: venueId || null };
+      showLandscapeDeckHint(deck);
+      return;
+    }
+    setTab('floor');
+    setDeck(String(deck));
+    if(venueId){
+      setTimeout(function(){ highlightVenue(deck, venueId); }, 80);
+    }
+  }
+  // Wrap autoOrientView to apply pending jump after switching to portrait
+  var _origAutoOrient = autoOrientView;
+  autoOrientView = function(){
+    _origAutoOrient();
+    if(pendingDeckJump && !window.matchMedia('(orientation:landscape)').matches){
+      var pending = pendingDeckJump;
+      pendingDeckJump = null;
+      setDeck(pending.deck);
+      if(pending.venueId){
+        setTimeout(function(){ highlightVenue(pending.deck, pending.venueId); }, 120);
+      }
+      var hint = document.getElementById('landscapeDeckHint');
+      if(hint) hint.classList.remove('visible');
+    }
+  };
+
   var deckBtns = document.querySelectorAll('.fp-deck-btn');
   var panels   = document.querySelectorAll('.fp-panel');
   function setDeck(d){
@@ -1184,7 +1259,7 @@
     if(!deck) return;
     g.setAttribute('role','button');
     g.setAttribute('tabindex','0');
-    function go(){ setTab('floor'); setDeck(deck); }
+    function go(){ jumpToDeck(deck); }
     g.addEventListener('click', go);
     g.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); go(); } });
   });
@@ -1235,11 +1310,14 @@
     setTimeout(function(){ el.classList.remove('is-flash'); }, 2400);
   }
   function jumpFromCrossSection(deck, title){
+    var v = title ? venueMatch(deck, title) : null;
+    if(isLandscapeMobile()){
+      jumpToDeck(deck, v ? v.id : null);
+      return;
+    }
     setTab('floor');
     setDeck(deck);
-    if(!title) return;
-    var v = venueMatch(deck, title);
-    setTimeout(function(){ if(v) highlightVenue(deck, v.id); }, 80);
+    if(v) setTimeout(function(){ highlightVenue(deck, v.id); }, 80);
   }
 
   // Attach handlers to all <g> wrapping a glyph
@@ -1251,6 +1329,11 @@
     z.setAttribute('role','button');
     z.setAttribute('tabindex','0');
     function go(){
+      var v = vname ? venueMatch(deck, vname) : null;
+      if(isLandscapeMobile()){
+        jumpToDeck(deck, v ? v.id : null);
+        return;
+      }
       setTab('floor'); setDeck(deck);
       if(vname){
         var v = venueMatch(deck, vname);

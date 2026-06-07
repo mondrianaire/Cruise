@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/mondr/.claude/projects/C--Users-mondr-Documents-Claude-Projects-Cruise/memory//**)",
+      "Read(//c/Users/mondr/.claude/projects/C--Users-mondr-Documents-Claude-Projects-Cruise//**)",
+      "WebSearch",
+      "WebFetch(domain:www.hollandamerica.com)",
+      "WebFetch(domain:www.cruisedeckplans.com)",
+      "WebFetch(domain:www.cruisemapper.com)",
+      "WebFetch(domain:www.cruisemummy.co.uk)",
+      "WebFetch(domain:www.cruisecritic.com)",
+      "PowerShell(Start-Process \"C:\\\\Users\\\\mondr\\\\Documents\\\\Claude\\\\Projects\\\\Cruise\\\\hub.html#ship\")",
+      "Bash(git checkout *)",
+      "Bash(git add *)",
+      "Bash(git commit -m 'The Ship: side-elevation deck chart — all 11 passenger decks at once, with every major amenity stamped at its actual fore/mid/aft position and pins for the group'\\\\''s three staterooms on Deck 5 *)",
+      "Bash(git merge *)",
+      "Bash(git push *)",
+      "Bash(git commit -m 'Navigation: glass surface with scroll-deepened shadow, voyage-stop numbering, scrollspy underline and distinguished Console pill *)"
+    ]
+  }
+}

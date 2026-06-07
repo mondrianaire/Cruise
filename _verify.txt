@@ -1,0 +1,6 @@
+﻿
+user=jett  total=41  tentative=4  hotel-event=True  checkout-event=False
+user=laura  total=42  tentative=4  hotel-event=True  checkout-event=False
+user=sandra  total=39  tentative=4  hotel-event=True  checkout-event=False
+user=becca  total=41  tentative=4  hotel-event=True  checkout-event=False
+user=karen  total=38  tentative=4  hotel-event=True  checkout-event=False
