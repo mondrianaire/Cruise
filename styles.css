@@ -1022,9 +1022,31 @@ nav .links a:hover .sublabels,nav .links a.active .sublabels{color:var(--brass);
 }
 
 /* Funnel + mast */
+.funnel-cap{ fill:#0d2330; }
 .funnel-body{ fill:#1a3a4a; }
 .funnel-band{ fill:#d8392b; }
+.funnel-band-sm{ fill:#e6c477; opacity:.85; }
 .mast{ stroke:#1a3a4a; stroke-width:1.5; }
+
+/* Cabin-window strips (v.076) — pattern-filled, kept very subtle so the deck-band
+   labels and cabin-zone text stay readable. The pattern itself is defined inline
+   in ship.html (window-strip / lifeboat-strip). */
+.win-strip{ fill:url(#window-strip); pointer-events:none; }
+.lboat-strip{ fill:url(#lifeboat-strip); pointer-events:none; opacity:.92; }
+
+/* Hull boot-stripe + red waterline accent (v.076) — paints a narrow band along
+   the inside of the hull just above the wave lines. Sits well below the cabin
+   text on Deck 1 so readability is preserved. */
+.hull-boot{ fill:#1a3a4a; opacity:.88; }
+.hull-waterline-red{ fill:#d8392b; opacity:.80; }
+
+/* Night-owl: dim the new ship-texture elements alongside the rest */
+.dc-svg-wrap.night-owl .win-strip{ opacity:.18; }
+.dc-svg-wrap.night-owl .lboat-strip{ opacity:.30; }
+.dc-svg-wrap.night-owl .hull-boot{ opacity:.32; }
+.dc-svg-wrap.night-owl .hull-waterline-red{ opacity:.28; }
+.dc-svg-wrap.night-owl .funnel-cap,
+.dc-svg-wrap.night-owl .funnel-band-sm{ opacity:.30; }
 
 /* Avoid-zone overlay */
 .avoid-zone{

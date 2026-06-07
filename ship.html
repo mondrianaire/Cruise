@@ -161,6 +161,16 @@
           <path d="M-5.5 0 Q0 -5 5.5 0 Q0 3 -5.5 0 Z" fill="none" stroke="#3fa0ad" stroke-width="1.3"/>
           <circle r="1.5" fill="#3fa0ad"/>
         </symbol>
+        <!-- Cabin-window strip: repeating 2.4×4 tick every 9px. Subtle by design — reads as
+             a row of windows from a distance without competing with the deck-band labels. -->
+        <pattern id="window-strip" patternUnits="userSpaceOnUse" width="9" height="4" x="0" y="0">
+          <rect x="0" y="0" width="2.4" height="4" fill="#1a3a4a" fill-opacity="0.32"/>
+        </pattern>
+        <!-- Lifeboat strip: small orange rounded rect every 13px. Sits along the Deck 4
+             boundary in the cross-section — Vista-class lifeboats hang under Deck 4. -->
+        <pattern id="lifeboat-strip" patternUnits="userSpaceOnUse" width="13" height="6" x="0" y="0">
+          <rect x="1" y="1" width="11" height="4" rx="1.5" fill="#e07a3a" stroke="#7a3a10" stroke-width="0.45"/>
+        </pattern>
       </defs>
 
       <!-- ── waterline (behind ship) ── -->
@@ -186,13 +196,17 @@
         <rect class="deck-band odd" x="152" y="472" width="756" height="40"/>  <!-- 1  -->
       </g>
 
-      <!-- ── ship outline (silhouette over the bands) ── -->
+      <!-- ── ship outline (silhouette over the bands) ──
+           v.076: explicit stepped taper at the bow to make the upper decks read as
+           narrower than the main hull — the single strongest "cruise-liner" cue. -->
       <path class="ship-outline" d="
         M 90 512
         Q 78 480 95 444
         Q 115 390 138 320
         Q 148 240 152 152
-        Q 168 102 220 70
+        Q 158 132 200 116
+        L 254 116
+        Q 274 92 302 70
         L 880 70
         Q 920 76 930 112
         L 950 152
@@ -200,9 +214,21 @@
         Q 945 504 920 512
         Z"/>
 
-      <!-- ── funnel + mast ── -->
-      <rect class="funnel-body" x="612" y="12" width="42" height="58" rx="3"/>
-      <rect class="funnel-band" x="612" y="24" width="42" height="9"/>
+      <!-- ── hull contrast: navy boot-stripe + red waterline accent ──
+           Sits inside the hull, just above the painted waterline. Subtle bands
+           — high enough up to read as paint, low enough not to touch Deck 1 labels. -->
+      <g class="hull-bands" aria-hidden="true">
+        <rect class="hull-boot" x="92" y="506" width="828" height="6"/>
+        <rect class="hull-waterline-red" x="92" y="500" width="828" height="3"/>
+      </g>
+
+      <!-- ── funnel + mast (v.076: bigger, with a rim cap + accent band) ── -->
+      <g class="funnel-group" aria-hidden="true">
+        <rect class="funnel-cap"      x="600" y="2"  width="64" height="6" rx="2"/>
+        <rect class="funnel-body"     x="608" y="8"  width="48" height="62" rx="4"/>
+        <rect class="funnel-band"     x="608" y="22" width="48" height="11"/>
+        <rect class="funnel-band-sm"  x="608" y="38" width="48" height="3"/>
+      </g>
       <line class="mast" x1="246" y1="20" x2="246" y2="70"/>
       <circle cx="246" cy="22" r="2.2" fill="#e6c477"/>
 
@@ -220,6 +246,26 @@
         <line class="deck-divider" x1="152" y1="472" x2="908" y2="472"/>
       </g>
 
+
+      <!-- ── cabin-window strips: one row per cabin deck, just below the deck divider.
+           Pattern-filled rects so the stairway shafts (dashed outlines) sit cleanly on top.
+           Decks 4–8 use the full hull width; Deck 1 only the cabin sub-zone. ── -->
+      <g class="window-rows" aria-hidden="true">
+        <rect class="win-strip" x="160" y="196" width="744" height="4"/>  <!-- Deck 8 -->
+        <rect class="win-strip" x="160" y="236" width="744" height="4"/>  <!-- Deck 7 -->
+        <rect class="win-strip" x="160" y="276" width="744" height="4"/>  <!-- Deck 6 -->
+        <rect class="win-strip" x="160" y="316" width="744" height="4"/>  <!-- Deck 5 -->
+        <rect class="win-strip" x="160" y="356" width="744" height="4"/>  <!-- Deck 4 -->
+        <rect class="win-strip" x="200" y="476" width="305" height="4"/>  <!-- Deck 1 cabin sub-zone only -->
+      </g>
+
+      <!-- ── lifeboats: hanging just under Deck 4 (the lifeboat deck on Vista-class).
+           Three segments skip the World Stage zone and the stairway shafts. ── -->
+      <g class="lifeboats" aria-hidden="true">
+        <rect class="lboat-strip" x="340" y="386" width="196" height="6"/>
+        <rect class="lboat-strip" x="568" y="386" width="194" height="6"/>
+        <rect class="lboat-strip" x="792" y="386" width="116" height="6"/>
+      </g>
 
       <!-- ── stateroom-area markers: identifies cabin sections on the cross-section ── -->
       <g class="cabin-zones" aria-hidden="true">
