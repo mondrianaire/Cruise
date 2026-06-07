@@ -2216,3 +2216,33 @@ body.view-floor .ship-no-toggle{ display:none !important; }
   color:var(--cream, #f1e7cf);
   border-color:var(--brass-lt, #e6c477);
 }
+
+
+/* ============================================================
+   v.108: emoji sub-glyphs on the cross-section.
+   ============================================================ */
+.dc-svg text.emoji-glyph{
+  font: 11px/1 "Apple Color Emoji", "Segoe UI Emoji",
+               "Noto Color Emoji", "EmojiOne Color", "Twemoji Mozilla",
+               system-ui, sans-serif;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  cursor: pointer;
+  user-select: none;
+}
+.dc-svg text.emoji-glyph-sm{ font-size: 9px; }
+
+.dc-svg g.emoji-sub{
+  cursor: pointer;
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: filter .15s ease, transform .15s ease;
+}
+.dc-svg g.emoji-sub:hover,
+.dc-svg g.emoji-sub:focus-visible{
+  filter: drop-shadow(0 0 4px rgba(230,196,119,.85));
+}
+.dc-svg g.emoji-sub:hover text.emoji-glyph,
+.dc-svg g.emoji-sub:focus-visible text.emoji-glyph{
+  transform: scale(1.18);
+}

@@ -1,0 +1,19 @@
+v.108: emoji glyphs for venue offerings; subtitles for info only
+
+- Function-describing subtitles replaced with clickable emoji glyphs that
+  tooltip the explanation on hover and route into the deck plan with the
+  matching sub-venue highlighted:
+    Sports Court "basketball+pickleball" -> basketball + pingpong
+    Greenhouse "spa+salon"               -> spa + salon
+    Lido Market "buffet+grills"          -> buffet + Canaletto (folded in)
+    Explorations "cafe library web"      -> coffee + books + globe
+    Music Walk "Lincoln BB Bbrd"         -> violin + sax + piano
+- Existing abstract sub-glyphs converted to themed emojis:
+    Kids&Teens, Meeting Rms, Shops Photo, Art Gallery, Lido Pool food trio.
+- Tasman cinema, Retreat cabanas, Crow's Nest mic, Fitness dumbbell added.
+- Informational subtitles kept verbatim: "enter Deck X", "keycard 24h",
+  "refit '25", "refit '26?".
+- Glyph-click JS loop extended to recognise text.emoji-glyph and
+  stopPropagation so child clicks don't double-fire the parent bubble.
+- CSS: .emoji-glyph color-emoji font stack, anchor-middle, hover scale +
+  drop-shadow.
