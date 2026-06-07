@@ -834,6 +834,24 @@
   }
 
   // Attach handlers to all <g> wrapping a glyph
+  // Multi-deck zone clicks: data-deck + data-venue-name attrs drive the jump.
+  document.querySelectorAll('.dc-svg .md-zone').forEach(function(z){
+    var deck = z.getAttribute('data-deck');
+    var vname = z.getAttribute('data-venue-name') || '';
+    if(!deck) return;
+    z.setAttribute('role','button');
+    z.setAttribute('tabindex','0');
+    function go(){
+      setTab('floor'); setDeck(deck);
+      if(vname){
+        var v = venueMatch(deck, vname);
+        setTimeout(function(){ if(v) highlightVenue(deck, v.id); }, 80);
+      }
+    }
+    z.addEventListener('click', go);
+    z.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); go(); } });
+  });
+
   document.querySelectorAll('.dc-svg g').forEach(function(g){
     var glyph = g.querySelector('use.glyph');
     if(glyph){

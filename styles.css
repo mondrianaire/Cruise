@@ -1284,3 +1284,80 @@ nav .links a:hover .sublabels,nav .links a.active .sublabels{color:var(--brass);
   .fp-modal-head{padding:0 50px 0 0;}
   .fp-modal-deck-num{font-size:1.1rem;}
 }
+
+
+/* ============ Cross-section multi-deck venue zones ============ */
+.multi-deck rect{
+  stroke-width:1.2;
+  vector-effect:non-scaling-stroke;
+}
+.md-lbl{
+  font:800 8.5px var(--d-mono);
+  text-anchor:middle;
+  letter-spacing:.08em;
+}
+.md-sub{
+  font:500 7px var(--d-mono);
+  text-anchor:middle;
+  letter-spacing:.04em;
+}
+.md-lbl-sm{
+  font:800 8px var(--d-mono);
+  text-anchor:middle;
+  letter-spacing:.08em;
+}
+.md-sub-sm{
+  font:500 6.5px var(--d-mono);
+  text-anchor:middle;
+  letter-spacing:.04em;
+}
+
+/* per-category palette — keyed to the cream chart base */
+.md-stage rect  { fill:rgba(216,57,43,.20);  stroke:rgba(162,51,35,.7); }
+.md-stage .md-lbl, .md-stage .md-lbl-sm { fill:#6a1e15; }
+.md-stage .md-sub, .md-stage .md-sub-sm { fill:#8a2c1e; }
+
+.md-atrium rect { fill:rgba(239,178,40,.22); stroke:rgba(179,133,29,.7); }
+.md-atrium .md-lbl, .md-atrium .md-lbl-sm { fill:#5a3e08; }
+.md-atrium .md-sub, .md-atrium .md-sub-sm { fill:#7a5410; }
+
+.md-pool rect   { fill:rgba(63,160,173,.22); stroke:rgba(45,116,128,.7); }
+.md-pool .md-lbl, .md-pool .md-lbl-sm { fill:#1a4248; }
+.md-pool .md-sub, .md-pool .md-sub-sm { fill:#2a565e; }
+
+.md-din rect    { fill:rgba(230,196,119,.30); stroke:rgba(184,154,94,.7); }
+.md-din .md-lbl, .md-din .md-lbl-sm { fill:#5a3e10; }
+.md-din .md-sub, .md-din .md-sub-sm { fill:#7c561e; }
+
+.md-cas rect    { fill:rgba(216,57,43,.18);  stroke:rgba(140,40,30,.7); }
+.md-cas .md-lbl, .md-cas .md-lbl-sm { fill:#5a1810; }
+
+.md-obs rect    { fill:rgba(63,160,173,.18); stroke:rgba(45,116,128,.7); }
+.md-obs .md-lbl, .md-obs .md-lbl-sm { fill:#1a4248; }
+.md-obs .md-sub, .md-obs .md-sub-sm { fill:#2a565e; }
+
+.md-retreat rect{ fill:rgba(95,214,160,.22); stroke:rgba(50,140,100,.7); }
+.md-retreat .md-lbl, .md-retreat .md-lbl-sm { fill:#0e3d28; }
+.md-retreat .md-sub, .md-retreat .md-sub-sm { fill:#1a5538; }
+
+.md-spa rect    { fill:rgba(95,214,160,.20); stroke:rgba(50,140,100,.7); }
+.md-spa .md-lbl, .md-spa .md-lbl-sm { fill:#0e3d28; }
+.md-spa .md-sub, .md-spa .md-sub-sm { fill:#1a5538; }
+
+.md-show rect   { fill:rgba(216,57,43,.16);  stroke:rgba(162,51,35,.65); }
+.md-show .md-lbl, .md-show .md-lbl-sm { fill:#6a1e15; }
+.md-show .md-sub, .md-show .md-sub-sm { fill:#8a2c1e; }
+
+.md-svc rect    { fill:rgba(239,178,40,.18); stroke:rgba(179,133,29,.7); }
+.md-svc .md-lbl, .md-svc .md-lbl-sm { fill:#5a3e08; }
+.md-svc .md-sub, .md-svc .md-sub-sm { fill:#7a5410; }
+
+.md-gym rect    { fill:rgba(95,214,160,.20); stroke:rgba(50,140,100,.7); }
+.md-gym .md-lbl, .md-gym .md-lbl-sm { fill:#0e3d28; }
+.md-gym .md-sub, .md-gym .md-sub-sm { fill:#1a5538; }
+
+/* Clickable behavior — zones act like the amenity glyphs */
+.md-zone{cursor:pointer; transition:opacity .12s;}
+.md-zone:hover rect{stroke-width:1.8; filter:drop-shadow(0 0 3px rgba(200,155,74,.7));}
+.md-zone:focus{outline:none;}
+.md-zone:focus-visible rect{stroke-width:2.4;}
