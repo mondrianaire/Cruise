@@ -2377,3 +2377,109 @@ body.view-floor .ship-no-toggle{ display:none !important; }
 @media (max-width:900px){
   .ship-view-elev .dc-svg-wrap::after{ display:none; }
 }
+
+
+/* ============================================================
+   v.113: full-screen orientation gate (mobile/tablet, portrait load).
+   ============================================================ */
+.rotate-overlay{
+  position:fixed; inset:0; z-index:10000;
+  display:flex; align-items:center; justify-content:center;
+  padding:24px;
+  opacity:0; transition:opacity .22s ease;
+  pointer-events:auto;
+}
+.rotate-overlay.visible{ opacity:1; }
+.rotate-overlay .ro-backdrop{
+  position:absolute; inset:0;
+  background:radial-gradient(120% 80% at 50% 40%, rgba(11,42,58,.94) 0%, rgba(4,19,28,.98) 70%);
+  -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px);
+}
+.rotate-overlay .ro-card{
+  position:relative;
+  max-width:380px; width:100%;
+  padding:30px 26px 26px;
+  text-align:center;
+  background:linear-gradient(155deg, rgba(11,42,58,.98), rgba(4,19,28,.98));
+  border:1px solid var(--brass, #c89b4a);
+  border-radius:18px;
+  box-shadow:0 18px 50px rgba(0,0,0,.65), inset 0 0 0 1px rgba(200,155,74,.18);
+  color:var(--cream, #f1e7cf);
+  transform:translateY(12px) scale(.97);
+  transition:transform .26s ease;
+}
+.rotate-overlay.visible .ro-card{ transform:translateY(0) scale(1); }
+
+/* Animated phone glyph + curved rotate arrow */
+.rotate-overlay .ro-phone{
+  position:relative;
+  width:88px; height:88px;
+  margin:0 auto 14px;
+  color:var(--brass-lt, #e6c477);
+}
+.rotate-overlay .ro-phone-body{
+  position:absolute; left:32px; top:8px;
+  width:24px; height:72px;
+  border:2.5px solid currentColor;
+  border-radius:6px;
+  animation:rotatePhone 2.2s ease-in-out infinite;
+  transform-origin:center center;
+}
+.rotate-overlay .ro-phone-screen{
+  position:absolute; left:36px; top:14px;
+  width:16px; height:60px;
+  background:rgba(230,196,119,.22);
+  border-radius:2px;
+  animation:rotatePhone 2.2s ease-in-out infinite;
+  transform-origin:42px 44px;
+}
+.rotate-overlay .ro-arrow{
+  position:absolute; left:14px; bottom:6px;
+  width:60px; height:32px;
+  color:var(--brass, #c89b4a);
+}
+@keyframes rotatePhone{
+  0%   { transform:rotate(0deg); }
+  45%  { transform:rotate(0deg); }
+  65%  { transform:rotate(-90deg); }
+  85%  { transform:rotate(-90deg); }
+  100% { transform:rotate(0deg); }
+}
+
+.rotate-overlay .ro-title{
+  margin:0 0 8px;
+  font:700 1.25rem/1.2 var(--d-serif, serif);
+  color:var(--brass-lt, #e6c477);
+  letter-spacing:.01em;
+}
+.rotate-overlay .ro-msg{
+  margin:0 0 22px;
+  font:400 .9rem/1.5 var(--d-body, system-ui);
+  color:var(--ink-dim, #c4b896);
+}
+.rotate-overlay .ro-msg em{
+  color:var(--cream, #f1e7cf);
+  font-style:italic;
+}
+.rotate-overlay .ro-alt{
+  display:inline-block;
+  padding:11px 18px;
+  background:transparent;
+  border:1px solid rgba(200,155,74,.55);
+  border-radius:9px;
+  color:var(--ink-dim, #c4b896);
+  font:600 .78rem/1 var(--d-mono, monospace);
+  letter-spacing:.06em; text-transform:uppercase;
+  cursor:pointer;
+  transition:color .15s, border-color .15s, background .15s;
+}
+.rotate-overlay .ro-alt:hover{
+  color:var(--cream, #f1e7cf);
+  border-color:var(--brass-lt, #e6c477);
+  background:rgba(200,155,74,.08);
+}
+
+/* Desktop should never see the overlay even if portrait somehow triggers it. */
+@media (min-width:1101px){
+  .rotate-overlay{ display:none !important; }
+}

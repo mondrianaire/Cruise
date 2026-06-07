@@ -1,0 +1,21 @@
+v.113: blocking orientation gate + snap-to-top on rotation
+
+On initial load on mobile/tablet in portrait, the ship page now shows a
+full-screen orientation gate:
+  - animated phone glyph + curved rotate arrow
+  - "Rotate to landscape" headline
+  - explanation that cross-section view is built for landscape
+  - small "Use deck plans (portrait) instead" escape hatch
+
+The gate dismisses the moment the device flips to landscape (no manual
+action required). The escape hatch sets the override flag, switches to
+deck plans, and dismisses. Desktop (>=1101px) never sees the gate.
+
+Rotation behavior:
+  - sessionStorage.shipViewOverride no longer blocks autoOrientView -
+    rotation is now authoritative.
+  - On every orientation change the view snaps to the very top of the
+    deckchart container so the user always lands at the top of the
+    new view.
+  - Landscape switches to cross-section + snaps.
+  - Portrait switches to deck plans + snaps.

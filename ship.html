@@ -1131,15 +1131,62 @@
      Desktop (>1100px) is never overridden because both views fit comfortably.
      User override (any explicit tab click) is sticky for the session so we don't
      keep flipping the view as they rotate. */
+  /* v.113: snap-to-top helper — scrolls so the deckchart is at the very top
+     of the viewport (the "VERY TOP" of the view per user request). */
+  function snapToDeckchart(){
+    var dc = document.querySelector('.deckchart');
+    if(!dc) return;
+    var rect = dc.getBoundingClientRect();
+    var y = window.scrollY + rect.top - 4;
+    try{ window.scrollTo({top: Math.max(0, y), behavior:'smooth'}); }
+    catch(e){ window.scrollTo(0, Math.max(0, y)); }
+  }
+
+  /* v.113: orientation-gate modal control. */
+  function showOrientationGate(){
+    var g = document.getElementById('orientationGate');
+    if(!g) return;
+    if(!window.matchMedia('(max-width:1100px)').matches) return; // desktop bail
+    if(!window.matchMedia('(orientation:portrait)').matches) return;
+    try{ if(sessionStorage.getItem('orientationGateDismissed')) return; }catch(e){}
+    g.hidden = false;
+    requestAnimationFrame(function(){ g.classList.add('visible'); });
+    document.body.style.overflow = 'hidden';
+  }
+  function hideOrientationGate(){
+    var g = document.getElementById('orientationGate');
+    if(!g) return;
+    g.classList.remove('visible');
+    document.body.style.overflow = '';
+    setTimeout(function(){ g.hidden = true; }, 220);
+  }
+  var roAlt = document.getElementById('roUseDeckPlans');
+  if(roAlt){
+    roAlt.addEventListener('click', function(){
+      try{ sessionStorage.setItem('orientationGateDismissed', '1'); }catch(e){}
+      try{ sessionStorage.setItem('shipViewOverride', '1'); }catch(e){}
+      setTab('floor');
+      hideOrientationGate();
+    });
+  }
+
   function autoOrientView(){
     if(window.matchMedia('(min-width:1101px)').matches) return; // desktop: no auto
-    try{ if(sessionStorage.getItem('shipViewOverride')) return; }catch(e){}
     var portrait = window.matchMedia('(orientation:portrait)').matches;
     var targetView = portrait ? 'floor' : 'elev';
+    /* Landscape always dismisses the gate. */
+    if(!portrait){
+      try{ sessionStorage.setItem('orientationGateDismissed', '1'); }catch(e){}
+      hideOrientationGate();
+    }
     var activeTab = document.querySelector('.ship-view-tabs .svt.active');
-    if(activeTab && activeTab.dataset.view === targetView) return;
-    setTab(targetView);
+    var needSwitch = !activeTab || activeTab.dataset.view !== targetView;
+    if(needSwitch) setTab(targetView);
+    /* v.113: snap to the top of the deckchart on every orientation flip so
+       the user always lands at the top of the active view. */
+    setTimeout(snapToDeckchart, needSwitch ? 60 : 0);
   }
+  showOrientationGate();
   autoOrientView();
   /* Re-run on orientation change. Both events fire on different platforms. */
   window.addEventListener('orientationchange', function(){ setTimeout(autoOrientView, 80); });
@@ -1657,6 +1704,28 @@
 <button type="button" id="navPeek" class="nav-peek" aria-label="Show menu" hidden>
   <span aria-hidden="true">≡</span>
 </button>
+
+<!-- v.113: blocking orientation gate. Shown on initial load when the user is
+     on a mobile/tablet in portrait. Auto-dismisses the moment the device flips
+     to landscape; the user can also tap "Use deck plans (portrait) instead". -->
+<div id="orientationGate" class="rotate-overlay" role="dialog" aria-modal="true" aria-labelledby="roTitle" hidden>
+  <div class="ro-backdrop" aria-hidden="true"></div>
+  <div class="ro-card">
+    <div class="ro-phone" aria-hidden="true">
+      <div class="ro-phone-body"></div>
+      <div class="ro-phone-screen"></div>
+      <svg class="ro-arrow" viewBox="0 0 60 40" aria-hidden="true">
+        <path d="M 8 28 A 22 22 0 0 1 52 28" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+        <path d="M 50 14 L 52 28 L 38 28" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <h2 id="roTitle" class="ro-title">Rotate to landscape</h2>
+    <p class="ro-msg">The <em>Zuiderdam</em>'s cross-section view is built for landscape. Turn your device sideways and we'll snap to it at the top of the page.</p>
+    <button type="button" id="roUseDeckPlans" class="ro-alt">
+      Use deck plans (portrait) instead →
+    </button>
+  </div>
+</div>
 
 <!-- v.107: view-switch confirmation dialog. Shown when the user taps a view
      tab on mobile/tablet — gives them a chance to cancel before the view flips. -->
