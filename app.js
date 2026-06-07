@@ -169,7 +169,7 @@
 })();
 
 /* ===== Site version badge in nav (visible across all pages) ===== */
-window.SITE_VERSION = 'v.063';
+window.SITE_VERSION = 'v.064';
 (function(){
   document.querySelectorAll('nav .brand .br-y').forEach(function(y){
     if(!y.querySelector('.br-ver')){
@@ -180,4 +180,5 @@ window.SITE_VERSION = 'v.063';
     }
   });
 })();
+
 
