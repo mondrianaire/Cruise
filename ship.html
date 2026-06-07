@@ -1116,5 +1116,98 @@
   });
 })();
 </script>
+
+<script id="shipTouchHandler">
+/* ===== iOS tablet touch behavior =====
+   • Quick tap (< 350ms) → let the existing click handler run = navigate
+   • Long press (≥ 350ms) → toggle .is-touched (mirrors :hover) so the
+     tooltip / glow / label pill appears, and *prevent* the click so the
+     user can read the tooltip without being navigated away.
+*/
+(function(){
+  var HOLD = 350;
+  var TOUCH_TARGETS = [
+    '.dc-svg .xs-clickable',     // amenity glyphs (icons that survived)
+    '.dc-svg .md-zone',          // multi-deck venue boxes
+    '.dc-svg .deck-row',         // left-column deck labels
+    '.dc-svg .cz',               // cabin-zone stateroom bands
+    '.dc-svg .sw-bank',          // stairway / elevator shafts
+    '.fp-hot',                   // floor-plan hotspots
+    '.dv-item'                   // venue list rows
+  ].join(',');
+
+  var holdTimer  = null;
+  var holdEl     = null;
+  var holdFired  = false;
+  var clearTimer = null;
+
+  function clearTouched(el){
+    if(el && el.classList) el.classList.remove('is-touched');
+  }
+  function applyTouched(el){
+    if(!el || !el.classList) return;
+    document.querySelectorAll('.is-touched').forEach(function(x){
+      if(x !== el) x.classList.remove('is-touched');
+    });
+    el.classList.add('is-touched');
+
+    // Bidirectional sync for hotspots ↔ venue rows
+    var deck = el.getAttribute('data-deck');
+    var vid  = el.getAttribute('data-venue-id');
+    if(deck && vid){
+      var counterpart = document.getElementById('venue-' + deck + '-' + vid)
+                     || document.querySelector('.fp-hot[data-deck="'+deck+'"][data-venue-id="'+vid+'"]');
+      if(counterpart) counterpart.classList.add('is-touched');
+    }
+    if(el.id && el.id.indexOf('venue-') === 0){
+      var parts = el.id.match(/^venue-(\d+)-(.+)$/);
+      if(parts){
+        document.querySelectorAll('.fp-hot[data-deck="'+parts[1]+'"][data-venue-id="'+parts[2]+'"]').forEach(function(h){ h.classList.add('is-touched'); });
+      }
+    }
+  }
+
+  document.addEventListener('touchstart', function(e){
+    var el = e.target.closest(TOUCH_TARGETS);
+    if(!el) return;
+    holdEl = el;
+    holdFired = false;
+    clearTimeout(clearTimer);
+    holdTimer = setTimeout(function(){
+      holdFired = true;
+      applyTouched(holdEl);
+    }, HOLD);
+  }, {passive:true});
+
+  document.addEventListener('touchend', function(e){
+    clearTimeout(holdTimer);
+    if(holdFired){
+      // Long-press: keep tooltip visible briefly, suppress the click that follows.
+      e.preventDefault();
+      clearTimer = setTimeout(function(){
+        if(holdEl) clearTouched(holdEl);
+        document.querySelectorAll('.is-touched').forEach(function(x){ x.classList.remove('is-touched'); });
+      }, 2200);
+    }
+    holdTimer = null;
+    holdEl = null;
+    holdFired = false;
+  }, {passive:false});
+
+  document.addEventListener('touchmove', function(){
+    if(holdTimer){ clearTimeout(holdTimer); holdTimer = null; }
+    if(holdEl){
+      clearTouched(holdEl);
+      document.querySelectorAll('.is-touched').forEach(function(x){ x.classList.remove('is-touched'); });
+    }
+    holdEl = null; holdFired = false;
+  }, {passive:true});
+
+  document.addEventListener('touchcancel', function(){
+    clearTimeout(holdTimer);
+    holdEl = null; holdFired = false;
+  });
+})();
+</script>
 </body>
 </html>
