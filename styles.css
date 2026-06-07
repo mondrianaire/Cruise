@@ -2246,3 +2246,83 @@ body.view-floor .ship-no-toggle{ display:none !important; }
 .dc-svg g.emoji-sub:focus-visible text.emoji-glyph{
   transform: scale(1.18);
 }
+
+
+/* ============================================================
+   v.110: Deck-plans view-first layout — image takes the left
+   column, title / view tabs / picker / venue info stack on the
+   right. Keeps the rest of the page unchanged.
+   ============================================================ */
+@media (min-width: 901px){
+  body.view-floor .deckchart{
+    display:grid;
+    grid-template-columns: minmax(360px, 42%) 1fr;
+    grid-template-areas:
+      "image head"
+      "image picker"
+      "image info";
+    gap:22px 28px;
+    align-items:start;
+  }
+  body.view-floor .deckchart-head{
+    grid-area: head;
+    margin:0 0 4px;
+  }
+  body.view-floor .deckchart-head h3{ margin:0; }
+  /* The view tabs sit inside the head; let them wrap nicely on the narrower
+     right column. */
+  body.view-floor .deckchart-head .ship-view-tabs{ flex-wrap:wrap; }
+
+  /* Flatten the view-floor / stage / panel layers into the grid so the
+     active panel's .fp-plan-col and .fp-data-col take grid areas directly. */
+  body.view-floor .ship-view-floor{ display:contents; }
+  body.view-floor .fp-stage{ display:contents; }
+  body.view-floor .fp-panel.active{ display:contents; }
+
+  body.view-floor .fp-deck-mobile,
+  body.view-floor .fp-deck-picker{
+    grid-area: picker;
+    margin:0;
+  }
+
+  /* The DECK PLAN — gets the dominant left column. */
+  body.view-floor .fp-plan-col{
+    grid-area: image;
+    position:sticky; top:12px;
+    align-self:start;
+    margin:0;
+    width:100%;
+    max-width:none;
+  }
+  body.view-floor .fp-plan-col .fp-img-stage{
+    margin:0; width:100%;
+    max-width:none !important;
+    max-height:88vh !important;
+  }
+  body.view-floor .fp-plan-col .fp-deck-img{
+    width:100%; max-width:100%;
+    /* The image is portrait; let height drive it so it can fill more of the
+       viewport without bursting the column width. */
+    height:auto;
+    object-fit:contain;
+  }
+
+  /* Venue info / deck name / sub-note all on the right. */
+  body.view-floor .fp-data-col{ grid-area: info; }
+
+  /* Hide the auto-collapse peek button when we're in deck-plans view —
+     the views-first nav-collapse rule was tuned for the elevation view. */
+  body.view-floor .nav-peek{ display:none; }
+}
+
+/* On the very widest screens, push the image column a bit larger so the
+   deck plan is genuinely the hero. */
+@media (min-width: 1400px){
+  body.view-floor .deckchart{
+    grid-template-columns: minmax(420px, 38%) 1fr;
+    gap:24px 36px;
+  }
+}
+
+/* Below 900px the old single-column stack is correct (image-left/info-right
+   inside the panel) — no override needed. */
