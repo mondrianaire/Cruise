@@ -1841,10 +1841,13 @@ nav .links a:hover .sublabels,nav .links a.active .sublabels{color:var(--brass);
 /* When active, transform the whole cross-section wrap into a night scene */
 .dc-svg-wrap.night-owl{
   background:
-    radial-gradient(ellipse at top, rgba(255,255,255,.06) 0%, transparent 40%),
-    radial-gradient(ellipse at 80% 30%, rgba(200,200,255,.04) 0%, transparent 50%),
-    linear-gradient(180deg, #0a1929 0%, #051018 100%) !important;
-  border-color:#1f3548 !important;
+    /* faint blue wisp top-left, like a nebula */
+    radial-gradient(ellipse 600px 120px at 12% 8%, rgba(80,140,220,.05) 0%, transparent 60%),
+    /* second wisp aft */
+    radial-gradient(ellipse 400px 100px at 88% 22%, rgba(140,90,220,.04) 0%, transparent 60%),
+    /* near-black with subtle blue undertone */
+    linear-gradient(180deg, #02060f 0%, #000004 100%) !important;
+  border-color:#0d1a28 !important;
   position:relative;
   overflow:hidden;
 }
@@ -1853,25 +1856,51 @@ nav .links a:hover .sublabels,nav .links a.active .sublabels{color:var(--brass);
   content:"";
   position:absolute;inset:0;
   background-image:
-    radial-gradient(1px 1px at 12% 18%, rgba(255,255,255,.7) 50%, transparent),
-    radial-gradient(1.2px 1.2px at 28% 64%, rgba(255,255,255,.9) 50%, transparent),
-    radial-gradient(1px 1px at 47% 82%, rgba(255,255,255,.6) 50%, transparent),
-    radial-gradient(1.4px 1.4px at 68% 22%, rgba(255,255,255,.85) 50%, transparent),
-    radial-gradient(1px 1px at 82% 56%, rgba(255,255,255,.7) 50%, transparent),
-    radial-gradient(1px 1px at 90% 12%, rgba(255,255,255,.7) 50%, transparent);
+    /* bright primary stars */
+    radial-gradient(1.6px 1.6px at  8% 14%, #fff 50%, transparent),
+    radial-gradient(1.8px 1.8px at 22% 8%,  #fff 50%, transparent),
+    radial-gradient(2px 2px   at 35% 22%, #fff 50%, transparent),
+    radial-gradient(1.5px 1.5px at 48% 6%,  #cfd9ff 50%, transparent),
+    radial-gradient(1.8px 1.8px at 62% 18%, #fff 50%, transparent),
+    radial-gradient(2.2px 2.2px at 76% 9%,  #fff 50%, transparent),
+    radial-gradient(1.6px 1.6px at 90% 16%, #fff 50%, transparent),
+    /* second tier */
+    radial-gradient(1.2px 1.2px at 14% 32%, #d6e0ff 50%, transparent),
+    radial-gradient(1px 1px     at 28% 44%, #fff 50%, transparent),
+    radial-gradient(1.4px 1.4px at 42% 36%, #fff 50%, transparent),
+    radial-gradient(1px 1px     at 56% 48%, #b8c4f0 50%, transparent),
+    radial-gradient(1.2px 1.2px at 70% 42%, #fff 50%, transparent),
+    radial-gradient(1.4px 1.4px at 84% 34%, #fff 50%, transparent),
+    radial-gradient(1px 1px     at 95% 52%, #fff 50%, transparent),
+    /* third tier — dimmer */
+    radial-gradient(.8px .8px at  6% 58%, rgba(255,255,255,.7) 50%, transparent),
+    radial-gradient(1px 1px   at 20% 66%, rgba(255,255,255,.85) 50%, transparent),
+    radial-gradient(.8px .8px at 33% 72%, rgba(255,255,255,.7) 50%, transparent),
+    radial-gradient(1px 1px   at 47% 60%, rgba(255,255,255,.8) 50%, transparent),
+    radial-gradient(1.2px 1.2px at 61% 70%, #fff 50%, transparent),
+    radial-gradient(.8px .8px at 74% 64%, rgba(255,255,255,.7) 50%, transparent),
+    radial-gradient(1px 1px   at 88% 76%, rgba(255,255,255,.85) 50%, transparent),
+    /* bottom tier */
+    radial-gradient(1px 1px   at 10% 86%, rgba(255,255,255,.75) 50%, transparent),
+    radial-gradient(.9px .9px at 26% 92%, rgba(255,255,255,.7) 50%, transparent),
+    radial-gradient(1.1px 1.1px at 44% 84%, #fff 50%, transparent),
+    radial-gradient(.8px .8px at 58% 94%, rgba(255,255,255,.7) 50%, transparent),
+    radial-gradient(1px 1px   at 72% 88%, rgba(255,255,255,.85) 50%, transparent),
+    radial-gradient(.9px .9px at 86% 92%, rgba(255,255,255,.7) 50%, transparent),
+    radial-gradient(1.3px 1.3px at 96% 86%, #fff 50%, transparent);
   pointer-events:none;
-  animation:starsTwinkle 5s ease-in-out infinite;
+  animation:starsTwinkle 6s ease-in-out infinite;
   z-index:0;
 }
 /* Moon top-right */
 .dc-svg-wrap.night-owl::after{
   content:"🌙";
-  position:absolute;top:14px;right:18px;
-  font-size:1.6rem;
-  text-shadow:0 0 14px rgba(230,230,255,.45), 0 0 28px rgba(230,230,255,.25);
+  position:absolute;top:8px;right:14px;
+  font-size:2.4rem;
+  filter:drop-shadow(0 0 14px rgba(240,240,255,.6)) drop-shadow(0 0 30px rgba(200,210,255,.4));
   z-index:1;
   pointer-events:none;
-  animation:moonGlow 4s ease-in-out infinite;
+  animation:moonGlow 5s ease-in-out infinite;
 }
 @keyframes starsTwinkle{
   0%,100%{opacity:.85;}

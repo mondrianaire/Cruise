@@ -1,4 +1,4 @@
-/* Canada & New England 2026 — shared app shell (motion toggle, countdown, stars, scrollspy) */
+﻿/* Canada & New England 2026 â€” shared app shell (motion toggle, countdown, stars, scrollspy) */
 (function(){
   'use strict';
 
@@ -86,7 +86,7 @@
     var nc = label.querySelector('.n'); if(nc) nc.remove();
     var labelTxt = label.textContent.trim();
     a.innerHTML = '<span class="nav-main">' + (n?n.outerHTML:'') + '<span>'+labelTxt+'</span></span>'
-      + (subs.length ? '<span class="sublabels">'+subs.join(' · ')+'</span>' : '');
+      + (subs.length ? '<span class="sublabels">'+subs.join(' Â· ')+'</span>' : '');
   });
 
 /* --- mobile hamburger nav sheet --- */
@@ -103,7 +103,7 @@
   sheet.setAttribute('aria-modal','true');
   sheet.setAttribute('aria-hidden','true');
   var top = '<div class="nav-sheet-top">' +
-    '<span class="nav-sheet-brand">⚓ Canada &amp; New England</span>' +
+    '<span class="nav-sheet-brand">âš“ Canada &amp; New England</span>' +
     '<button type="button" class="nav-sheet-close" id="navSheetClose" aria-label="Close menu">&times;</button>' +
     '</div>';
   var list = '<div class="nav-sheet-list">';
@@ -169,7 +169,7 @@
 })();
 
 /* ===== Site version badge in nav (visible across all pages) ===== */
-window.SITE_VERSION = 'v.062';
+window.SITE_VERSION = 'v.063';
 (function(){
   document.querySelectorAll('nav .brand .br-y').forEach(function(y){
     if(!y.querySelector('.br-ver')){
@@ -180,3 +180,4 @@ window.SITE_VERSION = 'v.062';
     }
   });
 })();
+
