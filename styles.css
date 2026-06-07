@@ -484,9 +484,22 @@ nav .links a:hover .sublabels,nav .links a.active .sublabels{color:var(--brass);
 
 /* ---- Tentative ("MAYBE") events ---- */
 .cal-evt-tent{
-  border-style:dashed !important;
+  border-top:1.5px dashed rgba(224,122,90,.55) !important;
+  margin-top:7px !important;
+  padding-top:11px !important;
   background:rgba(11,42,58,.35);
   opacity:.86;
+}
+/* Event immediately AFTER a tentative also needs breathing room
+   so its solid border doesn't visually collide with the tentative's */
+.cal-evt-tent + .cal-evt{
+  margin-top:7px;
+  padding-top:11px;
+}
+.cal-evt-tent:first-of-type{
+  border-top:1.5px dashed rgba(224,122,90,.55) !important;
+  margin-top:0 !important;
+  padding-top:8px !important;
 }
 .cal-evt-tent .cal-title{color:var(--ink-dim);}
 .cal-tent-pill{
