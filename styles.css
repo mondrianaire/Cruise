@@ -1636,39 +1636,28 @@ nav .links a:hover .sublabels,nav .links a.active .sublabels{color:var(--brass);
 }
 
 
-/* ============ Stairway / elevator banks on cross-section ============ */
+/* ============ Stairway / elevator banks — subtle dashed outlines ============ */
 .stairways .sw-shaft{
-  fill:rgba(11,42,58,.78);
-  stroke:#08161a;
+  fill:none;
+  stroke:#b89a5e;
   stroke-width:1;
+  stroke-dasharray:3 3;
+  opacity:.7;
 }
 .stairways .sw-shaft-11{
-  fill:rgba(95,214,160,.55);
-  stroke:#1e6c4a;
+  stroke:#5fd6a0;
 }
-.stairways .sw-lbl{
-  font:800 8.5px var(--d-mono);
-  text-anchor:middle;
-  fill:#1a3a4a;
-  letter-spacing:.14em;
-  text-transform:uppercase;
-}
-.stairways .sw-sub{
-  font:700 7.5px var(--d-mono);
-  text-anchor:middle;
-  fill:#3a240a;
-  letter-spacing:.06em;
-}
+/* Hide all labels — the multi-deck dashed outline IS the identity */
+.stairways .sw-lbl,
+.stairways .sw-sub,
 .stairways .sw-e{
-  font:800 9px var(--d-mono);
-  text-anchor:middle;
-  fill:#e6c477;
-  letter-spacing:0;
+  display:none;
 }
 .stairways .sw-bank{cursor:help;}
 .stairways .sw-bank:hover .sw-shaft{
-  stroke-width:1.6;
-  filter:drop-shadow(0 0 4px #c89b4a);
+  stroke-width:1.4;
+  opacity:1;
+  filter:drop-shadow(0 0 3px #c89b4a);
 }
 
 
