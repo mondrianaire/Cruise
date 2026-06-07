@@ -298,8 +298,9 @@
         <g class="cz" data-deck="4"><rect x="40" y="228.9" width="920" height="16.2"/><text class="cz-l" x="515" y="238.8">STATEROOMS · Deck 4 (verandahs)</text></g>
         <g class="cz" data-deck="1"><rect x="200" y="307.5" width="305" height="27"/><text class="cz-l" x="352" y="324">STATEROOMS · Deck 1</text></g>
       </g>
-      <!-- ── stairway / elevator banks (3 vertical shafts) ── -->
-      <g class="stairways" aria-hidden="true">
+      <!-- ── stairway / elevator banks (3 vertical shafts) ──
+           v.090: clipped to silhouette so shafts don't paint past the boat outline. -->
+      <g class="stairways" aria-hidden="true" clip-path="url(#hullShape)">
         <g class="sw-bank sw-fwd"><title>Forward stairs &amp; elevators — serves Decks 2 through 10</title>
           <rect class="sw-shaft" x="314" y="84" width="22" height="222" rx="2"/>
           <text class="sw-lbl" x="307" y="79.5">FWD</text>
@@ -356,8 +357,11 @@
         </g>
       </g>
 
-      <!-- ── multi-deck venue zones (behind amenity glyphs) ── -->
-      <g class="multi-deck">
+      <!-- ── multi-deck venue zones (behind amenity glyphs) ──
+           v.090: clip-path="url(#hullShape)" applied to the whole group so NO
+           container ever paints past the ship silhouette. Zones that overlap the
+           silhouette edge are visibly trimmed to follow the hull contour. -->
+      <g class="multi-deck" clip-path="url(#hullShape)">
         <g class="md-zone md-stage" data-deck="2" data-venue-name="World Stage" tabindex="0" role="button"><!-- hrs --><desc class="z-hours" data-247="0" data-late="0">Shows 8:00 PM &amp; 10:00 PM</desc><title>World Stage — 3-tier main theatre (stage / backstage Deck 1, orchestra seating Deck 2, balcony Deck 3)</title><rect x="212" y="247.5" width="98" height="88.5" rx="3"/><text class="md-lbl" x="261" y="290.2">WORLD STAGE</text><text class="md-sub" x="261" y="300">enter Deck 2 (orch.)</text></g>
         <g class="md-zone md-atrium" data-deck="1" data-venue-name="Atrium" tabindex="0" role="button"><!-- hrs --><desc class="z-hours" data-247="1" data-late="0">24h lobby · Front Office 24h · live music 5:00–10:30 PM</desc><title>Atrium — 3-deck-high lobby with the Waterford crystal seahorse · re-carpeted &amp; re-painted Dec 2025</title><rect x="515" y="247.5" width="105" height="88.5" rx="3"/><text class="md-lbl" x="567" y="310.5">ATRIUM</text><text class="md-sub" x="567" y="320.2">3-deck lobby · enter Deck 1</text></g>
         <g class="md-zone md-pool" data-deck="9" data-venue-name="Lido Pool" tabindex="0" role="button"><!-- hrs --><desc class="z-hours" data-247="1" data-late="0">Pool deck 24h · service 6:00 AM–11:00 PM</desc><title>Lido Pool — retractable glass roof (Deck 10 above) + 4 hot tubs</title><rect x="448" y="85.5" width="86" height="58.5" rx="3"/><text class="md-lbl" x="491" y="129">LIDO POOL</text><text class="md-sub" x="491" y="138">enter Deck 9</text></g>
