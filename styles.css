@@ -1402,9 +1402,11 @@ nav .links a:hover .sublabels,nav .links a.active .sublabels{color:var(--brass);
 
 /* Clickable behavior — zones act like the amenity glyphs */
 .md-zone{cursor:pointer; transition:opacity .12s;}
-.md-zone:hover rect{stroke-width:1.8; filter:drop-shadow(0 0 3px rgba(200,155,74,.7));}
+.md-zone:hover rect, .md-zone:hover path{stroke-width:1.8; filter:drop-shadow(0 0 3px rgba(200,155,74,.7));}
 .md-zone:focus{outline:none;}
-.md-zone:focus-visible rect{stroke-width:2.4;}
+.md-zone:focus-visible rect, .md-zone:focus-visible path{stroke-width:2.4;}
+/* v.102: path zones get rounded line joins to match the rect rx="3" corner softness */
+.md-zone path{ stroke-linejoin:round; stroke-linecap:round; }
 
 
 /* ============ Night Owl mode + function legend ============ */
@@ -2044,42 +2046,4 @@ body.view-elev  .mobile-rotate-hint.mrh-portrait { display:none !important; }
   stroke:#a8b4ff !important;
   stroke-width:1.8 !important;
   fill:rgba(124,137,224,.42) !important;
-  filter:drop-shadow(0 0 5px rgba(168,180,255,.55));
-}
-.dc-svg-wrap.night-owl .multi-deck .md-zone[data-late-on="1"] text{
-  fill:#08124a !important;
-  font-weight:700 !important;
-  opacity:1 !important;
-}
-
-/* Hint label below the SVG when night owl is on */
-.dc-svg-wrap.night-owl + .dc-note,
-.dc-svg-wrap.night-owl .dc-note{
-  background:linear-gradient(90deg, rgba(95,214,160,.10) 0%, transparent 70%);
-  border-left:3px solid #5fd6a0;
-  padding:8px 12px;
-  border-radius:0 4px 4px 0;
-}
-
-/* Toggle button gets brighter when active */
-.ship-no-toggle[aria-pressed="true"]{
-  background:linear-gradient(135deg, #1a2a3e 0%, #08141f 100%);
-  border-color:#7af0b8;
-  color:#aef0d0;
-  box-shadow:0 0 16px rgba(95,214,160,.5), inset 0 1px 0 rgba(255,255,255,.12);
-}
-.ship-no-toggle[aria-pressed="true"] .no-ic{
-  filter:drop-shadow(0 0 6px #7af0b8);
-  animation:moonGlow 3s ease-in-out infinite;
-}
-
-
-/* ============ Site version badge in nav ============ */
-.br-ver{
-  display:inline-block;
-  margin-left:5px;
-  padding:1px 4px;
-  font:600 .55rem/1 var(--d-mono);
-  letter-spacing:.06em;
-  text-transform:uppercase;
-  color:rgba(200
+  filter:drop-shadow(0 0 5
