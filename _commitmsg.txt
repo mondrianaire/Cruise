@@ -1,0 +1,17 @@
+v.111: June 13 maybes + transit maps for QC walking tour and Peggy's Cove
+
+- Marked all June 13 morning/afternoon events tent:true. The Airbnb (Les
+  Lofts St-Pierre) runs through the night, so everything from breakfast
+  through the Dufferin Terrace sunset is realistically a maybe. The
+  6:30 PM Uber-to-ship (jun13-embark) and 11:00 PM sail-away
+  (jun13-depart) stay non-tentative.
+- Added lat/lng to every June 13 event so they map cleanly.
+- New TRANSIT entry for 2026-06-13 — Quebec City walking tour: Place
+  Royale, Petit-Champlain, Funicular, Chateau Frontenac, Lunch on
+  Rue Saint-Jean, Notre-Dame Cathedral, Citadelle, Saint-Louis Gate,
+  Terrasse Dufferin, cruise terminal. Three walking polylines + an
+  Uber polyline for the sunset -> terminal leg.
+- New TRANSIT entry for 2026-06-18 — Halifax Peggy's Cove tour
+  (incorporating the ChatGPT route notes): Pier 22 -> Lunenburg ->
+  Mahone Bay -> Peggy's Cove Lighthouse -> Swissair 111 Memorial,
+  with optional Fairview Lawn + Citadel pins, then back to the ship.

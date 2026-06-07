@@ -231,6 +231,49 @@
   // Transit maps — keyed by date. Adds a map block with POIs + labeled route segments
   // (separate concept from the rental-car "drive" maps).
   var TRANSIT = {
+    '2026-06-13': {
+      title: 'Québec City walking tour + sail-away',
+      sub:   'Lower Town → Funicular → Upper Town → Citadelle → cruise terminal',
+      pois: [
+        { lat:46.81272, lng:-71.20379, label:'🥐 Place Royale (breakfast)',     sub:'8:30 AM · Lower Town',         kind:'attraction'  },
+        { lat:46.81192, lng:-71.20379, label:'🛍 Quartier Petit-Champlain',     sub:'9:30 AM · Breakneck Stairs',   kind:'attraction'  },
+        { lat:46.81181, lng:-71.20451, label:'🚠 Funicular',                    sub:'10:30 AM · Lower → Upper',     kind:'transit'     },
+        { lat:46.81289, lng:-71.20461, label:'🏰 Château Frontenac',            sub:'11:00 AM · Dufferin Terrace',  kind:'attraction'  },
+        { lat:46.81311, lng:-71.20654, label:"🍴 Lunch · Place d'Armes",        sub:'12:00 PM · Rue Saint-Jean',    kind:'attraction'  },
+        { lat:46.81414, lng:-71.20461, label:'⛪ Notre-Dame Cathedral',           sub:'1:30 PM · Upper Town',         kind:'attraction'  },
+        { lat:46.80764, lng:-71.20733, label:'🛡 La Citadelle',                   sub:'2:30 PM · Plains of Abraham',  kind:'attraction'  },
+        { lat:46.81082, lng:-71.21054, label:'🧱 Saint-Louis Gate',               sub:'4:00 PM · Fortifications',     kind:'attraction'  },
+        { lat:46.81215, lng:-71.20502, label:'🌇 Terrasse Dufferin (sunset)',     sub:'5:30 PM',                       kind:'attraction'  },
+        { lat:46.81860, lng:-71.19872, label:'⚓ Cruise terminal',                sub:'6:30 PM · Uber to ship',        kind:'destination' }
+      ],
+      routes: [
+        { mode:'walk', color:'#5fd6a0', weight:3, dash:'2 6', label:'Walking tour · Place Royale → Petit-Champlain → Funicular', points:[[46.81272,-71.20379],[46.81192,-71.20379],[46.81181,-71.20451]] },
+        { mode:'walk', color:'#5fd6a0', weight:3, dash:'2 6', label:'Walking tour · Frontenac → Lunch → Notre-Dame → Citadelle', points:[[46.81289,-71.20461],[46.81311,-71.20654],[46.81414,-71.20461],[46.80764,-71.20733]] },
+        { mode:'walk', color:'#5fd6a0', weight:3, dash:'2 6', label:'Walking tour · Citadelle → Fortifications → Sunset',       points:[[46.80764,-71.20733],[46.81082,-71.21054],[46.81215,-71.20502]] },
+        { mode:'car',  color:'#e07a5a', weight:3.5, dash:'8 4', label:'Uber · sunset → cruise terminal (~5 min)',                points:[[46.81215,-71.20502],[46.81460,-71.20100],[46.81860,-71.19872]] }
+      ]
+    },
+        '2026-06-18': {
+      title: "Halifax · Peggy's Cove + Lunenburg tour",
+      sub:   "Pier 22 → Lunenburg → Mahone Bay → Peggy's Cove → Halifax",
+      pois: [
+        { lat:44.64366, lng:-63.56636, label:'⚓ Halifax Pier 22',          sub:'In port 8 AM – 4 PM',           kind:'origin'      },
+        { lat:44.37790, lng:-64.30971, label:'🏘 Lunenburg (UNESCO)',        sub:'Old Town colours',              kind:'attraction'  },
+        { lat:44.44960, lng:-64.37965, label:'⛪ Mahone Bay',                 sub:'Three churches photo',          kind:'attraction'  },
+        { lat:44.49197, lng:-63.91624, label:"🌊 Peggy's Cove Lighthouse",  sub:'Granite + lighthouse',          kind:'attraction'  },
+        { lat:44.50243, lng:-63.92853, label:'🕊 Swissair 111 Memorial',     sub:'Whalesback overlook',           kind:'attraction'  },
+        { lat:44.65124, lng:-63.61337, label:'⚰ Fairview Lawn (optional)',   sub:'Titanic graves',                kind:'attraction'  },
+        { lat:44.64782, lng:-63.58079, label:'🛡 Halifax Citadel (optional)', sub:'Star fort',                     kind:'attraction'  },
+        { lat:44.64366, lng:-63.56636, label:'⚓ Back to ship',               sub:'4 PM all-aboard',               kind:'destination' }
+      ],
+      routes: [
+        { mode:'car',  color:'#e07a5a', weight:3.5, dash:'8 4', label:'Pier 22 → Lunenburg (~1h 20m · NS-103 W)',  points:[[44.64366,-63.56636],[44.55,-63.85],[44.45,-64.15],[44.37790,-64.30971]] },
+        { mode:'car',  color:'#e07a5a', weight:3.5, dash:'8 4', label:'Lunenburg → Mahone Bay (~12 min)',          points:[[44.37790,-64.30971],[44.42,-64.34],[44.44960,-64.37965]] },
+        { mode:'car',  color:'#e07a5a', weight:3.5, dash:'8 4', label:"Mahone Bay → Peggy's Cove (~50 min)",       points:[[44.44960,-64.37965],[44.47,-64.20],[44.48,-64.05],[44.49197,-63.91624]] },
+        { mode:'walk', color:'#5fd6a0', weight:3, dash:'2 6', label:"Peggy's Cove → Swissair Memorial (~3 km)", points:[[44.49197,-63.91624],[44.50243,-63.92853]] },
+        { mode:'car',  color:'#e07a5a', weight:3.5, dash:'8 4', label:"Peggy's Cove → Halifax (~45 min · NS-333 N)",points:[[44.50243,-63.92853],[44.55,-63.75],[44.64366,-63.56636]] }
+      ]
+    },
     '2026-06-20': {
       title: 'Boston disembark day',
       sub:   'Cruise terminal → Faneuil Hall → Boston Harbor Hotel',
@@ -278,16 +321,16 @@
     {d:'2026-06-12',k:'jun12-arrqc',t:'4:15 PM',e:'5:30 PM',n:'Arrive Old Québec — first walk',l:'Old Quebec',o:'Petit-Champlain · Château Frontenac · Terrasse Dufferin · Place Royale.',lat:46.8131,lng:-71.2076,drive:'qc'},
     {d:'2026-06-12',k:'jun12-checkin',t:'5:30 PM',e:'6:30 PM',n:'Check in — Les Lofts St-Pierre',l:'Old Quebec',o:'Unit SP304 Jett & Laura · Unit SP109 Sandra, Becca & Karen.',lat:46.8128,lng:-71.2052,drive:'qc'},
     {d:'2026-06-12',k:'jun12-rental',t:'6:30 PM',e:'7:30 PM',n:'Return rental car at YQB airport',l:'Québec City Jean Lesage (YQB)',o:'',lat:46.7911,lng:-71.3927,drive:'qc'},
-    {d:'2026-06-13',k:'jun13-breakfast',a:'Québec City + Embark',W:'Walking tour + sail-away',t:'8:30 AM',e:'9:30 AM',n:'Breakfast — Place Royale (Lower Town)',l:'Old Quebec',o:'Wander Place Royale, Notre-Dame-des-Victoires, Petit-Champlain.'},
-    {d:'2026-06-13',k:'jun13-petit',t:'9:30 AM',e:'10:30 AM',n:'Explore Petit-Champlain',l:'Quartier Petit-Champlain',o:'Boutiques, the famous Breakneck Stairs.'},
-    {d:'2026-06-13',k:'jun13-funicular',t:'10:30 AM',e:'11:00 AM',n:'Ride the Funicular up to Upper Town',l:'Old Quebec Funicular',o:''},
-    {d:'2026-06-13',k:'jun13-frontenac',t:'11:00 AM',e:'12:00 PM',n:'Dufferin Terrace & Château Frontenac',l:'Fairmont Le Château Frontenac',o:'Optional: book afternoon tea at the Fairmont in advance.'},
-    {d:'2026-06-13',k:'jun13-lunch',t:'12:00 PM',e:'1:30 PM',n:'Lunch — Upper Town',l:"Rue Saint-Jean / Place d'Armes",o:'Tourtière, French onion soup, Québec cheeses, maple desserts.'},
-    {d:'2026-06-13',k:'jun13-upper',t:'1:30 PM',e:'2:30 PM',n:'Historic Upper Town',l:'Cathedral-Basilica of Notre-Dame de Québec',o:'Cathedral · Morrin Centre · City Hall.'},
-    {d:'2026-06-13',k:'jun13-citadel',t:'2:30 PM',e:'4:00 PM',n:'Citadelle & Plains of Abraham',l:'La Citadelle de Québec',o:'River views and Canadian history.'},
-    {d:'2026-06-13',k:'jun13-fortifs',t:'4:00 PM',e:'5:30 PM',n:'Walk the Fortifications',l:'Old Quebec city walls',o:'Saint-Louis Gate, Kent Gate.'},
-    {d:'2026-06-13',k:'jun13-sunset',t:'5:30 PM',e:'6:30 PM',n:'Sunset on Dufferin Terrace',l:'Terrasse Dufferin',o:''},
-    {d:'2026-06-13',k:'jun13-embark',t:'6:30 PM',e:'10:00 PM',n:'Check out · Uber to ship · dinner onboard',l:'Quebec City cruise terminal',o:''},
+    {d:'2026-06-13',k:'jun13-breakfast',a:'Québec City + Embark',W:'Walking tour + sail-away',t:'8:30 AM',e:'9:30 AM',n:'Breakfast — Place Royale (Lower Town)',l:'Old Quebec',o:'Wander Place Royale, Notre-Dame-des-Victoires, Petit-Champlain.',lat:46.81272,lng:-71.20379,tent:true},
+    {d:'2026-06-13',k:'jun13-petit',t:'9:30 AM',e:'10:30 AM',n:'Explore Petit-Champlain',l:'Quartier Petit-Champlain',o:'Boutiques, the famous Breakneck Stairs.',lat:46.81192,lng:-71.20379,tent:true},
+    {d:'2026-06-13',k:'jun13-funicular',t:'10:30 AM',e:'11:00 AM',n:'Ride the Funicular up to Upper Town',l:'Old Quebec Funicular',o:'',lat:46.81181,lng:-71.20451,tent:true},
+    {d:'2026-06-13',k:'jun13-frontenac',t:'11:00 AM',e:'12:00 PM',n:'Dufferin Terrace & Château Frontenac',l:'Fairmont Le Château Frontenac',o:'Optional: book afternoon tea at the Fairmont in advance.',lat:46.81289,lng:-71.20461,tent:true},
+    {d:'2026-06-13',k:'jun13-lunch',t:'12:00 PM',e:'1:30 PM',n:'Lunch — Upper Town',l:"Rue Saint-Jean / Place d'Armes",o:'Tourtière, French onion soup, Québec cheeses, maple desserts.',lat:46.81311,lng:-71.20654,tent:true},
+    {d:'2026-06-13',k:'jun13-upper',t:'1:30 PM',e:'2:30 PM',n:'Historic Upper Town',l:'Cathedral-Basilica of Notre-Dame de Québec',o:'Cathedral · Morrin Centre · City Hall.',lat:46.81414,lng:-71.20461,tent:true},
+    {d:'2026-06-13',k:'jun13-citadel',t:'2:30 PM',e:'4:00 PM',n:'Citadelle & Plains of Abraham',l:'La Citadelle de Québec',o:'River views and Canadian history.',lat:46.80764,lng:-71.20733,tent:true},
+    {d:'2026-06-13',k:'jun13-fortifs',t:'4:00 PM',e:'5:30 PM',n:'Walk the Fortifications',l:'Old Quebec city walls',o:'Saint-Louis Gate, Kent Gate.',lat:46.81082,lng:-71.21054,tent:true},
+    {d:'2026-06-13',k:'jun13-sunset',t:'5:30 PM',e:'6:30 PM',n:'Sunset on Dufferin Terrace',l:'Terrasse Dufferin',o:'',lat:46.81215,lng:-71.20502,tent:true},
+    {d:'2026-06-13',k:'jun13-embark',t:'6:30 PM',e:'10:00 PM',n:'Check out · Uber to ship · dinner onboard',l:'Quebec City cruise terminal',o:'',lat:46.81860,lng:-71.19872},
     {d:'2026-06-13',k:'jun13-depart',t:'11:00 PM',e:'',n:'⚓ Depart Quebec City — Bon Voyage',l:'ms Zuiderdam',o:''},
     {d:'2026-06-14',k:'jun14-seaday1',a:'St. Lawrence River',W:'Sea day',allDay:true,n:'Cruising the Saint Lawrence River',l:'ms Zuiderdam',o:'Settling-in day — spa, ship exploration, scenic cruising.'},
     {d:'2026-06-15',k:'jun15-seaday2',a:'Gulf of St. Lawrence',W:'Sea day',allDay:true,n:'Cruising the Gulf of St. Lawrence',l:'ms Zuiderdam',o:'Watch for whales — rich June habitat.'},
