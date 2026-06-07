@@ -74,6 +74,11 @@
         <h3 id="dcH">Explore the ship</h3>
         <p class="dc-sub">Two views — toggle to see the <em>Zuiderdam</em> in side elevation, or pick a deck for its top-down floor plan.</p>
       </div>
+      <button type="button" class="ship-no-toggle" id="shipNightOwl" aria-pressed="false">
+        <span class="no-ic" aria-hidden="true">🌙</span>
+        <span class="no-l">Night Owl mode</span>
+        <span class="no-sub">show 24h locations</span>
+      </button>
       <div class="ship-view-tabs" role="tablist" aria-label="Ship view">
         <button type="button" class="svt" data-view="elev" role="tab" aria-selected="false">Cross-section</button>
         <button type="button" class="svt active" data-view="floor" role="tab" aria-selected="true">Floor plans</button>
@@ -215,20 +220,20 @@
 
       <!-- ── multi-deck venue zones (behind amenity glyphs) ── -->
       <g class="multi-deck">
-        <g class="md-zone md-stage" data-deck="3" data-venue-name="World Stage" tabindex="0" role="button"><title>World Stage — 3-tier main theatre (orchestra Deck 2, balcony Deck 3, backstage Deck 4)</title><rect x="212" y="354" width="98" height="118" rx="3"/><text class="md-lbl" x="261" y="371">WORLD STAGE</text><text class="md-sub" x="261" y="384">3-tier theatre</text></g>
-        <g class="md-zone md-atrium" data-deck="1" data-venue-name="Atrium" tabindex="0" role="button"><title>Atrium — 3-deck-high lobby with the Waterford crystal seahorse</title><rect x="515" y="394" width="105" height="118" rx="3"/><text class="md-lbl" x="567" y="411">ATRIUM</text><text class="md-sub" x="567" y="424">3-deck lobby</text></g>
-        <g class="md-zone md-pool" data-deck="9" data-venue-name="Lido Pool" tabindex="0" role="button"><title>Lido Pool — retractable glass roof (Deck 10 above) + 4 hot tubs</title><rect x="448" y="114" width="86" height="78" rx="3"/><text class="md-lbl" x="491" y="130">LIDO POOL</text><text class="md-sub" x="491" y="143">retractable roof</text></g>
-        <g class="md-zone md-pool" data-deck="9" data-venue-name="Sea View Pool" tabindex="0" role="button"><title>Sea View Pool — adults-only aft pool + 2 hot tubs + bar</title><rect x="800" y="114" width="86" height="78" rx="3"/><text class="md-lbl" x="843" y="130">SEA VIEW</text><text class="md-sub" x="843" y="143">adults · aft</text></g>
+        <g class="md-zone md-stage" data-deck="3" data-venue-name="World Stage" tabindex="0" role="button"><!-- hrs --><desc class="z-hours" data-247="0" data-late="0">Shows 8:00 PM &amp; 10:00 PM</desc><title>World Stage — 3-tier main theatre (orchestra Deck 2, balcony Deck 3, backstage Deck 4)</title><rect x="212" y="354" width="98" height="118" rx="3"/><text class="md-lbl" x="261" y="371">WORLD STAGE</text><text class="md-sub" x="261" y="384">3-tier theatre</text></g>
+        <g class="md-zone md-atrium" data-deck="1" data-venue-name="Atrium" tabindex="0" role="button"><!-- hrs --><desc class="z-hours" data-247="1" data-late="0">24h (lobby) · live music 5:00–10:30 PM</desc><title>Atrium — 3-deck-high lobby with the Waterford crystal seahorse</title><rect x="515" y="394" width="105" height="118" rx="3"/><text class="md-lbl" x="567" y="411">ATRIUM</text><text class="md-sub" x="567" y="424">3-deck lobby</text></g>
+        <g class="md-zone md-pool" data-deck="9" data-venue-name="Lido Pool" tabindex="0" role="button"><!-- hrs --><desc class="z-hours" data-247="1" data-late="0">Pool deck 24h · service 6:00 AM–11:00 PM</desc><title>Lido Pool — retractable glass roof (Deck 10 above) + 4 hot tubs</title><rect x="448" y="114" width="86" height="78" rx="3"/><text class="md-lbl" x="491" y="130">LIDO POOL</text><text class="md-sub" x="491" y="143">retractable roof</text></g>
+        <g class="md-zone md-pool" data-deck="9" data-venue-name="Sea View Pool" tabindex="0" role="button"><!-- hrs --><desc class="z-hours" data-247="1" data-late="0">Pool deck 24h · Sea View Bar to ~midnight</desc><title>Sea View Pool — adults-only aft pool + 2 hot tubs + bar</title><rect x="800" y="114" width="86" height="78" rx="3"/><text class="md-lbl" x="843" y="130">SEA VIEW</text><text class="md-sub" x="843" y="143">adults · aft</text></g>
         <g class="md-zone md-din" data-deck="2" data-venue-name="The Dining Room (lower)" tabindex="0" role="button"><title>The Dining Room — two levels (upper Deck 3, lower Deck 2)</title><rect x="790" y="394" width="100" height="78" rx="3"/><text class="md-lbl" x="840" y="411">DINING ROOM</text><text class="md-sub" x="840" y="424">2 levels · aft</text></g>
         <g class="md-zone md-cas" data-deck="2" data-venue-name="Casino + Gallery Bar" tabindex="0" role="button"><title>Casino + Gallery Bar — slots, tables, 199 seats</title><rect x="460" y="434" width="44" height="36" rx="3"/><text class="md-lbl-sm" x="482" y="455">CASINO</text></g>
-        <g class="md-zone md-obs" data-deck="10" data-venue-name="Crow's Nest" tabindex="0" role="button"><title>Crow's Nest — forward observation lounge</title><rect x="220" y="114" width="80" height="36" rx="3"/><text class="md-lbl-sm" x="260" y="130">CROW'S NEST</text><text class="md-sub-sm" x="260" y="142">forward lounge</text></g>
-        <g class="md-zone md-retreat" data-deck="11" data-venue-name="The Retreat" tabindex="0" role="button"><title>The Retreat — adults-only sundeck, 14 private cabanas</title><rect x="328" y="72" width="200" height="38" rx="3"/><text class="md-lbl-sm" x="428" y="89">THE RETREAT</text><text class="md-sub-sm" x="428" y="101">adults sundeck · cabanas</text></g>
+        <g class="md-zone md-obs" data-deck="10" data-venue-name="Crow's Nest" tabindex="0" role="button"><!-- hrs --><desc class="z-hours" data-247="0" data-late="1">10:00 AM – 1:00 AM · DJ from 10 PM</desc><title>Crow's Nest — forward observation lounge</title><rect x="220" y="114" width="80" height="36" rx="3"/><text class="md-lbl-sm" x="260" y="130">CROW'S NEST</text><text class="md-sub-sm" x="260" y="142">forward lounge</text></g>
+        <g class="md-zone md-retreat" data-deck="11" data-venue-name="The Retreat" tabindex="0" role="button"><!-- hrs --><desc class="z-hours" data-247="1" data-late="0">Cabanas 8:00 AM – sunset · deck 24h</desc><title>The Retreat — adults-only sundeck, 14 private cabanas</title><rect x="328" y="72" width="200" height="38" rx="3"/><text class="md-lbl-sm" x="428" y="89">THE RETREAT</text><text class="md-sub-sm" x="428" y="101">adults sundeck · cabanas</text></g>
         <g class="md-zone md-spa" data-deck="9" data-venue-name="Greenhouse Spa &amp; Salon" tabindex="0" role="button"><title>Greenhouse Spa &amp; Salon — treatments, thermal suite, salon</title><rect x="666" y="154" width="76" height="36" rx="3"/><text class="md-lbl-sm" x="704" y="170">GREENHOUSE</text><text class="md-sub-sm" x="704" y="182">spa &amp; salon</text></g>
-        <g class="md-zone md-din" data-deck="2" data-venue-name="Pinnacle Grill" tabindex="0" role="button"><title>Pinnacle Grill — signature steak &amp; seafood (specialty)</title><rect x="408" y="434" width="48" height="36" rx="3"/><text class="md-lbl-sm" x="432" y="450">PINNACLE</text><text class="md-sub-sm" x="432" y="462">GRILL</text></g>
-        <g class="md-zone md-din" data-deck="9" data-venue-name="Lido Market" tabindex="0" role="button"><title>Lido Market — buffet, 5 themed stations</title><rect x="540" y="154" width="120" height="38" rx="3"/><text class="md-lbl-sm" x="600" y="171">LIDO MARKET</text><text class="md-sub-sm" x="600" y="183">buffet + grills</text></g>
-        <g class="md-zone md-gym" data-deck="9" data-venue-name="Fitness Center" tabindex="0" role="button"><title>Fitness Center — gym, aerobics studio</title><rect x="208" y="154" width="68" height="38" rx="3"/><text class="md-lbl-sm" x="242" y="170">FITNESS</text><text class="md-sub-sm" x="242" y="182">gym + studio</text></g>
-        <g class="md-zone md-show" data-deck="2" data-venue-name="Lincoln Center Stage" tabindex="0" role="button"><title>Music Walk — Lincoln Center · Billboard · B.B. King's, Deck 2</title><rect x="528" y="434" width="146" height="36" rx="3"/><text class="md-lbl-sm" x="601" y="449">MUSIC WALK</text><text class="md-sub-sm" x="601" y="461">Lincoln · BB King · Billboard</text></g>
-        <g class="md-zone md-svc" data-deck="7" data-venue-name="Neptune Lounge" tabindex="0" role="button"><title>Neptune Lounge — suite-guest concierge</title><rect x="528" y="234" width="80" height="36" rx="3"/><text class="md-lbl-sm" x="568" y="251">NEPTUNE</text><text class="md-sub-sm" x="568" y="263">suite lounge</text></g>
+        <g class="md-zone md-din" data-deck="2" data-venue-name="Pinnacle Grill" tabindex="0" role="button"><!-- hrs --><desc class="z-hours" data-247="0" data-late="0">Lunch 12–1:30 · Dinner 5:30–9:30 PM</desc><title>Pinnacle Grill — signature steak &amp; seafood (specialty)</title><rect x="408" y="434" width="48" height="36" rx="3"/><text class="md-lbl-sm" x="432" y="450">PINNACLE</text><text class="md-sub-sm" x="432" y="462">GRILL</text></g>
+        <g class="md-zone md-din" data-deck="9" data-venue-name="Lido Market" tabindex="0" role="button"><!-- hrs --><desc class="z-hours" data-247="1" data-late="0">6:30 AM – 11:00 PM · coffee/tea 24h</desc><title>Lido Market — buffet, 5 themed stations</title><rect x="540" y="154" width="120" height="38" rx="3"/><text class="md-lbl-sm" x="600" y="171">LIDO MARKET</text><text class="md-sub-sm" x="600" y="183">buffet + grills</text></g>
+        <g class="md-zone md-gym" data-deck="9" data-venue-name="Fitness Center" tabindex="0" role="button"><!-- hrs --><desc class="z-hours" data-247="0" data-late="0">6:00 AM – 9:00 PM</desc><title>Fitness Center — gym, aerobics studio</title><rect x="208" y="154" width="68" height="38" rx="3"/><text class="md-lbl-sm" x="242" y="170">FITNESS</text><text class="md-sub-sm" x="242" y="182">gym + studio</text></g>
+        <g class="md-zone md-show" data-deck="2" data-venue-name="Lincoln Center Stage" tabindex="0" role="button"><!-- hrs --><desc class="z-hours" data-247="0" data-late="0">Music Walk 6:00 PM – ~midnight</desc><title>Music Walk — Lincoln Center · Billboard · B.B. King's, Deck 2</title><rect x="528" y="434" width="146" height="36" rx="3"/><text class="md-lbl-sm" x="601" y="449">MUSIC WALK</text><text class="md-sub-sm" x="601" y="461">Lincoln · BB King · Billboard</text></g>
+        <g class="md-zone md-svc" data-deck="7" data-venue-name="Neptune Lounge" tabindex="0" role="button"><!-- hrs --><desc class="z-hours" data-247="0" data-late="0">7:00 AM – 8:00 PM · suite guests</desc><title>Neptune Lounge — suite-guest concierge</title><rect x="528" y="234" width="80" height="36" rx="3"/><text class="md-lbl-sm" x="568" y="251">NEPTUNE</text><text class="md-sub-sm" x="568" y="263">suite lounge</text></g>
       </g>
 
       <!-- ── left-column deck labels ── -->
@@ -367,7 +372,24 @@
       <text class="axis-lbl" x="500" y="566" text-anchor="middle">MIDSHIP</text>
     </svg>
       </div>
-      <p class="dc-note">Vista-class cabin numbering: <strong>odd = starboard, even = port</strong>. 5155 and 5161 are both starboard, six doors apart &mdash; you're effectively neighbours. The chart shows port-side elevation, so port/starboard isn't visible here, but forward/midship/aft positions are accurate. Avoid-zones in red are the cabin ranges flagged by reviewers (4001-4050 sit above the World Stage; 8038-8147 sit below the Lido pools) &mdash; your Deck 5 cabins are clear of both. <strong>Karen is in K5165</strong> &mdash; three doors aft of K5161 in the same central interior column.</p>
+      <div class="fn-legend" aria-label="Function color legend">
+        <div class="fnl-row">
+          <span class="fnl-chip fnl-cabin"><span class="fnl-sw"></span>Staterooms</span>
+          <span class="fnl-chip fnl-din"><span class="fnl-sw"></span>Dining</span>
+          <span class="fnl-chip fnl-stage"><span class="fnl-sw"></span>Theatre / Shows</span>
+          <span class="fnl-chip fnl-bar"><span class="fnl-sw"></span>Bars · Music</span>
+          <span class="fnl-chip fnl-pool"><span class="fnl-sw"></span>Pools</span>
+          <span class="fnl-chip fnl-spa"><span class="fnl-sw"></span>Spa · Gym</span>
+          <span class="fnl-chip fnl-cas"><span class="fnl-sw"></span>Casino</span>
+          <span class="fnl-chip fnl-svc"><span class="fnl-sw"></span>Services · Atrium</span>
+          <span class="fnl-chip fnl-obs"><span class="fnl-sw"></span>Observation · Kids</span>
+        </div>
+        <div class="fnl-row fnl-hours">
+          <span class="fnl-247"><span class="fnl-dot fnl-dot-24"></span> 24-hour access</span>
+          <span class="fnl-late"><span class="fnl-dot fnl-dot-late"></span> Late-night (until 1 AM+)</span>
+        </div>
+      </div>
+      <p class="dc-note">Vista-class cabin numbering: <strong>odd = starboard, even = port</strong>. All three group cabins &mdash; <strong>K5155</strong> (Sandra &amp; Becca), <strong>K5161</strong> (Jett &amp; Laura) and <strong>K5165</strong> (Karen) &mdash; are starboard, in the central interior column, mid-aft, stacked three doors apart. The chart shows port-side elevation, so port/starboard isn't visible here, but forward/midship/aft positions are accurate. Avoid-zones in red are the cabin ranges flagged by reviewers (4001-4050 sit above the World Stage; 8038-8147 sit below the Lido pools) &mdash; all three Deck 5 cabins are clear of both.</p>
     </div>
 
     <!-- ── VIEW: Floor plans (top-down, per deck) ── -->
@@ -809,6 +831,31 @@
     });
   }
   deckBtns.forEach(function(b){ b.addEventListener('click', function(){ setDeck(b.dataset.deck); }); });
+
+  /* ---- Night Owl toggle: highlights 24-hour + late-night zones ---- */
+  (function(){
+    var btn = document.getElementById('shipNightOwl');
+    var wrap = document.querySelector('.dc-svg-wrap');
+    if(!btn || !wrap) return;
+    // Walk each zone, read its <desc class="z-hours"> data, mirror onto the <g>.
+    document.querySelectorAll('.dc-svg .md-zone').forEach(function(z){
+      var d = z.querySelector('desc.z-hours');
+      if(d){
+        z.setAttribute('data-247-on', d.getAttribute('data-247') || '0');
+        z.setAttribute('data-late-on', d.getAttribute('data-late') || '0');
+        var hrs = d.textContent.trim();
+        var titleEl = z.querySelector('title');
+        if(titleEl && hrs && titleEl.textContent.indexOf(hrs) === -1){
+          titleEl.textContent = titleEl.textContent + '  ·  ' + hrs;
+        }
+      }
+    });
+    btn.addEventListener('click', function(){
+      var on = btn.getAttribute('aria-pressed') !== 'true';
+      btn.setAttribute('aria-pressed', String(on));
+      wrap.classList.toggle('night-owl', on);
+    });
+  })();
 
   /* ---- Cross-section: make every amenity glyph and cabin pin clickable ---- */
   function yToDeck(y){
