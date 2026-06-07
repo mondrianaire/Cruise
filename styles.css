@@ -1182,7 +1182,7 @@ nav .links a:hover .sublabels,nav .links a.active .sublabels{color:var(--brass);
 
 /* Cross-section glyphs become clickable */
 .dc-svg .xs-clickable{transition:transform .12s, opacity .12s;}
-.dc-svg .xs-clickable:hover{transform:translateY(-1px); opacity:1;}
+.dc-svg .xs-clickable:hover{opacity:1;}
 .dc-svg .xs-clickable:hover use.glyph{filter:drop-shadow(0 0 4px #c89b4a);}
 .dc-svg .xs-clickable:focus{outline:none;}
 .dc-svg .xs-clickable:focus-visible use.glyph{filter:drop-shadow(0 0 5px #e6c477);}
@@ -1616,14 +1616,14 @@ nav .links a:hover .sublabels,nav .links a.active .sublabels{color:var(--brass);
   font-size:8.5px;
 }
 .cabin-zones .cz{cursor:pointer; transition:opacity .12s;}
-.cabin-zones .cz:hover rect{stroke-width:1.8; filter:drop-shadow(0 0 3px #c89b4a);}
+.cabin-zones .cz:hover rect{stroke-width:1.5;}
 .cabin-zones .cz:focus{outline:none;}
 
 /* ============ Deck-row labels in the left margin — clickable ============ */
 .dc-svg .deck-row{cursor:pointer;}
 .dc-svg .deck-row .deck-num,
 .dc-svg .deck-row .deck-name{transition:fill .12s;}
-.dc-svg .deck-row:hover .deck-num{ fill:#c89b4a; font-weight:800; }
+.dc-svg .deck-row:hover .deck-num{ fill:#c89b4a; }
 .dc-svg .deck-row:hover .deck-name{ fill:#c89b4a; }
 .dc-svg .deck-row:focus{outline:none;}
 .dc-svg .deck-row:focus-visible .deck-num{
@@ -1727,15 +1727,14 @@ nav .links a:hover .sublabels,nav .links a.active .sublabels{color:var(--brass);
 }
 
 /* Mirror :hover behaviour for tap-and-hold (.is-touched) */
-.dc-svg .xs-clickable.is-touched{ transform:translateY(-1px); }
 .dc-svg .xs-clickable.is-touched use.glyph{ filter:drop-shadow(0 0 5px #e6c477); }
 
-.dc-svg .md-zone.is-touched rect{ stroke-width:1.8; filter:drop-shadow(0 0 3px rgba(200,155,74,.7)); }
+.dc-svg .md-zone.is-touched rect{ stroke-width:1.5; }
 
-.dc-svg .deck-row.is-touched .deck-num{ fill:#c89b4a; font-weight:800; }
+.dc-svg .deck-row.is-touched .deck-num{ fill:#c89b4a; }
 .dc-svg .deck-row.is-touched .deck-name{ fill:#c89b4a; }
 
-.cabin-zones .cz.is-touched rect{ stroke-width:1.8; filter:drop-shadow(0 0 3px #c89b4a); }
+.cabin-zones .cz.is-touched rect{ stroke-width:1.5; }
 
 .stairways .sw-bank.is-touched .sw-shaft{ stroke-width:1.4; opacity:1; filter:drop-shadow(0 0 3px #c89b4a); }
 
