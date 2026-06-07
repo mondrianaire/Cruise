@@ -91,7 +91,7 @@
       </button>
       <div class="ship-view-tabs" role="tablist" aria-label="Ship view">
         <button type="button" class="svt active" data-view="elev" role="tab" aria-selected="true">Cross-section</button>
-        <button type="button" class="svt" data-view="floor" role="tab" aria-selected="false">Floor plans</button>
+        <button type="button" class="svt" data-view="floor" role="tab" aria-selected="false">Deck plans</button>
       </div>
     </div>
 
@@ -559,7 +559,7 @@
       <p class="dc-note">Vista-class cabin numbering: <strong>odd = starboard, even = port</strong>. All three group cabins &mdash; <strong>K5155</strong> (Sandra &amp; Becca), <strong>K5161</strong> (Jett &amp; Laura) and <strong>K5165</strong> (Karen) &mdash; are starboard, in the central interior column, mid-aft, stacked three doors apart. The chart shows port-side elevation, so port/starboard isn't visible here, but forward/midship/aft positions are accurate. The chart highlights the cross-section function-by-function — coloured zones show public venues (theatre, atrium, pools, dining, casino, spa) while neutral bands are cabin areas. Tap any zone, icon, or deck label to jump to that deck's floor plan.</p>
     </div>
 
-    <!-- ── VIEW: Floor plans (top-down, per deck) ── -->
+    <!-- ── VIEW: Deck plans (top-down, per deck) ── -->
     <div class="ship-view-floor" data-view="floor" hidden>
       <div class="fp-deck-picker" role="tablist" aria-label="Pick a deck">
         <button type="button" class="fp-deck-btn" data-deck="11">11</button><button type="button" class="fp-deck-btn" data-deck="10">10</button><button type="button" class="fp-deck-btn" data-deck="9">9</button><button type="button" class="fp-deck-btn" data-deck="8">8</button><button type="button" class="fp-deck-btn" data-deck="7">7</button><button type="button" class="fp-deck-btn" data-deck="6">6</button><button type="button" class="fp-deck-btn active" data-deck="5">5 <span class="fp-star">★</span></button><button type="button" class="fp-deck-btn" data-deck="4">4</button><button type="button" class="fp-deck-btn" data-deck="3">3</button><button type="button" class="fp-deck-btn" data-deck="2">2</button><button type="button" class="fp-deck-btn" data-deck="1">1</button>
@@ -1112,9 +1112,33 @@
     document.body.classList.toggle('view-floor', v === 'floor');
     document.body.classList.toggle('view-elev',  v === 'elev');
   }
-  tabs.forEach(function(b){ b.addEventListener('click', function(){ setTab(b.dataset.view); }); });
+  tabs.forEach(function(b){ b.addEventListener('click', function(){
+    /* v.101: explicit click counts as a user override and is remembered for the session */
+    try{ sessionStorage.setItem('shipViewOverride', '1'); }catch(e){}
+    setTab(b.dataset.view);
+  }); });
   /* v.078: prime the body class so the mobile rotate-hint CSS scopes correctly on first paint */
   document.body.classList.add('view-elev');
+
+  /* v.101: auto-switch view by orientation on mobile/tablet.
+     Landscape (small or medium screen) -> cross-section.
+     Portrait (small or medium screen)  -> deck plans.
+     Desktop (>1100px) is never overridden because both views fit comfortably.
+     User override (any explicit tab click) is sticky for the session so we don't
+     keep flipping the view as they rotate. */
+  function autoOrientView(){
+    if(window.matchMedia('(min-width:1101px)').matches) return; // desktop: no auto
+    try{ if(sessionStorage.getItem('shipViewOverride')) return; }catch(e){}
+    var portrait = window.matchMedia('(orientation:portrait)').matches;
+    var targetView = portrait ? 'floor' : 'elev';
+    var activeTab = document.querySelector('.ship-view-tabs .svt.active');
+    if(activeTab && activeTab.dataset.view === targetView) return;
+    setTab(targetView);
+  }
+  autoOrientView();
+  /* Re-run on orientation change. Both events fire on different platforms. */
+  window.addEventListener('orientationchange', function(){ setTimeout(autoOrientView, 80); });
+  window.matchMedia('(orientation:portrait)').addEventListener('change', autoOrientView);
 
   var deckBtns = document.querySelectorAll('.fp-deck-btn');
   var panels   = document.querySelectorAll('.fp-panel');
