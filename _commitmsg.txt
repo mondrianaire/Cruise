@@ -1,1 +1,13 @@
-drop_msg: remove _commitmsg.txt  
+v.144: re-align Deck 3 Merabella / Effy / Shops hotspots
+
+User flagged Merabella + Effy off on Deck 3. Cropped deck-03.png
+into zoomed strips, measured actual label positions:
+
+  Merabella alcove:  y=480..516  -> top:33.1% h:2.5%
+  Effy Jewelry room: y=523..587  -> top:36.1% h:4.4%
+  Shops corridor:    y=587..660  -> top:40.5% h:5.0%
+
+Previous v.137/140 values had these shifted down 1.5-4% and too
+narrow. New values cover the actual venue alcoves in the PDF.
+
+Asset versions ?v=144. SITE_VERSION = 'v.144'.
