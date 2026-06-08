@@ -1,1 +1,39 @@
-drop_msg: remove _commitmsg.txt scratch file
+v.140: drop duplicate deck dropdown, snap above selector, fix alignment
+
+Three fixes called out in feedback:
+
+1. Removed the .fp-deck-mobile <select> dropdown — it duplicated
+   the 1-11 pill row directly underneath it. The pill row is the
+   only deck picker now (and works on every viewport).
+
+2. snapToDeckchart() now scrolls so the cross-section / deck-plans
+   selector sits just below the page title instead of pinned to
+   the very top of the viewport. Title stays visible above the
+   selector. Triggered on view-tab clicks too, not just on
+   orientation flips.
+
+3. Walking-path overlays + hotspot bounding boxes were both
+   misaligned with the deck PNGs:
+
+   ROUTE PNGS — re-generated all 11 route-NN.png from the source
+   HAL accessibility-routes PDF panels. The bug: when computing
+   the rotated panel's content bbox, the deck title text ("DECK
+   11—SPORTS DECK") became a vertical strip down the left side
+   after rotation and inflated the bbox. Fix: blank the title rows
+   in the pre-rotation panel before bbox detection, then scale
+   the resulting ship-hull bbox independently on X and Y to fit
+   each deck PNG's actual content x AND y bbox. Routes now sit
+   inside the hull on every deck. Verified Deck 11 — bow access
+   route reaches the observation lounge, stern route reaches the
+   Sport Court with the stairlift indicator at the entry.
+
+   HOTSPOT BBOXES — historic fp-hot percentages assumed the ship
+   filled the canvas, but after the v.135 tight crop short decks
+   (especially 10, 11) have the deck content positioned partway
+   into the canvas. Remapped all 49 hotspots to fit within each
+   deck's actual content y/x range. Examples:
+     Deck 11 Retreat:    3.0% / 22.0% -> 10.9% / 16.0%
+     Deck 11 Sport Court: 80.0% / 14.0% -> 67.0% / 10.2%
+     Deck 10 Crow's Nest: 3.0% /  7.0% -> 10.1% /  5.4%
+
+   Asset versions bumped to ?v=140; SITE_VERSION = 'v.140'.
