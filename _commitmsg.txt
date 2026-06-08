@@ -1,0 +1,21 @@
+v.125: bubble alignment cleanup + 3-deck Atrium distribution
+
+Standardized label/emoji/sub layout for every bubble that gained emoji
+glyphs in v.108-v.109:
+
+  Single-deck (30-tall band):  label @ top+9, emoji @ top+19, sub @ top+27
+  Deck 11 (31.5-tall band):    label @ 62, emoji @ 73, sub @ 81
+
+Retreat, Crow's Nest, Fitness, Sports Court, Explorations, Kids &
+Teens, Lido Pool, Lido Market, Music Walk all re-anchored so the
+three rows align vertically inside their bubble and the emoji glyphs
+center horizontally with the label above them.
+
+Atrium now actually spans 3 decks visually:
+  Deck 3 ring  -  "ATRIUM" title + "Deck 3 ring" sub  (top of bubble)
+  Deck 2 ring  -  🌟 (big star, the Waterford crystal) + "Deck 2 ring"
+  Deck 1 ring  -  "3-deck lobby" + "enter Deck 1" + the three service-
+                  desk emoji glyphs (🛎 🎟 📅) already there
+The label/sub stack used to be crammed into the Deck 1 portion only.
+
+Cache buster bumped to ?v=125.
