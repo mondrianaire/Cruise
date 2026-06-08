@@ -1,0 +1,28 @@
+v.134: lock deck-plan container to canonical 230x1449 aspect ratio
+
+The cropped deck PNGs (v.133) are all 230 wide x 1449 tall. That's
+the canonical canvas. Now the .fp-img-stage container is also locked
+to that exact aspect ratio so every deck renders in the same on-screen
+footprint regardless of which is loaded.
+
+CSS change:
+  .fp-img-stage {
+    height: 88vh !important;
+    aspect-ratio: 230 / 1449 !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+  }
+  .fp-deck-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+Result: the deck plan box is the SAME size whether you're looking at
+Deck 5 (full-length cabin floor) or Deck 11 (short top-deck sports).
+Shorter decks correctly show whitespace at top/bottom for the
+physically empty bow/stern portions; their ship outline sits at its
+real bow-to-stern Y position rather than stretching to fill the box.
+
+Cache buster -> ?v=134 on styles.css, app.js, venues.js, and every
+deck PNG reference.

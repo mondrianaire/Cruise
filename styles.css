@@ -2549,16 +2549,20 @@ body.view-floor .ship-no-toggle{ display:none !important; }
    Single source of truth — image fills available vertical real estate
    (up to 88vh) but never overflows. */
 .fp-img-stage{
-  max-height: 88vh !important;
+  /* v.134: container locked to the canonical deck-PNG aspect ratio
+     (230x1449 = the largest cropped deck). Every deck renders into
+     this exact-same-size container regardless of which is loaded. */
+  height: 88vh !important;
+  aspect-ratio: 230 / 1449 !important;
+  max-width: 100% !important;
+  margin: 0 auto !important;
   overflow: hidden !important;
 }
 .fp-deck-img{
-  max-height: 88vh !important;
-  height: auto !important;
-  width: auto !important;
-  max-width: 100% !important;
-  margin: 0 auto !important;
+  width: 100% !important;
+  height: 100% !important;
   object-fit: contain;
+  display: block;
 }
 /* On the desktop 2-col layout the image is sticky in the left column;
    tighten the stage so the height comes from the image, not from
