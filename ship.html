@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Ship &amp; Your Package — Canada &amp; New England 2026</title>
 <meta name="description" content="The Ship &amp; Your Package — ms Zuiderdam cruise hub for the Canada &amp; New England voyage, June 2026.">
-<link rel="stylesheet" href="styles.css?v=127">
+<link rel="stylesheet" href="styles.css?v=128">
 <style id="ship-critical-v121">
   /* v.121: critical overlay + Night Owl rules shipped inline with the HTML
      so they always take effect, even if styles.css is served from CDN cache. */
@@ -110,6 +110,15 @@
   .fp-deck-img{
     pointer-events: auto;
     -webkit-user-drag: none;
+  }
+
+  /* v.128: smaller emoji glyphs — Apple Color Emoji renders ~50% larger
+     than the requested font-size, so 9px emojis looked like 14px text. */
+  .dc-svg text.emoji-glyph{
+    font-size: 8px !important;
+  }
+  .dc-svg text.emoji-glyph-sm{
+    font-size: 7px !important;
   }
 
   /* v.127: tighter page header + lean deckchart-head on small viewports.
@@ -518,7 +527,7 @@
         <g class="md-zone md-retreat md-tent" data-deck="11" data-venue-name="The Retreat" tabindex="0" role="button"><!-- hrs --><desc class="z-hours" data-247="1" data-late="0">Cabanas 9 AM – 5 PM (HAL official) · ⚠ HAL flagged renovation for Jun 2026 — cabana availability unconfirmed · sundeck typically 24h</desc><title>The Retreat — adults-only sundeck, 14 private cabanas (port + starboard) · ⚠ HAL has flagged renovation work for the Jun 2026 sailing window; call Ship Services to verify</title><path d="M 336 52.5 L 216.4 52.5 L 216.4 53.1 L 208.1 66 L 201.5 66 L 193.7 78.1 L 195.2 80.4 L 195.2 84 L 336 84 Z"/><text class="md-lbl-sm" x="265" y="62">THE RETREAT ⚠</text><g class="emoji-sub" data-deck="11" data-venue-name="The Retreat"><title>Cabanas — 14 private port + starboard cabanas, 9 AM – 5 PM. ⚠ HAL flagged renovation for Jun 2026.</title><text class="emoji-glyph emoji-glyph-sm" x="265" y="73">🏖</text></g><text class="md-sub-sm" x="265" y="81">refit ’26?</text></g>
         <g class="md-zone md-pool" data-deck="11" data-venue-name="Sports Court" tabindex="0" role="button"><!-- hrs --><desc class="z-hours" data-247="1" data-late="0">Pickleball &amp; basketball · open 24h (lights timed)</desc><title>Sports Court — basketball + pickleball (PPA partnership, free beginner lessons) · open 24h, lights on a timer</title><rect x="561" y="52.5" width="203" height="31.5" rx="3"/><text class="md-lbl-sm" x="662" y="62">SPORTS COURT</text><g class="emoji-sub" data-deck="11" data-venue-name="Basketball Court"><title>Basketball Court — open 24h (lights timed). Tap to jump to Deck 11.</title><text class="emoji-glyph" x="642" y="77">🏀</text></g><g class="emoji-sub" data-deck="11" data-venue-name="Pickleball Court"><title>Pickleball Court — added 2023 in partnership with the PPA, free beginner lessons. Tap to jump to Deck 11.</title><text class="emoji-glyph" x="682" y="77">🏓</text></g></g>
         <g class="md-zone md-spa" data-deck="9" data-venue-name="Greenhouse Spa &amp; Salon" tabindex="0" role="button"><title>Greenhouse Spa &amp; Salon — treatments, thermal suite, salon</title><rect x="666" y="115.5" width="76" height="27" rx="3"/><text class="md-lbl-sm" x="704" y="127.5">GREENHOUSE</text><text class="md-sub-sm" x="704" y="136.5">spa &amp; salon</text></g>
-        <g class="md-zone md-din" data-deck="2" data-venue-name="Pinnacle Grill" tabindex="0" role="button"><!-- hrs --><desc class="z-hours" data-247="0" data-late="0">Lunch 12–1:30 · Dinner 5:30–9:30 PM</desc><title>Pinnacle Grill — signature steak &amp; seafood (specialty)</title><rect x="408" y="277.5" width="48" height="27" rx="3"/><text class="md-lbl-sm" x="432" y="289.5">PINNACLE</text><text class="md-sub-sm" x="432" y="298.5">GRILL</text></g>
+        <g class="md-zone md-din" data-deck="2" data-venue-name="Pinnacle Grill" tabindex="0" role="button"><desc class="z-hours" data-247="0" data-late="0">Lunch 12–1:30 · Dinner 5:30–9:30 PM</desc><title>Pinnacle Grill + Pinnacle Bar — signature steak & seafood with adjacent champagne bar (specialty)</title><rect x="408" y="277.5" width="48" height="27" rx="3"/><text class="md-lbl-sm" x="432" y="285">PINNACLE</text><g class="emoji-sub" data-deck="2" data-venue-name="Pinnacle Grill"><title>Pinnacle Grill — signature steak & seafood. Lunch $29.50, Dinner $61.36 pp.</title><text class="emoji-glyph emoji-glyph-sm" x="422" y="296">🥩</text></g><g class="emoji-sub" data-deck="2" data-venue-name="Pinnacle Bar"><title>Pinnacle Bar — premium champagne & wine bar, 28 seats.</title><text class="emoji-glyph emoji-glyph-sm" x="442" y="296">🥂</text></g><text class="md-sub-sm" x="432" y="303">specialty</text></g>
         <g class="md-zone md-din" data-deck="9" data-venue-name="Lido Market" tabindex="0" role="button"><!-- hrs --><desc class="z-hours" data-247="1" data-late="0">6:30 AM – 11:00 PM · coffee/tea 24h</desc><title>Lido Market — buffet, 5 themed stations</title><rect x="540" y="115.5" width="120" height="27" rx="3"/><text class="md-lbl-sm" x="600" y="123">LIDO MARKET</text><g class="emoji-sub" data-deck="9" data-venue-name="Lido Market"><title>Buffet — 5 themed stations, 446 seats, 6:30 AM – 11 PM; coffee/tea 24h. Re-upholstered Dec 2025.</title><text class="emoji-glyph emoji-glyph-sm" x="585" y="138">🍴</text></g><g class="emoji-sub" data-deck="9" data-venue-name="Canaletto"><title>Canaletto — relaxed Italian (evenings only, $29.50 pp). Same room reflagged from the Italian buffet station.</title><text class="emoji-glyph emoji-glyph-sm" x="615" y="138">🍝</text></g></g>
         <g class="md-zone md-gym" data-deck="9" data-venue-name="Fitness Center" tabindex="0" role="button"><!-- hrs --><desc class="z-hours" data-247="1" data-late="0">Staffed 6 AM – 9 PM · stateroom keycard access 24h</desc><title>Fitness Center — gym, aerobics studio · staffed hours 6 AM – 9 PM, keycard access outside those hours</title><path d="M 336 114 L 169 114 L 170 119 L 151.7 144 L 336 144 Z"/><text class="md-lbl-sm" x="240" y="123">FITNESS</text><g class="emoji-sub" data-deck="9" data-venue-name="Fitness Center"><title>Fitness Center — gym, aerobics studio. Staffed 6 AM – 9 PM; stateroom keycard access 24h.</title><text class="emoji-glyph emoji-glyph-sm" x="240" y="134">🏋</text></g><text class="md-sub-sm" x="240" y="142">keycard 24h</text></g>
         <g class="md-zone md-show" data-deck="2" data-venue-name="Lincoln Center Stage" tabindex="0" role="button"><!-- hrs --><desc class="z-hours" data-247="0" data-late="0">Music Walk 6:00 PM – ~midnight</desc><title>Music Walk — Lincoln Center · Billboard · B.B. King's, Deck 2 · forward of Atrium (adjacent, not inside)</title><rect x="340" y="277.5" width="65" height="27" rx="3"/><text class="md-lbl-sm" x="372" y="285">MUSIC WALK</text><g class="emoji-sub" data-deck="2" data-venue-name="Lincoln Center Stage"><title>Lincoln Center Stage — live classical chamber music, 63 seats.</title><text class="emoji-glyph emoji-glyph-sm" x="355" y="300">🎻</text></g><g class="emoji-sub" data-deck="2" data-venue-name="B.B. King's Blues Club"><title>B.B. King's Blues Club — Memphis-style soul & blues evenings, 170 seats; daytime culinary classes.</title><text class="emoji-glyph emoji-glyph-sm" x="372" y="300">🎷</text></g><g class="emoji-sub" data-deck="2" data-venue-name="Billboard Onboard"><title>Billboard Onboard — dueling pianos & chart-hit sing-along.</title><text class="emoji-glyph emoji-glyph-sm" x="389" y="300">🎹</text></g></g>
@@ -621,14 +630,14 @@
       <g class="md-zone md-svc" data-deck="3" data-venue-name="Meeting Rooms" tabindex="0" role="button">
         <title>Meeting Rooms — Half Moon, Hudson, Stuyvesant + Digital Workshop · Deck 3 forward-of-midship, NOT inside the Atrium (the Atrium opening is starboard at x=515-620)</title>
         <rect x="385" y="247.5" width="60" height="27" rx="3"/>
-        <text class="md-lbl-sm" x="415" y="258">MEETING RMS</text>
+        <text class="md-lbl-sm" x="415" y="258">MEET RMS</text>
                 <g class="emoji-sub" data-deck="3" data-venue-name="Meeting Rooms"><title>Half Moon · Hudson · Stuyvesant — three bookable meeting rooms.</title><text class="emoji-glyph emoji-glyph-sm" x="403" y="270">📋</text></g>
         <g class="emoji-sub" data-deck="3" data-venue-name="Digital Workshop"><title>Digital Workshop / Microsoft Studio — guided classes on photography, video, devices.</title><text class="emoji-glyph emoji-glyph-sm" x="427" y="270">💻</text></g>
       </g>
       <g class="md-zone md-shop" data-deck="3" data-venue-name="Atrium Shops &amp; Photo" tabindex="0" role="button">
         <title>Atrium Shops cluster — Merabella, Atrium Shops, Photo Gallery, Effy Jewelry. Adjacent to Atrium on Deck 3 (between the Meeting Rooms and the Atrium ring); NOT inside the Atrium opening</title>
         <rect x="450" y="247.5" width="60" height="27" rx="3"/>
-        <text class="md-lbl-sm" x="480" y="258">ATRIUM SHOPS</text>
+        <text class="md-lbl-sm" x="480" y="258">SHOPS</text>
                 <g class="emoji-sub" data-deck="3" data-venue-name="Merabella Luxury Shop"><title>Merabella Luxury Shop — fine jewellery, watches, accessories.</title><text class="emoji-glyph emoji-glyph-sm" x="462" y="270">💎</text></g>
         <g class="emoji-sub" data-deck="3" data-venue-name="Boutique"><title>Boutique — duty-free, logo wear, sundries.</title><text class="emoji-glyph emoji-glyph-sm" x="480" y="270">🛍</text></g>
         <g class="emoji-sub" data-deck="3" data-venue-name="Photo Gallery"><title>Photo Gallery — onboard portraits & daily photo retail (redesigned Dec 2025).</title><text class="emoji-glyph emoji-glyph-sm" x="498" y="270">📸</text></g>
@@ -639,7 +648,7 @@
            v.077: Art Gallery promoted to a container (exhibitions + auctions, both
            function in the same room on different days). Pinnacle Bar remains standalone
            with reason. -->
-      <g class="emoji-sub" data-deck="2" data-venue-name="Pinnacle Bar"><title>Pinnacle Bar — premium champagne & wine bar, 28 seats.</title><text class="emoji-glyph" x="510" y="298">🥂</text></g>
+      <!-- v.128: Pinnacle Bar folded into the Pinnacle bubble as a sub-glyph -->
       <g class="md-zone md-shop" data-deck="2" data-venue-name="Art Gallery" tabindex="0" role="button">
         <title>Art Gallery — exhibitions during the day, on-board art auctions on auction days. One room, two functions on different schedules.</title>
         <rect x="670" y="277.5" width="50" height="27" rx="3"/>
@@ -1250,7 +1259,7 @@
   <div class="vsd-card">
     <div class="vsd-ic" aria-hidden="true">📱↻</div>
 
-<script src="app.js?v=127"></script>
+<script src="app.js?v=128"></script>
 <script>
 /* ===== Ship view toggle + floor-plan deck picker + cross-section clicks + modal ===== */
 (function(){
