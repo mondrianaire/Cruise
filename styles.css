@@ -2549,3 +2549,23 @@ body.view-floor .ship-no-toggle{ display:none !important; }
           user-select: none !important;
 }
 .fp-deck-img{ -webkit-user-drag: none; }
+
+
+/* v.127: tighter page header on the ship page when room is precious.
+   Hides the descriptive page-lead on small viewports (the view tabs and
+   relocated "The Ship — ms Zuiderdam" section below the chart give the
+   user all the same context). Trims header padding too. */
+@media (max-width:900px){
+  body header.hero{ padding-top:32px; padding-bottom:18px; }
+  body header.hero .kicker{ font-size:.6rem; margin-bottom:4px; }
+  body header.hero h1{ font-size:1.4rem; margin-bottom:6px; }
+  body header.hero .page-lead{ display:none; }
+}
+
+/* v.127: deckchart-head now contains only the Night Owl button and the
+   view-tab pills. Tighten the bar so it doesn't feel empty. */
+.deckchart-head{ align-items:center; }
+@media (max-width:900px){
+  .deckchart-head{ flex-direction:row; align-items:center; gap:8px; }
+  .deckchart-head .ship-view-tabs{ margin-left:auto; }
+}

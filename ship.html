@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Ship &amp; Your Package — Canada &amp; New England 2026</title>
 <meta name="description" content="The Ship &amp; Your Package — ms Zuiderdam cruise hub for the Canada &amp; New England voyage, June 2026.">
-<link rel="stylesheet" href="styles.css?v=126">
+<link rel="stylesheet" href="styles.css?v=127">
 <style id="ship-critical-v121">
   /* v.121: critical overlay + Night Owl rules shipped inline with the HTML
      so they always take effect, even if styles.css is served from CDN cache. */
@@ -112,7 +112,18 @@
     -webkit-user-drag: none;
   }
 
-  /* v.126: polygon md-zones (Retreat, Crow's Nest, Fitness, Sea View,
+  /* v.127: tighter page header + lean deckchart-head on small viewports.
+     Inlined for cache resistance. */
+  @media (max-width:900px){
+    body header.hero{ padding-top:32px; padding-bottom:18px; }
+    body header.hero .kicker{ font-size:.6rem; margin-bottom:4px; }
+    body header.hero h1{ font-size:1.4rem; margin-bottom:6px; }
+    body header.hero .page-lead{ display:none; }
+    .deckchart-head{ flex-direction:row; align-items:center; gap:8px; }
+    .deckchart-head .ship-view-tabs{ margin-left:auto; }
+  }
+
+    /* v.126: polygon md-zones (Retreat, Crow's Nest, Fitness, Sea View,
      Dining Room, World Stage) should match the rect bubbles' stroke
      weight, line-join and outer softness. */
   .dc-svg .md-zone path{
@@ -216,10 +227,6 @@
        full name, capacity, and post-Dec-2025 refit notes. -->
   <div class="deckchart" aria-labelledby="dcH">
     <div class="deckchart-head">
-      <div>
-        <h3 id="dcH">Explore the ship</h3>
-        <p class="dc-sub">Two views — toggle to see the <em>Zuiderdam</em> in side elevation, or pick a deck for its top-down floor plan.</p>
-      </div>
       <button type="button" class="ship-no-toggle" id="shipNightOwl" aria-pressed="false">
         <span class="no-ic" aria-hidden="true">🌙</span>
         <span class="no-l">Night Owl mode</span>
@@ -1243,7 +1250,7 @@
   <div class="vsd-card">
     <div class="vsd-ic" aria-hidden="true">📱↻</div>
 
-<script src="app.js?v=126"></script>
+<script src="app.js?v=127"></script>
 <script>
 /* ===== Ship view toggle + floor-plan deck picker + cross-section clicks + modal ===== */
 (function(){
