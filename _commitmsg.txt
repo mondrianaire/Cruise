@@ -1,1 +1,31 @@
-drop_msg: remove _commitmsg.txt  
+v.143: float deck-label header so route + deck img share origin
+
+THE REAL alignment bug, on attempt N: the .fp-img-stage::before
+pseudo-element rendered the brass "DECK 3 — PROMENADE" label as a
+block-level element inside the stage. It took up ~35px of vertical
+flow space at the top, pushing the deck img DOWN by 35px.
+
+The route img is position:absolute / inset:0 — it sits at the
+stage's top corner, ignoring the label. So route layer started 35px
+ABOVE where the actual deck content showed. AND the deck img,
+shifted down 35px but still 100% height, overflowed the bottom of
+the stage by 35px — that overflow got clipped by overflow:hidden,
+silently cutting off the bottom of the deck image.
+
+All the per-deck Python analysis (PNG dimensions equal, route bbox
+inside hull bbox, route content_y matches deck content_y, MD5
+match between local and deployed) was correct AT THE PNG LEVEL but
+none of it caught the RUNTIME CSS positioning of the deck img vs
+the route img inside the stage. I had to inspect getBoundingClientRect
+on both layers live in Chrome to find it. Lesson: file-level
+verification ≠ rendered-DOM verification.
+
+Fix: float .fp-img-stage::before with position:absolute so it
+overlays the top of the stage (hangs as a tab 22px above the
+stage) instead of taking flow space. Stage overflow flipped to
+visible so the tab can hang out. Deck img and route img now both
+start at the stage's top-left and align pixel-for-pixel — every
+orange route point lines up with the corridor / venue it traces.
+
+Verified live with getBoundingClientRect after deployment.
+Asset versions bumped to ?v=143. SITE_VERSION = 'v.143'.
