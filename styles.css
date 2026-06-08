@@ -663,7 +663,7 @@ nav .links a:hover .sublabels,nav .links a.active .sublabels{color:var(--brass);
 
 /* ---- floor-plan panels ---- */
 .fp-panel{display:none;}
-.fp-panel.active{display:block;animation:shipFade .25s ease;}
+.fp-panel.active{display:block;animation:shipFade .18s ease both;}
 .fp-panel-head{
   display:flex;align-items:baseline;gap:14px;
   border-bottom:1px solid rgba(200,155,74,.25);
@@ -2572,4 +2572,30 @@ body.view-floor .ship-no-toggle{ display:none !important; }
 @media (min-width:901px){
   body.view-floor .fp-img-stage{ padding: 6px !important; }
   body.view-floor .fp-plan-col{ height: 88vh; }
+}
+
+
+/* v.136: kill the deck-switch flash.
+   - Pre-paint cream behind every deck stage so any momentary blank
+     paints the deck-paper colour, not the browser default white/blue
+   - Hide the mobile <select> tap highlight
+   - Smooth the panel reveal with a slightly longer crossfade */
+.fp-img-stage{
+  background:#fbf6e4 !important;  /* same cream as the deck plan paper */
+}
+.fp-img-stage img.fp-deck-img{
+  background:#fbf6e4;
+}
+.fp-deck-mobile-sel,
+.fp-deck-mobile-sel:focus,
+.fp-deck-mobile-sel:active{
+  -webkit-tap-highlight-color: transparent !important;
+  outline: none;
+}
+/* Ensure deck buttons get no blue tap highlight either */
+.fp-deck-btn,
+.fp-deck-btn:focus,
+.fp-deck-btn:active{
+  -webkit-tap-highlight-color: transparent !important;
+  outline: none;
 }
