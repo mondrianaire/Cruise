@@ -5,7 +5,85 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Ship &amp; Your Package — Canada &amp; New England 2026</title>
 <meta name="description" content="The Ship &amp; Your Package — ms Zuiderdam cruise hub for the Canada &amp; New England voyage, June 2026.">
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="styles.css?v=121">
+<style id="ship-critical-v121">
+  /* v.121: critical overlay + Night Owl rules shipped inline with the HTML
+     so they always take effect, even if styles.css is served from CDN cache. */
+  .ship-no-toggle[hidden]{ display:none !important; }
+  body.view-floor .ship-no-toggle{ display:none !important; }
+
+  .rotate-overlay{
+    display:none !important;
+    position:fixed !important;
+    top:0 !important; left:0 !important;
+    width:100% !important; height:100% !important;
+    margin:0; padding:24px; box-sizing:border-box;
+    z-index:2147483647;
+    background:rgba(4,19,28,.96);
+    pointer-events:auto;
+    -webkit-tap-highlight-color:transparent;
+    overflow:auto;
+    -webkit-overflow-scrolling:touch;
+  }
+  .rotate-overlay.visible{
+    display:flex !important;
+    align-items:center; justify-content:center;
+    opacity:1 !important;
+    visibility:visible !important;
+  }
+  .rotate-overlay .ro-backdrop{ display:none !important; }
+  .rotate-overlay .ro-card{
+    position:relative;
+    max-width:380px; width:100%;
+    padding:30px 26px 26px;
+    text-align:center;
+    background:linear-gradient(155deg, rgba(11,42,58,.98), rgba(4,19,28,.98));
+    border:1px solid #c89b4a;
+    border-radius:18px;
+    box-shadow:0 18px 50px rgba(0,0,0,.65);
+    color:#f1e7cf;
+    opacity:1 !important;
+    transform:none !important;
+  }
+  .rotate-overlay .ro-title{
+    margin:0 0 8px;
+    font:700 1.25rem/1.2 Georgia, serif;
+    color:#e6c477;
+  }
+  .rotate-overlay .ro-msg{
+    margin:0 0 22px;
+    font:400 .9rem/1.5 system-ui, sans-serif;
+    color:#c4b896;
+  }
+  .rotate-overlay .ro-msg em{ color:#f1e7cf; font-style:italic; }
+  .rotate-overlay .ro-msg strong{ color:#e6c477; }
+  .rotate-overlay .ro-alt{
+    display:inline-block;
+    padding:11px 18px;
+    background:transparent;
+    border:1px solid rgba(200,155,74,.55);
+    border-radius:9px;
+    color:#c4b896;
+    font:600 .78rem/1 'Space Mono', monospace;
+    letter-spacing:.06em; text-transform:uppercase;
+    cursor:pointer;
+  }
+  .rotate-overlay .ro-alt:hover{
+    color:#f1e7cf;
+    border-color:#e6c477;
+  }
+  .rotate-overlay .ro-phone{
+    width:80px; height:80px;
+    margin:0 auto 14px;
+    border:2.5px solid #e6c477;
+    border-radius:10px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:2.4rem;
+    color:#e6c477;
+  }
+  @media (min-width:1101px){ .rotate-overlay{ display:none !important; } }
+</style>
+
 <link rel="canonical" href="https://mondrianaire.github.io/Cruise/ship.html">
 <meta property="og:type" content="website">
 <meta property="og:title" content="The Ship &amp; Your Package — ms Zuiderdam · June 2026">
@@ -1089,14 +1167,7 @@
 <div id="orientationGate" class="rotate-overlay" role="dialog" aria-modal="true" aria-labelledby="roTitle">
   <div class="ro-backdrop" aria-hidden="true"></div>
   <div class="ro-card">
-    <div class="ro-phone" aria-hidden="true">
-      <div class="ro-phone-body"></div>
-      <div class="ro-phone-screen"></div>
-      <svg class="ro-arrow" viewBox="0 0 60 40" aria-hidden="true">
-        <path d="M 8 28 A 22 22 0 0 1 52 28" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-        <path d="M 50 14 L 52 28 L 38 28" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </div>
+    <div class="ro-phone" aria-hidden="true">📱↻</div>
     <h2 id="roTitle" class="ro-title">Rotate to landscape</h2>
     <p class="ro-msg">The <em>Zuiderdam</em>'s cross-section view is built for landscape. Turn your device sideways and we'll snap to it at the top of the page.</p>
     <button type="button" id="roUseDeckPlans" class="ro-alt">
@@ -1111,7 +1182,7 @@
   <div class="vsd-card">
     <div class="vsd-ic" aria-hidden="true">📱↻</div>
 
-<script src="app.js"></script>
+<script src="app.js?v=121"></script>
 <script>
 /* ===== Ship view toggle + floor-plan deck picker + cross-section clicks + modal ===== */
 (function(){
