@@ -1,0 +1,35 @@
+v.132: crop every deck-XX.png to its content bbox
+
+Reported problem: the deck PNGs had two layers of whitespace - a
+~30px whitespace margin INSIDE the PNG around the actual ship hull,
+plus the cream .fp-img-stage padding around the PNG. Cropping the
+PNGs themselves to the actual content bounding box fixes both at
+once.
+
+Result per deck (320 x 1449 originals):
+  deck-01: 220 x 1434  (68% of pixels retained)
+  deck-02: 194 x 1441  (60%)
+  deck-03: 194 x 1443  (60%)
+  deck-04: 220 x 1448  (69%)
+  deck-05: 214 x 1432  (66%)
+  deck-06: 211 x 1414  (64%)
+  deck-07: 213 x 1383  (64%)
+  deck-08: 203 x 1344  (59%)
+  deck-09: 202 x 1342  (59%)
+  deck-10: 197 x 1132  (48%)
+  deck-11: 197 x 1064  (45%)
+
+Top decks (11, 10) shed the most because they have shorter ships -
+just the observation deck / sports court block at the top of the
+profile.
+
+The crop also incidentally fixes the ship-centering issue I found
+earlier: the ship hull is now centered in each cropped image, so
+hotspots positioned with left:50% land on ship center as expected
+instead of in the right-side whitespace.
+
+Originals backed up to /deck-originals/ in case we need to roll back.
+
+Cache buster bumped to ?v=132 on styles.css, app.js, venues.js, and
+every deck-XX.png reference so browsers pull the freshly cropped
+images.
