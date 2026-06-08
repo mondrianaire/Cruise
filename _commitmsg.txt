@@ -1,0 +1,18 @@
+v.123: rotation also resets iOS pinch zoom
+
+window.scrollTo only affects the layout viewport - iOS Safari's pinch
+zoom lives on a separate visual viewport that scrollTo can't touch.
+Added resetPinchZoom() to snapToDeckchart():
+
+  - Briefly set the viewport meta to
+      width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no
+    which forces iOS to snap back to 1x scale.
+  - 250ms later restore the original viewport meta so the user can
+    pinch again later.
+
+This is the only reliable way to programmatically reset visual-
+viewport zoom on iOS Safari short of a page reload. Effect: every
+rotation now lands you at 1x zoom, scroll position (0,0), then the
+deckchart anchored to the top of the viewport.
+
+Cache buster bumped to ?v=123.
