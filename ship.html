@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Ship &amp; Your Package — Canada &amp; New England 2026</title>
 <meta name="description" content="The Ship &amp; Your Package — ms Zuiderdam cruise hub for the Canada &amp; New England voyage, June 2026.">
-<link rel="stylesheet" href="styles.css?v=138">
+<link rel="stylesheet" href="styles.css?v=139">
 <style id="ship-critical-v121">
   /* v.121: critical overlay + Night Owl rules shipped inline with the HTML
      so they always take effect, even if styles.css is served from CDN cache. */
@@ -234,6 +234,160 @@
   body.show-routes .fp-route-img{ opacity:1; }
   /* the hotspot rectangles must remain clickable above the route */
   .fp-img-stage .fp-hot{ z-index:3; position:absolute; }
+
+  /* v.139: Inline event-drawer under each "Notable on this deck" item.
+     Tapping a dv-item (or its matching hotspot on the deck plan)
+     expands a brass-bordered drawer with "Daily events" + a
+     chronological calendar of every HAL Navigator event at that venue. */
+  ul.dv-list > .dv-item{
+    /* upgrade the existing list item to a 2-row grid so the drawer
+       (row 2) sits flush below the icon + label (row 1). */
+    display:grid;
+    grid-template-columns:auto 1fr;
+    column-gap:8px;
+    align-items:start;
+    position:relative;
+    cursor:pointer;
+    padding-right:24px;
+    transition:background .18s ease;
+  }
+  ul.dv-list > .dv-item > .dv-ic{ grid-column:1; grid-row:1; }
+  ul.dv-list > .dv-item > .dv-l { grid-column:2; grid-row:1; }
+  ul.dv-list > .dv-item > .dv-events{ grid-column:1 / -1; grid-row:2; }
+  .dv-item:hover, .dv-item.is-hover{
+    background:rgba(255,238,210,.45);
+  }
+  .dv-item::after{
+    content:"";
+    position:absolute;
+    right:8px;
+    top:14px;
+    width:8px; height:8px;
+    border-right:1.5px solid rgba(180,128,52,.7);
+    border-bottom:1.5px solid rgba(180,128,52,.7);
+    transform:rotate(45deg);
+    transform-origin:65% 65%;
+    transition:transform .22s ease, border-color .22s ease;
+  }
+  .dv-item.is-open::after{
+    transform:rotate(-135deg);
+    border-color:#a04a08;
+  }
+  .dv-events{
+    display:block;
+    max-height:0;
+    overflow:hidden;
+    transition:max-height .35s ease, margin-top .25s ease, padding .25s ease;
+    margin-top:0;
+    padding:0 2px;
+    color:#3a2a10;
+  }
+  .dv-item.is-open .dv-events{
+    max-height:2400px;
+    margin-top:8px;
+    padding:0 2px 4px;
+  }
+  .dv-events-card{
+    border:1px solid rgba(180,128,52,.45);
+    border-radius:6px;
+    background:linear-gradient(180deg, rgba(255,250,236,.95), rgba(252,243,220,.9));
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.6), 0 1px 3px rgba(60,30,0,.07);
+    padding:10px 12px 12px;
+  }
+  .dv-events-section{ margin-top:10px; }
+  .dv-events-section:first-child{ margin-top:0; }
+  .dv-events-h{
+    display:flex; align-items:baseline; gap:8px;
+    font:600 .62rem/1.2 'Space Mono', monospace;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:#7a4f10;
+    margin:0 0 5px 0;
+  }
+  .dv-events-h::before{
+    content:"";
+    display:inline-block;
+    width:14px; height:1px;
+    background:rgba(180,128,52,.65);
+    transform:translateY(-3px);
+  }
+  .dv-events-h::after{
+    content:"";
+    flex:1;
+    height:1px;
+    background:linear-gradient(90deg, rgba(180,128,52,.4), rgba(180,128,52,0));
+    align-self:center;
+  }
+  .dv-events-h .dv-h-count{
+    font-weight:500;
+    color:#a07a3a;
+    font-size:.58rem;
+    letter-spacing:.08em;
+  }
+  .dv-day-h{
+    display:flex; align-items:baseline; gap:6px;
+    font:600 .62rem/1.2 'Space Mono', monospace;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:#5a3b14;
+    margin:8px 0 4px 0;
+  }
+  .dv-day-h .dv-day-port{
+    font-weight:400;
+    color:#8a6730;
+    font-size:.58rem;
+    letter-spacing:.04em;
+  }
+  .dv-evt-list{
+    list-style:none;
+    padding:0;
+    margin:0;
+    border-top:1px dashed rgba(180,128,52,.25);
+  }
+  .dv-evt{
+    display:grid;
+    grid-template-columns:54px 1fr auto;
+    gap:8px;
+    align-items:baseline;
+    padding:5px 2px;
+    border-bottom:1px dashed rgba(180,128,52,.18);
+    font:500 .76rem/1.3 system-ui, -apple-system, "Segoe UI", sans-serif;
+    color:#3a2a10;
+  }
+  .dv-evt:last-child{ border-bottom:none; }
+  .dv-evt .dv-evt-t{
+    font:700 .68rem/1 'Space Mono', monospace;
+    color:#5a3b14;
+    letter-spacing:.02em;
+    white-space:nowrap;
+  }
+  .dv-evt .dv-evt-n{ color:#2a1f08; }
+  .dv-evt .dv-evt-d{
+    font:500 .62rem/1 'Space Mono', monospace;
+    color:#8a6730;
+    white-space:nowrap;
+  }
+  .dv-events-empty{
+    font:500 .72rem/1.4 system-ui, -apple-system, sans-serif;
+    color:#8a6730;
+    font-style:italic;
+    padding:2px 0;
+  }
+  .dv-evt-daily-badge{
+    display:inline-block;
+    font:600 .54rem/1 'Space Mono', monospace;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:#fff;
+    background:linear-gradient(180deg,#ea7c26,#c95e10);
+    padding:2px 5px;
+    border-radius:3px;
+    margin-left:6px;
+    vertical-align:1px;
+  }
+  .fp-hot.is-active{
+    box-shadow:0 0 0 2px rgba(234,124,38,.55), 0 0 6px rgba(234,124,38,.35);
+  }
 
   /* v.122: compact deck-picker on small viewports. Keeps the brass-bordered
      pill design but shrinks each button so the row stops dominating the page. */
@@ -820,7 +974,7 @@
       <div class="fp-stage">
         <div class="fp-panel" data-deck="11" hidden>
     <div class="fp-plan-col">
-      <div class="fp-img-stage" data-deck-label="Deck 11 — Sports"><img class="fp-deck-img" src="deck-11.png?v=138" alt="Deck 11 plan" decoding="async"><img class="fp-route-img" src="route-11.png?v=138" alt="" aria-hidden="true" decoding="async">
+      <div class="fp-img-stage" data-deck-label="Deck 11 — Sports"><img class="fp-deck-img" src="deck-11.png?v=139" alt="Deck 11 plan" decoding="async"><img class="fp-route-img" src="route-11.png?v=139" alt="" aria-hidden="true" decoding="async">
         <div class="fp-hot" data-deck="11" data-venue-id="retreat" style="left:24%;top:3%;width:52%;height:22%;" title="The Retreat"><span class="fp-hot-l">The Retreat</span></div>
         <div class="fp-hot" data-deck="11" data-venue-id="sportcourt" style="left:32%;top:80%;width:38%;height:14%;" title="Sport Court (basketball + pickleball)"><span class="fp-hot-l">Sport Court</span></div>
         
@@ -848,7 +1002,7 @@
     </div>
   </div><div class="fp-panel" data-deck="10" hidden>
     <div class="fp-plan-col">
-      <div class="fp-img-stage" data-deck-label="Deck 10 — Observation"><img class="fp-deck-img" src="deck-10.png?v=138" alt="Deck 10 plan" decoding="async"><img class="fp-route-img" src="route-10.png?v=138" alt="" aria-hidden="true" decoding="async">
+      <div class="fp-img-stage" data-deck-label="Deck 10 — Observation"><img class="fp-deck-img" src="deck-10.png?v=139" alt="Deck 10 plan" decoding="async"><img class="fp-route-img" src="route-10.png?v=139" alt="" aria-hidden="true" decoding="async">
         <div class="fp-hot" data-deck="10" data-venue-id="crowsnest" style="left:28%;top:3%;width:44%;height:7%;" title="Crow's Nest"><span class="fp-hot-l">Crow's Nest</span></div>
         <div class="fp-hot" data-deck="10" data-venue-id="crowsnestcafe" style="left:28%;top:11%;width:30%;height:5%;" title="Crow's Nest Café"><span class="fp-hot-l">CN Café</span></div>
         <div class="fp-hot" data-deck="10" data-venue-id="gameroom" style="left:58%;top:11%;width:22%;height:5%;" title="Game Room"><span class="fp-hot-l">Game Room</span></div>
@@ -892,7 +1046,7 @@
     </div>
   </div><div class="fp-panel" data-deck="9" hidden>
     <div class="fp-plan-col">
-      <div class="fp-img-stage" data-deck-label="Deck 9 — Lido"><img class="fp-deck-img" src="deck-09.png?v=138" alt="Deck 9 plan" decoding="async"><img class="fp-route-img" src="route-09.png?v=138" alt="" aria-hidden="true" decoding="async">
+      <div class="fp-img-stage" data-deck-label="Deck 9 — Lido"><img class="fp-deck-img" src="deck-09.png?v=139" alt="Deck 9 plan" decoding="async"><img class="fp-route-img" src="route-09.png?v=139" alt="" aria-hidden="true" decoding="async">
         <div class="fp-hot" data-deck="9" data-venue-id="fitness" style="left:32%;top:3%;width:36%;height:7%;" title="Fitness Center"><span class="fp-hot-l">Fitness</span></div>
         <div class="fp-hot" data-deck="9" data-venue-id="greenhouse" style="left:24%;top:11%;width:52%;height:10%;" title="Greenhouse Spa &amp; Salon"><span class="fp-hot-l">Spa &amp; Salon</span></div>
         <div class="fp-hot" data-deck="9" data-venue-id="hydropool" style="left:38%;top:26%;width:24%;height:6%;" title="Hydropool (Greenhouse Spa thermal pool)"><span class="fp-hot-l">Hydropool</span></div>
@@ -956,7 +1110,7 @@
     </div>
   </div><div class="fp-panel" data-deck="8" hidden>
     <div class="fp-plan-col">
-      <div class="fp-img-stage" data-deck-label="Deck 8 — Navigation"><img class="fp-deck-img" src="deck-08.png?v=138" alt="Deck 8 plan" decoding="async"><img class="fp-route-img" src="route-08.png?v=138" alt="" aria-hidden="true" decoding="async">
+      <div class="fp-img-stage" data-deck-label="Deck 8 — Navigation"><img class="fp-deck-img" src="deck-08.png?v=139" alt="Deck 8 plan" decoding="async"><img class="fp-route-img" src="route-08.png?v=139" alt="" aria-hidden="true" decoding="async">
         <div class="fp-hot" data-deck="8" data-venue-id="bridge" style="left:30%;top:4%;width:40%;height:10%;" title="Bridge"><span class="fp-hot-l">Bridge</span></div>
         
       </div>
@@ -980,7 +1134,7 @@
     </div>
   </div><div class="fp-panel" data-deck="7" hidden>
     <div class="fp-plan-col">
-      <div class="fp-img-stage" data-deck-label="Deck 7 — Rotterdam"><img class="fp-deck-img" src="deck-07.png?v=138" alt="Deck 7 plan" decoding="async"><img class="fp-route-img" src="route-07.png?v=138" alt="" aria-hidden="true" decoding="async">
+      <div class="fp-img-stage" data-deck-label="Deck 7 — Rotterdam"><img class="fp-deck-img" src="deck-07.png?v=139" alt="Deck 7 plan" decoding="async"><img class="fp-route-img" src="route-07.png?v=139" alt="" aria-hidden="true" decoding="async">
         <div class="fp-hot" data-deck="7" data-venue-id="pinnaclesuites" style="left:30%;top:16%;width:40%;height:6%;" title="Pinnacle Suites PS7051 / PS7052"><span class="fp-hot-l">Pinnacle Suites</span></div>
         
       </div>
@@ -1004,7 +1158,7 @@
     </div>
   </div><div class="fp-panel" data-deck="6" hidden>
     <div class="fp-plan-col">
-      <div class="fp-img-stage" data-deck-label="Deck 6 — Upper Verandah"><img class="fp-deck-img" src="deck-06.png?v=138" alt="Deck 6 plan" decoding="async"><img class="fp-route-img" src="route-06.png?v=138" alt="" aria-hidden="true" decoding="async">
+      <div class="fp-img-stage" data-deck-label="Deck 6 — Upper Verandah"><img class="fp-deck-img" src="deck-06.png?v=139" alt="Deck 6 plan" decoding="async"><img class="fp-route-img" src="route-06.png?v=139" alt="" aria-hidden="true" decoding="async">
         
       </div>
       <p class="fp-img-note">Holland America's plan for the <em>Zuiderdam</em>. Fore at top, aft at bottom.</p>
@@ -1024,7 +1178,7 @@
     </div>
   </div><div class="fp-panel active" data-deck="5">
     <div class="fp-plan-col">
-      <div class="fp-img-stage" data-deck-label="Deck 5 — Verandah (YOUR DECK)"><img class="fp-deck-img" src="deck-05.png?v=138" alt="Deck 5 plan" decoding="async"><img class="fp-route-img" src="route-05.png?v=138" alt="" aria-hidden="true" decoding="async">
+      <div class="fp-img-stage" data-deck-label="Deck 5 — Verandah (YOUR DECK)"><img class="fp-deck-img" src="deck-05.png?v=139" alt="Deck 5 plan" decoding="async"><img class="fp-route-img" src="route-05.png?v=139" alt="" aria-hidden="true" decoding="async">
         <div class="fp-img-pin ours" style="left:54%;top:80%;" title="Sandra &amp; Becca · Cabin K5155 (Interior)">5155</div>
         <div class="fp-img-pin ours" style="left:54%;top:83.6%;" title="Jett &amp; Laura · Cabin K5161 (Interior)">5161</div>
         <div class="fp-img-pin ours" style="left:54%;top:87.2%;" title="Karen · Cabin K5165 (Interior)">5165</div>
@@ -1046,7 +1200,7 @@
   </div>
   <div class="fp-panel" data-deck="4" hidden>
     <div class="fp-plan-col">
-      <div class="fp-img-stage" data-deck-label="Deck 4 — Upper Promenade"><img class="fp-deck-img" src="deck-04.png?v=138" alt="Deck 4 plan" decoding="async"><img class="fp-route-img" src="route-04.png?v=138" alt="" aria-hidden="true" decoding="async">
+      <div class="fp-img-stage" data-deck-label="Deck 4 — Upper Promenade"><img class="fp-deck-img" src="deck-04.png?v=139" alt="Deck 4 plan" decoding="async"><img class="fp-route-img" src="route-04.png?v=139" alt="" aria-hidden="true" decoding="async">
         
       </div>
       <p class="fp-img-note">Holland America's plan for the <em>Zuiderdam</em>. Fore at top, aft at bottom.</p>
@@ -1066,7 +1220,7 @@
     </div>
   </div><div class="fp-panel" data-deck="3" hidden>
     <div class="fp-plan-col">
-      <div class="fp-img-stage" data-deck-label="Deck 3 — Promenade"><img class="fp-deck-img" src="deck-03.png?v=138" alt="Deck 3 plan" decoding="async"><img class="fp-route-img" src="route-03.png?v=138" alt="" aria-hidden="true" decoding="async">
+      <div class="fp-img-stage" data-deck-label="Deck 3 — Promenade"><img class="fp-deck-img" src="deck-03.png?v=139" alt="Deck 3 plan" decoding="async"><img class="fp-route-img" src="route-03.png?v=139" alt="" aria-hidden="true" decoding="async">
         <div class="fp-hot" data-deck="3" data-venue-id="worldstage" style="left:22%;top:3.5%;width:56%;height:12%;" title="World Stage (balcony tier)"><span class="fp-hot-l">World Stage</span></div>
         <div class="fp-hot" data-deck="3" data-venue-id="tasman" style="left:38%;top:21%;width:24%;height:4%;" title="Tasman Room cinema"><span class="fp-hot-l">Tasman</span></div>
         <div class="fp-hot" data-deck="3" data-venue-id="meetingrooms" style="left:22%;top:27%;width:32%;height:12%;" title="Hudson · Half Moon · Stuyvesant meeting rooms + Digital Workshop"><span class="fp-hot-l">Meeting Rms</span></div>
@@ -1129,7 +1283,7 @@
     </div>
   </div><div class="fp-panel" data-deck="2" hidden>
     <div class="fp-plan-col">
-      <div class="fp-img-stage" data-deck-label="Deck 2 — Lower Promenade"><img class="fp-deck-img" src="deck-02.png?v=138" alt="Deck 2 plan" decoding="async"><img class="fp-route-img" src="route-02.png?v=138" alt="" aria-hidden="true" decoding="async">
+      <div class="fp-img-stage" data-deck-label="Deck 2 — Lower Promenade"><img class="fp-deck-img" src="deck-02.png?v=139" alt="Deck 2 plan" decoding="async"><img class="fp-route-img" src="route-02.png?v=139" alt="" aria-hidden="true" decoding="async">
         <div class="fp-hot" data-deck="2" data-venue-id="worldstagelower" style="left:22%;top:5%;width:56%;height:13%;" title="World Stage"><span class="fp-hot-l">World Stage</span></div>
         <div class="fp-hot" data-deck="2" data-venue-id="casino" style="left:15%;top:23%;width:35%;height:8%;" title="Casino"><span class="fp-hot-l">Casino</span></div>
         <div class="fp-hot" data-deck="2" data-venue-id="billboard" style="left:54%;top:23%;width:28%;height:8%;" title="Billboard"><span class="fp-hot-l">Billboard</span></div>
@@ -1200,7 +1354,7 @@
     </div>
   </div><div class="fp-panel" data-deck="1" hidden>
     <div class="fp-plan-col">
-      <div class="fp-img-stage" data-deck-label="Deck 1 — Main · Atrium"><img class="fp-deck-img" src="deck-01.png?v=138" alt="Deck 1 plan" decoding="async"><img class="fp-route-img" src="route-01.png?v=138" alt="" aria-hidden="true" decoding="async">
+      <div class="fp-img-stage" data-deck-label="Deck 1 — Main · Atrium"><img class="fp-deck-img" src="deck-01.png?v=139" alt="Deck 1 plan" decoding="async"><img class="fp-route-img" src="route-01.png?v=139" alt="" aria-hidden="true" decoding="async">
         <div class="fp-hot" data-deck="1" data-venue-id="worldstagelowest" style="left:25%;top:3%;width:50%;height:13%;" title="World Stage (stage level)"><span class="fp-hot-l">World Stage</span></div>
         <div class="fp-hot" data-deck="1" data-venue-id="atrium" style="left:38%;top:54%;width:24%;height:7%;" title="Atrium"><span class="fp-hot-l">Atrium</span></div>
         <div class="fp-hot" data-deck="1" data-venue-id="frontoffice" style="left:10%;top:55%;width:25%;height:5%;" title="Guest Services"><span class="fp-hot-l">Guest Services</span></div>
@@ -1362,8 +1516,10 @@
   <div class="vsd-card">
     <div class="vsd-ic" aria-hidden="true">📱↻</div>
 
-<script src="venues.js?v=138"></script>
-<script src="app.js?v=138"></script>
+<script src="venues.js?v=139"></script>
+<script src="events.js?v=139"></script>
+<script src="events-drawer.js?v=139"></script>
+<script src="app.js?v=139"></script>
 <script>
 /* ===== Ship view toggle + floor-plan deck picker + cross-section clicks + modal ===== */
 (function(){
@@ -1904,7 +2060,6 @@
         document.querySelectorAll('.fp-hot[data-deck="'+deck+'"][data-venue-id="'+vid+'"]').forEach(function(h){ h.classList.remove('is-hover'); });
       }
       el.addEventListener('mouseenter', on);
-      el.addEventListener('mouseleave', off);
       el.addEventListener('focusin', on);
       el.addEventListener('focusout', off);
     }
@@ -1917,6 +2072,8 @@
       pair(li, m[1], m[2]);
     });
   })();
+
+  /* v.139 event drawer logic lives in events-drawer.js */
 
   /* ---- Modal: "View deck plan" buttons ---- */
   var modal     = document.getElementById('fpModal');
@@ -1979,4 +2136,76 @@
 
   function applyTouched(el){
     if(!el || !el.classList) return;
-    d
+    document.querySelectorAll('.is-touched').forEach(function(x){
+      if(x !== el) x.classList.remove('is-touched');
+    });
+    el.classList.add('is-touched');
+
+    // Bidirectional sync for hotspots ↔ venue rows
+    var deck = el.getAttribute('data-deck');
+    var vid  = el.getAttribute('data-venue-id');
+    if(deck && vid){
+      var counterpart = document.getElementById('venue-' + deck + '-' + vid)
+                     || document.querySelector('.fp-hot[data-deck="'+deck+'"][data-venue-id="'+vid+'"]');
+      if(counterpart) counterpart.classList.add('is-touched');
+    }
+    if(el.id && el.id.indexOf('venue-') === 0){
+      var parts = el.id.match(/^venue-(\d+)-(.+)$/);
+      if(parts){
+        document.querySelectorAll('.fp-hot[data-deck="'+parts[1]+'"][data-venue-id="'+parts[2]+'"]').forEach(function(h){ h.classList.add('is-touched'); });
+      }
+    }
+  }
+
+  document.addEventListener('touchstart', function(e){
+    var el = e.target.closest(TOUCH_TARGETS);
+    if(!el) return;
+    /* Apply visual selection state immediately (tap, not hold). */
+    applyTouched(el);
+    clearTimeout(clearTimer);
+    clearTimer = setTimeout(function(){
+      document.querySelectorAll('.is-touched').forEach(function(x){
+        x.classList.remove('is-touched');
+      });
+    }, 1400);
+  }, {passive:true});
+
+  document.addEventListener('touchcancel', function(){
+    clearTimeout(clearTimer);
+    document.querySelectorAll('.is-touched').forEach(function(x){
+      x.classList.remove('is-touched');
+    });
+  });
+})();
+</script>
+
+<script id="rotateHintHandler">
+(function(){
+  /* v.100: dismiss handlers for both landscape and portrait variant banners */
+  document.querySelectorAll('.mobile-rotate-hint .mrh-x').forEach(function(x){
+    x.addEventListener('click', function(){
+      x.closest('.mobile-rotate-hint').style.display='none';
+    });
+  });
+  // Legacy single-banner handler kept below for safety
+  var banner = document.querySelector('.mobile-rotate-hint');
+  if(!banner) return;
+  var x = banner.querySelector('.mrh-x');
+  if(x){ x.addEventListener('click', function(){ banner.style.display='none'; }); }
+})();
+</script>
+<!-- v.107: tiny floating button to re-open the nav after auto-collapse. -->
+<button type="button" id="navPeek" class="nav-peek" aria-label="Show menu" hidden>
+  <span aria-hidden="true">≡</span>
+</button>
+
+    <h3 id="vsdTitle" class="vsd-title">Switch view?</h3>
+    <p class="vsd-msg" id="vsdMsg">This view looks best in <strong>portrait</strong>. Rotate your device, then continue.</p>
+    <div class="vsd-actions">
+      <button type="button" id="vsdContinue" class="vsd-go">Switch &amp; continue</button>
+      <button type="button" id="vsdCancel" class="vsd-cancel">← Go back</button>
+    </div>
+  </div>
+</div>
+</body>
+</html>

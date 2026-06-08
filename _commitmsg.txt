@@ -1,1 +1,36 @@
-drop_msg: remove _commitmsg.txt scratch file
+v.139: Notable-on-this-deck event drawers + restore truncated tail
+
+Tap any "Notable on this deck" row (or its matching deck-plan
+hotspot) to expand a brass-bordered drawer underneath. Contents:
+  - "Daily events" section (events that recur on 5+ of 7 days at
+    same time, within ±15 min). Empty for now since only Day 2 has
+    been ingested; populates automatically as Days 3–7 land in
+    events.js.
+  - "Calendar" section: chronological list grouped by cruise day
+    (Sat Jun 13 · Boston embark, Sun Jun 14 · At sea, etc.) with
+    monospace time column and minute-or-hour duration.
+
+Implementation:
+  - events.js (NEW): seed of clean Day 2 events extracted from the
+    HAL Navigator screen-recording (test fixture's bad rows
+    dropped: "37 minutes" Mahjong duration nulled, "wat3rcoloring"
+    art class skipped, "16 hours" Crossword duration nulled).
+    Exports window.SHIP_EVENTS + window.shipEventsForVenue(deck,
+    slug) + window.SHIP_DAYS port-day labels. Includes a fuzzy
+    venue-label -> dv-item-id lookup (handles "Spa & Salon" vs
+    "Greenhouse Spa & Salon", multi-deck World Stage etc.).
+  - events-drawer.js (NEW): builds + toggles the drawer DOM,
+    handles dv-item + hotspot click + keyboard activation, and
+    closes any other open drawer first (only one open at a time).
+  - ship.html: drawer CSS using existing Voyage Console brass
+    palette + Space Mono monospace. Each dv-item becomes a 2-row
+    grid so the drawer sits flush below the icon + label. Chevron
+    rotates 180° when open. Hotspots flash brass when their venue
+    drawer is open.
+
+Also restores the file tail that was truncated since v.131 —
+ship.html was missing the touch-handler IIFE, rotate-hint script,
+navPeek button, vsd dialog inner markup, and </body></html>.
+Spliced back from commit e9a2bf0 (v.131).
+
+Asset versions bumped to ?v=139; SITE_VERSION = 'v.139'.
