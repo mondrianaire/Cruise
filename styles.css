@@ -2549,13 +2549,14 @@ body.view-floor .ship-no-toggle{ display:none !important; }
    Single source of truth — image fills available vertical real estate
    (up to 88vh) but never overflows. */
 .fp-img-stage{
-  /* v.134: container locked to the canonical deck-PNG aspect ratio
-     (230x1449 = the largest cropped deck). Every deck renders into
-     this exact-same-size container regardless of which is loaded. */
+  /* v.135: tight container — canvas is 214x1449 (the largest deck after
+     minimal-padding crop). Explicit width forces a narrow container; cream
+     margin can't bleed beyond the ship. */
   height: 88vh !important;
-  aspect-ratio: 230 / 1449 !important;
+  width: calc(88vh * 214 / 1449) !important;
   max-width: 100% !important;
   margin: 0 auto !important;
+  padding: 0 !important;
   overflow: hidden !important;
 }
 .fp-deck-img{
@@ -2563,6 +2564,7 @@ body.view-floor .ship-no-toggle{ display:none !important; }
   height: 100% !important;
   object-fit: contain;
   display: block;
+  margin: 0 !important;
 }
 /* On the desktop 2-col layout the image is sticky in the left column;
    tighten the stage so the height comes from the image, not from
