@@ -131,6 +131,7 @@
 
   // Expose so ship.html's deep-link handler can call us
   window.openVenueDrawer = openVenue;
+  window.closeAllVenueDrawers = closeAll;
 
   function init(){
     document.querySelectorAll('.dv-item').forEach(function(li){
