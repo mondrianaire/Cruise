@@ -46,6 +46,19 @@ service cloud.firestore {
            get(/databases/$(database)/documents/cruise/roster).data.members;
     }
 
+    // ─── Canada & New England cruise: Document Vault file index ───
+    // Holds only file METADATA (name, storage path, size, uploader) per
+    // document record — the bytes live in Firebase Storage under cruise-docs/
+    // and are gated by the matching Storage rule. Roster members only.
+    // Delete is not granted, so the index cannot be wiped by a guest;
+    // individual files are removed by rewriting the map on update.
+    match /cruise/docvault {
+      allow read, create, update: if request.auth != null
+        && request.auth.token.email_verified == true
+        && request.auth.token.email in
+           get(/databases/$(database)/documents/cruise/roster).data.members;
+    }
+
     match /games/{gameId} {
       // get: a player may read their own game; a not-yet-joined player may
       // read a game that still has an open slot (so the join transaction can

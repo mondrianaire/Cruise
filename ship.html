@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Ship &amp; Your Package — Canada &amp; New England 2026</title>
 <meta name="description" content="The Ship &amp; Your Package — ms Zuiderdam cruise hub for the Canada &amp; New England voyage, June 2026.">
-<link rel="stylesheet" href="styles.css?v=137">
+<link rel="stylesheet" href="styles.css?v=138">
 <style id="ship-critical-v121">
   /* v.121: critical overlay + Night Owl rules shipped inline with the HTML
      so they always take effect, even if styles.css is served from CDN cache. */
@@ -165,6 +165,75 @@
     stroke-miterlimit:2 !important;
     paint-order:fill stroke;
   }
+
+  /* v.138: Walking-paths toggle pill + route overlay layer.
+     Each .fp-img-stage gets a position-absolute .fp-route-img on top of
+     .fp-deck-img. The overlay is hidden by default; body.show-routes
+     fades it in. PNGs (route-NN.png) are pre-aligned to the 214x1449 deck canvas. */
+  .fp-paths-toggle-wrap{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    margin:8px 0 12px 0;
+    flex-wrap:wrap;
+  }
+  .fp-paths-toggle{
+    appearance:none; -webkit-appearance:none;
+    display:inline-flex; align-items:center; gap:6px;
+    padding:5px 12px;
+    border:1px solid rgba(180,128,52,.55);
+    border-radius:999px;
+    background:rgba(255,250,240,.55);
+    color:#5a3b14;
+    font:600 .72rem/1.1 'Space Mono', monospace;
+    letter-spacing:.04em;
+    cursor:pointer;
+    transition:background .2s, color .2s, border-color .2s, box-shadow .2s;
+  }
+  .fp-paths-toggle:hover{
+    background:rgba(255,238,210,.85);
+    border-color:rgba(180,128,52,.85);
+  }
+  .fp-paths-toggle[aria-pressed="true"]{
+    background:linear-gradient(180deg,#ea7c26,#c95e10);
+    color:#fff;
+    border-color:#a04a08;
+    box-shadow:0 0 0 1px rgba(160,74,8,.35), 0 3px 10px rgba(234,124,38,.32);
+  }
+  .fp-paths-toggle .fpt-icon{
+    font-size:.95rem;
+    line-height:1;
+    transform:translateY(-.5px);
+  }
+  .fpt-hint{
+    color:#8a6730;
+    font:500 .65rem/1.1 'Space Mono', monospace;
+    letter-spacing:.04em;
+    opacity:.85;
+  }
+  @media (max-width:560px){
+    .fpt-hint{ display:none; }
+    .fp-paths-toggle{ font-size:.68rem; padding:4px 10px; }
+  }
+  .fp-img-stage{ position:relative; }
+  .fp-route-img{
+    position:absolute;
+    inset:0;
+    width:100% !important;
+    height:100% !important;
+    object-fit:contain;
+    pointer-events:none;
+    opacity:0;
+    transition:opacity .25s ease;
+    /* draw above deck PNG, below hotspots */
+    z-index:2;
+    /* slight glow to read as illuminated path */
+    filter:drop-shadow(0 0 1.5px rgba(234,124,38,.45));
+  }
+  body.show-routes .fp-route-img{ opacity:1; }
+  /* the hotspot rectangles must remain clickable above the route */
+  .fp-img-stage .fp-hot{ z-index:3; position:absolute; }
 
   /* v.122: compact deck-picker on small viewports. Keeps the brass-bordered
      pill design but shrinks each button so the row stops dominating the page. */
@@ -739,10 +808,19 @@
       <div class="fp-deck-picker" role="tablist" aria-label="Pick a deck">
         <button type="button" class="fp-deck-btn" data-deck="11">11</button><button type="button" class="fp-deck-btn" data-deck="10">10</button><button type="button" class="fp-deck-btn" data-deck="9">9</button><button type="button" class="fp-deck-btn" data-deck="8">8</button><button type="button" class="fp-deck-btn" data-deck="7">7</button><button type="button" class="fp-deck-btn" data-deck="6">6</button><button type="button" class="fp-deck-btn active" data-deck="5">5 <span class="fp-star">★</span></button><button type="button" class="fp-deck-btn" data-deck="4">4</button><button type="button" class="fp-deck-btn" data-deck="3">3</button><button type="button" class="fp-deck-btn" data-deck="2">2</button><button type="button" class="fp-deck-btn" data-deck="1">1</button>
       </div>
+      <!-- v.138: Walking-paths toggle. Pill near the deck-picker that overlays
+           HAL's accessibility-route lines on top of each deck. -->
+      <div class="fp-paths-toggle-wrap" aria-label="Walking-paths overlay">
+        <button type="button" id="fpPathsToggle" class="fp-paths-toggle" aria-pressed="false">
+          <span class="fpt-icon" aria-hidden="true">↝</span>
+          <span class="fpt-lbl">Walking paths</span>
+        </button>
+        <span class="fpt-hint">HAL accessible routes</span>
+      </div>
       <div class="fp-stage">
         <div class="fp-panel" data-deck="11" hidden>
     <div class="fp-plan-col">
-      <div class="fp-img-stage" data-deck-label="Deck 11 — Sports"><img class="fp-deck-img" src="deck-11.png?v=137" alt="Deck 11 plan" decoding="async">
+      <div class="fp-img-stage" data-deck-label="Deck 11 — Sports"><img class="fp-deck-img" src="deck-11.png?v=138" alt="Deck 11 plan" decoding="async"><img class="fp-route-img" src="route-11.png?v=138" alt="" aria-hidden="true" decoding="async">
         <div class="fp-hot" data-deck="11" data-venue-id="retreat" style="left:24%;top:3%;width:52%;height:22%;" title="The Retreat"><span class="fp-hot-l">The Retreat</span></div>
         <div class="fp-hot" data-deck="11" data-venue-id="sportcourt" style="left:32%;top:80%;width:38%;height:14%;" title="Sport Court (basketball + pickleball)"><span class="fp-hot-l">Sport Court</span></div>
         
@@ -770,7 +848,7 @@
     </div>
   </div><div class="fp-panel" data-deck="10" hidden>
     <div class="fp-plan-col">
-      <div class="fp-img-stage" data-deck-label="Deck 10 — Observation"><img class="fp-deck-img" src="deck-10.png?v=137" alt="Deck 10 plan" decoding="async">
+      <div class="fp-img-stage" data-deck-label="Deck 10 — Observation"><img class="fp-deck-img" src="deck-10.png?v=138" alt="Deck 10 plan" decoding="async"><img class="fp-route-img" src="route-10.png?v=138" alt="" aria-hidden="true" decoding="async">
         <div class="fp-hot" data-deck="10" data-venue-id="crowsnest" style="left:28%;top:3%;width:44%;height:7%;" title="Crow's Nest"><span class="fp-hot-l">Crow's Nest</span></div>
         <div class="fp-hot" data-deck="10" data-venue-id="crowsnestcafe" style="left:28%;top:11%;width:30%;height:5%;" title="Crow's Nest Café"><span class="fp-hot-l">CN Café</span></div>
         <div class="fp-hot" data-deck="10" data-venue-id="gameroom" style="left:58%;top:11%;width:22%;height:5%;" title="Game Room"><span class="fp-hot-l">Game Room</span></div>
@@ -814,7 +892,7 @@
     </div>
   </div><div class="fp-panel" data-deck="9" hidden>
     <div class="fp-plan-col">
-      <div class="fp-img-stage" data-deck-label="Deck 9 — Lido"><img class="fp-deck-img" src="deck-09.png?v=137" alt="Deck 9 plan" decoding="async">
+      <div class="fp-img-stage" data-deck-label="Deck 9 — Lido"><img class="fp-deck-img" src="deck-09.png?v=138" alt="Deck 9 plan" decoding="async"><img class="fp-route-img" src="route-09.png?v=138" alt="" aria-hidden="true" decoding="async">
         <div class="fp-hot" data-deck="9" data-venue-id="fitness" style="left:32%;top:3%;width:36%;height:7%;" title="Fitness Center"><span class="fp-hot-l">Fitness</span></div>
         <div class="fp-hot" data-deck="9" data-venue-id="greenhouse" style="left:24%;top:11%;width:52%;height:10%;" title="Greenhouse Spa &amp; Salon"><span class="fp-hot-l">Spa &amp; Salon</span></div>
         <div class="fp-hot" data-deck="9" data-venue-id="hydropool" style="left:38%;top:26%;width:24%;height:6%;" title="Hydropool (Greenhouse Spa thermal pool)"><span class="fp-hot-l">Hydropool</span></div>
@@ -878,7 +956,7 @@
     </div>
   </div><div class="fp-panel" data-deck="8" hidden>
     <div class="fp-plan-col">
-      <div class="fp-img-stage" data-deck-label="Deck 8 — Navigation"><img class="fp-deck-img" src="deck-08.png?v=137" alt="Deck 8 plan" decoding="async">
+      <div class="fp-img-stage" data-deck-label="Deck 8 — Navigation"><img class="fp-deck-img" src="deck-08.png?v=138" alt="Deck 8 plan" decoding="async"><img class="fp-route-img" src="route-08.png?v=138" alt="" aria-hidden="true" decoding="async">
         <div class="fp-hot" data-deck="8" data-venue-id="bridge" style="left:30%;top:4%;width:40%;height:10%;" title="Bridge"><span class="fp-hot-l">Bridge</span></div>
         
       </div>
@@ -902,7 +980,7 @@
     </div>
   </div><div class="fp-panel" data-deck="7" hidden>
     <div class="fp-plan-col">
-      <div class="fp-img-stage" data-deck-label="Deck 7 — Rotterdam"><img class="fp-deck-img" src="deck-07.png?v=137" alt="Deck 7 plan" decoding="async">
+      <div class="fp-img-stage" data-deck-label="Deck 7 — Rotterdam"><img class="fp-deck-img" src="deck-07.png?v=138" alt="Deck 7 plan" decoding="async"><img class="fp-route-img" src="route-07.png?v=138" alt="" aria-hidden="true" decoding="async">
         <div class="fp-hot" data-deck="7" data-venue-id="pinnaclesuites" style="left:30%;top:16%;width:40%;height:6%;" title="Pinnacle Suites PS7051 / PS7052"><span class="fp-hot-l">Pinnacle Suites</span></div>
         
       </div>
@@ -926,7 +1004,7 @@
     </div>
   </div><div class="fp-panel" data-deck="6" hidden>
     <div class="fp-plan-col">
-      <div class="fp-img-stage" data-deck-label="Deck 6 — Upper Verandah"><img class="fp-deck-img" src="deck-06.png?v=137" alt="Deck 6 plan" decoding="async">
+      <div class="fp-img-stage" data-deck-label="Deck 6 — Upper Verandah"><img class="fp-deck-img" src="deck-06.png?v=138" alt="Deck 6 plan" decoding="async"><img class="fp-route-img" src="route-06.png?v=138" alt="" aria-hidden="true" decoding="async">
         
       </div>
       <p class="fp-img-note">Holland America's plan for the <em>Zuiderdam</em>. Fore at top, aft at bottom.</p>
@@ -946,7 +1024,7 @@
     </div>
   </div><div class="fp-panel active" data-deck="5">
     <div class="fp-plan-col">
-      <div class="fp-img-stage" data-deck-label="Deck 5 — Verandah (YOUR DECK)"><img class="fp-deck-img" src="deck-05.png?v=137" alt="Deck 5 plan" decoding="async">
+      <div class="fp-img-stage" data-deck-label="Deck 5 — Verandah (YOUR DECK)"><img class="fp-deck-img" src="deck-05.png?v=138" alt="Deck 5 plan" decoding="async"><img class="fp-route-img" src="route-05.png?v=138" alt="" aria-hidden="true" decoding="async">
         <div class="fp-img-pin ours" style="left:54%;top:80%;" title="Sandra &amp; Becca · Cabin K5155 (Interior)">5155</div>
         <div class="fp-img-pin ours" style="left:54%;top:83.6%;" title="Jett &amp; Laura · Cabin K5161 (Interior)">5161</div>
         <div class="fp-img-pin ours" style="left:54%;top:87.2%;" title="Karen · Cabin K5165 (Interior)">5165</div>
@@ -968,7 +1046,7 @@
   </div>
   <div class="fp-panel" data-deck="4" hidden>
     <div class="fp-plan-col">
-      <div class="fp-img-stage" data-deck-label="Deck 4 — Upper Promenade"><img class="fp-deck-img" src="deck-04.png?v=137" alt="Deck 4 plan" decoding="async">
+      <div class="fp-img-stage" data-deck-label="Deck 4 — Upper Promenade"><img class="fp-deck-img" src="deck-04.png?v=138" alt="Deck 4 plan" decoding="async"><img class="fp-route-img" src="route-04.png?v=138" alt="" aria-hidden="true" decoding="async">
         
       </div>
       <p class="fp-img-note">Holland America's plan for the <em>Zuiderdam</em>. Fore at top, aft at bottom.</p>
@@ -988,7 +1066,7 @@
     </div>
   </div><div class="fp-panel" data-deck="3" hidden>
     <div class="fp-plan-col">
-      <div class="fp-img-stage" data-deck-label="Deck 3 — Promenade"><img class="fp-deck-img" src="deck-03.png?v=137" alt="Deck 3 plan" decoding="async">
+      <div class="fp-img-stage" data-deck-label="Deck 3 — Promenade"><img class="fp-deck-img" src="deck-03.png?v=138" alt="Deck 3 plan" decoding="async"><img class="fp-route-img" src="route-03.png?v=138" alt="" aria-hidden="true" decoding="async">
         <div class="fp-hot" data-deck="3" data-venue-id="worldstage" style="left:22%;top:3.5%;width:56%;height:12%;" title="World Stage (balcony tier)"><span class="fp-hot-l">World Stage</span></div>
         <div class="fp-hot" data-deck="3" data-venue-id="tasman" style="left:38%;top:21%;width:24%;height:4%;" title="Tasman Room cinema"><span class="fp-hot-l">Tasman</span></div>
         <div class="fp-hot" data-deck="3" data-venue-id="meetingrooms" style="left:22%;top:27%;width:32%;height:12%;" title="Hudson · Half Moon · Stuyvesant meeting rooms + Digital Workshop"><span class="fp-hot-l">Meeting Rms</span></div>
@@ -1051,7 +1129,7 @@
     </div>
   </div><div class="fp-panel" data-deck="2" hidden>
     <div class="fp-plan-col">
-      <div class="fp-img-stage" data-deck-label="Deck 2 — Lower Promenade"><img class="fp-deck-img" src="deck-02.png?v=137" alt="Deck 2 plan" decoding="async">
+      <div class="fp-img-stage" data-deck-label="Deck 2 — Lower Promenade"><img class="fp-deck-img" src="deck-02.png?v=138" alt="Deck 2 plan" decoding="async"><img class="fp-route-img" src="route-02.png?v=138" alt="" aria-hidden="true" decoding="async">
         <div class="fp-hot" data-deck="2" data-venue-id="worldstagelower" style="left:22%;top:5%;width:56%;height:13%;" title="World Stage"><span class="fp-hot-l">World Stage</span></div>
         <div class="fp-hot" data-deck="2" data-venue-id="casino" style="left:15%;top:23%;width:35%;height:8%;" title="Casino"><span class="fp-hot-l">Casino</span></div>
         <div class="fp-hot" data-deck="2" data-venue-id="billboard" style="left:54%;top:23%;width:28%;height:8%;" title="Billboard"><span class="fp-hot-l">Billboard</span></div>
@@ -1122,7 +1200,7 @@
     </div>
   </div><div class="fp-panel" data-deck="1" hidden>
     <div class="fp-plan-col">
-      <div class="fp-img-stage" data-deck-label="Deck 1 — Main · Atrium"><img class="fp-deck-img" src="deck-01.png?v=137" alt="Deck 1 plan" decoding="async">
+      <div class="fp-img-stage" data-deck-label="Deck 1 — Main · Atrium"><img class="fp-deck-img" src="deck-01.png?v=138" alt="Deck 1 plan" decoding="async"><img class="fp-route-img" src="route-01.png?v=138" alt="" aria-hidden="true" decoding="async">
         <div class="fp-hot" data-deck="1" data-venue-id="worldstagelowest" style="left:25%;top:3%;width:50%;height:13%;" title="World Stage (stage level)"><span class="fp-hot-l">World Stage</span></div>
         <div class="fp-hot" data-deck="1" data-venue-id="atrium" style="left:38%;top:54%;width:24%;height:7%;" title="Atrium"><span class="fp-hot-l">Atrium</span></div>
         <div class="fp-hot" data-deck="1" data-venue-id="frontoffice" style="left:10%;top:55%;width:25%;height:5%;" title="Guest Services"><span class="fp-hot-l">Guest Services</span></div>
@@ -1284,8 +1362,8 @@
   <div class="vsd-card">
     <div class="vsd-ic" aria-hidden="true">📱↻</div>
 
-<script src="venues.js?v=137"></script>
-<script src="app.js?v=137"></script>
+<script src="venues.js?v=138"></script>
+<script src="app.js?v=138"></script>
 <script>
 /* ===== Ship view toggle + floor-plan deck picker + cross-section clicks + modal ===== */
 (function(){
@@ -1546,6 +1624,25 @@
     });
   }
   deckBtns.forEach(function(b){ b.addEventListener('click', function(){ setDeck(b.dataset.deck); }); });
+
+  /* v.138: Walking-paths toggle. body.show-routes fades in the
+     accessibility-route overlay PNGs that sit on top of each deck. */
+  (function(){
+    var btn = document.getElementById('fpPathsToggle');
+    if(!btn) return;
+    var KEY = 'fpPathsOn';
+    var saved = null;
+    try { saved = sessionStorage.getItem(KEY); } catch(e){}
+    function apply(on){
+      document.body.classList.toggle('show-routes', !!on);
+      btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+      try { sessionStorage.setItem(KEY, on ? '1' : '0'); } catch(e){}
+    }
+    apply(saved === '1');
+    btn.addEventListener('click', function(){
+      apply(!document.body.classList.contains('show-routes'));
+    });
+  })();
 
   /* v.107: mobile/tablet compact deck picker (a <select>). Two-way sync with
      the button row so the existing setDeck() handles all state. */
@@ -1882,71 +1979,4 @@
 
   function applyTouched(el){
     if(!el || !el.classList) return;
-    document.querySelectorAll('.is-touched').forEach(function(x){
-      if(x !== el) x.classList.remove('is-touched');
-    });
-    el.classList.add('is-touched');
-
-    // Bidirectional sync for hotspots ↔ venue rows
-    var deck = el.getAttribute('data-deck');
-    var vid  = el.getAttribute('data-venue-id');
-    if(deck && vid){
-      var counterpart = document.getElementById('venue-' + deck + '-' + vid)
-                     || document.querySelector('.fp-hot[data-deck="'+deck+'"][data-venue-id="'+vid+'"]');
-      if(counterpart) counterpart.classList.add('is-touched');
-    }
-    if(el.id && el.id.indexOf('venue-') === 0){
-      var parts = el.id.match(/^venue-(\d+)-(.+)$/);
-      if(parts){
-        document.querySelectorAll('.fp-hot[data-deck="'+parts[1]+'"][data-venue-id="'+parts[2]+'"]').forEach(function(h){ h.classList.add('is-touched'); });
-      }
-    }
-  }
-
-  document.addEventListener('touchstart', function(e){
-    var el = e.target.closest(TOUCH_TARGETS);
-    if(!el) return;
-    /* Apply visual selection state immediately (tap, not hold). */
-    applyTouched(el);
-    clearTimeout(clearTimer);
-    clearTimer = setTimeout(function(){
-      document.querySelectorAll('.is-touched').forEach(function(x){
-        x.classList.remove('is-touched');
-      });
-    }, 1400);
-  }, {passive:true});
-
-  document.addEventListener('touchcancel', function(){
-    clearTimeout(clearTimer);
-    document.querySelectorAll('.is-touched').forEach(function(x){
-      x.classList.remove('is-touched');
-    });
-  });
-})();
-</script>
-
-<script id="rotateHintHandler">
-(function(){
-  /* v.100: dismiss handlers for both landscape and portrait variant banners */
-  document.querySelectorAll('.mobile-rotate-hint .mrh-x').forEach(function(x){
-    x.addEventListener('click', function(){
-      x.closest('.mobile-rotate-hint').style.display='none';
-    });
-  });
-  // Legacy single-banner handler kept below for safety
-  var banner = document.querySelector('.mobile-rotate-hint');
-  if(!banner) return;
-  var x = banner.querySelector('.mrh-x');
-  if(x){ x.addEventListener('click', function(){ banner.style.display='none'; }); }
-})();
-</script>
-<!-- v.107: tiny floating button to re-open the nav after auto-collapse. -->
-<button type="button" id="navPeek" class="nav-peek" aria-label="Show menu" hidden>
-  <span aria-hidden="true">≡</span>
-</button>
-
-    <h3 id="vsdTitle" class="vsd-title">Switch view?</h3>
-    <p class="vsd-msg" id="vsdMsg">This view looks best in <strong>portrait</strong>. Rotate your device, then continue.</p>
-    <div class="vsd-actions">
-      <button type="button" id="vsdContinue" class="vsd-go">Switch &amp; continue</button>
-      <button type="button" id="vsdCance
+    d

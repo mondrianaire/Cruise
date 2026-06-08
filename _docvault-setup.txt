@@ -1,0 +1,50 @@
+DOCUMENT VAULT — one-time Firebase setup
+========================================
+The Document Vault (documents.html) stores the actual files — passport scans,
+boarding passes, PDFs — privately in Firebase Storage, NOT in this public repo.
+Access is gated by the same Google-SSO + crew-roster model as Group Picks.
+
+The page works as a read-only inventory with no setup. The three steps below
+turn on the private upload/download feature.
+
+1) ENABLE STORAGE
+   Firebase Console > Storage > Get started.
+   Use the default bucket: gto-poker-qui.firebasestorage.app
+   (The project is already on the Blaze plan via Cloud Functions, so Storage
+   is available.)
+
+2) PUBLISH THE SECURITY RULES
+   - Storage rules:   paste storage-rules.txt into
+                      Console > Storage > Rules > Publish.
+   - Firestore rules: re-paste firestore-rules.txt into
+                      Console > Firestore Database > Rules > Publish.
+                      (It now also covers the cruise/docvault file index.)
+
+3) SET BUCKET CORS  (required — browser uploads & downloads fail without it)
+   Storage rules control WHO may access a file; CORS controls which web
+   ORIGINS the browser may call from. Both are needed. There is no console UI
+   for CORS — run one command with the bucket owner's gcloud login:
+
+     gcloud storage buckets update gs://gto-poker-qui.firebasestorage.app \
+       --cors-file=storage-cors.json
+
+   (Older toolchains: gsutil cors set storage-cors.json gs://gto-poker-qui.firebasestorage.app)
+
+   storage-cors.json already allows https://mondrianaire.github.io and
+   localhost for testing. Add any other origin you serve from there.
+
+HOW IT WORKS
+   - Files live at  cruise-docs/<docId>/<timestamp>__<filename>  in Storage.
+   - File metadata (name, path, size, uploader) syncs live via Firestore doc
+     cruise/docvault — so all five travellers see the same files within ~1s.
+   - Downloads stream through the SDK (getBlob), so every read is evaluated
+     against the Storage rule. No permanent public download URLs are created.
+   - Upload limits enforced both client-side and in the rule: <25 MB,
+     images or PDFs only.
+
+SECURITY NOTE
+   This protects files behind real Google sign-in + roster membership — a
+   genuine boundary (unlike the cosmetic "treasure chest" splash). Still, treat
+   the crew roster as the trust boundary: anyone who can sign in as a rostered
+   traveller can read every file. Fine for a 5-person trip; don't store anything
+   you wouldn't share with all five travellers.

@@ -1,0 +1,47 @@
+// Firebase Storage Security Rules — Canada & New England cruise · Document Vault
+//
+// Paste the ENTIRE contents of this file into your Firebase project's
+// Storage Rules tab (Firebase Console > Storage > Rules) and click Publish.
+// Before this works you must also ENABLE Storage once:
+//   Firebase Console > Storage > Get started (pick the default bucket
+//   gto-poker-qui.firebasestorage.app), then publish these rules.
+//
+// Security model mirrors the Firestore Group Picks board: a file under
+// cruise-docs/ can be read or written ONLY by a guest who has signed in with
+// Google (email-verified) AND whose email is already on the 5-berth crew
+// roster (cruise/roster in Firestore). Sensitive travel documents — passport
+// scans, boarding passes — are therefore never public. The site is served
+// from a public GitHub Pages repo, but these files live in Storage behind
+// this rule, not in the repo.
+//
+// Downloads in documents.html go through the SDK (getBlob), so every read is
+// evaluated against this rule — no permanent public download URLs are minted.
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // ─── Document Vault: cruise-docs/<docId>/<file> ───
+    match /cruise-docs/{docId}/{fileName} {
+
+      function isCrew() {
+        return request.auth != null
+          && request.auth.token.email_verified == true
+          && request.auth.token.email in
+             firestore.get(/databases/(default)/documents/cruise/roster).data.members;
+      }
+
+      // Any roster member may download any vault file.
+      allow read: if isCrew();
+
+      // Uploads: roster members only, capped at 25 MB, images or PDFs only.
+      allow create, update: if isCrew()
+        && request.resource.size < 25 * 1024 * 1024
+        && request.resource.contentType.matches('image/.*|application/pdf');
+
+      // Roster members may remove a file they no longer want.
+      allow delete: if isCrew();
+    }
+
+    // Everything else in the bucket is denied by default (no catch-all match).
+  }
+}
