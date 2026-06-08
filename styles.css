@@ -2524,3 +2524,28 @@ body.view-floor .ship-no-toggle{ display:none !important; }
   }
   .fp-deck-btn .fp-star{ font-size:.5rem; margin-left:1px; }
 }
+
+
+/* v.124: kill iOS blue selection markers on all venue / deck-plan touch
+   targets. Mirrored inline in ship.html for cache resistance. */
+.fp-hot, .fp-hot *,
+.dv-item, .dv-item *,
+.dc-svg, .dc-svg *,
+.fp-img-stage, .fp-img-stage *,
+.fp-plan-col, .fp-plan-col *,
+.fp-deck-img,
+.md-zone, .md-zone *,
+.cz, .cz *,
+.xs-clickable, .xs-clickable *,
+.deck-row, .deck-row *,
+.sw-bank, .sw-bank *,
+.ship-view-tabs .svt,
+.fp-deck-btn{
+  -webkit-tap-highlight-color: transparent !important;
+  -webkit-touch-callout: none !important;
+  -webkit-user-select: none !important;
+     -moz-user-select: none !important;
+      -ms-user-select: none !important;
+          user-select: none !important;
+}
+.fp-deck-img{ -webkit-user-drag: none; }

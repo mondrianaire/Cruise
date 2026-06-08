@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Ship &amp; Your Package — Canada &amp; New England 2026</title>
 <meta name="description" content="The Ship &amp; Your Package — ms Zuiderdam cruise hub for the Canada &amp; New England voyage, June 2026.">
-<link rel="stylesheet" href="styles.css?v=123">
+<link rel="stylesheet" href="styles.css?v=124">
 <style id="ship-critical-v121">
   /* v.121: critical overlay + Night Owl rules shipped inline with the HTML
      so they always take effect, even if styles.css is served from CDN cache. */
@@ -82,6 +82,35 @@
     color:#e6c477;
   }
   @media (min-width:1101px){ .rotate-overlay{ display:none !important; } }
+
+  /* v.124: kill iOS blue selection / callout / tap-highlight on all venue
+     and deck-plan interactive elements so taps never trigger the system
+     selection rectangle, text-magnifier, or "Copy" callout. */
+  .fp-hot, .fp-hot *,
+  .dv-item, .dv-item *,
+  .dc-svg, .dc-svg *,
+  .fp-img-stage, .fp-img-stage *,
+  .fp-plan-col, .fp-plan-col *,
+  .fp-deck-img,
+  .md-zone, .md-zone *,
+  .cz, .cz *,
+  .xs-clickable, .xs-clickable *,
+  .deck-row, .deck-row *,
+  .sw-bank, .sw-bank *,
+  .ship-view-tabs .svt,
+  .fp-deck-btn{
+    -webkit-tap-highlight-color: transparent !important;
+    -webkit-touch-callout: none !important;
+    -webkit-user-select: none !important;
+       -moz-user-select: none !important;
+        -ms-user-select: none !important;
+            user-select: none !important;
+  }
+  /* The deck-plan PNG itself: also block iOS image long-press save/copy menu. */
+  .fp-deck-img{
+    pointer-events: auto;
+    -webkit-user-drag: none;
+  }
 
   /* v.122: compact deck-picker on small viewports. Keeps the brass-bordered
      pill design but shrinks each button so the row stops dominating the page. */
@@ -1205,7 +1234,7 @@
   <div class="vsd-card">
     <div class="vsd-ic" aria-hidden="true">📱↻</div>
 
-<script src="app.js?v=123"></script>
+<script src="app.js?v=124"></script>
 <script>
 /* ===== Ship view toggle + floor-plan deck picker + cross-section clicks + modal ===== */
 (function(){
@@ -1751,32 +1780,26 @@
 </script>
 
 <script id="shipTouchHandler">
-/* ===== iOS tablet touch behavior =====
-   • Quick tap (< 350ms) → let the existing click handler run = navigate
-   • Long press (≥ 350ms) → toggle .is-touched (mirrors :hover) so the
-     tooltip / glow / label pill appears, and *prevent* the click so the
-     user can read the tooltip without being navigated away.
+/* ===== v.124: tap-to-select touch behavior =====
+   Quick tap fires immediately:
+     - .is-touched class applied for visual feedback (mirrors :hover)
+     - existing click handler runs in parallel = navigation
+     - .is-touched clears after a short delay
+   No long-press required; no blue OS selection / callout markers.
 */
 (function(){
-  var HOLD = 350;
   var TOUCH_TARGETS = [
-    '.dc-svg .xs-clickable',     // amenity glyphs (icons that survived)
-    '.dc-svg .md-zone',          // multi-deck venue boxes
-    '.dc-svg .deck-row',         // left-column deck labels
-    '.dc-svg .cz',               // cabin-zone stateroom bands
-    '.dc-svg .sw-bank',          // stairway / elevator shafts
-    '.fp-hot',                   // floor-plan hotspots
-    '.dv-item'                   // venue list rows
+    '.dc-svg .xs-clickable',
+    '.dc-svg .md-zone',
+    '.dc-svg .deck-row',
+    '.dc-svg .cz',
+    '.dc-svg .sw-bank',
+    '.fp-hot',
+    '.dv-item'
   ].join(',');
 
-  var holdTimer  = null;
-  var holdEl     = null;
-  var holdFired  = false;
   var clearTimer = null;
 
-  function clearTouched(el){
-    if(el && el.classList) el.classList.remove('is-touched');
-  }
   function applyTouched(el){
     if(!el || !el.classList) return;
     document.querySelectorAll('.is-touched').forEach(function(x){
@@ -1803,42 +1826,21 @@
   document.addEventListener('touchstart', function(e){
     var el = e.target.closest(TOUCH_TARGETS);
     if(!el) return;
-    holdEl = el;
-    holdFired = false;
+    /* Apply visual selection state immediately (tap, not hold). */
+    applyTouched(el);
     clearTimeout(clearTimer);
-    holdTimer = setTimeout(function(){
-      holdFired = true;
-      applyTouched(holdEl);
-    }, HOLD);
-  }, {passive:true});
-
-  document.addEventListener('touchend', function(e){
-    clearTimeout(holdTimer);
-    if(holdFired){
-      // Long-press: keep tooltip visible briefly, suppress the click that follows.
-      e.preventDefault();
-      clearTimer = setTimeout(function(){
-        if(holdEl) clearTouched(holdEl);
-        document.querySelectorAll('.is-touched').forEach(function(x){ x.classList.remove('is-touched'); });
-      }, 2200);
-    }
-    holdTimer = null;
-    holdEl = null;
-    holdFired = false;
-  }, {passive:false});
-
-  document.addEventListener('touchmove', function(){
-    if(holdTimer){ clearTimeout(holdTimer); holdTimer = null; }
-    if(holdEl){
-      clearTouched(holdEl);
-      document.querySelectorAll('.is-touched').forEach(function(x){ x.classList.remove('is-touched'); });
-    }
-    holdEl = null; holdFired = false;
+    clearTimer = setTimeout(function(){
+      document.querySelectorAll('.is-touched').forEach(function(x){
+        x.classList.remove('is-touched');
+      });
+    }, 1400);
   }, {passive:true});
 
   document.addEventListener('touchcancel', function(){
-    clearTimeout(holdTimer);
-    holdEl = null; holdFired = false;
+    clearTimeout(clearTimer);
+    document.querySelectorAll('.is-touched').forEach(function(x){
+      x.classList.remove('is-touched');
+    });
   });
 })();
 </script>
