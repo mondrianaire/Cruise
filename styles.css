@@ -774,16 +774,7 @@ nav .links a:hover .sublabels,nav .links a.active .sublabels{color:var(--brass);
   padding:12px 12px 8px;
   display:flex;flex-direction:column;align-items:center;gap:8px;
 }
-.fp-img-stage{
-  position:relative;
-  width:100%;
-  max-width:430px;
-  max-height:640px;
-  overflow:auto;
-  border-radius:6px;
-  box-shadow:0 1px 3px rgba(0,0,0,.25), inset 0 0 0 1px rgba(0,0,0,.08);
-  background:#fbf6e6;
-}
+/* v.130: consolidated to v.129 single source of truth */
 .fp-img-stage img{
   display:block;
   width:100%;
@@ -1551,13 +1542,7 @@ nav .links a:hover .sublabels,nav .links a.active .sublabels{color:var(--brass);
   padding:10px 8px;
   box-shadow:0 2px 10px rgba(0,0,0,.45), inset 0 0 0 1px rgba(200,155,74,.18);
 }
-.fp-deck-img{
-  display:block;
-  width:100%;
-  height:auto;
-  /* The transparent PNGs let the dark stage gradient show through corridors */
-  filter:drop-shadow(0 1px 2px rgba(0,0,0,.6));
-}
+/* v.130: consolidated to v.129 single source of truth */
 .fp-img-note{
   margin:8px 4px 0;
   font:500 .68rem/1.4 var(--d-mono);
@@ -1643,12 +1628,7 @@ body.view-elev  .mobile-rotate-hint.mrh-portrait { display:none !important; }
   overflow:hidden !important;
   max-height:none !important;
 }
-.fp-deck-img{
-  filter:none !important;
-  display:block;
-  width:100%;
-  height:auto;
-}
+/* v.130: consolidated to v.129 single source of truth */
 /* Make the panel head sit on the brass band above the chart */
 .fp-img-stage::before{
   content:attr(data-deck-label);
@@ -2279,13 +2259,7 @@ body.view-floor .ship-no-toggle{ display:none !important; }
     max-width:none !important;
     max-height:88vh !important;
   }
-  body.view-floor .fp-plan-col .fp-deck-img{
-    width:100%; max-width:100%;
-    /* The image is portrait; let height drive it so it can fill more of the
-       viewport without bursting the column width. */
-    height:auto;
-    object-fit:contain;
-  }
+  body.view-floor .fp-plan-col /* v.130: consolidated to v.129 single source of truth */
 
   /* Venue info / deck name / sub-note all on the right. */
   body.view-floor .fp-data-col{ grid-area: info; }
