@@ -2499,3 +2499,28 @@ body.view-floor .ship-no-toggle{ display:none !important; }
   color:#fff;
   border-color:#ff9080;
 }
+
+
+/* v.122: compact deck-picker on small viewports. Single source of truth for
+   browsers that aren't being burned by cached styles.css; the same rules are
+   also inlined in ship.html for iOS Safari cache resistance. */
+@media (max-width:900px){
+  .fp-deck-mobile{ display:none !important; }
+  .fp-deck-picker{
+    display:flex !important;
+    gap:3px;
+    flex-wrap:wrap;
+    justify-content:center;
+    margin:0 0 10px 0;
+    padding:0 4px;
+  }
+  .fp-deck-btn{
+    min-width:26px !important;
+    height:auto !important;
+    padding:4px 5px !important;
+    font:700 .62rem/1 var(--d-mono, monospace) !important;
+    border-radius:5px !important;
+    letter-spacing:0 !important;
+  }
+  .fp-deck-btn .fp-star{ font-size:.5rem; margin-left:1px; }
+}

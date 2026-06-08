@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Ship &amp; Your Package — Canada &amp; New England 2026</title>
 <meta name="description" content="The Ship &amp; Your Package — ms Zuiderdam cruise hub for the Canada &amp; New England voyage, June 2026.">
-<link rel="stylesheet" href="styles.css?v=121">
+<link rel="stylesheet" href="styles.css?v=122">
 <style id="ship-critical-v121">
   /* v.121: critical overlay + Night Owl rules shipped inline with the HTML
      so they always take effect, even if styles.css is served from CDN cache. */
@@ -82,6 +82,29 @@
     color:#e6c477;
   }
   @media (min-width:1101px){ .rotate-overlay{ display:none !important; } }
+
+  /* v.122: compact deck-picker on small viewports. Keeps the brass-bordered
+     pill design but shrinks each button so the row stops dominating the page. */
+  @media (max-width:900px){
+    .fp-deck-mobile{ display:none !important; }
+    .fp-deck-picker{
+      display:flex !important;
+      gap:3px;
+      flex-wrap:wrap;
+      justify-content:center;
+      margin:0 0 10px 0;
+      padding:0 4px;
+    }
+    .fp-deck-btn{
+      min-width:26px !important;
+      height:auto !important;
+      padding:4px 5px !important;
+      font:700 .62rem/1 'Space Mono', monospace !important;
+      border-radius:5px !important;
+      letter-spacing:0 !important;
+    }
+    .fp-deck-btn .fp-star{ font-size:.5rem; margin-left:1px; }
+  }
 </style>
 
 <link rel="canonical" href="https://mondrianaire.github.io/Cruise/ship.html">
@@ -1182,7 +1205,7 @@
   <div class="vsd-card">
     <div class="vsd-ic" aria-hidden="true">📱↻</div>
 
-<script src="app.js?v=121"></script>
+<script src="app.js?v=122"></script>
 <script>
 /* ===== Ship view toggle + floor-plan deck picker + cross-section clicks + modal ===== */
 (function(){
@@ -1233,12 +1256,21 @@
   /* v.113: snap-to-top helper — scrolls so the deckchart is at the very top
      of the viewport (the "VERY TOP" of the view per user request). */
   function snapToDeckchart(){
+    /* v.122: on rotation reset to the very top of the page first so any
+       prior scroll position from the previous orientation is wiped, then
+       bring the deckchart to the top of the viewport. */
+    try{ window.scrollTo({top: 0, behavior:'instant'}); }
+    catch(e){ window.scrollTo(0, 0); }
     var dc = document.querySelector('.deckchart');
     if(!dc) return;
+    /* Reset any internal scroll on the right-column info area. */
+    var info = dc.querySelector('.fp-data-col');
+    if(info){ info.scrollTop = 0; }
     var rect = dc.getBoundingClientRect();
     var y = window.scrollY + rect.top - 4;
-    try{ window.scrollTo({top: Math.max(0, y), behavior:'smooth'}); }
-    catch(e){ window.scrollTo(0, Math.max(0, y)); }
+    if(y <= 4) return;  /* already at top */
+    try{ window.scrollTo({top: y, behavior:'smooth'}); }
+    catch(e){ window.scrollTo(0, y); }
   }
 
   /* v.113: orientation-gate modal control. */
