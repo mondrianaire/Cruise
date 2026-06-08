@@ -1,17 +1,1 @@
-v.140 polish: remove orphaned dropdown CSS + JS sync code
-
-Cleaning up the dropdown removal. The HTML <select id="fpDeckMobile">
-was deleted in the previous v.140 commit but the orphaned bits
-remained:
-  - .fp-deck-mobile{display:none !important} CSS rule
-  - mobileSel JS sync block (no-op since the element was gone)
-
-Both removed.
-
-Verification passes run before commit:
-  Pass 1 (dimensions): all 11 deck PNGs and 11 route PNGs are 214x1449
-  Pass 2 (containment): every route bbox sits inside its deck hull bbox
-  Pass 3 (visual): decks 3, 6, 9, 10, 11 spot-checked - routes thread
-                   corridors, hug venue perimeters, no clipping
-  Pass 4 (live): app.js SITE_VERSION = v.140, route PNG MD5s match
-                 local, all 11 route img tags present in ship.html
+drop_msg: remove _commitmsg.txt  
