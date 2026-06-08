@@ -392,7 +392,6 @@
   /* v.122: compact deck-picker on small viewports. Keeps the brass-bordered
      pill design but shrinks each button so the row stops dominating the page. */
   @media (max-width:900px){
-    .fp-deck-mobile{ display:none !important; }
     .fp-deck-picker{
       display:flex !important;
       gap:3px;
@@ -1792,18 +1791,8 @@
     });
   })();
 
-  /* v.107: mobile/tablet compact deck picker (a <select>). Two-way sync with
-     the button row so the existing setDeck() handles all state. */
-  var mobileSel = document.getElementById('fpDeckMobile');
-  if(mobileSel){
-    mobileSel.addEventListener('change', function(){ setDeck(mobileSel.value); });
-    // Mirror button-row clicks back into the <select>.
-    var _origSetDeck = setDeck;
-    setDeck = function(d){
-      _origSetDeck(d);
-      if(mobileSel && mobileSel.value !== String(d)) mobileSel.value = String(d);
-    };
-  }
+  /* v.140: mobile <select> dropdown removed — the 1-11 pill row is the only
+     deck picker. The associated sync code lived here. */
 
   /* v.107: view-switch confirmation dialog. When the user taps a tab on
      mobile/tablet, we intercept and confirm — the dialog tells them which
