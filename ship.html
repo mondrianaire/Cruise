@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Ship &amp; Your Package — Canada &amp; New England 2026</title>
 <meta name="description" content="The Ship &amp; Your Package — ms Zuiderdam cruise hub for the Canada &amp; New England voyage, June 2026.">
-<link rel="stylesheet" href="styles.css?v=125">
+<link rel="stylesheet" href="styles.css?v=126">
 <style id="ship-critical-v121">
   /* v.121: critical overlay + Night Owl rules shipped inline with the HTML
      so they always take effect, even if styles.css is served from CDN cache. */
@@ -110,6 +110,16 @@
   .fp-deck-img{
     pointer-events: auto;
     -webkit-user-drag: none;
+  }
+
+  /* v.126: polygon md-zones (Retreat, Crow's Nest, Fitness, Sea View,
+     Dining Room, World Stage) should match the rect bubbles' stroke
+     weight, line-join and outer softness. */
+  .dc-svg .md-zone path{
+    stroke-linejoin:round !important;
+    stroke-linecap:round !important;
+    stroke-miterlimit:2 !important;
+    paint-order:fill stroke;
   }
 
   /* v.122: compact deck-picker on small viewports. Keeps the brass-bordered
@@ -400,8 +410,8 @@
         <rect class="win-strip" x="40" y="181.8" width="920" height="1.8"/>  <!-- Deck 6 -->
         <rect class="win-strip" x="40" y="201" width="920" height="3"/>  <!-- Deck 5 -->
         <rect class="win-strip" x="40" y="229.8" width="920" height="1.8"/>  <!-- Deck 4 -->
-        <rect class="win-strip" x="200" y="309" width="270" height="3"/>  <!-- Deck 1 fore cabin block -->
-        <rect class="win-strip" x="580" y="309" width="300" height="3"/>  <!-- Deck 1 aft cabin block -->
+        <rect class="win-strip" x="338" y="309" width="172" height="3"/>  <!-- Deck 1 fore cabin block -->
+        <rect class="win-strip" x="625" y="309" width="255" height="3"/>  <!-- Deck 1 aft cabin block -->
       </g>
 
       <!-- ── lifeboats: hanging just under Deck 4 (the lifeboat deck on Vista-class).
@@ -424,8 +434,8 @@
         <g class="cz" data-deck="6"><rect x="40" y="188" width="920" height="9"/><text class="cz-l" x="515" y="194.4">STATEROOMS · Deck 6</text></g>
         <g class="cz cz-you" data-deck="5"><rect x="40" y="211" width="920" height="14"/><text class="cz-l" x="515" y="220.6">★ STATEROOMS · Deck 5 · YOUR DECK</text></g>
         <g class="cz" data-deck="4"><rect x="40" y="236" width="920" height="9"/><text class="cz-l" x="515" y="242.4">STATEROOMS · Deck 4</text></g>
-        <g class="cz" data-deck="1"><rect x="200" y="320" width="270" height="14"/><text class="cz-l" x="335" y="329.6">STATEROOMS · Deck 1 (fore)</text></g>
-        <g class="cz" data-deck="1"><rect x="580" y="320" width="300" height="14"/><text class="cz-l" x="730" y="329.6">STATEROOMS · Deck 1 (aft)</text></g>
+        <g class="cz" data-deck="1"><rect x="338" y="320" width="172" height="14"/><text class="cz-l" x="424" y="329.6">STATEROOMS · Deck 1 (fore)</text></g>
+        <g class="cz" data-deck="1"><rect x="625" y="320" width="255" height="14"/><text class="cz-l" x="752" y="329.6">STATEROOMS · Deck 1 (aft)</text></g>
       </g>
       <!-- ── stairway / elevator banks (3 vertical shafts) ──
            v.090: clipped to silhouette so shafts don't paint past the boat outline. -->
@@ -603,18 +613,18 @@
       </g>
       <g class="md-zone md-svc" data-deck="3" data-venue-name="Meeting Rooms" tabindex="0" role="button">
         <title>Meeting Rooms — Half Moon, Hudson, Stuyvesant + Digital Workshop · Deck 3 forward-of-midship, NOT inside the Atrium (the Atrium opening is starboard at x=515-620)</title>
-        <rect x="390" y="247.5" width="60" height="27" rx="3"/>
-        <text class="md-lbl-sm" x="420" y="259">MEETING RMS</text>
-                <g class="emoji-sub" data-deck="3" data-venue-name="Meeting Rooms"><title>Half Moon · Hudson · Stuyvesant — three bookable meeting rooms.</title><text class="emoji-glyph emoji-glyph-sm" x="410" y="273">📋</text></g>
-        <g class="emoji-sub" data-deck="3" data-venue-name="Digital Workshop"><title>Digital Workshop / Microsoft Studio — guided classes on photography, video, devices.</title><text class="emoji-glyph emoji-glyph-sm" x="433" y="273">💻</text></g>
+        <rect x="385" y="247.5" width="60" height="27" rx="3"/>
+        <text class="md-lbl-sm" x="415" y="258">MEETING RMS</text>
+                <g class="emoji-sub" data-deck="3" data-venue-name="Meeting Rooms"><title>Half Moon · Hudson · Stuyvesant — three bookable meeting rooms.</title><text class="emoji-glyph emoji-glyph-sm" x="403" y="270">📋</text></g>
+        <g class="emoji-sub" data-deck="3" data-venue-name="Digital Workshop"><title>Digital Workshop / Microsoft Studio — guided classes on photography, video, devices.</title><text class="emoji-glyph emoji-glyph-sm" x="427" y="270">💻</text></g>
       </g>
       <g class="md-zone md-shop" data-deck="3" data-venue-name="Atrium Shops &amp; Photo" tabindex="0" role="button">
         <title>Atrium Shops cluster — Merabella, Atrium Shops, Photo Gallery, Effy Jewelry. Adjacent to Atrium on Deck 3 (between the Meeting Rooms and the Atrium ring); NOT inside the Atrium opening</title>
-        <rect x="455" y="247.5" width="55" height="27" rx="3"/>
-        <text class="md-lbl-sm" x="482" y="258">ATRIUM SHOPS</text>
-                <g class="emoji-sub" data-deck="3" data-venue-name="Merabella Luxury Shop"><title>Merabella Luxury Shop — fine jewellery, watches, accessories.</title><text class="emoji-glyph emoji-glyph-sm" x="467" y="273">💎</text></g>
-        <g class="emoji-sub" data-deck="3" data-venue-name="Boutique"><title>Boutique — duty-free, logo wear, sundries.</title><text class="emoji-glyph emoji-glyph-sm" x="482" y="273">🛍</text></g>
-        <g class="emoji-sub" data-deck="3" data-venue-name="Photo Gallery"><title>Photo Gallery — onboard portraits & daily photo retail (redesigned Dec 2025).</title><text class="emoji-glyph emoji-glyph-sm" x="498" y="273">📸</text></g>
+        <rect x="450" y="247.5" width="60" height="27" rx="3"/>
+        <text class="md-lbl-sm" x="480" y="258">ATRIUM SHOPS</text>
+                <g class="emoji-sub" data-deck="3" data-venue-name="Merabella Luxury Shop"><title>Merabella Luxury Shop — fine jewellery, watches, accessories.</title><text class="emoji-glyph emoji-glyph-sm" x="462" y="270">💎</text></g>
+        <g class="emoji-sub" data-deck="3" data-venue-name="Boutique"><title>Boutique — duty-free, logo wear, sundries.</title><text class="emoji-glyph emoji-glyph-sm" x="480" y="270">🛍</text></g>
+        <g class="emoji-sub" data-deck="3" data-venue-name="Photo Gallery"><title>Photo Gallery — onboard portraits & daily photo retail (redesigned Dec 2025).</title><text class="emoji-glyph emoji-glyph-sm" x="498" y="270">📸</text></g>
       </g>
       <g class="emoji-sub" data-deck="3" data-venue-name="Ocean Bar"><title>Ocean Bar — live music, dance floor, 147 seats.</title><text class="emoji-glyph" x="617" y="268">🍸</text></g>
       <g class="emoji-sub" data-deck="3" data-venue-name="Promenade walking track"><title>Promenade Deck — teak wraparound walking track, ~4 laps per mile, open 24h.</title><text class="emoji-glyph" x="667" y="268">🚶</text></g>
@@ -1233,7 +1243,7 @@
   <div class="vsd-card">
     <div class="vsd-ic" aria-hidden="true">📱↻</div>
 
-<script src="app.js?v=125"></script>
+<script src="app.js?v=126"></script>
 <script>
 /* ===== Ship view toggle + floor-plan deck picker + cross-section clicks + modal ===== */
 (function(){

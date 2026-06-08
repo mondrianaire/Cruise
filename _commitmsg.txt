@@ -1,0 +1,24 @@
+v.126: Deck 1 stateroom overlap + Atrium Shops breathing room
+
+Reported issues from screenshot:
+
+1) Deck 1 stateroom bands were drawing under the World Stage polygon
+   (fore) and under the Atrium (aft) because their x-ranges started
+   too far forward / extended too far past the Atrium right edge.
+   Fixed:
+     fore staterooms  200..470  ->  338..510   (clears WS right edge)
+     aft  staterooms  580..880  ->  625..880   (clears Atrium 515..620)
+   Matching cabin-window strips moved with them.
+
+2) Atrium Shops and Meeting Rms labels were crowding into each other.
+   Meeting Rms shifted left to x=385..445, Atrium Shops widened from
+   55 to 60 (now x=450..510). 5px gap between bubbles preserved.
+   Sub-emoji glyphs re-centered within both new bubble widths.
+
+3) Polygon-edge bubbles (Retreat, Crow's Nest, Fitness, Sea View,
+   Dining Room, World Stage) now have stroke-linejoin/linecap:round,
+   stroke-miterlimit:2, and paint-order:fill-stroke in the inline
+   critical CSS so their borders match the rect bubbles' soft corner
+   style instead of rendering as sharp angled paths.
+
+Cache buster -> ?v=126.
