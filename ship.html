@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Ship &amp; Your Package — Canada &amp; New England 2026</title>
 <meta name="description" content="The Ship &amp; Your Package — ms Zuiderdam cruise hub for the Canada &amp; New England voyage, June 2026.">
-<link rel="stylesheet" href="styles.css?v=130">
+<link rel="stylesheet" href="styles.css?v=131">
 <style id="ship-critical-v121">
   /* v.121: critical overlay + Night Owl rules shipped inline with the HTML
      so they always take effect, even if styles.css is served from CDN cache. */
@@ -1277,7 +1277,8 @@
   <div class="vsd-card">
     <div class="vsd-ic" aria-hidden="true">📱↻</div>
 
-<script src="app.js?v=130"></script>
+<script src="venues.js?v=131"></script>
+<script src="app.js?v=131"></script>
 <script>
 /* ===== Ship view toggle + floor-plan deck picker + cross-section clicks + modal ===== */
 (function(){
@@ -1397,8 +1398,37 @@
        the user always lands at the top of the active view. */
     setTimeout(snapToDeckchart, needSwitch ? 60 : 0);
   }
+  /* v.131: deep-link URL params — let other pages link straight to a
+     specific deck + venue in deck-plans view. Examples:
+       ship.html?view=floor&deck=9&highlight=fitness
+       ship.html?view=elev   (just the cross-section)
+     The override flag is set so the auto-orient logic doesn't fight us. */
+  function applyDeepLink(){
+    var qs;
+    try{ qs = new URLSearchParams(window.location.search); }catch(e){ return; }
+    var view = qs.get('view');
+    var deck = qs.get('deck');
+    var highlight = qs.get('highlight') || qs.get('venue');
+    if(view !== 'floor' && view !== 'elev' && !deck && !highlight) return;
+    try{ sessionStorage.setItem('shipViewOverride', '1'); }catch(e){}
+    if(view === 'floor' || deck || highlight){
+      setTab('floor');
+    } else if(view === 'elev'){
+      setTab('elev');
+    }
+    if(deck){
+      setTimeout(function(){ setDeck(String(deck)); }, 40);
+    }
+    if(highlight && deck){
+      setTimeout(function(){
+        highlightVenue(String(deck), String(highlight));
+      }, 220);
+    }
+  }
+
   showOrientationGate();
   autoOrientView();
+  applyDeepLink();
   /* Re-run on orientation change. Both events fire on different platforms. */
   window.addEventListener('orientationchange', function(){ setTimeout(autoOrientView, 80); });
   window.matchMedia('(orientation:portrait)').addEventListener('change', autoOrientView);

@@ -15,7 +15,10 @@
       "Bash(git commit -m 'The Ship: side-elevation deck chart — all 11 passenger decks at once, with every major amenity stamped at its actual fore/mid/aft position and pins for the group'\\\\''s three staterooms on Deck 5 *)",
       "Bash(git merge *)",
       "Bash(git push *)",
-      "Bash(git commit -m 'Navigation: glass surface with scroll-deepened shadow, voyage-stop numbering, scrollspy underline and distinguished Console pill *)"
+      "Bash(git commit -m 'Navigation: glass surface with scroll-deepened shadow, voyage-stop numbering, scrollspy underline and distinguished Console pill *)",
+      "Bash(git *)",
+      "Bash(git log *)",
+      "Bash(git rev-list *)"
     ]
   }
 }
