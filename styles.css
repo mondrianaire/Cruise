@@ -824,10 +824,10 @@ nav .links a:hover .sublabels,nav .links a.active .sublabels{color:var(--brass);
 .fp-img-note em{color:rgba(216,57,43,.85);font-style:italic;}
 
 @media(min-width:760px){
-  .fp-img-stage{max-width:520px;max-height:720px;}
+  /* v.129: removed for vertical real-estate consolidation */
 }
 @media(max-width:560px){
-  .fp-img-stage{max-height:520px;}
+  /* v.129: removed for vertical real-estate consolidation */
   .fp-img-pin{width:30px;height:30px;font-size:.66rem;}
 }
 
@@ -1920,8 +1920,8 @@ body.view-elev  .mobile-rotate-hint.mrh-portrait { display:none !important; }
   .fnl-chip{font-size:.6rem;}
   /* Floor plans on landscape — keep side-by-side */
   .fp-panel{grid-template-columns:240px 1fr;gap:14px;}
-  .fp-img-stage{max-height:78vh;}
-  .fp-deck-img{max-height:74vh;width:auto;margin:0 auto;}
+  /* v.129: removed for vertical real-estate consolidation */
+  /* v.129: removed for vertical real-estate consolidation */
   /* Tabs row + tab content tightened */
   .fp-deck-picker{gap:4px;margin-bottom:8px;}
   .fp-deck-btn{min-width:36px;height:32px;font-size:.85rem;}
@@ -2568,4 +2568,28 @@ body.view-floor .ship-no-toggle{ display:none !important; }
 @media (max-width:900px){
   .deckchart-head{ flex-direction:row; align-items:center; gap:8px; }
   .deckchart-head .ship-view-tabs{ margin-left:auto; }
+}
+
+
+/* v.129: consolidated deck-plan image sizing.
+   Single source of truth — image fills available vertical real estate
+   (up to 88vh) but never overflows. */
+.fp-img-stage{
+  max-height: 88vh !important;
+  overflow: hidden !important;
+}
+.fp-deck-img{
+  max-height: 88vh !important;
+  height: auto !important;
+  width: auto !important;
+  max-width: 100% !important;
+  margin: 0 auto !important;
+  object-fit: contain;
+}
+/* On the desktop 2-col layout the image is sticky in the left column;
+   tighten the stage so the height comes from the image, not from
+   accidental container padding. */
+@media (min-width:901px){
+  body.view-floor .fp-img-stage{ padding: 6px !important; }
+  body.view-floor .fp-plan-col{ height: 88vh; }
 }
