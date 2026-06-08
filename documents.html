@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document Vault — Canada &amp; New England 2026</title>
+<meta name="description" content="Travel Document Vault — every reservation, boarding pass and confirmation for the ms Zuiderdam Canada &amp; New England voyage, June 2026.">
+<link rel="stylesheet" href="styles.css">
+<link rel="canonical" href="https://mondrianaire.github.io/Cruise/documents.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Document Vault — ms Zuiderdam · June 2026">
+<meta property="og:description" content="Every reservation, boarding pass and confirmation in one place.">
+<meta property="og:image" content="https://mondrianaire.github.io/Cruise/voyage-preview.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://mondrianaire.github.io/Cruise/documents.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://mondrianaire.github.io/Cruise/voyage-preview.png">
+<style>
+  /* ===== Document Vault — page-scoped styles (kept out of the shared styles.css) ===== */
+  .dv-sum{ display:flex; flex-wrap:wrap; gap:10px; margin:4px 0 26px; }
+  .dv-sum .pill-stat{
+    display:inline-flex; align-items:center; gap:8px;
+    font:700 .82rem/1 var(--d-mono); letter-spacing:.02em;
+    padding:9px 14px; border-radius:999px;
+    border:1px solid rgba(255,255,255,.10); background:rgba(255,255,255,.03); color:var(--ink);
+  }
+  .dv-sum .pill-stat b{ font-size:1rem; }
+  .dv-dot{ width:9px; height:9px; border-radius:50%; display:inline-block; }
+  .dot-confirmed{ background:var(--easy); }
+  .dot-pending{ background:var(--mod); }
+  .dot-gap{ background:var(--stren); }
+
+  .dv-crewnote{
+    font:600 .8rem/1.5 var(--d-body); color:var(--ink-dim);
+    border:1px dashed rgba(230,196,119,.35); border-radius:10px;
+    padding:10px 14px; margin-bottom:26px; background:rgba(230,196,119,.04);
+  }
+  .dv-crewnote.signed-in{ display:none; }
+
+  .dv-cat{ margin:30px 0 10px; display:flex; align-items:baseline; gap:12px; }
+  .dv-cat h2{ font:600 1.18rem/1.1 var(--d-serif); color:var(--brass-lt); margin:0; }
+  .dv-cat .dv-cat-ic{ font-size:1.1rem; }
+  .dv-cat .dv-cat-n{ font:700 .72rem/1 var(--d-mono); color:var(--ink-dim); letter-spacing:.08em; }
+
+  .dv-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(310px,1fr)); gap:16px; }
+
+  .dv-card{
+    position:relative; border:1px solid rgba(255,255,255,.09); border-radius:14px;
+    background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.01));
+    padding:16px 16px 14px; display:flex; flex-direction:column; gap:10px;
+  }
+  .dv-card.is-gap{ border-color:rgba(224,121,90,.35); }
+  .dv-card.is-flag{ border-color:rgba(239,178,40,.5); }
+
+  .dv-top{ display:flex; justify-content:space-between; align-items:flex-start; gap:10px; }
+  .dv-title{ font:600 1rem/1.25 var(--d-serif); color:var(--ink); margin:0; }
+  .dv-vendor{ font:600 .76rem/1.3 var(--d-body); color:var(--ink-dim); margin:2px 0 0; }
+
+  .dv-status{
+    flex:none; font:700 .64rem/1 var(--d-mono); letter-spacing:.06em; text-transform:uppercase;
+    padding:6px 9px; border-radius:7px; white-space:nowrap;
+  }
+  .st-confirmed{ background:rgba(95,214,160,.14); color:var(--easy); border:1px solid rgba(95,214,160,.3); }
+  .st-pending{ background:rgba(239,178,40,.14); color:var(--mod); border:1px solid rgba(239,178,40,.3); }
+  .st-gap{ background:rgba(224,121,90,.16); color:var(--stren); border:1px solid rgba(224,121,90,.32); }
+
+  .dv-meta{ display:flex; flex-wrap:wrap; gap:6px 14px; font:600 .76rem/1 var(--d-mono); color:var(--ink-dim); }
+  .dv-meta .dv-date::before{ content:"📅 "; }
+
+  .dv-who{ display:flex; flex-wrap:wrap; gap:5px; }
+  .dv-who .av{
+    font:700 .64rem/1 var(--d-mono); letter-spacing:.04em;
+    padding:4px 8px; border-radius:999px;
+    background:rgba(63,160,173,.16); color:var(--teal-lt); border:1px solid rgba(63,160,173,.3);
+  }
+  .dv-who .av-all{ background:rgba(230,196,119,.16); color:var(--brass-lt); border-color:rgba(230,196,119,.32); }
+
+  .dv-conf{ font:600 .8rem/1.4 var(--d-body); color:var(--ink); }
+  .dv-conf .lab{ color:var(--ink-dim); font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; display:block; margin-bottom:2px; }
+  .dv-conf code{ font:700 .92rem/1.2 var(--d-mono); color:var(--brass-lt); word-break:break-word; }
+  .dv-conf.locked code{ color:var(--ink-dim); letter-spacing:.18em; }
+
+  .dv-docs{ list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:4px; }
+  .dv-docs li{ font:600 .78rem/1.35 var(--d-body); color:var(--ink); padding-left:18px; position:relative; }
+  .dv-docs li::before{ content:"📄"; position:absolute; left:0; font-size:.72rem; }
+
+  .dv-files{ display:flex; flex-wrap:wrap; gap:8px; }
+  .dv-files a{
+    font:700 .74rem/1 var(--d-mono); text-decoration:none; color:var(--abyss);
+    background:var(--brass-lt); padding:8px 12px; border-radius:8px;
+  }
+  .dv-nofile{ font:600 .74rem/1.3 var(--d-body); color:var(--ink-dim); font-style:italic; }
+
+  .dv-notes{ font:500 .8rem/1.45 var(--d-body); color:var(--ink-dim); margin:0; }
+
+  .dv-conflict{
+    font:700 .74rem/1.4 var(--d-mono); color:var(--mod);
+    background:rgba(239,178,40,.1); border:1px solid rgba(239,178,40,.3);
+    border-radius:8px; padding:7px 10px;
+  }
+  .dv-conflict::before{ content:"⚠ "; }
+
+  .dv-loaderr{
+    border:1px solid rgba(224,121,90,.4); border-radius:12px;
+    background:rgba(224,121,90,.07); padding:18px 20px; color:var(--ink);
+    font:500 .9rem/1.5 var(--d-body);
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="toolbar">
+  <button class="mtog" id="motionToggle" type="button" aria-pressed="true">
+    <span class="track" aria-hidden="true"></span><span class="ml">Animation on</span>
+  </button>
+  <a class="mtog" id="replayBtn" href="index.html?replay=1" style="text-decoration:none;">
+    <span class="ml">⚓ Replay intro</span>
+  </a>
+</div>
+<nav>
+  <div class="inner">
+    <a href="overview.html" class="brand">
+      <span class="br-anchor" aria-hidden="true">&#9875;</span>
+      <span class="br-lbl">Canada &amp; New England</span>
+      <span class="br-y">2026</span>
+    </a>
+    <div class="links" role="list">
+      <a href="overview.html" role="listitem"><span class="n">01</span>Overview</a>
+      <a href="journey.html" role="listitem"><span class="n">02</span>Journey</a>
+      <a href="ship.html"    role="listitem"><span class="n">03</span>Ship &amp; Package</a>
+      <a href="ports.html"   role="listitem"><span class="n">04</span>Ports &amp; Picks</a>
+      <a href="kbyg.html"    role="listitem"><span class="n">05</span>Know Before You Go</a>
+      <a href="documents.html" role="listitem"><span class="n">06</span>Documents</a>
+    </div>
+    <a class="console" href="index.html" aria-label="Open the Voyage Console — trip overview">
+      <span aria-hidden="true">&#9875;</span> Console <span class="cn-arrow" aria-hidden="true">&rarr;</span>
+    </a>
+    <button type="button" class="nav-burger" id="navBurger" aria-label="Open menu" aria-expanded="false">☰</button>
+  </div>
+</nav>
+<main id="main">
+  <header class="page-head">
+    <div class="kicker">Reservations &amp; travel documents</div>
+    <h1>Document Vault</h1>
+    <p class="page-lead">Every booking, boarding pass and confirmation for the voyage — in one place, ready to download.</p>
+  </header>
+<section id="vault" aria-labelledby="vault-h">
+  <div class="sec-head"><h2 id="vault-h">All Documents</h2><span class="tag" id="dv-updated">First pass</span></div>
+  <p class="lead">A running inventory of everything that carries a reservation number, ticket, pass or confirmation across the whole trip — air, cruise, hotels, ground transport, shore excursions, onboard dining &amp; spa, and identity documents. Each entry shows where it stands: <strong>confirmed</strong>, <strong>pending</strong> (booked but the number/document still to collect), or a <strong>gap</strong> to chase down.</p>
+
+  <div class="dv-sum" id="dv-summary" aria-live="polite"></div>
+  <div class="dv-crewnote" id="dv-crewnote">🔒 Confirmation numbers and downloadable documents are hidden. Sign in via the <a href="index.html">Voyage Console</a> to reveal them on this device.</div>
+
+  <div id="dv-body"></div>
+</section>
+</main>
+<footer>
+  <p><span class="gold">Canada &amp; New England 2026</span> &bull; ms Zuiderdam &bull; Booking 4LMNGG &bull; <a href="index.html">Voyage Console</a></p>
+  <p style="margin-top:6px;opacity:.85;">Personal trip knowledge hub for Jett &amp; Laura. Confirmation numbers and documents are crew-only.</p>
+</footer>
+<script src="app.js"></script>
+
+<script>
+/* ===== Document Vault renderer ===== */
+(function(){
+  var NAMES = {jett:'Jett',laura:'Laura',sandra:'Sandra',becca:'Becca',karen:'Karen'};
+  var STLABEL = {confirmed:'Confirmed',pending:'Pending',gap:'Gap'};
+  var body = document.getElementById('dv-body');
+
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+
+  function fmtDate(d){
+    if(!d) return '';
+    var p = d.split('-'); if(p.length!==3) return d;
+    var mo = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][(+p[1])-1];
+    return mo + ' ' + (+p[2]);
+  }
+
+  function whoChips(who){
+    if(!who || !who.length) return '';
+    if(who.length === 5) return '<div class="dv-who"><span class="av av-all">Everyone · all 5</span></div>';
+    return '<div class="dv-who">' + who.map(function(k){
+      return '<span class="av">' + esc(NAMES[k]||k) + '</span>'; }).join('') + '</div>';
+  }
+
+  function card(doc){
+    var cls = 'dv-card' + (doc.status==='gap'?' is-gap':'') + (doc.flag==='conflict'?' is-flag':'');
+    var h = '<div class="'+cls+'">';
+    h += '<div class="dv-top"><div>';
+    h += '<h3 class="dv-title">'+esc(doc.title)+'</h3>';
+    if(doc.vendor && doc.vendor!=='—') h += '<p class="dv-vendor">'+esc(doc.vendor)+'</p>';
+    h += '</div><span class="dv-status st-'+doc.status+'">'+STLABEL[doc.status]+'</span></div>';
+
+    var metaBits = [];
+    if(doc.date) metaBits.push('<span class="dv-date">'+esc(fmtDate(doc.date))+'</span>');
+    if(metaBits.length) h += '<div class="dv-meta">'+metaBits.join('')+'</div>';
+
+    h += whoChips(doc.who);
+
+    if(doc.flag==='conflict') h += '<div class="dv-conflict">Conflicting source data — needs resolving (see notes).</div>';
+
+    /* confirmation — sensitive → crew-only reveal */
+    if(doc.confirmation){
+      h += '<div class="dv-conf crew-only locked" data-conf="'+esc(doc.confirmation)+'">'
+         + '<span class="lab">Confirmation</span><code>•••••• (sign in)</code></div>';
+    } else if(doc.status==='gap'){
+      h += '<div class="dv-conf"><span class="lab">Confirmation</span><code style="color:var(--stren)">— none on file —</code></div>';
+    } else {
+      h += '<div class="dv-conf"><span class="lab">Confirmation</span><code style="color:var(--mod)">— to collect —</code></div>';
+    }
+
+    if(doc.docs && doc.docs.length){
+      h += '<ul class="dv-docs">' + doc.docs.map(function(d){ return '<li>'+esc(d)+'</li>'; }).join('') + '</ul>';
+    }
+
+    /* files — sensitive → crew-only */
+    if(doc.files && doc.files.length){
+      h += '<div class="dv-files crew-only" hidden>' + doc.files.map(function(f){
+        return '<a href="'+esc(f.url)+'" download>⤓ '+esc(f.label||'Download')+'</a>'; }).join('') + '</div>';
+      h += '<div class="dv-nofile crew-only-inverse">'+doc.files.length+' file(s) attached — sign in to download</div>';
+    } else if(doc.docs && doc.docs.length){
+      h += '<div class="dv-nofile">No file uploaded yet</div>';
+    }
+
+    if(doc.notes) h += '<p class="dv-notes">'+esc(doc.notes)+'</p>';
+    h += '</div>';
+    return h;
+  }
+
+  function render(data){
+    var docs = data.documents || [];
+    /* summary counts */
+    var c = {confirmed:0,pending:0,gap:0};
+    docs.forEach(function(d){ if(c[d.status]!=null) c[d.status]++; });
+    document.getElementById('dv-summary').innerHTML =
+      '<span class="pill-stat"><span class="dv-dot dot-confirmed"></span><b>'+c.confirmed+'</b> Confirmed</span>'
+     +'<span class="pill-stat"><span class="dv-dot dot-pending"></span><b>'+c.pending+'</b> Pending</span>'
+     +'<span class="pill-stat"><span class="dv-dot dot-gap"></span><b>'+c.gap+'</b> Gap</span>'
+     +'<span class="pill-stat"><b>'+docs.length+'</b> total</span>';
+
+    if(data.meta && data.meta.updated){
+      document.getElementById('dv-updated').textContent = 'Updated '+fmtDate(data.meta.updated);
+    }
+
+    var cats = data.categories || [];
+    var html = '';
+    cats.forEach(function(cat){
+      var items = docs.filter(function(d){ return d.category===cat.id; });
+      if(!items.length) return;
+      html += '<div class="dv-cat"><span class="dv-cat-ic" aria-hidden="true">'+esc(cat.icon)+'</span>'
+            + '<h2>'+esc(cat.label)+'</h2><span class="dv-cat-n">'+items.length+'</span></div>';
+      html += '<div class="dv-grid">' + items.map(card).join('') + '</div>';
+    });
+    body.innerHTML = html;
+  }
+
+  function loadErr(){
+    body.innerHTML = '<div class="dv-loaderr">Couldn’t load the document database (<code>documents.json</code>). '
+      + 'This page reads its data over the network — open it on the <a href="https://mondrianaire.github.io/Cruise/documents.html">live site</a> '
+      + 'rather than from a local file, and it will populate.</div>';
+  }
+
+  fetch('documents.json', {cache:'no-store'})
+    .then(function(r){ if(!r.ok) throw new Error(r.status); return r.json(); })
+    .then(render)
+    .catch(loadErr);
+})();
+</script>
+
+<!-- Crew-only reveal — frontend gate, not a real security boundary. Matches overview.html. -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+  const cfg={apiKey:"AIzaSyCxc5ICHwz4Fp_2kRwHogeLdgUeCGKgHss",authDomain:"gto-poker-qui.firebaseapp.com",projectId:"gto-poker-qui",storageBucket:"gto-poker-qui.firebasestorage.app",messagingSenderId:"607915389446",appId:"1:607915389446:web:5b1c777bf4fad0bc1c0987"};
+  function reveal(){
+    document.querySelectorAll('.dv-conf.crew-only.locked').forEach(function(el){
+      var v = el.getAttribute('data-conf'); if(!v) return;
+      el.classList.remove('locked');
+      var code = el.querySelector('code'); if(code) code.textContent = v;
+    });
+    document.querySelectorAll('.dv-files.crew-only').forEach(function(el){ el.hidden = false; });
+    document.querySelectorAll('.crew-only-inverse').forEach(function(el){ el.style.display = 'none'; });
+    var note = document.getElementById('dv-crewnote'); if(note) note.classList.add('signed-in');
+  }
+  try{
+    const auth = getAuth(initializeApp(cfg));
+    onAuthStateChanged(auth, function(user){
+      if(!user) return;
+      reveal();
+      /* re-run after async render in case auth resolves first */
+      var tries=0, iv=setInterval(function(){ reveal(); if(++tries>20) clearInterval(iv); }, 250);
+    });
+  }catch(e){}
+</script>
+</body>
+</html>

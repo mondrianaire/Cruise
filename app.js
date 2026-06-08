@@ -76,7 +76,8 @@
     'journey.html':  ['Itinerary','Daily Plan'],
     'ship.html':     ['The Ship','Have It All'],
     'ports.html':    ['Ports','Group Picks'],
-    'kbyg.html':     []
+    'kbyg.html':     [],
+    'documents.html':[]
   };
   document.querySelectorAll('nav .links a').forEach(function(a){
     var page = (a.getAttribute('href')||'').toLowerCase();

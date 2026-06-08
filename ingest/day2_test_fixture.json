@@ -1,0 +1,18 @@
+[
+  {"time": "7:00 AM",  "duration": "30 min",  "name": "Walk a Mile",                                    "venue": "Ocean Bar",       "deck": "3"},
+  {"time": "7:00 AM",  "duration": "30 min",  "name": "Stretch & Release",                              "venue": "Fitness Center",  "deck": "9"},
+  {"time": "8:00 AM",  "duration": "16 hours","name": "Crosswords & Number Puzzles Available",          "venue": "Atrium",          "deck": "1"},
+  {"time": "8:00 AM",  "duration": "45 min",  "name": "Tour de Cycle",                                  "venue": "Fitness Center",  "deck": "9"},
+  {"time": "8:00 AM",  "duration": "1 hour",  "name": "Pickleball Open Play",                           "venue": "Sport Court",     "deck": "11"},
+  {"time": "8:00 AM",  "duration": "45 min",  "name": "Morning Catholic Prayer",                        "venue": "Explorer's Lounge","deck": "2"},
+  {"time": "8:00 AM",  "duration": "30 min",  "name": "Tai Chi for Everyone",                           "venue": "Lido Poolside",   "deck": "9"},
+  {"time": "9:00 AM",  "duration": "45 min",  "name": "Pickleball Instruction: The Basics",             "venue": "Sport Court",     "deck": "11"},
+  {"time": "9:00 AM",  "duration": "45 min",  "name": "Interdenominational Service",                    "venue": "Explorer's Lounge","deck": "2"},
+  {"time": "9:30 AM",  "duration": "30 min",  "name": "Better Sleep, More Energy with Acupuncture",     "venue": "Spa & Salon",     "deck": "9"},
+  {"time": "11:00 AM", "duration": "45 min",  "name": "Canada UpClose: The Great North",                "venue": "World Stage",     "deck": "2"},
+  {"time": "10:30 AM", "duration": "37 minutes", "name": "Mahjong",                                     "venue": "Library",         "deck": "10"},
+  {"time": "3:00 PM",  "duration": "45 min",  "name": "Tea Time with Vivace Duo",                       "venue": "Upper Dining Room","deck": "3"},
+  {"time": "11:59 PM", "duration": "",        "name": "Stay and Play Slots All Night",                  "venue": "Casino",          "deck": "2"},
+  {"time": "5:00 PM",  "duration": "1 hour",  "name": "wat3rcoloring",                                  "venue": "Art Studio",      "deck": "10"},
+  {"time": "9:00 AM",  "duration": "45 min",  "name": "Vivace Duo Plays",                               "venue": "Explorer's Lounge","deck": "2"}
+]

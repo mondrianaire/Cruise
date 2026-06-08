@@ -18,7 +18,8 @@
       "Bash(git commit -m 'Navigation: glass surface with scroll-deepened shadow, voyage-stop numbering, scrollspy underline and distinguished Console pill *)",
       "Bash(git *)",
       "Bash(git log *)",
-      "Bash(git rev-list *)"
+      "Bash(git rev-list *)",
+      "Bash(node -e \"const d=require\\('./documents.json'\\); const c={confirmed:0,pending:0,gap:0}; d.documents.forEach\\(x=>c[x.status]++\\); console.log\\('docs:',d.documents.length\\); console.log\\(c\\); const cats=[...new Set\\(d.documents.map\\(x=>x.category\\)\\)]; const known=d.categories.map\\(x=>x.id\\); console.log\\('categories used:',cats.join\\(','\\)\\); console.log\\('unknown cat refs:', cats.filter\\(x=>!known.includes\\(x\\)\\).join\\(','\\)||'none'\\); const tk=Object.keys\\(d.meta.travellers\\); console.log\\('bad who refs:', [...new Set\\(d.documents.flatMap\\(x=>x.who\\)\\)].filter\\(w=>!tk.includes\\(w\\)\\).join\\(','\\)||'none'\\);\")"
     ]
   }
 }
