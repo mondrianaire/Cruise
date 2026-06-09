@@ -437,12 +437,16 @@ footer a{color:var(--brass-lt);}
 .cal-chip.me.on{background:var(--brass);color:#08161a;border-color:var(--brass-lt);}
 .cal-evt.cal-everyone-row{background:rgba(95,214,160,.04);}
 .cal-evt.cal-everyone-row .cal-title{color:var(--cream);}
-/* ---------- NAV SUB-LABELS (desktop + mobile sheet) ---------- */
-nav .links a{flex-direction:column;align-items:flex-start;gap:5px;
+/* ---------- NAV SUB-LABELS ---------- */
+/* v.155: inline nav links render as a SINGLE LINE (main label only). The
+   .sublabels element stays in the DOM so the hamburger sheet can show
+   them, but it's hidden visually in the inline row. This keeps the nav
+   bar at a uniform single-line height regardless of which entries have
+   sub-tab labels. */
+nav .links a{flex-direction:row;align-items:center;gap:7px;
   padding-top:11px;padding-bottom:11px;}
 nav .links a .nav-main{display:inline-flex;align-items:center;gap:7px;}
-nav .links a .sublabels{display:block;font:700 .5rem/1.4 var(--d-mono);
-  text-transform:uppercase;letter-spacing:.10em;color:var(--brass-dk);}
+nav .links a .sublabels{display:none;}
 nav .links a:hover .sublabels,nav .links a.active .sublabels{color:var(--brass);}
 .nav-sheet-list a{flex-direction:column;align-items:flex-start;}
 .nav-sheet-list a .nav-main{display:inline-flex;align-items:center;gap:14px;}
