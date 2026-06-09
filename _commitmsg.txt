@@ -1,1 +1,0 @@
-drop_msg: remove _commitmsg.txt  

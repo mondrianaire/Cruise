@@ -40,19 +40,36 @@
     "retreat":                "11-retreat",
     "sport court":            "11-sportcourt",
     "sports court":           "11-sportcourt",
+    /* v.148: Pickleball + basketball are the two programmatic uses of the
+       Sport Court — each has its own venue id so events can route
+       precisely. Aliases like "basketball knockout" keep the lookup
+       resilient against HAL's varying phrasing. */
+    "pickleball":             "11-pickleball",
+    "pickleball court":       "11-pickleball",
+    "pickleball open play":   "11-pickleball",
+    "basketball":             "11-basketball",
+    "basketball court":       "11-basketball",
     /* Deck 10 */
     "crow's nest":            "10-crowsnest",
     "crows nest":             "10-crowsnest",
     "crow's nest cafe":       "10-crowsnestcafe",
     "crows nest cafe":        "10-crowsnestcafe",
     "explorations cafe":      "10-crowsnestcafe",
+    /* v.148: Online Centre is the Wi-Fi help desk + computer-stations
+       cluster adjoining the café. */
+    "online centre":          "10-onlinectr",
+    "online center":          "10-onlinectr",
     "game room":              "10-gameroom",
     "art studio":             "10-artstudio",
     "shore excursions":       "10-shorex10",
     "shore excursions desk":  "10-shorex10",
     "kids club":              "10-kidsclub",
     "club hal":               "10-kidsclub",
-    "the loft":               "10-kidsclub",
+    /* v.148: The Loft is a physically separate teen lounge, not part of
+       Kids Club — give it its own venue id. */
+    "the loft":               "10-loft",
+    "loft":                   "10-loft",
+    "teen lounge":            "10-loft",
     "library":                ["10-crowsnestcafe", "3-library"],
     /* Deck 9 */
     "lido pool":              "9-lidopool",
@@ -88,15 +105,25 @@
     "atrium shops":           "3-shops",
     "the shops":              "3-shops",
     "shops":                  ["3-shops", "2-shops2"],
+    /* v.148: Boutique is a sub-shop within the Atrium Shops strip.
+       Brand-promotion events (Shinola, Joseph Ribkoff, etc.) land here. */
+    "boutique":               "3-boutique",
     "photo gallery":          "3-photogallery3",
-    "half moon":              "3-meetingrooms",
-    "half moon room":         "3-meetingrooms",
-    "hudson":                 "3-meetingrooms",
-    "hudson room":            "3-meetingrooms",
-    "stuyvesant":             "3-meetingrooms",
-    "stuyvesant room":        "3-meetingrooms",
-    "meeting rooms":          "3-meetingrooms",
-    "digital workshop":       "3-meetingrooms",
+    /* v.148: Half Moon / Hudson / Stuyvesant are three SEPARATE rooms
+       (Dutch / New Amsterdam naming theme), not aliases of a single venue.
+       Digital Workshop is its own physically distinct classroom — and
+       "Microsoft Studio" is the legacy Vista-class brand name for the same
+       Digital Workshop space. */
+    "half moon":              "3-halfmoon",
+    "half moon room":         "3-halfmoon",
+    "hudson":                 "3-hudson",
+    "hudson room":            "3-hudson",
+    "stuyvesant":             "3-stuyvesant",
+    "stuyvesant room":        "3-stuyvesant",
+    "meeting rooms":          "3-hudson",
+    "meeting room":           "3-hudson",
+    "digital workshop":       "3-digitalworkshop",
+    "microsoft studio":       "3-digitalworkshop",
     "ocean bar":              "3-oceanbar",
     "promenade":              "3-promenadetrack",
     "promenade walking track":"3-promenadetrack",
@@ -119,6 +146,17 @@
     "lincoln center stage":   "2-lincolnctr",
     "portrait studio":        "2-portraitstudio",
     "art gallery":            "2-artgallery",
+    /* v.148: Art auctions are programmatic events inside the Art Gallery —
+       their own venue id keeps the auction days separate from exhibition
+       browsing in event drawers. */
+    "art auctions":           "2-artauctions",
+    "art auction":            "2-artauctions",
+    /* B.B. King's Blues Club was rebranded to Rolling Stone Lounge during
+       the fleet-wide Music Walk refresh — same physical room, route any
+       legacy mention to the current venue id. */
+    "b.b. king's":            "2-rollingstone",
+    "b.b. king's blues club": "2-rollingstone",
+    "bb king's":              "2-rollingstone",
     /* Deck 1 */
     "atrium":                 "1-atrium",
     "front office":           "1-frontoffice",

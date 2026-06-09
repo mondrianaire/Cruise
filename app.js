@@ -74,7 +74,7 @@
   var SUBTABS = {
     'overview.html': ['At a Glance','Flights','Hotels'],
     'journey.html':  ['Itinerary','Daily Plan'],
-    'ship.html':     ['The Ship','Have It All'],
+    'ship.html':     ['The Ship'],
     'ports.html':    ['Ports','Group Picks'],
     'kbyg.html':     [],
     'documents.html':[]
@@ -170,7 +170,7 @@
 })();
 
 /* ===== Site version badge in nav (visible across all pages) ===== */
-window.SITE_VERSION = 'v.147';
+window.SITE_VERSION = 'v.148';
 (function(){
   document.querySelectorAll('nav .brand .br-y').forEach(function(y){
     if(!y.querySelector('.br-ver')){
