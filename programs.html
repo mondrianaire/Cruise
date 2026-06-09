@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Programs — Canada &amp; New England 2026</title>
+<meta name="description" content="Daily Programs — every event from the HAL Navigator daily programme across all 8 days of the ms Zuiderdam voyage, June 2026.">
+<link rel="stylesheet" href="styles.css?v=157">
+<link rel="canonical" href="https://mondrianaire.github.io/Cruise/programs.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Daily Programs — ms Zuiderdam · June 2026">
+<meta property="og:description" content="Every HAL Navigator event across all 8 cruise days, chronologically.">
+<meta property="og:image" content="https://mondrianaire.github.io/Cruise/voyage-preview.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://mondrianaire.github.io/Cruise/programs.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://mondrianaire.github.io/Cruise/voyage-preview.png">
+<style>
+  /* ===== Programs page — chronological event listing ===== */
+  .pg-sum{ display:flex; flex-wrap:wrap; gap:10px; margin:8px 0 26px; }
+  .pg-sum .pill-stat{
+    display:inline-flex; align-items:center; gap:8px;
+    font:700 .8rem/1 var(--d-mono); letter-spacing:.02em;
+    padding:9px 14px; border-radius:999px;
+    border:1px solid rgba(255,255,255,.10); background:rgba(255,255,255,.03); color:var(--ink);
+  }
+  .pg-sum .pill-stat b{ font-size:1rem; color:var(--brass-lt); }
+
+  .day-jump{ display:flex; flex-wrap:wrap; gap:6px; margin:6px 0 30px; }
+  .day-jump a{
+    display:inline-flex; flex-direction:column; align-items:center; gap:2px;
+    padding:9px 14px; border-radius:10px; text-decoration:none;
+    background:rgba(255,255,255,.03); border:1px solid rgba(200,155,74,.22);
+    color:var(--ink); font:700 .68rem/1 var(--d-mono); letter-spacing:.08em;
+    transition:background .15s ease, border-color .15s ease, color .15s ease;
+  }
+  .day-jump a:hover{ background:rgba(200,155,74,.10); border-color:var(--brass); color:var(--cream); }
+  .day-jump a .dj-n{ color:var(--brass-lt); font-size:.78rem; }
+  .day-jump a .dj-d{ color:var(--ink-dim); font-size:.58rem; text-transform:uppercase; }
+
+  .pg-day{ scroll-margin-top:80px; margin-bottom:30px; }
+  .pg-day-head{
+    display:flex; flex-wrap:wrap; align-items:baseline; gap:12px;
+    padding:14px 0 10px; border-bottom:2px solid var(--brass-dk);
+    margin-bottom:14px;
+  }
+  .pg-day-num{
+    flex:none; font:700 .68rem/1 var(--d-mono); letter-spacing:.18em;
+    text-transform:uppercase; color:#08161a; background:var(--brass-lt);
+    padding:5px 9px; border-radius:5px;
+  }
+  .pg-day-h{ font:600 1.3rem/1.1 var(--d-serif); color:var(--cream); margin:0; }
+  .pg-day-port{ font:600 .82rem/1.3 var(--d-mono); color:var(--brass-lt); letter-spacing:.04em; }
+  .pg-day-cnt{ margin-left:auto; font:700 .7rem/1 var(--d-mono); color:var(--ink-dim);
+    letter-spacing:.08em; text-transform:uppercase; }
+
+  .ev-list{ display:flex; flex-direction:column; gap:6px; }
+  .ev-row{
+    display:grid; grid-template-columns: 90px 1fr auto; gap:14px; align-items:center;
+    padding:11px 14px; border-radius:9px; text-decoration:none; color:inherit;
+    background:rgba(255,255,255,.025); border:1px solid rgba(255,255,255,.08);
+    transition:background .14s ease, border-color .14s ease, transform .14s ease;
+  }
+  .ev-row:hover{ background:rgba(200,155,74,.07); border-color:rgba(200,155,74,.36); transform:translateX(2px); }
+  .ev-time{
+    display:flex; flex-direction:column; gap:3px;
+    font:700 .82rem/1 var(--d-mono); color:var(--brass-lt); letter-spacing:.04em;
+    border-right:1px dashed rgba(200,155,74,.22); padding-right:12px;
+  }
+  .ev-time .ev-dur{ font:600 .62rem/1 var(--d-mono); color:var(--ink-dim); letter-spacing:.10em; text-transform:uppercase; }
+  .ev-body{ display:flex; flex-direction:column; gap:3px; min-width:0; }
+  .ev-name{ font:600 .94rem/1.25 var(--d-serif); color:var(--cream); }
+  .ev-place{
+    font:600 .7rem/1.3 var(--d-mono); color:var(--ink-dim); letter-spacing:.05em; text-transform:uppercase;
+    display:inline-flex; gap:6px; flex-wrap:wrap;
+  }
+  .ev-place .ev-deck{ color:var(--teal-lt); }
+  .ev-arrow{
+    flex:none; color:var(--brass); font-size:1.05rem; opacity:.65;
+    transition:opacity .14s ease, transform .14s ease;
+  }
+  .ev-row:hover .ev-arrow{ opacity:1; transform:translateX(2px); }
+
+  @media(max-width:560px){
+    .ev-row{ grid-template-columns: 70px 1fr; gap:10px; padding:10px 11px; }
+    .ev-arrow{ display:none; }
+    .ev-time{ padding-right:9px; font-size:.74rem; }
+    .ev-name{ font-size:.86rem; }
+    .ev-place{ font-size:.62rem; }
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="toolbar">
+  <button class="mtog" id="motionToggle" type="button" aria-pressed="true">
+    <span class="track" aria-hidden="true"></span><span class="ml">Animation on</span>
+  </button>
+  <a class="mtog" id="replayBtn" href="index.html?replay=1" style="text-decoration:none;">
+    <span class="ml">⚓ Replay intro</span>
+  </a>
+</div>
+<nav>
+  <div class="inner">
+    <a href="overview.html" class="brand">
+      <span class="br-anchor" aria-hidden="true">&#9875;</span>
+      <span class="br-lbl">Canada &amp; New England</span>
+      <span class="br-y">2026</span>
+    </a>
+    <div class="links" role="list">
+      <a href="overview.html" role="listitem"><span class="n">01</span>Overview</a>
+      <a href="journey.html" role="listitem"><span class="n">02</span>Journey</a>
+      <a href="ship.html"    role="listitem"><span class="n">03</span>Ship</a>
+      <a href="programs.html" role="listitem"><span class="n">04</span>Programs</a>
+      <a href="ports.html"   role="listitem"><span class="n">05</span>Ports &amp; Picks</a>
+      <a href="kbyg.html"    role="listitem"><span class="n">06</span>Know Before You Go</a>
+      <a href="documents.html" role="listitem"><span class="n">07</span>Documents</a>
+    </div>
+    <button type="button" class="nav-burger" id="navBurger" aria-label="Open menu" aria-expanded="false">☰</button>
+  </div>
+</nav>
+<main id="main">
+  <header class="page-head">
+    <div class="kicker" id="pg-kicker">Loading the daily programme&hellip;</div>
+    <h1>Daily Programs</h1>
+    <p class="page-lead">Every event in the HAL Navigator daily programme across all eight days of the voyage, ordered chronologically. Tap any row to jump to the venue on the ship.</p>
+  </header>
+
+  <section id="programs" aria-labelledby="prog-h">
+    <div class="sec-head"><h2 id="prog-h">Day-by-day</h2><span class="tag" id="pg-total">—</span></div>
+
+    <div class="day-jump" id="pg-jump"></div>
+
+    <div id="pg-body">
+      <p class="lead" style="color:var(--ink-dim)">Loading events&hellip;</p>
+    </div>
+  </section>
+</main>
+<footer>
+  <p><span class="gold">Canada &amp; New England 2026</span> &bull; ms Zuiderdam &bull; <a href="index.html">Voyage Console</a></p>
+  <p style="margin-top:6px;opacity:.85;">Personal trip knowledge hub for Jett &amp; Laura. Event data sourced from the HAL Navigator daily programme.</p>
+</footer>
+
+<!-- Shared shell + event source -->
+<script src="app.js?v=157"></script>
+<script src="events.js?v=157"></script>
+
+<script>
+/* ===== Programs page renderer =====
+   Reads window.SHIP_EVENTS and window.SHIP_DAYS (exposed by events.js)
+   and renders every event chronologically, grouped by day. Each row
+   links to ship.html#venue-X-Y so a tap jumps to the venue on the
+   Ship page (which has a v.157 hash-handler that flips to the
+   deck-plans view and scrolls to the dv-item). */
+(function(){
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g, function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function pad(n){ return (n<10?'0':'') + n; }
+
+  function fmtTime12(t24){
+    var p = String(t24||'').split(':');
+    if(p.length !== 2) return t24;
+    var h = parseInt(p[0],10), m = parseInt(p[1],10);
+    if(isNaN(h) || isNaN(m)) return t24;
+    var ap = h >= 12 ? 'PM' : 'AM';
+    var h12 = h % 12; if(h12 === 0) h12 = 12;
+    return h12 + ':' + pad(m) + ' ' + ap;
+  }
+  function fmtDuration(min){
+    if(!min || isNaN(min)) return '';
+    if(min < 60) return min + ' min';
+    var h = Math.floor(min/60), m = min % 60;
+    if(m === 0) return h + ' hr' + (h===1?'':'s');
+    return h + ' hr ' + m + ' min';
+  }
+
+  /* venueId is "deck-slug" (e.g. "9-fitness"). Pull the venue label
+     from the ship.html dv-item via a lookup table we build from the
+     VENUE_LOOKUP, since this page doesn't host the dv-items itself. */
+  function buildVenueLabels(){
+    var labels = {};
+    var lookup = window.shipEventsVenueLookup || {};
+    /* Reverse the lookup so we can pretty-print venueId -> label. */
+    Object.keys(lookup).forEach(function(k){
+      var v = lookup[k];
+      var ids = Array.isArray(v) ? v : [v];
+      ids.forEach(function(id){
+        if(!labels[id]) labels[id] = titleCase(k);
+      });
+    });
+    return labels;
+  }
+  function titleCase(s){
+    /* Used only for fallback labels, so simple is fine. */
+    return s.replace(/\b\w/g, function(c){ return c.toUpperCase(); })
+            .replace(/'S\b/g,"'s");
+  }
+
+  function render(){
+    var events = window.SHIP_EVENTS || [];
+    var days = window.SHIP_DAYS || [];
+    var body = document.getElementById('pg-body');
+    var jump = document.getElementById('pg-jump');
+    var totalTag = document.getElementById('pg-total');
+    var kicker = document.getElementById('pg-kicker');
+
+    if(!events.length){
+      body.innerHTML = '<p class="lead" style="color:var(--stren)">No events loaded. ' +
+        'Make sure <code>events.js</code> is reachable from this page.</p>';
+      return;
+    }
+
+    var labels = buildVenueLabels();
+
+    /* Group by day */
+    var byDay = {};
+    events.forEach(function(e){
+      if(!byDay[e.day]) byDay[e.day] = [];
+      byDay[e.day].push(e);
+    });
+    Object.keys(byDay).forEach(function(d){
+      byDay[d].sort(function(a,b){ return String(a.time24).localeCompare(String(b.time24)); });
+    });
+
+    /* Day-jump bar */
+    var jumpHtml = '';
+    days.forEach(function(d){
+      var n = (byDay[d.day]||[]).length;
+      jumpHtml += '<a href="#pg-day-' + d.day + '" title="' + esc(d.port) + '">' +
+        '<span class="dj-n">Day ' + d.day + '</span>' +
+        '<span class="dj-d">' + esc((d.label||'').replace(/^[A-Za-z]{3}\s/,'')) + '</span>' +
+        '<span class="dj-d" style="margin-top:2px;">' + n + ' events</span>' +
+      '</a>';
+    });
+    jump.innerHTML = jumpHtml;
+    totalTag.textContent = events.length + ' events · ' + days.length + ' days';
+    kicker.textContent = events.length + ' events · ' + days.length + ' days';
+
+    /* Day sections */
+    var html = '';
+    days.forEach(function(d){
+      var dayEvents = byDay[d.day] || [];
+      html += '<div class="pg-day" id="pg-day-' + d.day + '">';
+      html += '<div class="pg-day-head">' +
+        '<span class="pg-day-num">Day ' + d.day + '</span>' +
+        '<h2 class="pg-day-h">' + esc(d.label) + '</h2>' +
+        '<span class="pg-day-port">' + esc(d.port) + '</span>' +
+        '<span class="pg-day-cnt">' + dayEvents.length + ' events</span>' +
+      '</div>';
+      html += '<div class="ev-list">';
+      dayEvents.forEach(function(e){
+        var venueId = e.venueId || '';
+        var parts = venueId.split('-');
+        var deck = parts[0] || '';
+        var label = labels[venueId] || (parts.slice(1).join(' ') || 'Unknown venue');
+        /* Capitalize first letter of fallback labels */
+        if(label) label = label.charAt(0).toUpperCase() + label.slice(1);
+        var href = 'ship.html#venue-' + esc(venueId);
+        var time = fmtTime12(e.time24);
+        var dur  = fmtDuration(e.durationMin);
+        html += '<a class="ev-row" href="' + href + '">' +
+          '<span class="ev-time">' +
+            '<span>' + esc(time) + '</span>' +
+            (dur ? '<span class="ev-dur">' + esc(dur) + '</span>' : '') +
+          '</span>' +
+          '<span class="ev-body">' +
+            '<span class="ev-name">' + esc(e.name) + '</span>' +
+            '<span class="ev-place">' +
+              '<span>' + esc(label) + '</span>' +
+              '<span class="ev-deck">· Deck ' + esc(deck) + '</span>' +
+            '</span>' +
+          '</span>' +
+          '<span class="ev-arrow" aria-hidden="true">→</span>' +
+        '</a>';
+      });
+      html += '</div></div>';
+    });
+    body.innerHTML = html;
+  }
+
+  /* events.js runs synchronously and populates the globals before this
+     script does; if SHIP_EVENTS is missing, retry once after a tick. */
+  if(window.SHIP_EVENTS){ render(); }
+  else { setTimeout(render, 60); }
+})();
+</script>
+</body>
+</html>

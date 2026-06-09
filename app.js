@@ -72,12 +72,13 @@
 
   /* --- nav sub-tab labels (desktop + mobile sheet) --- */
   var SUBTABS = {
-    'overview.html': ['At a Glance','Flights','Hotels'],
-    'journey.html':  ['Itinerary','Daily Plan'],
-    'ship.html':     ['The Ship'],
-    'ports.html':    ['Ports','Group Picks'],
-    'kbyg.html':     [],
-    'documents.html':[]
+    'overview.html':  ['At a Glance','Flights','Hotels'],
+    'journey.html':   ['Itinerary','Daily Plan'],
+    'ship.html':      ['The Ship'],
+    'programs.html':  ['Daily Programme'],
+    'ports.html':     ['Ports','Group Picks'],
+    'kbyg.html':      [],
+    'documents.html': []
   };
   document.querySelectorAll('nav .links a').forEach(function(a){
     var page = (a.getAttribute('href')||'').toLowerCase();
@@ -243,7 +244,7 @@ if(window.__crewSeed && window.__crewSeed.name){
 }
 
 /* ===== Site version badge in nav (visible across all pages) ===== */
-window.SITE_VERSION = 'v.156';
+window.SITE_VERSION = 'v.157';
 (function(){
   document.querySelectorAll('nav .brand .br-y').forEach(function(y){
     if(!y.querySelector('.br-ver')){
