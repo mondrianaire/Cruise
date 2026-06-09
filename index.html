@@ -1464,6 +1464,11 @@
     // Mark bootstrap done IMMEDIATELY — even if the user closes the tab
     // mid-animation, the next visit won't replay it.
     try{ localStorage.setItem('cnen_booted','1'); }catch(e){}
+    /* v.152: write the cross-page crew seed so documents.html and the
+       other pages can recognise us synchronously on next navigation. */
+    if(window.__writeCrewSeed && auth.currentUser){
+      window.__writeCrewSeed(name, auth.currentUser.email);
+    }
     gMsg.textContent='Verified — welcome aboard, '+name+'.'; only(null);
     const m={}; m[auth.currentUser.email]=name;
     setDoc(rosterRef,{members:m},{merge:true})
@@ -1471,7 +1476,12 @@
       .catch(function(){ reveal(name); });
   }
   function onUser(user){
-    if(!user){ showSignIn(); return; }
+    if(!user){
+      /* v.152: signed-out — wipe the cross-page seed so other pages
+         stop optimistically claiming we're a crew member. */
+      if(window.__clearCrewSeed) window.__clearCrewSeed();
+      showSignIn(); return;
+    }
     gMsg.textContent='Verifying your sign-in...'; only(null);
     const dn=(user.displayName||'').trim();
     const first=(dn.split(/\s+/)[0]||'').toLowerCase();
@@ -1480,6 +1490,10 @@
       if(TRAVELLERS[i].toLowerCase()===first){ matched=TRAVELLERS[i]; break; }
     }
     if(!matched){ showReject(dn); return; }
+    /* v.152: refresh the cross-page crew seed on every successful
+       returning-visit too — keeps the optimistic UI tied to whichever
+       Google account is actually authenticated right now. */
+    if(window.__writeCrewSeed) window.__writeCrewSeed(matched, user.email);
     // Bootstrap-once: skip the splash on returning visits unless ?replay=1
     var qp=new URLSearchParams(location.search);
     var replay=qp.get('replay')==='1';

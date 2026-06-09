@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Document Vault — Canada &amp; New England 2026</title>
 <meta name="description" content="Travel Document Vault — every reservation, boarding pass and confirmation for the ms Zuiderdam Canada &amp; New England voyage, June 2026.">
-<link rel="stylesheet" href="styles.css?v=151">
+<link rel="stylesheet" href="styles.css?v=152">
 <link rel="canonical" href="https://mondrianaire.github.io/Cruise/documents.html">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Document Vault — ms Zuiderdam · June 2026">
@@ -233,10 +233,43 @@
   <p class="lead">A running checklist of everything that might carry a reservation number, ticket, pass or confirmation across the trip, <strong>ordered by when you'll need it</strong> — boarding passes at the airport on Jun 11, the rental-car voucher when you land at YUL, the hotel confirmation at check-in, cruise boarding on embark day, then each port's tour voucher on its port day. Every entry starts <strong style="color:var(--stren)">🔴 Outstanding</strong>. Flag it <strong style="color:var(--mod)">🟡 Will upload later</strong> once you've acknowledged it and are tracking down the document. It turns <strong style="color:var(--easy)">🟢 Ready</strong> automatically as soon as anyone uploads a file or enters a confirmation number. Mark it <strong style="color:var(--ink-dim)">⚪ Not needed (disabled)</strong> for events that require no paperwork — the entry stays visible in the list but its upload zone is disabled until you re-enable it. Sign in via the Voyage Console to reveal numbers and manage documents per traveller — your own section opens first.</p>
 
   <div class="dv-sum" id="dv-summary" aria-live="polite"></div>
-  <div class="dv-crewnote" id="dv-crewnote">🔒 Confirmation numbers and document files are private to the crew. <a href="index.html">Sign in via the Voyage Console</a> to reveal them and to manage documents. Files are stored privately in Firebase Storage — never in the public site.</div>
+  <!-- v.152: the initial copy here is now neutral "restoring" text; the
+       inline script below decides whether to swap to the optimistic
+       "signed in as X" form (if the crew seed exists in localStorage) or
+       the "sign in to reveal" link (if no seed AND Firebase auth fires
+       with null). Avoids the false "you need to log in" flash. -->
+  <div class="dv-crewnote" id="dv-crewnote" data-state="restoring">🔄 Restoring your sign-in&hellip;</div>
 
   <div id="dv-body"></div>
 </section>
+<script>
+  /* v.152: synchronously seed the crewnote from localStorage so a
+     returning user never sees the false "Sign in via the Voyage Console"
+     prompt while Firebase auth is restoring in the background. Sets a
+     short fallback timeout: if Firebase doesn't confirm within 4s and
+     there was no seed to begin with, we switch to the proper sign-in
+     prompt so a logged-out visitor isn't stuck staring at the spinner. */
+  (function(){
+    var note = document.getElementById('dv-crewnote');
+    if(!note) return;
+    if(window.__crewSeed && window.__crewSeed.name){
+      note.classList.add('is-crew');
+      note.setAttribute('data-state','seeded');
+      note.innerHTML = '✅ Signed in <span class="who-pill">'+window.__crewSeed.name+'</span> '
+        + '<span style="opacity:.7;font-size:.78em;">&middot; verifying with Firebase&hellip;</span>';
+    }
+    /* Logged-out fallback: if 4s pass and Firebase still hasn't replied
+       AND no seed is present, switch to the proper sign-in CTA. */
+    setTimeout(function(){
+      if(note.getAttribute('data-state') === 'restoring'){
+        note.setAttribute('data-state','signedout');
+        note.innerHTML = '🔒 Confirmation numbers and document files are private to the crew. '
+          + '<a href="index.html">Sign in via the Voyage Console</a> to reveal them and to manage documents. '
+          + 'Files are stored privately in Firebase Storage — never in the public site.';
+      }
+    }, 4000);
+  })();
+</script>
 </main>
 <footer>
   <p><span class="gold">Canada &amp; New England 2026</span> &bull; ms Zuiderdam &bull; Booking 4LMNGG &bull; <a href="index.html">Voyage Console</a></p>
@@ -462,6 +495,10 @@ window.__DV = (function(){
      Stored in Firestore at `pending.{docId}` parallel to `na`. */
   let pendingMap = {};
   const uiCollapsed = {};    // { docId|personKey: bool } — preserves manual toggles
+  /* v.152: track whether Firebase Auth has fired its first onAuthStateChanged
+     callback yet. Until it has, we render the "restoring" placeholder
+     rather than the bold "Sign in via the Voyage Console" prompt. */
+  let authResolved = false;
 
   try{
     const app = initializeApp(cfg);
@@ -470,6 +507,18 @@ window.__DV = (function(){
     storage = getStorage(app);
     vaultRef = doc(db, "cruise", "docvault");
   }catch(e){ /* offline / blocked — page still shows the inventory */ }
+
+  /* v.152: optimistic crew seed read — if app.js loaded a previously-
+     confirmed crew identity from localStorage, we flip isCrew = true
+     synchronously, so the page can render the per-traveller upload
+     widgets immediately. Firebase will still re-verify via the auth
+     listener below; if that fails the seed gets cleared. */
+  if(window.__crewSeed && window.__crewSeed.name){
+    crewName = window.__crewSeed.name;
+    crewKey  = crewName.toLowerCase().split(/\s+/)[0];
+    if(ALL5.indexOf(crewKey) < 0) crewKey = '';
+    isCrew = true;
+  }
 
   function uid(){ return Date.now().toString(36) + '-' + Math.random().toString(36).slice(2,7); }
   function fmtSize(n){
@@ -574,7 +623,15 @@ window.__DV = (function(){
   function renderZone(zone){
     const docId = zone.getAttribute('data-doc');
     if(!isCrew){
-      zone.innerHTML = '<span class="dv-nofile">Sign in via the Voyage Console to view &amp; add documents</span>';
+      /* v.152: distinguish "auth still restoring" from "confirmed signed
+         out". Until Firebase's first onAuthStateChanged callback fires
+         we show a neutral spinner rather than the bold sign-in link, so
+         a logged-in user doesn't see a brief false-negative flash. */
+      if(!authResolved){
+        zone.innerHTML = '<span class="dv-nofile">🔄 Restoring your sign-in&hellip;</span>';
+      } else {
+        zone.innerHTML = '<span class="dv-nofile">Sign in via the Voyage Console to view &amp; add documents</span>';
+      }
       return;
     }
     let h = '';
@@ -780,9 +837,12 @@ window.__DV = (function(){
     if(ALL5.indexOf(crewKey) < 0) crewKey = '';
     isCrew = true;
     const note = document.getElementById('dv-crewnote');
-    if(note){ note.classList.add('is-crew');
+    if(note){
+      note.classList.add('is-crew');
+      note.setAttribute('data-state','crew');
       note.innerHTML = '✅ Signed in <span class="who-pill">'+esc(crewName)+'</span> - confirmation numbers are visible. '
-        + 'Your own section opens first on each entry; add documents for anyone, flag as 🟡 Will upload later, or ⚪ Not needed to disable.'; }
+        + 'Your own section opens first on each entry; add documents for anyone, flag as 🟡 Will upload later, or ⚪ Not needed to disable.';
+    }
     revealConfs();
     renderAll();
     startVault();
@@ -803,14 +863,76 @@ window.__DV = (function(){
 
   window.__dvOnRendered = function(){ if(isCrew){ revealConfs(); renderAll(); } };
 
+  /* v.152: visible rejection state when auth succeeded but the roster
+     check failed. Until this lands the user just saw "Sign in via the
+     Voyage Console" forever even though Firebase knew exactly who they were. */
+  function showRosterReject(user, reason){
+    const note = document.getElementById('dv-crewnote');
+    if(!note) return;
+    note.classList.remove('is-crew');
+    note.setAttribute('data-state','rejected');
+    const who = esc((user.displayName||user.email||'this account'));
+    if(reason === 'roster-locked'){
+      note.innerHTML = '⚠ Signed in as ' + who + ' — but the 5-berth crew roster is already full or closed. '
+        + 'Ask one of the existing crew members to sign in here and clear the berth, or check the Voyage Console.';
+    } else {
+      note.innerHTML = '⚠ Signed in as ' + who + ' — but this Google account is not one of the five travellers. '
+        + 'Sign in with the account whose first name is Jett, Laura, Sandra, Becca or Karen via the '
+        + '<a href="index.html">Voyage Console</a>.';
+    }
+    if(isCrew){ isCrew = false; crewName = ''; crewKey = ''; }
+    if(window.__clearCrewSeed) window.__clearCrewSeed();
+    renderAll();
+  }
+
   if(auth){
     onAuthStateChanged(auth, async function(user){
-      if(!user || !user.email || user.emailVerified !== true) return;
+      authResolved = true;
+
+      if(!user || !user.email || user.emailVerified !== true){
+        if(isCrew){
+          isCrew = false; crewName = ''; crewKey = '';
+          const note = document.getElementById('dv-crewnote');
+          if(note){
+            note.classList.remove('is-crew');
+            note.setAttribute('data-state','signedout');
+            note.innerHTML = '🔒 Confirmation numbers and document files are private to the crew. '
+              + '<a href="index.html">Sign in via the Voyage Console</a> to reveal them and to manage documents.';
+          }
+        }
+        if(window.__clearCrewSeed) window.__clearCrewSeed();
+        renderAll();
+        return;
+      }
+
       try{
         const rs = await getDoc(doc(db, "cruise", "roster"));
         const members = (rs.exists() && rs.data() && rs.data().members) || {};
-        if(members[user.email]) setCrew(members[user.email] || (user.displayName||'').split(/\s+/)[0] || 'crew');
-      }catch(e){}
+        if(members[user.email]){
+          setCrew(members[user.email] || (user.displayName||'').split(/\s+/)[0] || 'crew');
+          if(window.__writeCrewSeed) window.__writeCrewSeed(crewName, user.email);
+          return;
+        }
+
+        /* v.152 trust-on-first-use */
+        const dn = (user.displayName || '').trim();
+        const first = (dn.split(/\s+/)[0] || '').toLowerCase();
+        if(ALL5.indexOf(first) >= 0){
+          const matched = first.charAt(0).toUpperCase() + first.slice(1);
+          const m = {}; m[user.email] = matched;
+          try{
+            await setDoc(doc(db, "cruise", "roster"), { members: m }, { merge:true });
+            setCrew(matched);
+            if(window.__writeCrewSeed) window.__writeCrewSeed(matched, user.email);
+          }catch(e){
+            showRosterReject(user, 'roster-locked');
+          }
+          return;
+        }
+        showRosterReject(user, 'not-eligible');
+      }catch(e){
+        renderAll();
+      }
     });
   }
 </script>

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ports &amp; Group Picks — Canada &amp; New England 2026</title>
 <meta name="description" content="Ports &amp; Group Picks — ms Zuiderdam cruise hub for the Canada &amp; New England voyage, June 2026.">
-<link rel="stylesheet" href="styles.css?v=151">
+<link rel="stylesheet" href="styles.css?v=152">
 <link rel="canonical" href="https://mondrianaire.github.io/Cruise/ports.html">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Ports &amp; Group Picks — ms Zuiderdam · June 2026">
@@ -416,16 +416,34 @@ renderBoard();
   }
   if(auth){
     status('connecting…','wait');
+    /* v.152: paint the optimistic crew state from the shared seed so
+     this page recognises the user instantly when navigated from
+     documents.html / index.html. */
+    if(window.__crewSeed && window.__crewSeed.name){
+      var sn = window.__crewSeed.name.toLowerCase().split(/\s+/)[0];
+      if(['jett','laura','sandra','becca','karen'].indexOf(sn)>=0){
+        window.__crewKey = sn;
+        window.__crewName = sn.charAt(0).toUpperCase()+sn.slice(1);
+        if(window.__rerender) window.__rerender();
+      }
+    }
     onAuthStateChanged(auth,function(user){
       if(user){
         var fk=((user.displayName||'').trim().split(/\s+/)[0]||'').toLowerCase();
         if(['jett','laura','sandra','becca','karen'].indexOf(fk)>=0){
           window.__crewKey=fk;
           window.__crewName=fk.charAt(0).toUpperCase()+fk.slice(1);
+          /* v.152: keep the cross-page seed fresh. */
+          if(window.__writeCrewSeed && user.email){
+            window.__writeCrewSeed(window.__crewName, user.email);
+          }
           if(window.__rerender) window.__rerender();
         }
         startBoard();
-      } else status('sign in via the Voyage Console to sync','wait');
+      } else {
+        if(window.__clearCrewSeed) window.__clearCrewSeed();
+        status('sign in via the Voyage Console to sync','wait');
+      }
     });
   }
 </script>

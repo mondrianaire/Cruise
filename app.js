@@ -169,8 +169,40 @@
   }
 })();
 
+/* ===== v.152: Optimistic crew-seed API (cross-page SSO continuity) =====
+   Firebase Auth IS persisted in IndexedDB by default, but restoring the
+   user object takes 100-500 ms and the roster getDoc takes another
+   200-800 ms — during that window pages look "signed out". We mirror the
+   confirmed identity into localStorage so every subsequent page can seed
+   the UI synchronously on load. The real security gate is still the
+   Firebase Auth handshake + Firestore rules; this is just a UX layer. */
+window.__crewSeed = (function(){
+  try{
+    var n = localStorage.getItem('cnen_crew_name')||'';
+    var e = localStorage.getItem('cnen_crew_email')||'';
+    if(n && e) return { name:n, email:e };
+  }catch(e){}
+  return null;
+})();
+window.__writeCrewSeed = function(name, email){
+  try{
+    if(name && email){
+      localStorage.setItem('cnen_crew_name', String(name));
+      localStorage.setItem('cnen_crew_email', String(email));
+      window.__crewSeed = { name:String(name), email:String(email) };
+    }
+  }catch(e){}
+};
+window.__clearCrewSeed = function(){
+  try{
+    localStorage.removeItem('cnen_crew_name');
+    localStorage.removeItem('cnen_crew_email');
+    window.__crewSeed = null;
+  }catch(e){}
+};
+
 /* ===== Site version badge in nav (visible across all pages) ===== */
-window.SITE_VERSION = 'v.151';
+window.SITE_VERSION = 'v.152';
 (function(){
   document.querySelectorAll('nav .brand .br-y').forEach(function(y){
     if(!y.querySelector('.br-ver')){
