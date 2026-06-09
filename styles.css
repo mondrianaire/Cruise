@@ -899,6 +899,42 @@ nav .links a:hover .sublabels,nav .links a.active .sublabels{color:var(--brass);
 }
 .crew-only{display:none;}
 .crew-only[hidden=false],.crew-only:not([hidden]){display:list-item;}
+/* v.153: inline crew-revealable tokens. A masked pill ("•••••• (sign in)")
+   shows publicly; the real confirmation number / room number / flight
+   number is filled in once auth resolves and the .locked class is
+   removed. Used on overview/journey/ports/kbyg/ship for confirmation
+   numbers, flight numbers, room numbers, and other lookup data that
+   used to be in the public HTML. */
+.crew-reveal{
+  display:inline-flex; align-items:center; gap:5px;
+  vertical-align:baseline;
+  font:700 .82rem/1 var(--d-mono); letter-spacing:.04em;
+  padding:2px 8px; border-radius:5px;
+  border:1px solid rgba(200,155,74,.28);
+  background:rgba(200,155,74,.06);
+  color:var(--ink-dim); white-space:nowrap;
+}
+.crew-reveal::before{ content:"🔒"; font-size:.78em; opacity:.7; }
+.crew-reveal.locked::after{
+  content:attr(data-mask);
+  font:700 .8em/1 var(--d-mono);
+  color:var(--ink-dim); letter-spacing:.22em;
+}
+.crew-reveal:not(.locked){
+  color:var(--brass-lt);
+  border-color:rgba(200,155,74,.55);
+  background:rgba(200,155,74,.12);
+}
+.crew-reveal:not(.locked)::before{ content:"🔓"; opacity:.9; }
+.crew-reveal:not(.locked)::after{
+  content:attr(data-val);
+  font:700 1em/1 var(--d-mono); letter-spacing:.04em;
+  color:var(--brass-lt);
+}
+.crew-reveal-hint{
+  font:600 .7rem/1 var(--d-mono); color:var(--ink-dim);
+  text-transform:uppercase; letter-spacing:.10em; opacity:.7;
+}
 
 
 /* ============ Cross-section diagram + legend hardening ============ */

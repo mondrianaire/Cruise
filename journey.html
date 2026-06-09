@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Itinerary &amp; Daily Plan — Canada &amp; New England 2026</title>
 <meta name="description" content="Itinerary &amp; Daily Plan — ms Zuiderdam cruise hub for the Canada &amp; New England voyage, June 2026.">
-<link rel="stylesheet" href="styles.css?v=152">
+<link rel="stylesheet" href="styles.css?v=153">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=">
 <script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="></script>
 <link rel="canonical" href="https://mondrianaire.github.io/Cruise/journey.html">
@@ -209,8 +209,8 @@
     <div class="stop post">
       <div class="day">Post &bull; Sunday, June 21</div>
       <h3>Fly home</h3>
-      <div class="when">Boston Harbor Hotel check-out 12 PM &bull; AA 3043 BOS&rarr;PHL 12:32 PM</div>
-      <div class="note">Hotel check-out by 12, then Silver Line or Uber to BOS for the 12:32 PM flight. Jett &amp; Laura connect through PHL on AA 5518 (3:20 PM) to GSO.</div>
+      <div class="when">Boston Harbor Hotel check-out 12 PM &bull; <span class="crew-reveal locked" data-val="AA 3043" data-mask="•• ••••"></span> BOS&rarr;PHL 12:32 PM</div>
+      <div class="note">Hotel check-out by 12, then Silver Line or Uber to BOS for the 12:32 PM flight. Jett &amp; Laura connect through PHL on <span class="crew-reveal locked" data-val="AA 5518" data-mask="•• ••••"></span> (3:20 PM) to GSO.</div>
     </div>
   </div>
 </section>
@@ -276,10 +276,10 @@
 </section>
 </main>
 <footer>
-  <p><span class="gold">Canada &amp; New England 2026</span> &bull; ms Zuiderdam &bull; Booking 4LMNGG &bull; <a href="index.html">Voyage Console</a></p>
+  <p><span class="gold">Canada &amp; New England 2026</span> &bull; ms Zuiderdam &bull; Booking <span class="crew-reveal locked" data-val="4LMNGG" data-mask="•••••"></span> &bull; <a href="index.html">Voyage Console</a></p>
   <p style="margin-top:6px;opacity:.85;">Personal trip knowledge hub for Jett &amp; Laura. Excursion prices and availability from Holland America and subject to change.</p>
 </footer>
-<script src="venues.js?v=152"></script>
+<script src="venues.js?v=153"></script>
 <script src="app.js"></script>
 <script>
 // === Day-by-Day Plan calendar (per-traveller attendance + user-created events + Firestore sync) ===
@@ -361,7 +361,7 @@
       pois: [
         { lat:42.3589, lng:-71.0497, label:'🏨 Boston Harbor Hotel',  sub:'Check out by 12 PM',         kind:'origin'      },
         { lat:42.3522, lng:-71.0552, label:'🚏 South Station',         sub:'Silver Line SL1 to BOS',    kind:'transit'     },
-        { lat:42.3656, lng:-71.0096, label:'✈ Logan Airport (BOS)',   sub:'Flight AA 3043 · 12:32 PM', kind:'destination' }
+        { lat:42.3656, lng:-71.0096, label:'✈ Logan Airport (BOS)',   sub:'Flight <span class="crew-reveal locked" data-val="AA 3043" data-mask="•• ••••"></span> · 12:32 PM', kind:'destination' }
       ],
       routes: [
         { mode:'walk', color:'#5fd6a0', weight:3, dash:'2 6', label:'Walk · Hotel → South Station (~12 min)', points:[[42.3589,-71.0497],[42.3556,-71.0530],[42.3522,-71.0552]] },
@@ -382,7 +382,7 @@
     {d:'2026-06-12',k:'jun12-trivieres',t:'12:45 PM',e:'2:00 PM',n:'Trois-Rivières walk — Rue des Forges',l:'Trois-Rivières',o:'Historic street, cafés, riverfront. Optional Amphithéâtre Cogeco.',lat:46.3441,lng:-72.5450,drive:'qc',tent:true},
     {d:'2026-06-12',k:'jun12-chutes',t:'2:30 PM',e:'3:30 PM',n:'Parc des Chutes-de-la-Chaudière',l:'Lévis, QC',o:'Suspension bridge, waterfall overlook, forest trails (~45–60 min). Optional Le Corsaire microbrasserie.',lat:46.7252,lng:-71.2728,drive:'qc',tent:true},
     {d:'2026-06-12',k:'jun12-arrqc',t:'4:15 PM',e:'5:30 PM',n:'Arrive Old Québec — first walk',l:'Old Quebec',o:'Petit-Champlain · Château Frontenac · Terrasse Dufferin · Place Royale.',lat:46.8131,lng:-71.2076,drive:'qc'},
-    {d:'2026-06-12',k:'jun12-checkin',t:'5:30 PM',e:'6:30 PM',n:'Check in — Les Lofts St-Pierre',l:'Old Quebec',o:'Unit SP304 Jett & Laura · Unit SP109 Sandra, Becca & Karen.',lat:46.8128,lng:-71.2052,drive:'qc'},
+    {d:'2026-06-12',k:'jun12-checkin',t:'5:30 PM',e:'6:30 PM',n:'Check in — Les Lofts St-Pierre',l:'Old Quebec',o:'Unit <span class="crew-reveal locked" data-val="SP304" data-mask="•••••"></span> Jett & Laura · Unit <span class="crew-reveal locked" data-val="SP109" data-mask="•••••"></span> Sandra, Becca & Karen.',lat:46.8128,lng:-71.2052,drive:'qc'},
     {d:'2026-06-12',k:'jun12-rental',t:'6:30 PM',e:'7:30 PM',n:'Return rental car at YQB airport',l:'Québec City Jean Lesage (YQB)',o:'',lat:46.7911,lng:-71.3927,drive:'qc'},
     {d:'2026-06-13',k:'jun13-breakfast',a:'Québec City + Embark',W:'Walking tour + sail-away',t:'8:30 AM',e:'9:30 AM',n:'Breakfast — Place Royale (Lower Town)',l:'Old Quebec',o:'Wander Place Royale, Notre-Dame-des-Victoires, Petit-Champlain.',lat:46.81272,lng:-71.20379,tent:true},
     {d:'2026-06-13',k:'jun13-petit',t:'9:30 AM',e:'10:30 AM',n:'Explore Petit-Champlain',l:'Quartier Petit-Champlain',o:'Boutiques, the famous Breakneck Stairs.',lat:46.81192,lng:-71.20379,tent:true},
@@ -414,12 +414,12 @@
     {d:'2026-06-19',k:'jun19-headlight',t:'1:00 PM',e:'6:00 PM',n:'Suggested: Portland Head Light + Old Port',l:'Cape Elizabeth + Portland Old Port',o:'One of the most photographed lighthouses in North America. Combine with the Old Port, a lobster-roll lunch, and a waterfront walk.'},
     {d:'2026-06-20',k:'jun20-disembark',a:'⚓ Boston',W:'Disembark · arrives 7am',t:'7:00 AM',e:'10:00 AM',n:'Arrive Boston — Disembark',l:'Boston Cruise Terminal',o:'Voyage ends.'},
     {d:'2026-06-20',k:'jun20-boston',t:'10:00 AM',e:'6:00 PM',n:'Boston: Freedom Trail / Faneuil Hall / Quincy Market',l:'Boston, MA',o:'Suggested priorities before the hotel: Faneuil Hall, Quincy Market, Boston Common, Freedom Trail highlights.'},
-    {d:'2026-06-20',k:'jun20-hotel',w:['jett','laura','sandra','becca','karen'],t:'3:00 PM',e:'',n:'🎂🏨 Boston Harbor Hotel — birthday night',l:'70 Rowes Wharf, Boston MA 02110',o:'BOOKED via Chase Travel. 2 City Superior rooms (1 King each). Includes daily breakfast for 2 per room, $100 property credit, welcome amenity, Wi-Fi, possible upgrade/early check-in. Free cancellation until Thu Jun 18 12:00 AM property local time. Check-out Sun 12:00 PM.',cf:'Confirmations 26834SG340300 + 26834SG340301'},
+    {d:'2026-06-20',k:'jun20-hotel',w:['jett','laura','sandra','becca','karen'],t:'3:00 PM',e:'',n:'🎂🏨 Boston Harbor Hotel — birthday night',l:'70 Rowes Wharf, Boston MA 02110',o:'BOOKED via Chase Travel. 2 City Superior rooms (1 King each). Includes daily breakfast for 2 per room, $100 property credit, welcome amenity, Wi-Fi, possible upgrade/early check-in. Free cancellation until Thu Jun 18 12:00 AM property local time. Check-out Sun 12:00 PM.',cf:'Confirmations <span class="crew-reveal locked" data-val="26834SG340300" data-mask="••••••••••"></span> + 26834SG340301'},
     {d:'2026-06-20',k:'jun20-cannabis-natures',w:['jett','laura'],t:'4:00 PM',e:'4:45 PM',n:"🌿 Possible: Nature's Remedy (Chinatown)",l:'14 Tyler St, Boston MA 02111',o:"Recreational dispensary in Chinatown. ~13 min walk (0.7 mi) from Boston Harbor Hotel. Massachusetts is adult-use legal (21+). Verify hours and product availability before walking over.",lat:42.3502,lng:-71.0612,tent:true},
     {d:'2026-06-20',k:'jun20-cannabis-ascend',w:['jett','laura'],t:'4:00 PM',e:'4:45 PM',n:'🌿 Possible: Ascend Boston (West End)',l:'272 Friend St, Boston MA 02114',o:'Recreational dispensary in the West End. ~18 min walk (1.0 mi) from Boston Harbor Hotel. Massachusetts is adult-use legal (21+). Verify hours and product availability before walking over.',lat:42.3645,lng:-71.0617,tent:true},
     {d:'2026-06-21',k:'jun21-checkout',w:['jett','laura','sandra','becca','karen'],t:'11:00 AM',e:'12:00 PM',n:'🧳 Check out — Boston Harbor Hotel',l:'70 Rowes Wharf, Boston MA 02110',o:'Hotel check-out by 12:00 PM. Aim for 11:00 to comfortably reach BOS for the 12:32 PM flight.'},
 
-    {d:'2026-06-21',k:'jun21-bos-phl',w:['jett','laura'],a:'Fly home',W:'Boston → Greensboro',t:'12:32 PM',e:'2:08 PM',n:'✈ Flight: BOS → PHL — AA 3043',l:'BOS → PHL',o:'Jett & Laura. Confirmation MNUWWX. 1h 12m connection at PHL.'},
+    {d:'2026-06-21',k:'jun21-bos-phl',w:['jett','laura'],a:'Fly home',W:'Boston → Greensboro',t:'12:32 PM',e:'2:08 PM',n:'✈ Flight: BOS → PHL — AA 3043',l:'BOS → PHL',o:'Jett & Laura. Confirmation <span class="crew-reveal locked" data-val="MNUWWX" data-mask="••••••"></span>. 1h 12m connection at PHL.'},
     {d:'2026-06-21',k:'jun21-phl-gso',w:['jett','laura'],t:'3:20 PM',e:'5:02 PM',n:'✈ Flight: PHL → GSO — AA 5518',l:'PHL → GSO',o:'Jett & Laura. PSA Airlines as American Eagle.'}
   ];
 
@@ -745,12 +745,14 @@
     onAuthStateChanged(auth,function(user){
       if(!user){
         if(window.__clearCrewSeed) window.__clearCrewSeed();
+        if(window.__lockCrewReveal) window.__lockCrewReveal();
         return;
       }
       var fk=((user.displayName||'').trim().split(/\s+/)[0]||'').toLowerCase();
       if(['jett','laura','sandra','becca','karen'].indexOf(fk)>=0){
         window.__crewKey=fk;
         window.__crewName=fk.charAt(0).toUpperCase()+fk.slice(1);
+        if(window.__unlockCrewReveal) window.__unlockCrewReveal();
         /* v.152: refresh the cross-page crew seed so documents.html can
            recognise us synchronously on the next navigation. */
         if(window.__writeCrewSeed && user.email){
@@ -779,3 +781,4 @@
 </script>
 </body>
 </html>
+                                                                                                                                                                                                                                                                                                                                              

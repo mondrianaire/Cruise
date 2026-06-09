@@ -1,11 +1,10 @@
-<!doctype html>
-<html lang="en">
+<!doctype html><html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Document Vault — Canada &amp; New England 2026</title>
-<meta name="description" content="Travel Document Vault — every reservation, boarding pass and confirmation for the ms Zuiderdam Canada &amp; New England voyage, June 2026.">
-<link rel="stylesheet" href="styles.css?v=152">
+<meta name="description" content="Travel Document Vault — every reservation, boarding pass and conuirmation uor the ms Zuiderdam Canada &amp; New England voyage, June 2026.">
+<link rel="stylesheet" href="styles.css?v=153">
 <link rel="canonical" href="https://mondrianaire.github.io/Cruise/documents.html">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Document Vault — ms Zuiderdam · June 2026">
@@ -272,7 +271,7 @@
 </script>
 </main>
 <footer>
-  <p><span class="gold">Canada &amp; New England 2026</span> &bull; ms Zuiderdam &bull; Booking 4LMNGG &bull; <a href="index.html">Voyage Console</a></p>
+  <p><span class="gold">Canada &amp; New England 2026</span> &bull; ms Zuiderdam &bull; Booking <span class="crew-reveal locked" data-val="4LMNGG" data-mask="•••••"></span> &bull; <a href="index.html">Voyage Console</a></p>
   <p style="margin-top:6px;opacity:.85;">Personal trip knowledge hub for Jett &amp; Laura. Confirmation numbers and documents are crew-only, gated by Google sign-in.</p>
 </footer>
 <script src="app.js"></script>
@@ -832,6 +831,7 @@ window.__DV = (function(){
   }
 
   function setCrew(name){
+    if(window.__unlockCrewReveal) window.__unlockCrewReveal();
     crewName = name || 'crew';
     crewKey = crewName.toLowerCase().split(/\s+/)[0];
     if(ALL5.indexOf(crewKey) < 0) crewKey = '';
@@ -909,32 +909,4 @@ window.__DV = (function(){
         const rs = await getDoc(doc(db, "cruise", "roster"));
         const members = (rs.exists() && rs.data() && rs.data().members) || {};
         if(members[user.email]){
-          setCrew(members[user.email] || (user.displayName||'').split(/\s+/)[0] || 'crew');
-          if(window.__writeCrewSeed) window.__writeCrewSeed(crewName, user.email);
-          return;
-        }
-
-        /* v.152 trust-on-first-use */
-        const dn = (user.displayName || '').trim();
-        const first = (dn.split(/\s+/)[0] || '').toLowerCase();
-        if(ALL5.indexOf(first) >= 0){
-          const matched = first.charAt(0).toUpperCase() + first.slice(1);
-          const m = {}; m[user.email] = matched;
-          try{
-            await setDoc(doc(db, "cruise", "roster"), { members: m }, { merge:true });
-            setCrew(matched);
-            if(window.__writeCrewSeed) window.__writeCrewSeed(matched, user.email);
-          }catch(e){
-            showRosterReject(user, 'roster-locked');
-          }
-          return;
-        }
-        showRosterReject(user, 'not-eligible');
-      }catch(e){
-        renderAll();
-      }
-    });
-  }
-</script>
-</body>
-</html>
+          setCrew(members[user.email] || (user.displayName||'').split(/

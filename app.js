@@ -201,8 +201,42 @@ window.__clearCrewSeed = function(){
   }catch(e){}
 };
 
+/* v.153: global crew-reveal unlocker. Any page that scatters sensitive
+   tokens (confirmation #, flight #, room #) wraps them in
+   <span class="crew-reveal locked" data-val="X" data-mask="••••••">.
+   We unlock all of them in one place — optimistically from the seed,
+   and again from the per-page Firebase auth listener when it confirms. */
+window.__unlockCrewReveal = function(){
+  document.querySelectorAll('.crew-reveal.locked').forEach(function(el){
+    el.classList.remove('locked');
+  });
+  document.querySelectorAll('.crew-only[hidden]').forEach(function(el){
+    el.hidden = false;
+  });
+};
+window.__lockCrewReveal = function(){
+  document.querySelectorAll('.crew-reveal').forEach(function(el){
+    el.classList.add('locked');
+  });
+  document.querySelectorAll('.crew-only').forEach(function(el){
+    el.hidden = true;
+  });
+};
+/* Run unlock immediately if we have a crew seed — keeps the page from
+   flashing the masked state on every navigation between pages. */
+if(window.__crewSeed && window.__crewSeed.name){
+  /* Wait one tick so the DOM is ready (this script runs in <body>). */
+  document.addEventListener('DOMContentLoaded', function(){
+    window.__unlockCrewReveal();
+  });
+  /* If DOMContentLoaded already fired (late script), unlock now. */
+  if(document.readyState !== 'loading'){
+    window.__unlockCrewReveal();
+  }
+}
+
 /* ===== Site version badge in nav (visible across all pages) ===== */
-window.SITE_VERSION = 'v.152';
+window.SITE_VERSION = 'v.153';
 (function(){
   document.querySelectorAll('nav .brand .br-y').forEach(function(y){
     if(!y.querySelector('.br-ver')){
