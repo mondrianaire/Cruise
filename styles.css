@@ -77,16 +77,11 @@ nav .links{display:flex;flex:1 1 auto;align-items:stretch;gap:1px;min-width:0;
      to a narrow-viewport @media block below, where horizontal scrolling
      is actually needed. On desktop all entries fit and there's no
      reason to fade the last one. */
-  padding-right:14px;}
+  padding-right:8px;}
 nav .links::-webkit-scrollbar{display:none;}
 /* v.151: only fade the right edge when the nav row needs to scroll
    horizontally (narrow viewports). Desktop shows every entry in full. */
-@media(max-width:900px){
-  nav .links{
-    mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 24px),transparent 100%);
-    -webkit-mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 24px),transparent 100%);
-  }
-}
+/* v.154: scroll-fade mask removed; links no longer scroll. */
 nav .links a{position:relative;display:inline-flex;align-items:center;gap:7px;
   color:var(--ink-dim);text-decoration:none;
   font:700 .72rem/1 var(--d-mono);text-transform:uppercase;letter-spacing:.10em;
@@ -358,11 +353,13 @@ footer a{color:var(--brass-lt);}
 }
 
 /* ---------- MOBILE NAV (hamburger + full-screen sheet) ---------- */
-.nav-burger{display:none;align-items:center;justify-content:center;
-  width:46px;height:46px;margin-left:auto;background:none;border:0;cursor:pointer;
-  color:var(--brass-lt);font-size:1.55rem;line-height:1;padding:0;
-  transition:color .15s ease;}
-.nav-burger:hover{color:var(--cream);}
+/* v.154: hamburger is always visible. Mobile shows it alone; desktop shows it alongside priority entries. */
+.nav-burger{display:inline-flex;align-items:center;justify-content:center;
+  width:44px;height:44px;margin-left:auto;background:none;cursor:pointer;
+  color:var(--brass-lt);font-size:1.45rem;line-height:1;padding:0;
+  border:1px solid rgba(200,155,74,.28);border-radius:8px;
+  transition:color .15s ease,background .15s ease,border-color .15s ease;}
+.nav-burger:hover{color:var(--cream);background:rgba(200,155,74,.10);border-color:var(--brass);}
 .nav-burger:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px;border-radius:6px;}
 .nav-sheet{position:fixed;inset:0;z-index:200;display:none;flex-direction:column;
   background:radial-gradient(ellipse at top center, #1a4a5e 0%, var(--sea) 40%, var(--abyss) 100%);
@@ -396,20 +393,28 @@ footer a{color:var(--brass-lt);}
   text-decoration:none;}
 .nav-sheet-console a:hover{background:rgba(200,155,74,.16);color:var(--cream);
   border-color:var(--brass);}
+/* v.154: nav layout rebuild. Two breakpoints:
+   - Mobile (<=760): brand + hamburger only. All links live in the sheet.
+   - Tablet + desktop (>760): brand + Overview + Documents + current page
+     + hamburger + Console. Priority links plus the active entry are pinned
+     inline. Hamburger sheet contains every entry. */
 @media(max-width:760px){
-  /* v.146: keep ALL nav entries + the Console button visible at every screen
-     size — no more hamburger collapse. The .links container already has
-     overflow-x:auto, so on very narrow viewports the row scrolls
-     horizontally rather than hiding entries behind a menu sheet. */
-  nav .nav-burger{display:none;}
-  nav .brand{margin-right:6px;border-right:none;}
-  nav .links{display:flex;flex:1 1 auto;min-width:0;}
-  nav .links a{padding:11px 7px;font-size:.62rem;}
-  nav .links a .n{font-size:.46rem;padding:2px 3px;}
-  nav .console{display:inline-flex;padding:7px 10px;font-size:.58rem;margin-left:6px;}
-  /* keep bottom-left toolbar pills readable on mobile */
+  nav .brand{margin-right:6px;border-right:none;font-size:.86rem;padding:11px 12px 11px 0;}
+  nav .br-lbl{display:none;}
+  nav .br-y{font-size:.58rem;}
+  nav .links{display:none !important;}
+  nav .console{display:inline-flex;padding:7px 10px;font-size:.58rem;margin-right:6px;}
+  nav .nav-burger{width:42px;height:42px;font-size:1.4rem;margin-left:4px;}
   .toolbar{gap:6px;}
   .mtog{padding:0 11px;font-size:.7rem;}
+}
+@media(min-width:761px){
+  nav .links{display:flex;flex:0 0 auto;gap:1px;padding-right:8px;}
+  nav .links a{display:none;}
+  nav .links a[href="overview.html"],
+  nav .links a[href="documents.html"]{display:inline-flex;}
+  nav .links a.active{display:inline-flex;}
+  nav .nav-burger{margin-left:4px;}
 }
 
 /* ---------- DAY-BY-DAY ATTENDANCE ---------- */
