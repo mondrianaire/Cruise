@@ -34,13 +34,22 @@ turn on the private upload/download feature.
    localhost for testing. Add any other origin you serve from there.
 
 HOW IT WORKS
-   - Files live at  cruise-docs/<docId>/<timestamp>__<filename>  in Storage.
-   - File metadata (name, path, size, uploader) syncs live via Firestore doc
-     cruise/docvault — so all five travellers see the same files within ~1s.
+   - Each entry has a per-traveller area. A traveller can attach several typed
+     items per entry: boarding pass (PDF/image), confirmation number, QR code,
+     barcode, passport scan, ticket/voucher, seat, link, photo, note, or other
+     file. (QR/barcode store an image and/or a typed value; live camera
+     scanning is a planned follow-up.)
+   - Files live at  cruise-docs/<docId>/<personKey>/<timestamp>__<filename>.
+   - All attachment metadata (type, name, path, size, value, uploader) syncs
+     live via Firestore doc cruise/docvault, shape:
+        items: { <docId>: { <personKey>: [ {type, kind, ...}, ... ] } }
+     so all five travellers see each other's additions within ~1s.
    - Downloads stream through the SDK (getBlob), so every read is evaluated
      against the Storage rule. No permanent public download URLs are created.
    - Upload limits enforced both client-side and in the rule: <25 MB,
      images or PDFs only.
+   - Ownership is SOFT: the UI organises documents per traveller and highlights
+     your own section, but any roster member can add or download for anyone.
 
 SECURITY NOTE
    This protects files behind real Google sign-in + roster membership — a

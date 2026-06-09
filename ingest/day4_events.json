@@ -1,0 +1,402 @@
+[
+  {
+    "day": 4,
+    "time": "7:00 AM",
+    "duration": "30 min",
+    "name": "Stretch & Release",
+    "venue": "Fitness Center",
+    "deck": "9"
+  },
+  {
+    "day": 4,
+    "time": "8:00 AM",
+    "duration": "16 hours",
+    "name": "Crosswords & Number Puzzles are Available",
+    "venue": "Atrium",
+    "deck": "1"
+  },
+  {
+    "day": 4,
+    "time": "8:00 AM",
+    "duration": "1 hour",
+    "name": "Pickleball Open Play",
+    "venue": "Sport Court",
+    "deck": "11"
+  },
+  {
+    "day": 4,
+    "time": "8:00 AM",
+    "duration": "30 min",
+    "name": "Tai Chi for Everyone",
+    "venue": "Lido Poolside",
+    "deck": "9"
+  },
+  {
+    "day": 4,
+    "time": "9:00 AM",
+    "duration": "30 min",
+    "name": "Golf Putting",
+    "venue": "Lido Poolside",
+    "deck": "9"
+  },
+  {
+    "day": 4,
+    "time": "9:30 AM",
+    "duration": "45 min",
+    "name": "Coloring for Adults",
+    "venue": "Art Studio",
+    "deck": "10"
+  },
+  {
+    "day": 4,
+    "time": "10:00 AM",
+    "duration": "30 min",
+    "name": "Around the World Basketball",
+    "venue": "Sport Court",
+    "deck": "11"
+  },
+  {
+    "day": 4,
+    "time": "11:00 AM",
+    "duration": "30 min",
+    "name": "All about Eyes",
+    "venue": "Spa & Salon",
+    "deck": "9"
+  },
+  {
+    "day": 4,
+    "time": "11:30 AM",
+    "duration": "30 min",
+    "name": "Complimentary Massage Sampler",
+    "venue": "Spa & Salon",
+    "deck": "9"
+  },
+  {
+    "day": 4,
+    "time": "1:00 PM",
+    "duration": "30 min",
+    "name": "Today's Trivia: Flags",
+    "venue": "Billboard Onboard",
+    "deck": "2"
+  },
+  {
+    "day": 4,
+    "time": "1:00 PM",
+    "duration": "45 min",
+    "name": "Knitter's Meetup",
+    "venue": "Art Studio",
+    "deck": "10"
+  },
+  {
+    "day": 4,
+    "time": "1:00 PM",
+    "duration": "3 hours",
+    "name": "Mahjong Players Meet until 4:00pm",
+    "venue": "Game Room",
+    "deck": "10"
+  },
+  {
+    "day": 4,
+    "time": "1:00 PM",
+    "duration": "2.5 hours",
+    "name": "Today's Movie: Wuthering Heights",
+    "venue": "Rolling Stone Lounge",
+    "deck": "2"
+  },
+  {
+    "day": 4,
+    "time": "2:00 PM",
+    "duration": "45 min",
+    "name": "Celtic Instrumentalist Plays",
+    "venue": "Ocean Bar",
+    "deck": "3"
+  },
+  {
+    "day": 4,
+    "time": "2:30 PM",
+    "duration": "5.5 hours",
+    "name": "Visit the Thermal Suite & Hydropool",
+    "venue": "Spa & Salon",
+    "deck": "9"
+  },
+  {
+    "day": 4,
+    "time": "3:00 PM",
+    "duration": "30 min",
+    "name": "Cornhole Challenge",
+    "venue": "Lido Poolside",
+    "deck": "9"
+  },
+  {
+    "day": 4,
+    "time": "3:00 PM",
+    "duration": "1 hour",
+    "name": "Walking in Comfort",
+    "venue": "Fitness Center",
+    "deck": "9"
+  },
+  {
+    "day": 4,
+    "time": "3:00 PM",
+    "duration": "45 min",
+    "name": "Vivace Duo Plays",
+    "venue": "Explorer's Lounge",
+    "deck": "2"
+  },
+  {
+    "day": 4,
+    "time": "3:00 PM",
+    "duration": "45 min",
+    "name": "Friends of Bill W. Meet",
+    "venue": "Explorer's Lounge",
+    "deck": "2"
+  },
+  {
+    "day": 4,
+    "time": "3:30 PM",
+    "duration": "45 min",
+    "name": "Creating Doodle Designs: Jar of Dreams",
+    "venue": "Art Studio",
+    "deck": "10"
+  },
+  {
+    "day": 4,
+    "time": "4:00 PM",
+    "duration": "45 min",
+    "name": "The Dam Band Plays",
+    "venue": "Ocean Bar",
+    "deck": "3"
+  },
+  {
+    "day": 4,
+    "time": "4:00 PM",
+    "duration": "1 hour",
+    "name": "Eat More to Weigh Less",
+    "venue": "Fitness Center",
+    "deck": "9"
+  },
+  {
+    "day": 4,
+    "time": "4:00 PM",
+    "duration": "45 min",
+    "name": "Vivace Duo Plays",
+    "venue": "Explorer's Lounge",
+    "deck": "2"
+  },
+  {
+    "day": 4,
+    "time": "4:00 PM",
+    "duration": "45 min",
+    "name": "Team Trivia Challenge",
+    "venue": "Billboard Onboard",
+    "deck": "2"
+  },
+  {
+    "day": 4,
+    "time": "4:30 PM",
+    "duration": "45 min",
+    "name": "Origami Folding: Fish",
+    "venue": "Art Studio",
+    "deck": "10"
+  },
+  {
+    "day": 4,
+    "time": "4:30 PM",
+    "duration": "30 min",
+    "name": "Acupuncture: A Life-Changing Introduction",
+    "venue": "Hudson Room",
+    "deck": "3"
+  },
+  {
+    "day": 4,
+    "time": "5:00 PM",
+    "duration": "1 hour",
+    "name": "Pure Form Yoga ($20)",
+    "venue": "Fitness Center",
+    "deck": "9"
+  },
+  {
+    "day": 4,
+    "time": "5:00 PM",
+    "duration": "1 hour",
+    "name": "Pickleball Open Play",
+    "venue": "Sport Court",
+    "deck": "11"
+  },
+  {
+    "day": 4,
+    "time": "5:00 PM",
+    "duration": "1 hour",
+    "name": "It's Karaoke Time!",
+    "venue": "Rolling Stone Lounge",
+    "deck": "2"
+  },
+  {
+    "day": 4,
+    "time": "5:15 PM",
+    "duration": "45 min",
+    "name": "Evening Catholic Prayer",
+    "venue": "Explorer's Lounge",
+    "deck": "2"
+  },
+  {
+    "day": 4,
+    "time": "6:00 PM",
+    "duration": "45 min",
+    "name": "Celtic Instrumentalist Plays",
+    "venue": "Ocean Bar",
+    "deck": "3"
+  },
+  {
+    "day": 4,
+    "time": "6:00 PM",
+    "duration": "30 min",
+    "name": "Evening Stretch",
+    "venue": "Fitness Center",
+    "deck": "9"
+  },
+  {
+    "day": 4,
+    "time": "6:00 PM",
+    "duration": "45 min",
+    "name": "Singles & Solo Travelers Meetup",
+    "venue": "Gallery Bar",
+    "deck": "2"
+  },
+  {
+    "day": 4,
+    "time": "6:00 PM",
+    "duration": "2 hours",
+    "name": "Shinola Watches: American Made",
+    "venue": "The Shops",
+    "deck": "3"
+  },
+  {
+    "day": 4,
+    "time": "7:00 PM",
+    "duration": "1 hour",
+    "name": "Ladies' Night in the Thermal Suite",
+    "venue": "Spa & Salon",
+    "deck": "9"
+  },
+  {
+    "day": 4,
+    "time": "7:00 PM",
+    "duration": "45 min",
+    "name": "Vivace Duo Plays",
+    "venue": "Explorer's Lounge",
+    "deck": "2"
+  },
+  {
+    "day": 4,
+    "time": "7:00 PM",
+    "duration": "30 min",
+    "name": "Music Trivia: Rock n Roll",
+    "venue": "Billboard Onboard",
+    "deck": "2"
+  },
+  {
+    "day": 4,
+    "time": "7:00 PM",
+    "duration": "45 min",
+    "name": "PRIDE Meetup",
+    "venue": "Gallery Bar",
+    "deck": "2"
+  },
+  {
+    "day": 4,
+    "time": "8:00 PM",
+    "duration": "2 hours",
+    "name": "Heat Wave Hot Seats",
+    "venue": "Casino",
+    "deck": "2"
+  },
+  {
+    "day": 4,
+    "time": "8:00 PM",
+    "duration": "2 hours",
+    "name": "Joseph Ribkoff Collection: 70% Off Select Styles",
+    "venue": "The Shops",
+    "deck": "3"
+  },
+  {
+    "day": 4,
+    "time": "8:15 PM",
+    "duration": "45 min",
+    "name": "Billboard Onboard Plays The 1960s",
+    "venue": "Billboard Onboard",
+    "deck": "2"
+  },
+  {
+    "day": 4,
+    "time": "8:15 PM",
+    "duration": "45 min",
+    "name": "Breton Thunder: Ma's Kitchen Party",
+    "venue": "Rolling Stone Lounge",
+    "deck": "2"
+  },
+  {
+    "day": 4,
+    "time": "8:30 PM",
+    "duration": "1 hour",
+    "name": "King of Color: Watercolors Event",
+    "venue": "Effy Jewelry",
+    "deck": "3"
+  },
+  {
+    "day": 4,
+    "time": "8:30 PM",
+    "duration": "45 min",
+    "name": "The Dam Band Plays",
+    "venue": "Ocean Bar",
+    "deck": "3"
+  },
+  {
+    "day": 4,
+    "time": "8:30 PM",
+    "duration": "45 min",
+    "name": "Game Night: Tone Deaf Ditty",
+    "venue": "Explorer's Lounge",
+    "deck": "2"
+  },
+  {
+    "day": 4,
+    "time": "9:00 PM",
+    "duration": "45 min",
+    "name": "Young Adult Meetup",
+    "venue": "Gallery Bar",
+    "deck": "2"
+  },
+  {
+    "day": 4,
+    "time": "9:30 PM",
+    "duration": "45 min",
+    "name": "Breton Thunder: Ma's Kitchen Party",
+    "venue": "Rolling Stone Lounge",
+    "deck": "2"
+  },
+  {
+    "day": 4,
+    "time": "9:45 PM",
+    "duration": "45 min",
+    "name": "Billboard Onboard Plays One-Hit Wonders",
+    "venue": "Billboard Onboard",
+    "deck": "2"
+  },
+  {
+    "day": 4,
+    "time": "10:45 PM",
+    "duration": "45 min",
+    "name": "Billboard Onboard Plays All Requests",
+    "venue": "Billboard Onboard",
+    "deck": "2"
+  },
+  {
+    "day": 4,
+    "time": "11:00 PM",
+    "duration": null,
+    "name": "Over $625,000 Paradise Lotto Jackpot Drawing",
+    "venue": "Casino",
+    "deck": "2"
+  }
+]

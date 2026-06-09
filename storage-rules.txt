@@ -20,8 +20,10 @@ rules_version = '2';
 service firebase.storage {
   match /b/{bucket}/o {
 
-    // ─── Document Vault: cruise-docs/<docId>/<file> ───
-    match /cruise-docs/{docId}/{fileName} {
+    // ─── Document Vault: cruise-docs/<docId>/<personKey>/<file> ───
+    // Files are organised per document record and per traveller. The {path=**}
+    // recursive wildcard covers that nesting (and any future depth).
+    match /cruise-docs/{path=**} {
 
       function isCrew() {
         return request.auth != null
@@ -34,6 +36,9 @@ service firebase.storage {
       allow read: if isCrew();
 
       // Uploads: roster members only, capped at 25 MB, images or PDFs only.
+      // (Soft ownership: the UI organises files per traveller, but any crew
+      // member may add/download for anyone — handy when one person wrangles
+      // the group's documents.)
       allow create, update: if isCrew()
         && request.resource.size < 25 * 1024 * 1024
         && request.resource.contentType.matches('image/.*|application/pdf');

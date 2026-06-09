@@ -1,1 +1,39 @@
-drop_msg: remove _commitmsg.txt  
+v.145: full 372-event program + correct Quebec→Boston itinerary
+
+events.js RAW array swapped from the 15-event Day 2 seed to the full
+372 events extracted from the seven HAL Navigator screen recordings
+plus the older Day 2 video. Visual frame reading; verify.py confirms
+372/372 score 5/5 HIGH; cross-reference confirms 372/372 resolve to a
+known dv-item on the deck plans.
+
+Breakdown:
+  Day 1 Sat Jun 13 Quebec City              48 events
+  Day 2 Sun Jun 14 St. Lawrence River       67 events
+  Day 3 Mon Jun 15 Gulf of St. Lawrence     63 events
+  Day 4 Tue Jun 16 Charlottetown, PEI       50 events
+  Day 5 Wed Jun 17 Sydney, NS               55 events
+  Day 6 Thu Jun 18 Halifax, NS              39 events
+  Day 7 Fri Jun 19 Portland, ME             37 events
+  Day 8 Sat Jun 20 Boston · disembark       13 events
+
+SHIP_DAYS corrected from the (wrong) Boston-roundtrip itinerary to
+the actual Quebec City → Atlantic Canada → New England → Boston
+sail. Schema extends from 7 days to 8.
+
+VENUE_LOOKUP extended to map the missing Navigator-only labels:
+  "the shops"      -> 3-shops
+  "shops"          -> [3-shops, 2-shops2]
+  "hudson room"    -> 3-meetingrooms
+  "half moon room" -> 3-meetingrooms
+  "stuyvesant room"-> 3-meetingrooms
+These accounted for 25 silently-dropped events on previous attempts.
+
+Two deck typos in the captured JSONs corrected:
+  Day 4 Cornhole Challenge:  Lido Poolside D10 -> D9
+  Day 5 Chocolate Surprise: Lido Market   D2  -> D9
+
+Daily-recurrence detection (5+ days same time ±15 min) surfaces 9
+daily events across 6 venues, including Gallery Bar's PRIDE Meetup
+and Young Adult Meetup which run all 8 days.
+
+Asset versions bumped ?v=145; SITE_VERSION = 'v.145'.

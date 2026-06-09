@@ -48,7 +48,7 @@
   .dv-cat .dv-cat-ic{ font-size:1.1rem; }
   .dv-cat .dv-cat-n{ font:700 .72rem/1 var(--d-mono); color:var(--ink-dim); letter-spacing:.08em; }
 
-  .dv-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(310px,1fr)); gap:16px; }
+  .dv-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(330px,1fr)); gap:16px; }
 
   .dv-card{
     position:relative; border:1px solid rgba(255,255,255,.09); border-radius:14px;
@@ -99,38 +99,44 @@
   }
   .dv-conflict::before{ content:"⚠ "; }
 
-  /* ── File zone (download + upload) ── */
-  .dv-filezone{ border-top:1px solid rgba(255,255,255,.07); padding-top:10px; margin-top:2px; display:flex; flex-direction:column; gap:8px; }
-  .dv-filezone .fz-lab{ font:700 .66rem/1 var(--d-mono); letter-spacing:.08em; text-transform:uppercase; color:var(--ink-dim); }
-  .dv-file{
-    display:flex; align-items:center; gap:8px;
-    background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08);
-    border-radius:8px; padding:7px 9px;
-  }
-  .dv-file .fi-ic{ font-size:.95rem; flex:none; }
-  .dv-file .fi-name{ font:600 .76rem/1.25 var(--d-body); color:var(--ink); flex:1 1 auto; word-break:break-word; }
-  .dv-file .fi-meta{ font:600 .66rem/1 var(--d-mono); color:var(--ink-dim); flex:none; }
-  .dv-file button{
-    flex:none; cursor:pointer; border:none; border-radius:6px;
-    font:700 .68rem/1 var(--d-mono); padding:6px 8px;
-  }
-  .dv-file .fi-dl{ background:var(--brass-lt); color:var(--abyss); }
-  .dv-file .fi-rm{ background:rgba(224,121,90,.16); color:var(--stren); border:1px solid rgba(224,121,90,.3); }
-  .dv-file .fi-dl[disabled]{ opacity:.5; cursor:wait; }
+  /* ── Per-traveller vault zone ── */
+  .dv-vaultzone{ border-top:1px solid rgba(255,255,255,.07); padding-top:11px; margin-top:2px; display:flex; flex-direction:column; gap:9px; }
+  .dv-vz-lab{ font:700 .66rem/1 var(--d-mono); letter-spacing:.08em; text-transform:uppercase; color:var(--ink-dim); }
 
-  .dv-nofile{ font:600 .74rem/1.3 var(--d-body); color:var(--ink-dim); font-style:italic; }
+  .dv-person{ border:1px solid rgba(255,255,255,.07); border-radius:10px; padding:9px 10px; background:rgba(255,255,255,.02); display:flex; flex-direction:column; gap:7px; }
+  .dv-person.is-me{ border-color:rgba(63,160,173,.42); background:rgba(63,160,173,.06); }
+  .dv-person-h{ font:700 .74rem/1 var(--d-mono); letter-spacing:.04em; color:var(--ink); display:flex; align-items:center; gap:7px; }
+  .dv-person-h .me{ color:var(--teal-lt); font-size:.66rem; }
+  .dv-person-h .cnt{ margin-left:auto; color:var(--ink-dim); font:700 .62rem/1 var(--d-mono); background:rgba(255,255,255,.06); padding:3px 6px; border-radius:999px; }
 
-  .dv-up{
-    display:inline-flex; align-items:center; gap:7px; align-self:flex-start;
-    cursor:pointer; border:1px dashed rgba(230,196,119,.45); border-radius:8px;
-    font:700 .72rem/1 var(--d-mono); color:var(--brass-lt);
-    padding:8px 11px; background:rgba(230,196,119,.05); transition:background .15s;
-  }
-  .dv-up:hover{ background:rgba(230,196,119,.12); }
-  .dv-up input{ display:none; }
-  .dv-up.busy{ opacity:.6; pointer-events:none; }
-  .dv-prog{ font:600 .7rem/1.3 var(--d-mono); color:var(--mod); }
-  .dv-err{ font:600 .72rem/1.35 var(--d-body); color:var(--stren); }
+  .dv-atts{ display:flex; flex-direction:column; gap:5px; }
+  .dv-att{ display:flex; align-items:center; gap:7px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); border-radius:7px; padding:6px 8px; }
+  .dv-att .att-ic{ font-size:.9rem; flex:none; }
+  .dv-att .att-body{ flex:1 1 auto; min-width:0; display:flex; flex-direction:column; gap:1px; }
+  .dv-att .att-type{ font:700 .58rem/1 var(--d-mono); letter-spacing:.05em; text-transform:uppercase; color:var(--ink-dim); }
+  .dv-att .att-name{ font:600 .74rem/1.2 var(--d-body); color:var(--ink); word-break:break-word; }
+  .dv-att .att-code{ font:700 .8rem/1.2 var(--d-mono); color:var(--brass-lt); word-break:break-all; }
+  .dv-att .att-sub{ font:600 .64rem/1.2 var(--d-mono); color:var(--ink-dim); word-break:break-all; }
+  .dv-att .att-meta{ font:600 .6rem/1 var(--d-mono); color:var(--ink-dim); flex:none; }
+  .dv-att button{ flex:none; cursor:pointer; border:none; border-radius:6px; font:700 .72rem/1 var(--d-mono); padding:6px 7px; background:rgba(255,255,255,.08); color:var(--ink); }
+  .dv-att button[data-act=rm]{ background:rgba(224,121,90,.16); color:var(--stren); }
+  .dv-att button[data-act=dl]{ background:var(--brass-lt); color:var(--abyss); }
+  .dv-att button[disabled]{ opacity:.5; cursor:wait; }
+
+  .dv-add{ display:flex; flex-wrap:wrap; gap:6px; align-items:center; }
+  .dv-add select.dv-type{ font:600 .72rem/1 var(--d-body); padding:7px 8px; border-radius:7px; background:var(--deep); color:var(--ink); border:1px solid rgba(255,255,255,.14); }
+  .dv-add .dv-up{ display:inline-flex; align-items:center; gap:5px; cursor:pointer; border:1px dashed rgba(230,196,119,.45); border-radius:7px; font:700 .7rem/1 var(--d-mono); color:var(--brass-lt); padding:7px 9px; background:rgba(230,196,119,.05); }
+  .dv-add .dv-up:hover{ background:rgba(230,196,119,.12); }
+  .dv-add .dv-up input{ display:none; }
+  .dv-add .dv-val{ flex:1 1 130px; min-width:110px; font:600 .74rem/1 var(--d-mono); padding:7px 8px; border-radius:7px; background:rgba(0,0,0,.25); color:var(--ink); border:1px solid rgba(255,255,255,.14); }
+  .dv-add .dv-val-add{ cursor:pointer; border:none; border-radius:7px; font:700 .7rem/1 var(--d-mono); padding:7px 11px; background:var(--teal-lt); color:var(--abyss); }
+  .dv-add.mode-file .dv-val, .dv-add.mode-file .dv-val-add{ display:none; }
+  .dv-add.mode-value .dv-up{ display:none; }
+  .dv-add-status{ font:600 .68rem/1.3 var(--d-mono); width:100%; }
+  .dv-add-status.err{ color:var(--stren); }
+  .dv-add-status.busy{ color:var(--mod); }
+
+  .dv-nofile{ font:600 .72rem/1.3 var(--d-body); color:var(--ink-dim); font-style:italic; }
 
   .dv-loaderr{
     border:1px solid rgba(224,121,90,.4); border-radius:12px;
@@ -174,14 +180,14 @@
   <header class="page-head">
     <div class="kicker">Reservations &amp; travel documents</div>
     <h1>Document Vault</h1>
-    <p class="page-lead">Every booking, boarding pass and confirmation for the voyage — in one place, ready to download.</p>
+    <p class="page-lead">Every booking, boarding pass and confirmation for the voyage — in one place. Each traveller adds their own documents to each entry.</p>
   </header>
 <section id="vault" aria-labelledby="vault-h">
   <div class="sec-head"><h2 id="vault-h">All Documents</h2><span class="tag" id="dv-updated">First pass</span></div>
-  <p class="lead">A running inventory of everything that carries a reservation number, ticket, pass or confirmation across the whole trip — air, cruise, hotels, ground transport, shore excursions, onboard dining &amp; spa, and identity documents. Each entry shows where it stands: <strong>confirmed</strong>, <strong>pending</strong> (booked but the number/document still to collect), or a <strong>gap</strong> to chase down. Sign in via the Voyage Console to reveal confirmation numbers and upload or download the actual files.</p>
+  <p class="lead">A running inventory of everything that carries a reservation number, ticket, pass or confirmation across the whole trip. Each entry shows where it stands — <strong>confirmed</strong>, <strong>pending</strong>, or a <strong>gap</strong> — and, once you sign in, a per-traveller area where each person attaches their own documents: a <strong>boarding pass</strong> (PDF/image), a <strong>confirmation number</strong>, a <strong>QR code</strong> or <strong>barcode</strong>, a <strong>seat</strong>, a <strong>link</strong>, and more.</p>
 
   <div class="dv-sum" id="dv-summary" aria-live="polite"></div>
-  <div class="dv-crewnote" id="dv-crewnote">🔒 Confirmation numbers and document files are private to the crew. <a href="index.html">Sign in via the Voyage Console</a> to reveal them and to upload or download files. Files are stored privately in Firebase Storage — never in the public site.</div>
+  <div class="dv-crewnote" id="dv-crewnote">🔒 Confirmation numbers and document files are private to the crew. <a href="index.html">Sign in via the Voyage Console</a> to reveal them and to manage your own documents. Files are stored privately in Firebase Storage — never in the public site.</div>
 
   <div id="dv-body"></div>
 </section>
@@ -193,10 +199,10 @@
 <script src="app.js"></script>
 
 <script>
-/* ===== Document Vault renderer (data + cards). File management is layered on
-   by the Firebase module below, which owns every .dv-filezone. ===== */
+/* ===== Document Vault renderer (data + cards). The per-traveller vault zones
+   are owned by the Firebase module below. ===== */
 window.__DV = (function(){
-  var NAMES = {jett:'Jett',laura:'Laura',sandra:'Sandra',becca:'Becca',karen:'Karen'};
+  var NAMES = {jett:'Jett',laura:'Laura',sandra:'Sandra',becca:'Becca',karen:'Karen','_group':'Group / shared'};
   var STLABEL = {confirmed:'Confirmed',pending:'Pending',gap:'Gap'};
   var body = document.getElementById('dv-body');
   var byId = {};
@@ -234,10 +240,10 @@ window.__DV = (function(){
 
     if(doc.flag==='conflict') h += '<div class="dv-conflict">Conflicting source data — needs resolving (see notes).</div>';
 
-    /* confirmation — sensitive → crew-only reveal */
+    /* curated confirmation — sensitive → crew-only reveal */
     if(doc.confirmation){
       h += '<div class="dv-conf crew-only locked" data-conf="'+esc(doc.confirmation)+'">'
-         + '<span class="lab">Confirmation</span><code>•••••• (sign in)</code></div>';
+         + '<span class="lab">Confirmation (on file)</span><code>•••••• (sign in)</code></div>';
     } else if(doc.status==='gap'){
       h += '<div class="dv-conf"><span class="lab">Confirmation</span><code style="color:var(--stren)">— none on file —</code></div>';
     } else {
@@ -248,9 +254,9 @@ window.__DV = (function(){
       h += '<ul class="dv-docs">' + doc.docs.map(function(d){ return '<li>'+esc(d)+'</li>'; }).join('') + '</ul>';
     }
 
-    /* file zone — owned by the Firebase module; default shows sign-in prompt */
-    h += '<div class="dv-filezone" data-doc="'+esc(doc.id)+'">'
-       + '<span class="dv-nofile">Sign in to view &amp; add files</span></div>';
+    /* per-traveller vault zone — owned by the Firebase module */
+    h += '<div class="dv-vaultzone" data-doc="'+esc(doc.id)+'">'
+       + '<span class="dv-nofile">Sign in to manage documents</span></div>';
 
     if(doc.notes) h += '<p class="dv-notes">'+esc(doc.notes)+'</p>';
     h += '</div>';
@@ -298,12 +304,12 @@ window.__DV = (function(){
     .then(render)
     .catch(loadErr);
 
-  return { esc:esc };
+  return { esc:esc, byId:byId, NAMES:NAMES };
 })();
 </script>
 
 <!-- ===== Firebase layer: crew gate (Google SSO + roster), confirmation reveal,
-     and the private Storage-backed file uploader/downloader. ===== -->
+     and the per-traveller, multi-type Storage-backed document manager. ===== -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
   import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
@@ -318,10 +324,29 @@ window.__DV = (function(){
 
   const MAX_BYTES = 25 * 1024 * 1024;
   const esc = window.__DV.esc;
+  const NAMES = window.__DV.NAMES;
+  const ALL5 = ['jett','laura','sandra','becca','karen'];
+
+  /* Attachment type catalogue. mode: 'file' (upload), 'value' (text), 'both'. */
+  const TYPES = {
+    boarding_pass: { label:'Boarding pass', mode:'file',  icon:'🎫', accept:'image/*,application/pdf' },
+    confirmation:  { label:'Confirmation number', mode:'value', icon:'#️⃣', placeholder:'e.g. GYHRHV' },
+    ticket:        { label:'Ticket / voucher', mode:'file', icon:'📄', accept:'image/*,application/pdf' },
+    qr:            { label:'QR code', mode:'both', icon:'🔳', accept:'image/*', placeholder:'decoded value (optional)' },
+    barcode:       { label:'Barcode', mode:'both', icon:'❘❘❘', accept:'image/*', placeholder:'barcode value (optional)' },
+    passport:      { label:'Passport scan', mode:'file', icon:'🪪', accept:'image/*,application/pdf' },
+    seat:          { label:'Seat assignment', mode:'value', icon:'💺', placeholder:'e.g. 17E' },
+    link:          { label:'Link / URL', mode:'value', icon:'🔗', placeholder:'https://…' },
+    photo:         { label:'Photo / scan', mode:'file', icon:'🖼', accept:'image/*' },
+    note:          { label:'Note', mode:'value', icon:'📝', placeholder:'anything to remember' },
+    other_file:    { label:'Other file', mode:'file', icon:'📎', accept:'image/*,application/pdf' }
+  };
+  const TYPE_ORDER = ['boarding_pass','confirmation','ticket','qr','barcode','passport','seat','link','photo','note','other_file'];
+  const TYPE_OPTS = TYPE_ORDER.map(function(id){ return '<option value="'+id+'">'+TYPES[id].icon+' '+esc(TYPES[id].label)+'</option>'; }).join('');
 
   let auth, db, storage, vaultRef;
-  let isCrew = false, crewName = '';
-  let files = {};            // { docId: [ {name, path, size, type, by, at}, ... ] }
+  let isCrew = false, crewName = '', crewKey = '';
+  let items = {};   // { docId: { personKey: [ att, ... ] } }
   try{
     const app = initializeApp(cfg);
     auth = getAuth(app);
@@ -330,121 +355,184 @@ window.__DV = (function(){
     vaultRef = doc(db, "cruise", "docvault");
   }catch(e){ /* offline / blocked — page still shows the inventory */ }
 
+  function uid(){ return Date.now().toString(36) + '-' + Math.random().toString(36).slice(2,7); }
   function fmtSize(n){
     if(n == null) return '';
     if(n < 1024) return n + ' B';
     if(n < 1048576) return (n/1024).toFixed(0) + ' KB';
     return (n/1048576).toFixed(1) + ' MB';
   }
-  function icFor(type){
-    if(!type) return '📎';
-    if(type.indexOf('pdf')>=0) return '📕';
-    if(type.indexOf('image')>=0) return '🖼';
-    return '📎';
+  function personsFor(docId){
+    const d = window.__DV.byId[docId]; const who = (d && d.who) || [];
+    return who.length ? who : ['_group'];
+  }
+  function arrFor(docId, p){ return (items[docId] && items[docId][p]) || []; }
+  function setArr(docId, p, arr){ (items[docId] || (items[docId] = {}))[p] = arr; }
+  function findAtt(docId, p, id){ return arrFor(docId,p).find(function(a){ return a.id===id; }); }
+
+  /* ---------- rendering ---------- */
+  function attHtml(a){
+    const t = TYPES[a.type] || {}; const ic = t.icon || '📎'; const label = esc(t.label || a.type);
+    const title = a.by ? ' title="Added by '+esc(a.by)+'"' : '';
+    if(a.kind === 'file'){
+      const sub = a.value ? '<span class="att-sub">'+esc(a.value)+'</span>' : '';
+      return '<div class="dv-att" data-id="'+a.id+'" data-kind="file"'+title+'>'
+        + '<span class="att-ic">'+ic+'</span>'
+        + '<span class="att-body"><span class="att-type">'+label+'</span>'
+        + '<span class="att-name">'+esc(a.name)+'</span>'+sub+'</span>'
+        + '<span class="att-meta">'+fmtSize(a.size)+'</span>'
+        + '<button type="button" data-act="dl" aria-label="Download">⤓</button>'
+        + '<button type="button" data-act="rm" aria-label="Remove">✕</button></div>';
+    }
+    const openBtn = a.type==='link' ? '<button type="button" data-act="open" aria-label="Open link">↗</button>' : '';
+    return '<div class="dv-att" data-id="'+a.id+'" data-kind="value"'+title+'>'
+      + '<span class="att-ic">'+ic+'</span>'
+      + '<span class="att-body"><span class="att-type">'+label+'</span>'
+      + '<code class="att-code">'+esc(a.value)+'</code></span>'
+      + '<button type="button" data-act="copy" aria-label="Copy">⧉</button>'+openBtn
+      + '<button type="button" data-act="rm" aria-label="Remove">✕</button></div>';
   }
 
-  /* Render one card's file zone based on crew state + current `files`. */
+  function personHtml(docId, p){
+    const isMe = p === crewKey;
+    const name = NAMES[p] || p;
+    const atts = arrFor(docId, p);
+    let h = '<div class="dv-person'+(isMe?' is-me':'')+'" data-person="'+esc(p)+'">';
+    h += '<div class="dv-person-h">'+esc(name)+(isMe?' <span class="me">(you)</span>':'')
+       + '<span class="cnt">'+atts.length+'</span></div>';
+    h += '<div class="dv-atts">'
+       + (atts.length ? atts.map(attHtml).join('') : '<span class="dv-nofile">Nothing yet</span>')
+       + '</div>';
+    h += '<div class="dv-add mode-file">'
+       + '<select class="dv-type" aria-label="Document type">'+TYPE_OPTS+'</select>'
+       + '<label class="dv-up" title="Upload a file"><span>⤒ File</span>'
+       +   '<input type="file" accept="image/*,application/pdf"></label>'
+       + '<input type="text" class="dv-val" placeholder="value">'
+       + '<button type="button" class="dv-val-add" data-act="val-add">Add</button>'
+       + '<span class="dv-add-status" hidden></span></div>';
+    h += '</div>';
+    return h;
+  }
+
   function renderZone(zone){
-    const id = zone.getAttribute('data-doc');
+    const docId = zone.getAttribute('data-doc');
     if(!isCrew){
-      zone.innerHTML = '<span class="dv-nofile">Sign in via the Voyage Console to view &amp; add files</span>';
+      zone.innerHTML = '<span class="dv-nofile">Sign in via the Voyage Console to view &amp; add documents</span>';
       return;
     }
-    const list = files[id] || [];
-    let h = '<span class="fz-lab">Files</span>';
-    if(list.length){
-      list.forEach(function(f, i){
-        h += '<div class="dv-file" data-i="'+i+'">'
-           + '<span class="fi-ic">'+icFor(f.type)+'</span>'
-           + '<span class="fi-name">'+esc(f.name)+'</span>'
-           + '<span class="fi-meta">'+fmtSize(f.size)+'</span>'
-           + '<button type="button" class="fi-dl" data-act="dl">⤓ Get</button>'
-           + '<button type="button" class="fi-rm" data-act="rm" aria-label="Remove file">✕</button>'
-           + '</div>';
-      });
-    } else {
-      h += '<span class="dv-nofile">No file uploaded yet</span>';
-    }
-    h += '<label class="dv-up"><span>＋ Add file</span>'
-       + '<input type="file" accept="image/*,application/pdf"></label>'
-       + '<span class="dv-prog" hidden></span><span class="dv-err" hidden></span>';
+    let h = '<span class="dv-vz-lab">Documents — per traveller</span>';
+    h += personsFor(docId).map(function(p){ return personHtml(docId, p); }).join('');
     zone.innerHTML = h;
+    zone.querySelectorAll('.dv-type').forEach(applyMode);
+    wireZone(zone);
+  }
 
-    zone.querySelector('input[type=file]').addEventListener('change', function(ev){
-      if(ev.target.files && ev.target.files[0]) upload(id, ev.target.files[0], zone);
+  function renderAllZones(){ document.querySelectorAll('.dv-vaultzone').forEach(renderZone); }
+
+  function applyMode(sel){
+    const add = sel.closest('.dv-add'); if(!add) return;
+    const t = TYPES[sel.value] || {};
+    add.className = 'dv-add mode-' + (t.mode || 'file');
+    const fi = add.querySelector('.dv-up input'); if(fi) fi.accept = t.accept || 'image/*,application/pdf';
+    const vi = add.querySelector('.dv-val'); if(vi) vi.placeholder = t.placeholder || 'value';
+  }
+
+  /* ---------- event wiring (delegated per zone, once) ---------- */
+  function wireZone(zone){
+    if(zone.__wired) return;
+    zone.__wired = true;
+    const docId = zone.getAttribute('data-doc');
+
+    zone.addEventListener('change', function(e){
+      if(e.target.matches('.dv-type')){ applyMode(e.target); return; }
+      if(e.target.matches('.dv-up input[type=file]')){
+        const person = e.target.closest('.dv-person'); if(!person) return;
+        const p = person.getAttribute('data-person');
+        const type = person.querySelector('.dv-type').value;
+        const value = (person.querySelector('.dv-val')||{}).value || '';
+        const file = e.target.files && e.target.files[0];
+        if(file) upload(docId, p, type, file, value.trim(), person);
+        e.target.value = '';
+      }
     });
-    zone.querySelectorAll('.dv-file').forEach(function(row){
-      const i = +row.getAttribute('data-i');
-      row.querySelector('[data-act=dl]').addEventListener('click', function(){ download(id, i, row); });
-      row.querySelector('[data-act=rm]').addEventListener('click', function(){ remove(id, i, zone); });
+
+    zone.addEventListener('click', function(e){
+      const btn = e.target.closest('button'); if(!btn) return;
+      const act = btn.getAttribute('data-act'); if(!act) return;
+      const person = btn.closest('.dv-person'); const p = person && person.getAttribute('data-person');
+      if(act === 'val-add'){
+        const type = person.querySelector('.dv-type').value;
+        const vi = person.querySelector('.dv-val'); const value = vi.value.trim();
+        const st = person.querySelector('.dv-add-status');
+        if(!value){ flash(st, 'Enter a value first.', 'err'); return; }
+        addValue(docId, p, type, value).then(function(){ vi.value=''; }).catch(function(){ flash(st,'Could not save.','err'); });
+        return;
+      }
+      const attEl = btn.closest('.dv-att'); if(!attEl) return;
+      const id = attEl.getAttribute('data-id');
+      if(act === 'dl') download(docId, p, id, btn);
+      else if(act === 'rm') removeAtt(docId, p, id);
+      else if(act === 'copy'){ const a=findAtt(docId,p,id); if(a&&navigator.clipboard){ navigator.clipboard.writeText(a.value); btn.textContent='✓'; setTimeout(function(){btn.textContent='⧉';},1200); } }
+      else if(act === 'open'){ const a=findAtt(docId,p,id); if(a) window.open(a.value, '_blank', 'noopener'); }
     });
   }
 
-  function renderAllZones(){
-    document.querySelectorAll('.dv-filezone').forEach(renderZone);
+  function flash(el, msg, cls){ if(!el)return; el.hidden=false; el.className='dv-add-status '+(cls||''); el.textContent=msg;
+    if(cls!=='busy') setTimeout(function(){ el.hidden=true; }, 4000); }
+
+  /* ---------- persistence ---------- */
+  function persist(docId, p){
+    return setDoc(vaultRef, { items: { [docId]: { [p]: arrFor(docId,p) } }, updatedAt: Date.now() }, { merge:true });
+  }
+  function appendAtt(docId, p, att){ setArr(docId, p, arrFor(docId,p).concat([att])); return persist(docId,p); }
+
+  function addValue(docId, p, type, value){
+    return appendAtt(docId, p, { id:uid(), type:type, kind:'value', value:value, by:crewName, at:Date.now() });
   }
 
-  /* Persist the files map (only the changed docId key; merge keeps the rest). */
-  function persist(id){
-    return setDoc(vaultRef, { files: { [id]: files[id] || [] }, updatedAt: Date.now() }, { merge:true });
-  }
-
-  function upload(id, file, zone){
-    const errEl = zone.querySelector('.dv-err'); const progEl = zone.querySelector('.dv-prog');
-    const up = zone.querySelector('.dv-up');
-    errEl.hidden = true;
-    if(file.size > MAX_BYTES){ errEl.textContent = 'File is over 25 MB — too large.'; errEl.hidden=false; return; }
-    if(!/^image\/|application\/pdf$/.test(file.type)){ errEl.textContent = 'Only images or PDFs are accepted.'; errEl.hidden=false; return; }
-
+  function upload(docId, p, type, file, value, personEl){
+    const st = personEl.querySelector('.dv-add-status');
+    if(file.size > MAX_BYTES){ flash(st, 'File is over 25 MB — too large.', 'err'); return; }
+    if(!/^image\/|application\/pdf$/.test(file.type)){ flash(st, 'Only images or PDFs are accepted.', 'err'); return; }
     const safe = file.name.replace(/[^\w.\-]+/g,'_');
-    const path = 'cruise-docs/' + id + '/' + Date.now() + '__' + safe;
-    const task = uploadBytesResumable(sref(storage, path), file, { contentType: file.type });
-    up.classList.add('busy'); progEl.hidden = false; progEl.textContent = 'Uploading… 0%';
-
+    const path = 'cruise-docs/' + docId + '/' + p + '/' + Date.now() + '__' + safe;
+    const task = uploadBytesResumable(sref(storage, path), file, { contentType:file.type });
+    flash(st, 'Uploading… 0%', 'busy');
     task.on('state_changed',
-      function(snap){
-        const pct = Math.round((snap.bytesTransferred / snap.totalBytes) * 100);
-        progEl.textContent = 'Uploading… ' + pct + '%';
-      },
-      function(err){
-        up.classList.remove('busy'); progEl.hidden = true;
-        errEl.textContent = 'Upload failed: ' + (err && err.code ? err.code : 'error') + '. Are you on the crew roster?';
-        errEl.hidden = false;
-      },
+      function(s){ flash(st, 'Uploading… ' + Math.round((s.bytesTransferred/s.totalBytes)*100) + '%', 'busy'); },
+      function(err){ flash(st, 'Upload failed (' + (err&&err.code?err.code:'error') + '). On the crew roster?', 'err'); },
       function(){
-        const meta = { name:file.name, path:path, size:file.size, type:file.type, by:crewName, at:Date.now() };
-        files[id] = (files[id] || []).concat([meta]);
-        persist(id)
-          .then(function(){ up.classList.remove('busy'); progEl.hidden = true; /* snapshot will re-render */ })
-          .catch(function(){ up.classList.remove('busy'); progEl.hidden = true;
-            errEl.textContent = 'Saved the file but could not record it.'; errEl.hidden = false; });
+        const att = { id:uid(), type:type, kind:'file', name:file.name, path:path, size:file.size, mime:file.type, value:value||'', by:crewName, at:Date.now() };
+        appendAtt(docId, p, att).then(function(){ if(st) st.hidden = true; })
+          .catch(function(){ flash(st, 'Saved file but could not record it.', 'err'); });
       });
   }
 
-  function download(id, i, row){
-    const f = (files[id]||[])[i]; if(!f) return;
-    const btn = row.querySelector('[data-act=dl]'); btn.disabled = true; const old = btn.textContent; btn.textContent = '…';
-    getBlob(sref(storage, f.path))
+  function download(docId, p, id, btn){
+    const a = findAtt(docId, p, id); if(!a || a.kind!=='file') return;
+    btn.disabled = true; const old = btn.textContent; btn.textContent = '…';
+    getBlob(sref(storage, a.path))
       .then(function(blob){
         const url = URL.createObjectURL(blob);
-        const a = document.createElement('a'); a.href = url; a.download = f.name;
-        document.body.appendChild(a); a.click(); a.remove();
+        const link = document.createElement('a'); link.href = url; link.download = a.name;
+        document.body.appendChild(link); link.click(); link.remove();
         setTimeout(function(){ URL.revokeObjectURL(url); }, 4000);
         btn.disabled = false; btn.textContent = old;
       })
-      .catch(function(){ btn.disabled = false; btn.textContent = old; alert('Could not download — you may need to sign in via the Voyage Console.'); });
+      .catch(function(){ btn.disabled = false; btn.textContent = old; alert('Could not download — sign in via the Voyage Console.'); });
   }
 
-  function remove(id, i, zone){
-    const f = (files[id]||[])[i]; if(!f) return;
-    if(!confirm('Remove "' + f.name + '" from the vault? This deletes the file for everyone.')) return;
-    files[id] = (files[id]||[]).filter(function(_,j){ return j!==i; });
-    persist(id).then(function(){
-      return deleteObject(sref(storage, f.path)).catch(function(){ /* metadata already gone; ignore orphan */ });
-    }).catch(function(){ alert('Could not remove the file.'); });
+  function removeAtt(docId, p, id){
+    const a = findAtt(docId, p, id); if(!a) return;
+    const label = a.kind==='file' ? a.name : ('"'+a.value+'"');
+    if(!confirm('Remove ' + label + ' from the vault? This affects everyone.')) return;
+    setArr(docId, p, arrFor(docId,p).filter(function(x){ return x.id!==id; }));
+    persist(docId, p).then(function(){
+      if(a.kind==='file') return deleteObject(sref(storage, a.path)).catch(function(){ /* ignore orphan */ });
+    }).catch(function(){ alert('Could not remove.'); });
   }
 
-  /* reveal masked confirmation numbers (crew only) */
+  /* ---------- crew gate ---------- */
   function revealConfs(){
     document.querySelectorAll('.dv-conf.crew-only.locked').forEach(function(el){
       const v = el.getAttribute('data-conf'); if(!v) return;
@@ -454,10 +542,14 @@ window.__DV = (function(){
   }
 
   function setCrew(name){
-    isCrew = true; crewName = name || 'crew';
+    crewName = name || 'crew';
+    crewKey = crewName.toLowerCase().split(/\s+/)[0];
+    if(ALL5.indexOf(crewKey) < 0) crewKey = '';   // signed in, but not one of the 5 keys
+    isCrew = true;
     const note = document.getElementById('dv-crewnote');
     if(note){ note.classList.add('is-crew');
-      note.innerHTML = '✅ Signed in <span class="who-pill">'+esc(crewName)+'</span> — confirmation numbers are visible, and you can upload or download files. Files are stored privately in Firebase Storage.'; }
+      note.innerHTML = '✅ Signed in <span class="who-pill">'+esc(crewName)+'</span> — confirmation numbers are visible. '
+        + 'Your own section on each entry is highlighted; you can add documents for anyone. Files are stored privately in Firebase Storage.'; }
     revealConfs();
     renderAllZones();
     startVault();
@@ -468,9 +560,9 @@ window.__DV = (function(){
     if(!vaultRef || vaultStarted) return;
     vaultStarted = true;
     onSnapshot(vaultRef, function(snap){
-      files = (snap.exists() && snap.data() && snap.data().files) || {};
+      items = (snap.exists() && snap.data() && snap.data().items) || {};
       renderAllZones();
-    }, function(){ /* read error — leave whatever we have */ });
+    }, function(){ /* read error — keep what we have */ });
   }
 
   /* Re-apply crew UI if the JSON renders after auth resolves. */
@@ -479,13 +571,10 @@ window.__DV = (function(){
   if(auth){
     onAuthStateChanged(auth, async function(user){
       if(!user || !user.email || user.emailVerified !== true) return;
-      // Confirm the signed-in Google account is on the 5-berth crew roster.
       try{
         const rs = await getDoc(doc(db, "cruise", "roster"));
         const members = (rs.exists() && rs.data() && rs.data().members) || {};
-        if(members[user.email]){
-          setCrew(members[user.email] || (user.displayName||'').split(/\s+/)[0] || 'crew');
-        }
+        if(members[user.email]) setCrew(members[user.email] || (user.displayName||'').split(/\s+/)[0] || 'crew');
       }catch(e){ /* roster unreadable → stay locked */ }
     });
   }
