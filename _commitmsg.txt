@@ -1,1 +1,19 @@
-drop_msg: remove _commitmsg.txt  
+v.146: nav shows all entries at every screen size
+
+styles.css @media(max-width:760px) used to hide nav .links + nav
+.console and reveal the hamburger button. Replaced with rules that
+keep all 6 links + the Console button inline, shrunk paddings and
+font-sizes slightly so they fit, hid the hamburger entirely. The
+.links container retains overflow-x:auto so on very narrow phones
+the row scrolls horizontally rather than collapsing entries behind
+a sheet.
+
+Other:
+  - app.js SITE_VERSION = 'v.146'
+  - styles.css cache buster added to all 6 page headers (was missing
+    on overview / journey / ports / kbyg / documents)
+  - ship.html ?v=145 -> ?v=146 across every asset reference
+
+Documents.html SSO verified — no code change needed. Same Firebase
+config + initializeFirestore + onAuthStateChanged + roster gate as
+index.html / journey.html / ports.html.
