@@ -148,6 +148,13 @@
   document.addEventListener('keydown', function(e){
     if(e.key === 'Escape' && sheet.classList.contains('open')) setOpen(false);
   });
+  /* v.156: outside-click closes the dropdown (desktop). On mobile the
+     sheet is full-screen so this is harmless. */
+  document.addEventListener('click', function(e){
+    if(!sheet.classList.contains('open')) return;
+    if(sheet.contains(e.target) || burger.contains(e.target)) return;
+    setOpen(false);
+  });
 })();
 
 /* --- mark the signed-in traveller's calendar-subscribe pill --- */
@@ -236,7 +243,7 @@ if(window.__crewSeed && window.__crewSeed.name){
 }
 
 /* ===== Site version badge in nav (visible across all pages) ===== */
-window.SITE_VERSION = 'v.155';
+window.SITE_VERSION = 'v.156';
 (function(){
   document.querySelectorAll('nav .brand .br-y').forEach(function(y){
     if(!y.querySelector('.br-ver')){
