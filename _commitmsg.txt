@@ -1,16 +1,1 @@
-v.147: inline emoji font-family in ship.html critical CSS
-
-User reported cross-section emojis missing on the main site. The
-emoji font-family chain (Apple Color Emoji, Segoe UI Emoji, Noto
-Color Emoji, etc.) lives in styles.css. If a browser cached an old
-styles.css that predated the v.108 emoji-glyph rule, the SVG <text>
-elements fall back to body font, which can render the glyphs as
-boxes or invisible.
-
-Move the font-family chain into the inline <style id="ship-critical">
-block in ship.html so it ships with the HTML and is immune to CSS
-file caching. SHIP_VERSION bumped to v.147; ?v=147 across ship.html
-asset refs so the new HTML pulls fresh JS/PNG/etc.
-
-The previous v.146 inline rule only set font-size:8px !important
-without font-family, which left the font cascade to styles.css.
+drop_msg: remove _commitmsg.txt  
