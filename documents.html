@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Document Vault — Canada &amp; New England 2026</title>
 <meta name="description" content="Travel Document Vault — every reservation, boarding pass and confirmation for the ms Zuiderdam Canada &amp; New England voyage, June 2026.">
-<link rel="stylesheet" href="styles.css?v=148">
+<link rel="stylesheet" href="styles.css?v=149">
 <link rel="canonical" href="https://mondrianaire.github.io/Cruise/documents.html">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Document Vault — ms Zuiderdam · June 2026">
@@ -63,6 +63,14 @@
   .dv-top{ display:flex; justify-content:space-between; align-items:flex-start; gap:10px; }
   .dv-title{ font:600 1rem/1.25 var(--d-serif); color:var(--ink); margin:0; }
   .dv-vendor{ font:600 .76rem/1.3 var(--d-body); color:var(--ink-dim); margin:2px 0 0; }
+  /* v.149: inline type-line so each card still shows its category
+     (Air / Hotel / etc.) now that grouping is chronological. */
+  .dv-typeline{
+    display:inline-flex; align-items:center; gap:6px;
+    font:700 .58rem/1 var(--d-mono); letter-spacing:.10em; text-transform:uppercase;
+    color:var(--brass-lt); margin:0 0 4px;
+  }
+  .dv-typeline .dv-type-ic{ font-size:.85rem; line-height:1; }
 
   .dv-status{
     flex:none; font:700 .64rem/1 var(--d-mono); letter-spacing:.06em; text-transform:uppercase;
@@ -196,7 +204,7 @@
   </header>
 <section id="vault" aria-labelledby="vault-h">
   <div class="sec-head"><h2 id="vault-h">All Documents</h2><span class="tag" id="dv-updated">First pass</span></div>
-  <p class="lead">A running checklist of everything that might carry a reservation number, ticket, pass or confirmation across the trip. Every entry starts <strong style="color:var(--stren)">🔴 Outstanding</strong>. It turns <strong style="color:var(--easy)">🟢 Ready</strong> as soon as anyone adds a document, or you can mark it <strong style="color:var(--ink-dim)">⚪ Not needed</strong> for events that require no paperwork (many shore excursions). Sign in via the Voyage Console to reveal numbers and manage documents per traveller — your own section opens first.</p>
+  <p class="lead">A running checklist of everything that might carry a reservation number, ticket, pass or confirmation across the trip, <strong>ordered by when you'll need it</strong> — boarding passes at the airport on Jun 11, the rental-car voucher when you land at YUL, the hotel confirmation at check-in, cruise boarding on embark day, then each port's tour voucher on its port day. Every entry starts <strong style="color:var(--stren)">🔴 Outstanding</strong>. It turns <strong style="color:var(--easy)">🟢 Ready</strong> as soon as anyone adds a document, or you can mark it <strong style="color:var(--ink-dim)">⚪ Not needed</strong> for events that require no paperwork (many shore excursions). Sign in via the Voyage Console to reveal numbers and manage documents per traveller — your own section opens first.</p>
 
   <div class="dv-sum" id="dv-summary" aria-live="polite"></div>
   <div class="dv-crewnote" id="dv-crewnote">🔒 Confirmation numbers and document files are private to the crew. <a href="index.html">Sign in via the Voyage Console</a> to reveal them and to manage documents. Files are stored privately in Firebase Storage — never in the public site.</div>
@@ -238,7 +246,15 @@ window.__DV = (function(){
   function card(doc){
     var cls = 'dv-card' + (doc.flag==='conflict'?' is-flag':'');
     var h = '<div class="'+cls+'" data-doc="'+esc(doc.id)+'">';
+    /* v.149: since the page now groups chronologically, surface the doc
+       TYPE (Air / Hotel / Cruise / Ground / etc.) inline on each card so
+       at-a-glance scanning stays easy. */
+    var cat = (window.__DV_CATS && window.__DV_CATS[doc.category]) || null;
     h += '<div class="dv-top"><div>';
+    if(cat){
+      h += '<span class="dv-typeline"><span class="dv-type-ic" aria-hidden="true">'+esc(cat.icon)+'</span>'
+         + '<span class="dv-type-l">'+esc(cat.label)+'</span></span>';
+    }
     h += '<h3 class="dv-title">'+esc(doc.title)+'</h3>';
     if(doc.vendor && doc.vendor!=='—') h += '<p class="dv-vendor">'+esc(doc.vendor)+'</p>';
     h += '</div><span class="dv-status st-needed">Outstanding</span></div>';
@@ -290,15 +306,67 @@ window.__DV = (function(){
       document.getElementById('dv-updated').textContent = 'Updated '+fmtDate(data.meta.updated);
     }
 
-    var cats = data.categories || [];
+    /* v.149: chronological organization — group by trip-phase / day-of-need
+       instead of by document type. The trip flows GSO → ATL → YUL → drive
+       Montreal→Quebec → embark Quebec → 7 days at sea + ports → disembark
+       Boston → fly home, so each phase mirrors one segment of the itinerary
+       and the cards within each phase are ordered by category priority
+       (boarding pass first, then ground, then hotel, etc.) so the doc you
+       reach for first that day is on top. */
+    var PHASES = [
+      { id:'pre',      label:'Pre-trip — always carry / no fixed date', icon:'🛂', match:function(d){ return !d.date || d.date===''; } },
+      { id:'jun10',    label:'Wed Jun 10 — Online check-in deadline',    icon:'✅', match:function(d){ return d.date==='2026-06-10'; } },
+      { id:'jun11',    label:'Thu Jun 11 — Greensboro → Atlanta → Montreal', icon:'✈', match:function(d){ return d.date==='2026-06-11'; } },
+      { id:'jun12',    label:'Fri Jun 12 — Drive Montreal → Quebec City',  icon:'🚗', match:function(d){ return d.date==='2026-06-12'; } },
+      { id:'jun13',    label:'Sat Jun 13 — Embark in Quebec City',         icon:'🚢', match:function(d){ return d.date==='2026-06-13'; } },
+      { id:'jun14-15', label:'Sun-Mon Jun 14-15 — Sea days',               icon:'🌊', match:function(d){ return d.date==='2026-06-14' || d.date==='2026-06-15'; } },
+      { id:'jun16',    label:'Tue Jun 16 — Charlottetown, PEI',            icon:'🦞', match:function(d){ return d.date==='2026-06-16'; } },
+      { id:'jun17',    label:'Wed Jun 17 — Sydney, Cape Breton',           icon:'🎻', match:function(d){ return d.date==='2026-06-17'; } },
+      { id:'jun18',    label:'Thu Jun 18 — Halifax',                       icon:'⚓', match:function(d){ return d.date==='2026-06-18'; } },
+      { id:'jun19',    label:'Fri Jun 19 — Portland, ME',                  icon:'🍻', match:function(d){ return d.date==='2026-06-19'; } },
+      { id:'jun20',    label:'Sat Jun 20 — Disembark in Boston',           icon:'🍀', match:function(d){ return d.date==='2026-06-20'; } },
+      { id:'jun21',    label:'Sun Jun 21 — Boston → home',                 icon:'🏠', match:function(d){ return d.date==='2026-06-21'; } }
+    ];
+    /* Within a phase, sort cards by category priority so the doc you need
+       FIRST that day (boarding pass at the airport, etc.) is on top. */
+    var CAT_ORDER = { identity:0, air:1, ground:2, cruise:3, hotel:4, excursion:5, dining:6 };
+    function catKey(d){ return (CAT_ORDER[d.category] != null) ? CAT_ORDER[d.category] : 99; }
+
+    /* Build a quick category lookup so we can still surface the type icon
+       inside each card heading row (since we no longer group BY category). */
+    var catById = {};
+    (data.categories || []).forEach(function(c){ catById[c.id] = c; });
+    window.__DV_CATS = catById;
+
+    var assigned = Object.create(null);
     var html = '';
-    cats.forEach(function(cat){
-      var items = docs.filter(function(d){ return d.category===cat.id; });
+    PHASES.forEach(function(ph){
+      var items = docs.filter(function(d){ return !assigned[d.id] && ph.match(d); });
       if(!items.length) return;
-      html += '<div class="dv-cat"><span class="dv-cat-ic" aria-hidden="true">'+esc(cat.icon)+'</span>'
-            + '<h2>'+esc(cat.label)+'</h2><span class="dv-cat-n">'+items.length+'</span></div>';
+      items.forEach(function(d){ assigned[d.id] = true; });
+      items.sort(function(a,b){
+        var c = catKey(a) - catKey(b);
+        if(c !== 0) return c;
+        return (a.title || '').localeCompare(b.title || '');
+      });
+      html += '<div class="dv-cat"><span class="dv-cat-ic" aria-hidden="true">'+esc(ph.icon)+'</span>'
+            + '<h2>'+esc(ph.label)+'</h2><span class="dv-cat-n">'+items.length+'</span></div>';
       html += '<div class="dv-grid">' + items.map(card).join('') + '</div>';
     });
+    /* Catch-all bucket for any doc whose date falls outside the defined
+       phase windows — surfaces as "Other / unscheduled" so nothing gets
+       silently dropped from the page. */
+    var unscheduled = docs.filter(function(d){ return !assigned[d.id]; });
+    if(unscheduled.length){
+      unscheduled.sort(function(a,b){
+        var ad = a.date || '', bd = b.date || '';
+        if(ad !== bd) return ad < bd ? -1 : 1;
+        return catKey(a) - catKey(b);
+      });
+      html += '<div class="dv-cat"><span class="dv-cat-ic" aria-hidden="true">📌</span>'
+            + '<h2>Other / unscheduled</h2><span class="dv-cat-n">'+unscheduled.length+'</span></div>';
+      html += '<div class="dv-grid">' + unscheduled.map(card).join('') + '</div>';
+    }
     body.innerHTML = html;
 
     if(window.__dvOnRendered) window.__dvOnRendered();
@@ -547,110 +615,4 @@ window.__DV = (function(){
   function persist(docId, p){
     return setDoc(vaultRef, { items: { [docId]: { [p]: arrFor(docId,p) } }, updatedAt: Date.now() }, { merge:true });
   }
-  function appendAtt(docId, p, att){ setArr(docId, p, arrFor(docId,p).concat([att])); return persist(docId,p); }
-
-  function addValue(docId, p, type, value){
-    return appendAtt(docId, p, { id:uid(), type:type, kind:'value', value:value, by:crewName, at:Date.now() });
-  }
-
-  function upload(docId, p, type, file, value, personEl){
-    const st = personEl.querySelector('.dv-add-status');
-    if(file.size > MAX_BYTES){ flash(st, 'File is over 25 MB — too large.', 'err'); return; }
-    if(!/^image\/|application\/pdf$/.test(file.type)){ flash(st, 'Only images or PDFs are accepted.', 'err'); return; }
-    const safe = file.name.replace(/[^\w.\-]+/g,'_');
-    const path = 'cruise-docs/' + docId + '/' + p + '/' + Date.now() + '__' + safe;
-    const task = uploadBytesResumable(sref(storage, path), file, { contentType:file.type });
-    flash(st, 'Uploading… 0%', 'busy');
-    task.on('state_changed',
-      function(s){ flash(st, 'Uploading… ' + Math.round((s.bytesTransferred/s.totalBytes)*100) + '%', 'busy'); },
-      function(err){ flash(st, 'Upload failed (' + (err&&err.code?err.code:'error') + '). On the crew roster?', 'err'); },
-      function(){
-        const att = { id:uid(), type:type, kind:'file', name:file.name, path:path, size:file.size, mime:file.type, value:value||'', by:crewName, at:Date.now() };
-        appendAtt(docId, p, att).then(function(){ if(st) st.hidden = true; })
-          .catch(function(){ flash(st, 'Saved file but could not record it.', 'err'); });
-      });
-  }
-
-  function download(docId, p, id, btn){
-    const a = findAtt(docId, p, id); if(!a || a.kind!=='file') return;
-    btn.disabled = true; const old = btn.textContent; btn.textContent = '…';
-    getBlob(sref(storage, a.path))
-      .then(function(blob){
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a'); link.href = url; link.download = a.name;
-        document.body.appendChild(link); link.click(); link.remove();
-        setTimeout(function(){ URL.revokeObjectURL(url); }, 4000);
-        btn.disabled = false; btn.textContent = old;
-      })
-      .catch(function(){ btn.disabled = false; btn.textContent = old; alert('Could not download — sign in via the Voyage Console.'); });
-  }
-
-  function removeAtt(docId, p, id){
-    const a = findAtt(docId, p, id); if(!a) return;
-    const label = a.kind==='file' ? a.name : ('"'+a.value+'"');
-    if(!confirm('Remove ' + label + ' from the vault? This affects everyone.')) return;
-    setArr(docId, p, arrFor(docId,p).filter(function(x){ return x.id!==id; }));
-    persist(docId, p).then(function(){
-      if(a.kind==='file') return deleteObject(sref(storage, a.path)).catch(function(){ /* ignore orphan */ });
-    }).catch(function(){ alert('Could not remove.'); });
-  }
-
-  function toggleNA(docId){
-    const on = !naMap[docId];
-    if(on) naMap[docId] = { by:crewName, at:Date.now() }; else delete naMap[docId];
-    renderAll();   // optimistic
-    setDoc(vaultRef, { na: { [docId]: on ? { by:crewName, at:Date.now() } : deleteField() }, updatedAt: Date.now() }, { merge:true })
-      .catch(function(){ alert('Could not update status.'); });
-  }
-
-  /* ---------- crew gate ---------- */
-  function revealConfs(){
-    document.querySelectorAll('.dv-conf.crew-only.locked').forEach(function(el){
-      const v = el.getAttribute('data-conf'); if(!v) return;
-      el.classList.remove('locked');
-      const code = el.querySelector('code'); if(code) code.textContent = v;
-    });
-  }
-
-  function setCrew(name){
-    crewName = name || 'crew';
-    crewKey = crewName.toLowerCase().split(/\s+/)[0];
-    if(ALL5.indexOf(crewKey) < 0) crewKey = '';   // signed in, but not one of the 5 keys
-    isCrew = true;
-    const note = document.getElementById('dv-crewnote');
-    if(note){ note.classList.add('is-crew');
-      note.innerHTML = '✅ Signed in <span class="who-pill">'+esc(crewName)+'</span> — confirmation numbers are visible. '
-        + 'Your own section opens first on each entry; you can add documents for anyone, or mark an entry “no documents needed”.'; }
-    revealConfs();
-    renderAll();
-    startVault();
-  }
-
-  let vaultStarted = false;
-  function startVault(){
-    if(!vaultRef || vaultStarted) return;
-    vaultStarted = true;
-    onSnapshot(vaultRef, function(snap){
-      const d = (snap.exists() && snap.data()) || {};
-      items = d.items || {};
-      naMap = d.na || {};
-      renderAll();
-    }, function(){ /* read error — keep what we have */ });
-  }
-
-  /* Re-apply crew UI if the JSON renders after auth resolves. */
-  window.__dvOnRendered = function(){ if(isCrew){ revealConfs(); renderAll(); } };
-
-  if(auth){
-    onAuthStateChanged(auth, async function(user){
-      if(!user || !user.email || user.emailVerified !== true) return;
-      try{
-        const rs = await getDoc(doc(db, "cruise", "roster"));
-        const members = (rs.exists() && rs.data() && rs.data().members) || {};
-        if(members[user.email]) setCrew(members[user.email] || (user.displayName||'').split(/\s+/)[0] || 'crew');
-      }catch(e){ /* roster unreadable → stay locked */ }
-    });
-  }
-</script>
-</body>
-</html>
+  function appendAtt(docId, p, att){ setArr(docId, p, arrFor(docId,p).concat([att])); return persist
