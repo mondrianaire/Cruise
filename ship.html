@@ -2078,3 +2078,34 @@
   var modalImg  = document.getElementById('fpModalImg');
   var modalClose= document.getElementById('fpModalClose');
   v
+
+<script id="venueAnchorHandler">
+(function(){
+  function handle(){
+    var h = (location.hash || '').replace(/^#/, '');
+    var m = /^venue-(\d+)-([a-z0-9]+)\$/i.exec(h);
+    if(!m) return;
+    var deck = m[1];
+    var fullId = 'venue-' + m[1] + '-' + m[2];
+    var floorTab = document.querySelector('.ship-view-tabs .svt[data-view="floor"]');
+    if(floorTab && !floorTab.classList.contains('active')){ floorTab.click(); }
+    var deckBtn = document.querySelector('.fp-deck-btn[data-deck="' + deck + '"]');
+    if(deckBtn && !deckBtn.classList.contains('active')){ deckBtn.click(); }
+    setTimeout(function(){
+      var el = document.getElementById(fullId);
+      if(!el) return;
+      el.scrollIntoView({behavior:'smooth', block:'center'});
+      el.classList.add('is-flash');
+      setTimeout(function(){ el.classList.remove('is-flash'); }, 2400);
+    }, 220);
+  }
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', handle);
+  } else {
+    handle();
+  }
+  window.addEventListener('hashchange', handle);
+})();
+</script>
+</body>
+</html>
