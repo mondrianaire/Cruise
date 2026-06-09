@@ -69,11 +69,24 @@ nav .br-anchor{font-size:1.18rem;color:var(--brass-lt);line-height:1;
   transition:color .15s ease;}
 nav .br-y{color:var(--ink-dim);font:700 .62rem/1 var(--d-mono);
   letter-spacing:.22em;text-transform:uppercase;padding-top:2px;}
-nav .links{display:flex;flex:1 1 auto;align-items:stretch;gap:1px;
+nav .links{display:flex;flex:1 1 auto;align-items:stretch;gap:1px;min-width:0;
   overflow-x:auto;overflow-y:hidden;scrollbar-width:none;
-  mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 30px),transparent 100%);
-  -webkit-mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 30px),transparent 100%);}
+  /* v.151: reserve breathing room on the right so the last nav entry
+     (06 Documents) never sits flush against the Console pill. The old
+     mask-image gradient that used to fade out this edge has been moved
+     to a narrow-viewport @media block below, where horizontal scrolling
+     is actually needed. On desktop all entries fit and there's no
+     reason to fade the last one. */
+  padding-right:14px;}
 nav .links::-webkit-scrollbar{display:none;}
+/* v.151: only fade the right edge when the nav row needs to scroll
+   horizontally (narrow viewports). Desktop shows every entry in full. */
+@media(max-width:900px){
+  nav .links{
+    mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 24px),transparent 100%);
+    -webkit-mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 24px),transparent 100%);
+  }
+}
 nav .links a{position:relative;display:inline-flex;align-items:center;gap:7px;
   color:var(--ink-dim);text-decoration:none;
   font:700 .72rem/1 var(--d-mono);text-transform:uppercase;letter-spacing:.10em;
