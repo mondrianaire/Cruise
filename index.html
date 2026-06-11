@@ -1467,7 +1467,7 @@
     /* v.152: write the cross-page crew seed so documents.html and the
        other pages can recognise us synchronously on next navigation. */
     if(window.__writeCrewSeed && auth.currentUser){
-      window.__writeCrewSeed(name, auth.currentUser.email);
+      window.__writeCrewSeed(name, auth.currentUser.email, auth.currentUser.photoURL);
     }
     gMsg.textContent='Verified — welcome aboard, '+name+'.'; only(null);
     const m={}; m[auth.currentUser.email]=name;
@@ -1493,7 +1493,7 @@
     /* v.152: refresh the cross-page crew seed on every successful
        returning-visit too — keeps the optimistic UI tied to whichever
        Google account is actually authenticated right now. */
-    if(window.__writeCrewSeed) window.__writeCrewSeed(matched, user.email);
+    if(window.__writeCrewSeed) window.__writeCrewSeed(matched, user.email, user.photoURL);
     // Bootstrap-once: skip the splash on returning visits unless ?replay=1
     var qp=new URLSearchParams(location.search);
     var replay=qp.get('replay')==='1';

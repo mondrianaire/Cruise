@@ -59,7 +59,7 @@ body.nav-scrolled nav{background:rgba(4,19,28,.93);
   border-bottom-color:var(--brass-dk);
   box-shadow:0 4px 22px rgba(0,0,0,.42);}
 nav .inner{max-width:1180px;margin:0 auto;display:flex;align-items:stretch;
-  gap:0;padding:0 18px;position:relative;}
+  gap:0;padding:0 22px;position:relative;}
 nav .brand{display:inline-flex;align-items:center;gap:10px;
   color:var(--cream);font-family:var(--d-serif);font-size:.98rem;font-weight:700;
   padding:13px 18px 13px 0;letter-spacing:.005em;text-decoration:none;
@@ -2838,3 +2838,46 @@ body.has-custom-tip [title]{ /* no-op selector hook for future use */ }
 }
 /* Suppress the chevron on .is-selected since there's nothing to expand. */
 .dv-item.is-selected::after{ opacity:0; }
+
+/* ============================================================
+   v.166 — Nav avatar (logged-in indicator)
+   ============================================================
+   Injected by app.js when window.__crewSeed exists. A 36px circle
+   with the Google profile photo (if any) on top of a brass-bordered
+   ring; fallback to the user's first-letter monogram if the photo
+   is missing or fails to load. */
+.nav-avatar{
+  position:relative;
+  display:inline-flex; align-items:center; justify-content:center;
+  width:36px; height:36px;
+  margin-left:6px;
+  border-radius:50%;
+  border:1.5px solid var(--brass);
+  background:linear-gradient(160deg, #2a5b6e 0%, #0b2a3a 100%);
+  box-shadow:0 0 0 1px rgba(200,155,74,.25), 0 2px 6px rgba(0,0,0,.4);
+  overflow:hidden;
+  cursor:default;
+  flex:0 0 auto;
+  transition:border-color .15s ease, box-shadow .15s ease;
+}
+.nav-avatar:hover{
+  border-color:var(--brass-lt);
+  box-shadow:0 0 0 1px rgba(230,196,119,.4), 0 2px 8px rgba(0,0,0,.5);
+}
+.nav-avatar img{
+  width:100%; height:100%; object-fit:cover;
+  /* Sits on top of the fallback letter so when the photo loads the
+     letter is hidden automatically by the img layer. */
+  position:absolute; inset:0;
+}
+.nav-avatar-letter{
+  font:700 .98rem/1 var(--d-serif);
+  color:var(--brass-lt);
+  letter-spacing:.02em;
+  pointer-events:none;
+  user-select:none;
+}
+@media(max-width:760px){
+  .nav-avatar{ width:32px; height:32px; margin-left:4px; }
+  .nav-avatar-letter{ font-size:.85rem; }
+}

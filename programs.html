@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Daily Programs — Canada &amp; New England 2026</title>
 <meta name="description" content="Daily Programs — every event from the HAL Navigator daily programme across all 8 days of the ms Zuiderdam voyage, June 2026.">
-<link rel="stylesheet" href="styles.css?v=165">
+<link rel="stylesheet" href="styles.css?v=166">
 <link rel="canonical" href="https://mondrianaire.github.io/Cruise/programs.html">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Daily Programs — ms Zuiderdam · June 2026">
@@ -65,6 +65,58 @@
   .pg-filt.on.pg-filt-interested{ background:rgba(239,178,40,.22); border-color:var(--mod); color:var(--mod); }
   .pg-filt.on.pg-filt-going{ background:rgba(95,214,160,.22); border-color:var(--easy); color:var(--easy); }
   .pg-filt-clear{ color:var(--ink-dim); }
+
+  /* ===== v.167 — per-crew filters (5 traveller chips) ===== */
+  .pg-crew-row{
+    display:flex; flex-wrap:wrap; gap:8px; align-items:center;
+    width:100%; padding-top:10px; margin-top:4px;
+    border-top:1px dashed rgba(200,155,74,.22);
+  }
+  .pg-crew-lbl{
+    font:700 .62rem/1 var(--d-mono); letter-spacing:.10em; text-transform:uppercase;
+    color:var(--ink-dim); margin-right:4px;
+  }
+  .pg-crew{
+    display:inline-flex; align-items:center; gap:7px;
+    padding:6px 11px 6px 6px; border-radius:999px; cursor:pointer; user-select:none;
+    font:700 .72rem/1 var(--d-mono); letter-spacing:.04em;
+    border:1px solid rgba(255,255,255,.14); background:rgba(255,255,255,.04); color:var(--ink-dim);
+    transition:background .14s, border-color .14s, color .14s, transform .12s;
+  }
+  .pg-crew:hover{ background:rgba(200,155,74,.10); color:var(--cream); transform:translateY(-1px); }
+  .pg-crew .pg-crew-av{
+    width:22px; height:22px; border-radius:50%;
+    display:inline-flex; align-items:center; justify-content:center;
+    font:700 .72rem/1 var(--d-serif); color:#08161a;
+    background:var(--brass); border:1px solid rgba(0,0,0,.25);
+  }
+  .pg-crew[data-crew="jett"]    .pg-crew-av{ background:#e6c477; }
+  .pg-crew[data-crew="laura"]   .pg-crew-av{ background:#e0795a; color:#fffdf3; }
+  .pg-crew[data-crew="sandra"]  .pg-crew-av{ background:#5fd6a0; }
+  .pg-crew[data-crew="becca"]   .pg-crew-av{ background:#7fb4c8; color:#fffdf3; }
+  .pg-crew[data-crew="karen"]   .pg-crew-av{ background:#c79bd1; color:#08161a; }
+  .pg-crew.on{
+    background:rgba(200,155,74,.20); border-color:var(--brass); color:var(--cream);
+    box-shadow:inset 0 0 0 1px rgba(200,155,74,.30);
+  }
+  .pg-crew.on .pg-crew-av{ box-shadow:0 0 0 2px rgba(200,155,74,.55); }
+  .pg-crew-counts{
+    font:600 .58rem/1 var(--d-mono); color:var(--ink-dim);
+    letter-spacing:.04em; margin-left:2px;
+  }
+  .pg-crew.on .pg-crew-counts{ color:var(--brass-lt); }
+  .pg-crew-clear{
+    background:none; border:0; color:var(--ink-dim); cursor:pointer;
+    font:700 .62rem/1 var(--d-mono); letter-spacing:.08em; text-transform:uppercase;
+    padding:5px 8px; border-radius:5px;
+  }
+  .pg-crew-clear:hover{ color:var(--brass-lt); background:rgba(200,155,74,.08); }
+  /* v.167 — when filtering by a specific crew, the event row dims any
+     event that the selected crew has NOT engaged with — slight emphasis
+     so the eye lands on what THEY picked. The base filter still hides
+     non-matches; this just tightens the visual cue when 1+ crew is on. */
+  .ev-list.is-crew-focused .ev-row{ filter:saturate(.95); }
+
 
   .pg-meta{
     margin-left:auto; font:700 .72rem/1 var(--d-mono); color:var(--ink-dim);
@@ -246,6 +298,27 @@
         <span><b id="pg-shown">0</b> shown</span>
         <span class="syncstatus ev-sync wait" id="evSync">offline</span>
       </div>
+      <!-- v.167: per-crew filter chips — toggle to see what events any specific
+           traveller has marked interested or going. Multiple selected = OR. -->
+      <div class="pg-crew-row" id="pg-crew-row" role="group" aria-label="Filter by traveller">
+        <span class="pg-crew-lbl">By traveller:</span>
+        <button type="button" class="pg-crew" data-crew="jett"   aria-pressed="false">
+          <span class="pg-crew-av" aria-hidden="true">J</span><span>Jett</span><span class="pg-crew-counts" data-counts-for="jett">0</span>
+        </button>
+        <button type="button" class="pg-crew" data-crew="laura"  aria-pressed="false">
+          <span class="pg-crew-av" aria-hidden="true">L</span><span>Laura</span><span class="pg-crew-counts" data-counts-for="laura">0</span>
+        </button>
+        <button type="button" class="pg-crew" data-crew="sandra" aria-pressed="false">
+          <span class="pg-crew-av" aria-hidden="true">S</span><span>Sandra</span><span class="pg-crew-counts" data-counts-for="sandra">0</span>
+        </button>
+        <button type="button" class="pg-crew" data-crew="becca"  aria-pressed="false">
+          <span class="pg-crew-av" aria-hidden="true">B</span><span>Becca</span><span class="pg-crew-counts" data-counts-for="becca">0</span>
+        </button>
+        <button type="button" class="pg-crew" data-crew="karen"  aria-pressed="false">
+          <span class="pg-crew-av" aria-hidden="true">K</span><span>Karen</span><span class="pg-crew-counts" data-counts-for="karen">0</span>
+        </button>
+        <button type="button" class="pg-crew-clear" id="pg-crew-clear" hidden>Clear</button>
+      </div>
     </div>
 
     <div class="day-jump" id="pg-jump"></div>
@@ -261,8 +334,8 @@
 </footer>
 
 <!-- Shared shell + event source -->
-<script src="app.js?v=165"></script>
-<script src="events.js?v=165"></script>
+<script src="app.js?v=166"></script>
+<script src="events.js?v=166"></script>
 
 <script>
 /* ===== v.165 — Programs page renderer + interest tracking + search =====
@@ -327,6 +400,9 @@
   /* Filters */
   var query = '';
   var statusFilter = null;        // 'going' | 'interested' | 'untouched' | null
+  /* v.167: per-crew filter — Set of crewKeys; empty = no filter. */
+  var crewFilter = new Set();
+  var CREW_KEYS = ['jett','laura','sandra','becca','karen'];
   var labels = {};                // computed once after events.js loads
 
   function saveAndPush(){
@@ -430,7 +506,41 @@
       if(statusFilter === 'untouched')  return c.interested === 0 && c.going === 0;
       return true;
     }
-    var filtered = events.filter(function(e){ return matchesQuery(e) && matchesStatus(e); });
+    /* v.167: per-crew filter — show event if ANY selected crew has marked it
+       (interested OR going). When no crew is selected the filter is inert. */
+    function matchesCrew(e){
+      if(!crewFilter.size) return true;
+      var entry = interests[eventKey(e)];
+      if(!entry) return false;
+      var iset = entry.interested || [];
+      var gset = entry.going || [];
+      for(var i=0;i<iset.length;i++) if(crewFilter.has(iset[i])) return true;
+      for(var j=0;j<gset.length;j++) if(crewFilter.has(gset[j])) return true;
+      return false;
+    }
+    var filtered = events.filter(function(e){
+      return matchesQuery(e) && matchesStatus(e) && matchesCrew(e);
+    });
+
+    /* v.167: tally per-crew totals (interested + going, dedup per event) and
+       paint them into the chip badges so the user can see at a glance how
+       engaged each traveller is, even before toggling a filter. */
+    var crewTotals = { jett:0, laura:0, sandra:0, becca:0, karen:0 };
+    Object.keys(interests).forEach(function(k){
+      var entry = interests[k] || {};
+      var seen = {};
+      (entry.interested||[]).forEach(function(c){ seen[c]=1; });
+      (entry.going||[]).forEach(function(c){ seen[c]=1; });
+      Object.keys(seen).forEach(function(c){
+        if(crewTotals.hasOwnProperty(c)) crewTotals[c]++;
+      });
+    });
+    Object.keys(crewTotals).forEach(function(c){
+      var el = document.querySelector('[data-counts-for="'+c+'"]');
+      if(el) el.textContent = crewTotals[c];
+    });
+    var crewClearBtn = document.getElementById('pg-crew-clear');
+    if(crewClearBtn) crewClearBtn.hidden = crewFilter.size === 0;
 
     /* Group filtered by day */
     var byDay = {};
@@ -461,9 +571,16 @@
 
     /* Day sections */
     if(!filtered.length){
+      var hints = [];
+      if(query) hints.push('search term');
+      if(statusFilter) hints.push('status filter');
+      if(crewFilter.size) hints.push('traveller filter');
+      var hintTxt = hints.length
+        ? 'Try clearing the ' + hints.join(' or ') + '.'
+        : 'Try a different search term or clear the status filter.';
       body.innerHTML = '<div class="pg-empty-state">' +
         '<strong>No events match your filters</strong>' +
-        'Try a different search term or clear the status filter.' +
+        hintTxt +
         '</div>';
       return;
     }
@@ -568,6 +685,28 @@
         render();
       });
     });
+    /* v.167: per-crew chips — toggle in/out of crewFilter, multi-select. */
+    document.querySelectorAll('.pg-crew').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var ck = btn.getAttribute('data-crew');
+        if(crewFilter.has(ck)) crewFilter.delete(ck);
+        else crewFilter.add(ck);
+        btn.classList.toggle('on', crewFilter.has(ck));
+        btn.setAttribute('aria-pressed', String(crewFilter.has(ck)));
+        render();
+      });
+    });
+    var crewClear = document.getElementById('pg-crew-clear');
+    if(crewClear){
+      crewClear.addEventListener('click', function(){
+        crewFilter.clear();
+        document.querySelectorAll('.pg-crew').forEach(function(b){
+          b.classList.remove('on');
+          b.setAttribute('aria-pressed','false');
+        });
+        render();
+      });
+    }
   }
 
   function boot(){
@@ -636,7 +775,7 @@
           window.__crewKey = fk;
           window.__crewName = fk.charAt(0).toUpperCase()+fk.slice(1);
           if(window.__writeCrewSeed && user.email){
-            window.__writeCrewSeed(window.__crewName, user.email);
+            window.__writeCrewSeed(window.__crewName, user.email, user.photoURL);
           }
           if(window.__unlockCrewReveal) window.__unlockCrewReveal();
           if(window.__rerender) window.__rerender();

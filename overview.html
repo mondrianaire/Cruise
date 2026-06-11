@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Trip Overview — Canada &amp; New England 2026</title>
 <meta name="description" content="Trip Overview — ms Zuiderdam cruise hub for the Canada &amp; New England voyage, June 2026.">
-<link rel="stylesheet" href="styles.css?v=165">
+<link rel="stylesheet" href="styles.css?v=166">
 <link rel="canonical" href="https://mondrianaire.github.io/Cruise/overview.html">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Trip Overview — ms Zuiderdam · June 2026">
@@ -194,7 +194,7 @@
       /* Keep the seed fresh — overview doesn't know the rostered name
          but a refresh on email is harmless if name unchanged. */
       if(window.__writeCrewSeed && user.email && window.__crewSeed){
-        window.__writeCrewSeed(window.__crewSeed.name, user.email);
+        window.__writeCrewSeed(window.__crewSeed.name, user.email, user.photoURL);
       }
     });
   }catch(e){}

@@ -188,16 +188,22 @@ window.__crewSeed = (function(){
   try{
     var n = localStorage.getItem('cnen_crew_name')||'';
     var e = localStorage.getItem('cnen_crew_email')||'';
-    if(n && e) return { name:n, email:e };
+    var p = localStorage.getItem('cnen_crew_photo')||'';
+    if(n && e) return { name:n, email:e, photoURL:p };
   }catch(e){}
   return null;
 })();
-window.__writeCrewSeed = function(name, email){
+window.__writeCrewSeed = function(name, email, photoURL){
   try{
     if(name && email){
       localStorage.setItem('cnen_crew_name', String(name));
       localStorage.setItem('cnen_crew_email', String(email));
-      window.__crewSeed = { name:String(name), email:String(email) };
+      if(photoURL){
+        localStorage.setItem('cnen_crew_photo', String(photoURL));
+      }
+      window.__crewSeed = { name:String(name), email:String(email),
+        photoURL: photoURL ? String(photoURL) : (window.__crewSeed && window.__crewSeed.photoURL) || '' };
+      if(window.__paintNavAvatar) window.__paintNavAvatar();
     }
   }catch(e){}
 };
@@ -205,9 +211,81 @@ window.__clearCrewSeed = function(){
   try{
     localStorage.removeItem('cnen_crew_name');
     localStorage.removeItem('cnen_crew_email');
+    localStorage.removeItem('cnen_crew_photo');
     window.__crewSeed = null;
+    if(window.__paintNavAvatar) window.__paintNavAvatar();
   }catch(e){}
 };
+
+/* ===== v.166: nav-bar avatar for signed-in crew =====
+   Inject a circular profile-pic chip into the nav rail next to the
+   hamburger so it's obvious at a glance whether a user is signed in.
+   Uses the cross-page crew seed (window.__crewSeed) so it paints
+   instantly on navigation without waiting for Firebase. Falls back to
+   the first-letter monogram if photoURL is missing or fails to load. */
+window.__paintNavAvatar = function(){
+  var nav = document.querySelector('nav .inner');
+  if(!nav) return;
+  var burger = nav.querySelector('.nav-burger');
+  var existing = nav.querySelector('.nav-avatar');
+  var seed = window.__crewSeed;
+  if(!seed || !seed.name){
+    if(existing) existing.parentNode.removeChild(existing);
+    return;
+  }
+  var initial = String(seed.name).trim().charAt(0).toUpperCase() || '?';
+  var title = 'Signed in as ' + seed.name;
+  if(seed.email) title += ' (' + seed.email + ')';
+  if(existing){
+    /* Update in-place if the seed changed. */
+    existing.setAttribute('title', title);
+    existing.setAttribute('data-tip', title);
+    var letter = existing.querySelector('.nav-avatar-letter');
+    if(letter) letter.textContent = initial;
+    var img = existing.querySelector('img');
+    if(seed.photoURL){
+      if(!img){
+        img = document.createElement('img');
+        img.alt = '';
+        img.onerror = function(){ img.parentNode.removeChild(img); };
+        existing.insertBefore(img, existing.firstChild);
+      }
+      if(img.src !== seed.photoURL) img.src = seed.photoURL;
+    } else if(img){
+      img.parentNode.removeChild(img);
+    }
+    return;
+  }
+  var av = document.createElement('div');
+  av.className = 'nav-avatar';
+  av.setAttribute('title', title);
+  av.setAttribute('data-tip', title);
+  av.setAttribute('role','img');
+  av.setAttribute('aria-label', title);
+  av.innerHTML = '<span class="nav-avatar-letter">' + initial + '</span>';
+  if(seed.photoURL){
+    var img2 = document.createElement('img');
+    img2.alt = '';
+    img2.src = seed.photoURL;
+    img2.onerror = function(){ img2.parentNode.removeChild(img2); };
+    av.insertBefore(img2, av.firstChild);
+  }
+  if(burger){
+    nav.insertBefore(av, burger);
+  } else {
+    nav.appendChild(av);
+  }
+};
+
+/* Paint once on load (synchronous from the seed), then again after auth
+   confirms via the per-page handlers (they call __writeCrewSeed, which
+   re-paints). */
+function __cnenInitAvatar(){ if(window.__paintNavAvatar) window.__paintNavAvatar(); }
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', __cnenInitAvatar);
+} else {
+  __cnenInitAvatar();
+}
 
 /* v.153: global crew-reveal unlocker. Any page that scatters sensitive
    tokens (confirmation #, flight #, room #) wraps them in
@@ -244,7 +322,7 @@ if(window.__crewSeed && window.__crewSeed.name){
 }
 
 /* ===== Site version badge in nav (visible across all pages) ===== */
-window.SITE_VERSION = 'v.165';
+window.SITE_VERSION = 'v.166';
 (function(){
   document.querySelectorAll('nav .brand .br-y').forEach(function(y){
     if(!y.querySelector('.br-ver')){
