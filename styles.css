@@ -2846,40 +2846,75 @@ body.has-custom-tip [title]{ /* no-op selector hook for future use */ }
    with the Google profile photo (if any) on top of a brass-bordered
    ring; fallback to the user's first-letter monogram if the photo
    is missing or fails to load. */
+/* v.171 — Nav avatar — fits the nav bar height with a guaranteed
+   perfect circular mask. The parent .nav-avatar is a strict square
+   (aspect-ratio:1 + matched width/height) that is vertically centered
+   on the nav rail so it cannot inherit the rail's stretch sizing.
+   The img inside is its own clip layer (border-radius:50% + overflow:hidden
+   on parent + clip-path fallback) so Google profile pictures of any
+   native resolution are cleanly masked to a circle, with the focal
+   point centered. Sized to sit ~4px shy of the burger button so the
+   two read as a paired control without crowding. */
 .nav-avatar{
   position:relative;
   display:inline-flex; align-items:center; justify-content:center;
-  width:36px; height:36px;
+  align-self:center;
+  flex:0 0 auto;
+  width:40px; height:40px;
+  aspect-ratio:1 / 1;
+  min-width:40px; min-height:40px;
+  max-width:40px; max-height:40px;
   margin-left:6px;
+  padding:0;
   border-radius:50%;
   border:1.5px solid var(--brass);
   background:linear-gradient(160deg, #2a5b6e 0%, #0b2a3a 100%);
   box-shadow:0 0 0 1px rgba(200,155,74,.25), 0 2px 6px rgba(0,0,0,.4);
   overflow:hidden;
+  clip-path:circle(50% at 50% 50%);    /* defensive belt: enforces the mask
+                                          even if a browser doesn't honor
+                                          overflow:hidden on the abs-pos img */
   cursor:default;
-  flex:0 0 auto;
-  transition:border-color .15s ease, box-shadow .15s ease;
+  transition:border-color .15s ease, box-shadow .15s ease, transform .15s ease;
+  box-sizing:border-box;
 }
 .nav-avatar:hover{
   border-color:var(--brass-lt);
   box-shadow:0 0 0 1px rgba(230,196,119,.4), 0 2px 8px rgba(0,0,0,.5);
+  transform:translateY(-1px);
 }
 .nav-avatar img{
-  width:100%; height:100%; object-fit:cover;
-  /* Sits on top of the fallback letter so when the photo loads the
-     letter is hidden automatically by the img layer. */
+  /* The img is positioned absolutely so it overlays (and visually
+     replaces) the fallback letter the moment it finishes loading.
+     object-fit:cover + object-position:center handles any source
+     aspect ratio cleanly — Google profile pics come back as 96x96,
+     larger displayPhoto links can be 400x400+, this caps them all. */
   position:absolute; inset:0;
+  width:100%; height:100%;
+  display:block;
+  object-fit:cover;
+  object-position:center;
+  border-radius:50%;
+  background:transparent;
+  /* Prevent the image from being draggable out of the nav. */
+  -webkit-user-drag:none;
+  user-drag:none;
 }
 .nav-avatar-letter{
-  font:700 .98rem/1 var(--d-serif);
+  font:700 1rem/1 var(--d-serif);
   color:var(--brass-lt);
   letter-spacing:.02em;
   pointer-events:none;
   user-select:none;
 }
 @media(max-width:760px){
-  .nav-avatar{ width:32px; height:32px; margin-left:4px; }
-  .nav-avatar-letter{ font-size:.85rem; }
+  .nav-avatar{
+    width:36px; height:36px;
+    min-width:36px; min-height:36px;
+    max-width:36px; max-height:36px;
+    margin-left:4px;
+  }
+  .nav-avatar-letter{ font-size:.88rem; }
 }
 
 /* ============================================================
