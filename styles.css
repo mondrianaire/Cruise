@@ -3051,3 +3051,39 @@ body.has-custom-tip [title]{ /* no-op selector hook for future use */ }
 .syncstatus.ev-sync,
 .gp-syncstatus,
 #syncStatus{ display:none !important; }
+
+
+/* v.172 — Sync Center error block + Copy Diagnostics button */
+.sc-panel-err{
+  display:flex; flex-direction:column; gap:4px;
+  margin-top:6px; padding:10px 12px;
+  border-radius:8px;
+  background:rgba(224,121,90,.10);
+  border:1px solid rgba(224,121,90,.40);
+}
+.sc-panel-err-h{
+  font:700 .62rem/1 var(--d-mono); letter-spacing:.10em; text-transform:uppercase;
+  color:var(--stren);
+  display:flex; align-items:center; gap:6px;
+}
+.sc-err-code{
+  display:inline-block; padding:1px 6px; border-radius:4px;
+  background:rgba(224,121,90,.20); color:#ffb8a3;
+  font:700 .58rem/1 var(--d-mono); letter-spacing:.04em;
+}
+.sc-panel-err-msg{
+  font:600 .68rem/1.4 var(--d-mono); color:#ffd7c9;
+  word-break:break-word;
+}
+.sc-panel-err-when{
+  font:600 .55rem/1 var(--d-mono); color:var(--ink-dim); letter-spacing:.06em;
+}
+.sc-cta-alt{
+  border-color:rgba(127,180,200,.5);
+  background:linear-gradient(180deg, rgba(127,180,200,.12), rgba(127,180,200,.04));
+  color:#aedbe9;
+}
+.sc-cta-alt:hover{
+  background:linear-gradient(180deg, rgba(127,180,200,.22), rgba(127,180,200,.08));
+  color:var(--cream);
+}

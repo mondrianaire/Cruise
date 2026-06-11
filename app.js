@@ -339,7 +339,7 @@ if(window.__crewSeed && window.__crewSeed.name){
 }
 
 /* ===== Site version badge in nav (visible across all pages) ===== */
-window.SITE_VERSION = 'v.171';
+window.SITE_VERSION = 'v.172';
 (function(){
   document.querySelectorAll('nav .brand .br-y').forEach(function(y){
     if(!y.querySelector('.br-ver')){
@@ -579,10 +579,21 @@ window.SITE_VERSION = 'v.171';
     pending: 0,
     syncFn: null,         // called when user taps "Sync Now"
     user: '',
+    /* v.172 — diagnostic state so users (and us) can see WHY a write failed.
+       Without this the chip just said "Sync error" and we had no signal. */
+    lastError: '',
+    lastErrorCode: '',
+    lastErrorAt: 0,
+    initError: '',
     /* timer to refresh the "Saved Xs ago" label */
     _tickT: null
   };
 
+  function escHtml(s){
+    return String(s==null?'':s).replace(/[&<>"]/g, function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];
+    });
+  }
   function fmtAgo(ts){
     if(!ts) return 'never';
     var s = Math.max(0, Math.floor((Date.now() - ts) / 1000));
@@ -644,13 +655,24 @@ window.SITE_VERSION = 'v.171';
     if(SC.expanded){
       var canSync = (st === 'offline' || st === 'error' || st === 'synced') && !!SC.syncFn;
       var disabled = !canSync ? ' disabled' : '';
+      var errBlock = '';
+      if(SC.lastError){
+        var code = SC.lastErrorCode ? ' <span class="sc-err-code">' + escHtml(SC.lastErrorCode) + '</span>' : '';
+        errBlock = '<div class="sc-panel-err">' +
+          '<div class="sc-panel-err-h">Last error' + code + '</div>' +
+          '<div class="sc-panel-err-msg">' + escHtml(SC.lastError) + '</div>' +
+          (SC.lastErrorAt ? '<div class="sc-panel-err-when">' + fmtAgo(SC.lastErrorAt) + '</div>' : '') +
+          '</div>';
+      }
       html += '<div class="sc-panel" role="dialog" aria-label="Sync status detail">' +
         '<div class="sc-panel-row"><span class="sc-k">Status</span><span class="sc-v">' + txt + '</span></div>' +
         '<div class="sc-panel-row"><span class="sc-k">Detail</span><span class="sc-v">' + sub + '</span></div>' +
         (SC.user ? '<div class="sc-panel-row"><span class="sc-k">Signed in</span><span class="sc-v">' + SC.user + '</span></div>' : '') +
         '<div class="sc-panel-row"><span class="sc-k">Last saved</span><span class="sc-v">' + (SC.lastSavedAt ? fmtAgo(SC.lastSavedAt) : 'not yet') + '</span></div>' +
         '<div class="sc-panel-row"><span class="sc-k">Pending</span><span class="sc-v">' + SC.pending + '</span></div>' +
+        errBlock +
         '<button type="button" class="sc-cta" id="scSyncNow"' + disabled + '>↻ Sync now</button>' +
+        '<button type="button" class="sc-cta sc-cta-alt" id="scCopyDiag">⧉ Copy diagnostics</button>' +
         '</div>';
     }
     SC.el.innerHTML = html;
@@ -671,11 +693,44 @@ window.SITE_VERSION = 'v.171';
           try{
             var p = SC.syncFn();
             if(p && typeof p.then === 'function'){
-              p.then(function(){ SC.markSaved(); }).catch(function(){ SC.setState('error'); });
+              p.then(function(){ SC.markSaved(); })
+               .catch(function(err){ SC.markError(err); });
             } else {
               SC.markSaved();
             }
-          }catch(err){ SC.setState('error'); }
+          }catch(err){ SC.markError(err); }
+        }
+      });
+    }
+    var cdb = SC.el.querySelector('#scCopyDiag');
+    if(cdb){
+      cdb.addEventListener('click', function(e){
+        e.stopPropagation();
+        var diag = [
+          'Canada & New England 2026 — Sync diagnostics',
+          'Site version: ' + (window.SITE_VERSION || '?'),
+          'Page: ' + location.pathname,
+          'When: ' + new Date().toISOString(),
+          'State: ' + SC.state,
+          'Signed in as: ' + (SC.user || '(none)'),
+          'Last saved at: ' + (SC.lastSavedAt ? new Date(SC.lastSavedAt).toISOString() : 'never'),
+          'Pending writes: ' + SC.pending,
+          'Init error: ' + (SC.initError || '(none)'),
+          'Last error code: ' + (SC.lastErrorCode || '(none)'),
+          'Last error message: ' + (SC.lastError || '(none)'),
+          'Last error at: ' + (SC.lastErrorAt ? new Date(SC.lastErrorAt).toISOString() : 'never'),
+          'Online: ' + (navigator.onLine ? 'yes' : 'no'),
+          'User agent: ' + navigator.userAgent
+        ].join('\n');
+        if(navigator.clipboard && navigator.clipboard.writeText){
+          navigator.clipboard.writeText(diag).then(function(){
+            cdb.textContent = '✓ Copied — paste anywhere';
+            setTimeout(function(){ cdb.textContent = '⧉ Copy diagnostics'; }, 1800);
+          }).catch(function(){ cdb.textContent = 'Copy failed (see console)'; console.log(diag); });
+        } else {
+          console.log(diag);
+          cdb.textContent = '(printed to console)';
+          setTimeout(function(){ cdb.textContent = '⧉ Copy diagnostics'; }, 1800);
         }
       });
     }
@@ -730,6 +785,9 @@ window.SITE_VERSION = 'v.171';
     SC.state = 'synced';
     SC.lastSavedAt = Date.now();
     SC.pending = 0;
+    /* v.172: clear lingering error once a successful save lands. */
+    SC.lastError = '';
+    SC.lastErrorCode = '';
     if(SC.el){
       SC.el.classList.remove('sc-flash');
       /* force reflow so the animation re-runs every save */
@@ -738,7 +796,20 @@ window.SITE_VERSION = 'v.171';
     }
     render();
   };
-  SC.markError = function(){ SC.setState('error'); };
+  SC.markError = function(err){
+    if(err){
+      SC.lastError = (err && err.message) ? err.message : String(err);
+      SC.lastErrorCode = (err && err.code) ? String(err.code) : '';
+      SC.lastErrorAt = Date.now();
+      /* Log to console with a grep-able prefix. */
+      try{ console.error('[CnE2026 sync error]', SC.lastErrorCode || '', SC.lastError, err); }catch(e){}
+    }
+    SC.setState('error');
+  };
+  SC.markInitError = function(err){
+    SC.initError = (err && err.message) ? err.message : String(err || '');
+    try{ console.error('[CnE2026 init error]', err); }catch(e){}
+  };
   SC.markOffline = function(){ SC.setState('offline'); };
   SC.markSignedOut = function(){
     SC.user = '';

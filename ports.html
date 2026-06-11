@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ports &amp; Group Picks — Canada &amp; New England 2026</title>
 <meta name="description" content="Ports &amp; Group Picks — ms Zuiderdam cruise hub for the Canada &amp; New England voyage, June 2026.">
-<link rel="stylesheet" href="styles.css?v=171">
+<link rel="stylesheet" href="styles.css?v=172">
 <link rel="canonical" href="https://mondrianaire.github.io/Cruise/ports.html">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Ports &amp; Group Picks — ms Zuiderdam · June 2026">
@@ -403,7 +403,12 @@ renderBoard();
     const app=initializeApp(cfg); auth=getAuth(app);
     const db=initializeFirestore(app,{experimentalForceLongPolling:true});
     boardRef=doc(db,"cruise","4LMNGG");
-  }catch(e){ status('offline · saved on this device','err'); }
+  }catch(e){
+    if(window.__SyncCenter){
+      window.__SyncCenter.markInitError(e);
+      window.__SyncCenter.markError(e);
+    } else { status('sync error','err'); }
+  }
   function startBoard(){
     if(!boardRef||boardReady) return;
     boardReady=true;
@@ -411,7 +416,11 @@ renderBoard();
     window.__cruisePush=function(p){
       if(window.__SyncCenter) window.__SyncCenter.markSaving();
       return setDoc(boardRef,{picks:p,updatedAt:Date.now()})
-        .then(()=>status('synced','ok')).catch(()=>status('sync error','err'));
+        .then(()=>status('synced','ok'))
+        .catch(function(err){
+          if(window.__SyncCenter) window.__SyncCenter.markError(err);
+          else status('sync error','err');
+        });
     };
     /* v.170 register manual Sync now for the Sync Center. */
     if(window.__SyncCenter){
@@ -427,7 +436,10 @@ renderBoard();
         window.__cruisePush(window.__getPicks()); status('synced','ok');
       }
       firstSnap=false;
-    },function(){ status('offline · saved on this device','err'); });
+    },function(err){
+      if(window.__SyncCenter) window.__SyncCenter.markError(err);
+      else status('sync error','err');
+    });
   }
   if(auth){
     status('connecting…','wait');

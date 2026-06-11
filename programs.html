@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Daily Programs — Canada &amp; New England 2026</title>
 <meta name="description" content="Daily Programs — every event from the HAL Navigator daily programme across all 8 days of the ms Zuiderdam voyage, June 2026.">
-<link rel="stylesheet" href="styles.css?v=171">
+<link rel="stylesheet" href="styles.css?v=172">
 <link rel="canonical" href="https://mondrianaire.github.io/Cruise/programs.html">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Daily Programs — ms Zuiderdam · June 2026">
@@ -539,8 +539,8 @@
 </footer>
 
 <!-- Shared shell + event source -->
-<script src="app.js?v=171"></script>
-<script src="events.js?v=171"></script>
+<script src="app.js?v=172"></script>
+<script src="events.js?v=172"></script>
 
 <script>
 /* ===== v.165 — Programs page renderer + interest tracking + search =====
@@ -612,10 +612,35 @@
   /* v.167: per-crew filter — Set of crewKeys; empty = no filter. */
   var crewFilter = new Set();
   var CREW_KEYS = ['jett','laura','sandra','becca','karen'];
+  /* v.172: never write to the cloud until Firebase auth has CONFIRMED a
+     roster member. Prevents anonymous "_anon" writes (which Firestore
+     security rules will reject — surfacing as a "Sync error" even though
+     the user has no idea what they did wrong) and prevents the optimistic
+     v.152 crew seed from attributing edits to the wrong person before
+     onAuthStateChanged resolves. */
+  var authConfirmed = false;
+  window.__setAuthConfirmed = function(b){ authConfirmed = !!b; };
   var labels = {};                // computed once after events.js loads
 
   function saveAndPush(){
+    /* localStorage save is always safe — keeps the user's work locally
+       regardless of cloud state. */
     try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(interests)); }catch(e){}
+    /* Cloud push only when we have a confirmed signed-in roster member.
+       Otherwise we'd send writes that the rules will reject, producing
+       the "Sync error" the user is seeing on every page load. */
+    if(!authConfirmed){
+      if(window.__SyncCenter){
+        if(window.__crewKey){
+          /* Optimistic seed in play but auth not yet confirmed — stay in
+             "connecting" so we don't false-alarm a Sync error. */
+          window.__SyncCenter.setState('connecting');
+        } else {
+          window.__SyncCenter.markSignedOut();
+        }
+      }
+      return;
+    }
     if(window.__cruisePushInterests) window.__cruisePushInterests(interests);
   }
   /* Public hooks for the Firebase module at the bottom. */
@@ -714,8 +739,20 @@
   function cycleState(key){
     var crew = window.__crewKey;
     if(!crew){
-      /* No signed-in user -- still let them mark locally but warn once. */
-      crew = '_anon';
+      /* v.172: refuse to write anonymously. Surface a friendly nudge to
+         sign in. Previously we wrote "_anon" into the going/interested
+         arrays which (a) contaminated counts and (b) was rejected by
+         Firestore rules, producing the persistent "Sync error" the user
+         reported. */
+      if(window.__SyncCenter) window.__SyncCenter.markSignedOut();
+      try{
+        var pill = document.getElementById('pg-q');
+        if(pill && !window.__cnenSignInToastShown){
+          window.__cnenSignInToastShown = true;
+          alert('Sign in via the Voyage Console to mark events. Your taps will sync to the other travellers in real time.');
+        }
+      }catch(e){}
+      return;
     }
     var entry = interests[key] || { interested:[], going:[] };
     if(!entry.interested) entry.interested = [];
@@ -1317,7 +1354,17 @@
     const app = initializeApp(cfg); auth = getAuth(app);
     const db = initializeFirestore(app, {experimentalForceLongPolling:true});
     boardRef = doc(db,"cruise","4LMNGG");
-  }catch(e){ status('offline · saved on this device','err'); }
+  }catch(e){
+    /* v.172: this is an init-time failure (bad config, blocked SDK, etc.) —
+       distinct from a runtime sync error. Surface the real error so we
+       can see what's wrong. */
+    if(window.__SyncCenter){
+      window.__SyncCenter.markInitError(e);
+      window.__SyncCenter.markError(e);
+    } else {
+      status('sync error','err');
+    }
+  }
   function startBoard(){
     if(!boardRef || boardReady) return;
     boardReady = true;
@@ -1326,7 +1373,14 @@
       if(window.__SyncCenter) window.__SyncCenter.markSaving();
       return setDoc(boardRef, {interests:p, updatedAt:Date.now()}, {merge:true})
         .then(function(){ status('synced','ok'); })
-        .catch(function(){ status('sync error','err'); });
+        .catch(function(err){
+          /* v.172: forward the real Firestore error to the Sync Center so
+             the user can see what's actually wrong (permission denied,
+             quota, network, bad config). The chip's expanded panel now
+             shows the error code + message + a Copy Diagnostics button. */
+          if(window.__SyncCenter) window.__SyncCenter.markError(err);
+          else status('sync error','err');
+        });
     };
     /* v.170 register the manual "Sync now" hook so the user can force a
        re-push from the Sync Center if they get worried. */
@@ -1344,7 +1398,11 @@
         status('synced','ok');
       }
       firstSnap = false;
-    }, function(){ status('offline · saved on this device','err'); });
+    }, function(err){
+      /* v.172: forward the actual snapshot listener error. */
+      if(window.__SyncCenter) window.__SyncCenter.markError(err);
+      else status('sync error','err');
+    });
   }
   if(auth){
     status('connecting…','wait');
@@ -1363,15 +1421,21 @@
         if(['jett','laura','sandra','becca','karen'].indexOf(fk) >= 0){
           window.__crewKey = fk;
           window.__crewName = fk.charAt(0).toUpperCase()+fk.slice(1);
+          authConfirmed = true;   /* v.172 — only now is it safe to push */
           if(window.__writeCrewSeed && user.email){
             window.__writeCrewSeed(window.__crewName, user.email, user.photoURL);
           }
           if(window.__unlockCrewReveal) window.__unlockCrewReveal();
           if(window.__rerender) window.__rerender();
           if(window.__SyncCenter) window.__SyncCenter.setUser(window.__crewName);
+        } else {
+          /* Signed in but NOT in the roster — treat as signed-out for
+             write purposes. They can still browse and edit locally. */
+          authConfirmed = false;
         }
         startBoard();
       } else {
+        authConfirmed = false;
         if(window.__clearCrewSeed) window.__clearCrewSeed();
         if(window.__lockCrewReveal) window.__lockCrewReveal();
         status('sign in via the Voyage Console to sync','wait');
