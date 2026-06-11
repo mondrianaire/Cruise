@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Document Vault — Canada &amp; New England 2026</title>
 <meta name="description" content="Travel Document Vault — every reservation, boarding pass and conuirmation uor the ms Zuiderdam Canada &amp; New England voyage, June 2026.">
-<link rel="stylesheet" href="styles.css?v=184.1">
+<link rel="stylesheet" href="styles.css?v=185">
 <link rel="canonical" href="https://mondrianaire.github.io/Cruise/documents.html">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Document Vault — ms Zuiderdam · June 2026">
@@ -182,6 +182,34 @@
   /* v.150: per-card status-action row that holds both "Will upload later"
      and "Not needed (disable)" toggles side by side. */
   .dv-status-actions{ display:flex; flex-wrap:wrap; gap:8px; padding-top:4px; }
+
+  /* v.185 — Taken-care-of banner + pill */
+  .dv-done{
+    display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+    padding:8px 12px; margin-bottom:8px;
+    border-radius:8px;
+    border:1px solid rgba(95,214,160,.45);
+    background:rgba(95,214,160,.10);
+    color:#9beac4;
+    font:600 .82rem/1.3 var(--d-mono);
+  }
+  .dv-done-toggle{
+    margin-left:auto;
+    padding:6px 12px; border-radius:6px;
+    border:1px solid rgba(95,214,160,.45);
+    background:rgba(95,214,160,.18);
+    color:#9beac4;
+    font:700 .68rem/1 var(--d-mono); letter-spacing:.06em; text-transform:uppercase;
+    cursor:pointer;
+  }
+  .dv-done-toggle:hover{ background:rgba(95,214,160,.28); color:var(--cream); }
+  .dv-status-actions .dv-done-toggle{ margin-left:0; }
+  .dv-status.st-done{
+    background:rgba(95,214,160,.18); color:#9beac4;
+    border:1px solid rgba(95,214,160,.45);
+  }
+  .dv-card.is-done{ background:rgba(95,214,160,.05); }
+
 
   .dv-nofile{ font:600 .72rem/1.3 var(--d-body); color:var(--ink-dim); font-style:italic; }
 
@@ -542,17 +570,19 @@ window.__DV = (function(){
     const m = items[docId] || {};
     const has = Object.keys(m).some(function(p){ return (m[p]||[]).length > 0; });
     if(has) return 'ready';
+    if(doneMap[docId]) return 'done';         /* v.185 */
     if(pendingMap[docId]) return 'pending';
     return 'needed';
   }
 
   /* ---------- status + summary ---------- */
   function updateStatuses(){
-    let need=0, pending=0, ready=0, na=0;
+    let need=0, pending=0, ready=0, na=0, done=0;
     Object.keys(window.__DV.byId).forEach(function(docId){
       const s = statusFor(docId);
       if(s==='na') na++;
       else if(s==='ready') ready++;
+      else if(s==='done') done++;
       else if(s==='pending') pending++;
       else need++;
       const cardEl = document.querySelector('.dv-card[data-doc="'+docId+'"]');
@@ -562,10 +592,12 @@ window.__DV = (function(){
         pill.className = 'dv-status st-' + s;
         pill.textContent = s==='na'      ? 'Disabled'
                          : s==='ready'   ? 'Ready'
+                         : s==='done'    ? 'Taken care of'   /* v.185 */
                          : s==='pending' ? 'Will upload'
                          : 'Outstanding';
       }
       cardEl.classList.toggle('is-ready',   s==='ready');
+      cardEl.classList.toggle('is-done',    s==='done');   /* v.185 */
       cardEl.classList.toggle('is-pending', s==='pending');
       cardEl.classList.toggle('is-na',      s==='na');
     });
@@ -647,7 +679,15 @@ window.__DV = (function(){
     } else {
       const isPending = !!pendingMap[docId];
       const pendBy = isPending && pendingMap[docId].by ? ' · '+esc(pendingMap[docId].by) : '';
-      if(isPending){
+      const isDone = !!doneMap[docId];
+      const doneBy = isDone && doneMap[docId].by ? ' · '+esc(doneMap[docId].by) : '';
+      if(isDone){
+        /* v.185: GREEN "Taken care of" banner — done with no upload required. */
+        h += '<div class="dv-done on">'
+           + '<span>✅ Taken care of'+doneBy+'</span>'
+           + '<button type="button" class="dv-done-toggle" data-act="done">Undo</button>'
+           + '</div>';
+      } else if(isPending){
         /* v.150: YELLOW banner - the user has acknowledged this entry but
            hasn't uploaded the actual document yet. */
         h += '<div class="dv-pending on">'
@@ -658,7 +698,10 @@ window.__DV = (function(){
       h += '<span class="dv-vz-lab">Documents - per traveller</span>';
       h += personsFor(docId).map(function(p){ return personHtml(docId, p); }).join('');
       h += '<div class="dv-status-actions">';
-      if(!isPending){
+      if(!isDone){
+        h += '<button type="button" class="dv-done-toggle" data-act="done" title="Mark as done - no upload needed">✅ Taken care of</button>';
+      }
+      if(!isPending && !isDone){
         h += '<button type="button" class="dv-pend-toggle" data-act="pending" title="Acknowledge - will upload later">🟡 Will upload later</button>';
       }
       h += '<button type="button" class="dv-na-toggle" data-act="na" title="Disable - no documents needed">⚪ Not needed (disable)</button>';
@@ -705,6 +748,7 @@ window.__DV = (function(){
         const act = btn.getAttribute('data-act');
         if(act === 'na'){ toggleNA(docId); return; }
         if(act === 'pending'){ togglePending(docId); return; }
+        if(act === 'done'){ toggleDone(docId); return; }   /* v.185 */
         const person = btn.closest('.dv-person'); const p = person && person.getAttribute('data-person');
         if(act === 'val-add'){
           const type = person.querySelector('.dv-type').value;
@@ -794,8 +838,10 @@ window.__DV = (function(){
     if(on){
       naMap[docId] = { by:crewName, at:Date.now() };
       delete pendingMap[docId];
+      delete doneMap[docId];   /* v.185 */
       payload.na = { [docId]: { by:crewName, at:Date.now() } };
       payload.pending = { [docId]: deleteField() };
+      payload.done = { [docId]: deleteField() };
     } else {
       delete naMap[docId];
       payload.na = { [docId]: deleteField() };
@@ -808,6 +854,40 @@ window.__DV = (function(){
           + (err && err.code ? err.code + '\n' : '')
           + (err && err.message ? err.message : 'Unknown error') + '\n\n'
           + 'If you see permission-denied here, the Firestore rules block the docvault fields (items/na/pending). The cruise hub maintainer needs to expand the cruise rule. Reload the page to undo the local change.');
+      });
+  }
+
+  /* v.185: Mark an item as "Taken care of" — done with no upload required.
+     Confirms before flipping ON so a misclick doesn't accidentally mark
+     something as handled. Flipping back OFF (Undo) is always a single tap. */
+  function toggleDone(docId){
+    if(naMap[docId]) return;
+    const on = !doneMap[docId];
+    if(on){
+      const docMeta = (window.__DV && window.__DV.byId && window.__DV.byId[docId]) || {};
+      const label = (docMeta.title || docMeta.name || 'this item');
+      if(!confirm('Mark "' + label + '" as taken care of?\n\nThis is for items that are done but don\'t need an upload (e.g. "Complete online check-in"). You can undo with a single tap.')){
+        return;
+      }
+    }
+    const payload = { updatedAt: Date.now() };
+    if(on){
+      doneMap[docId] = { by: crewName, at: Date.now() };
+      delete pendingMap[docId];
+      payload.done = { [docId]: { by: crewName, at: Date.now() } };
+      payload.pending = { [docId]: deleteField() };
+    } else {
+      delete doneMap[docId];
+      payload.done = { [docId]: deleteField() };
+    }
+    renderAll();
+    setDoc(vaultRef, payload, { merge:true })
+      .catch(function(err){
+        console.error('[CnE2026 docvault write]', err);
+        alert('Could not update status.\n\n'
+          + (err && err.code ? err.code + '\n' : '')
+          + (err && err.message ? err.message : 'Unknown error') + '\n\n'
+          + 'Reload the page to undo the local change.');
       });
   }
 
@@ -869,6 +949,7 @@ window.__DV = (function(){
       items = d.items || {};
       naMap = d.na || {};
       pendingMap = d.pending || {};
+      doneMap = d.done || {};   /* v.185 */
       renderAll();
     }, function(){});
   }
