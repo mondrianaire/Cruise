@@ -2881,3 +2881,24 @@ body.has-custom-tip [title]{ /* no-op selector hook for future use */ }
   .nav-avatar{ width:32px; height:32px; margin-left:4px; }
   .nav-avatar-letter{ font-size:.85rem; }
 }
+
+/* ============================================================
+   v.168 — Nav avatar suggestion-inbox badge
+   ============================================================
+   When the signed-in user has unread suggestions, the avatar gains a
+   small numeric chip in its top-right corner with a slow pulse. */
+.nav-avatar.has-badge::after{
+  content: attr(data-badge);
+  position:absolute; top:-3px; right:-3px;
+  min-width:16px; height:16px; padding:0 4px;
+  border-radius:8px;
+  background:var(--brass); color:#08161a;
+  font:700 .58rem/16px var(--d-mono); text-align:center;
+  box-shadow:0 0 0 2px var(--ink-bg, #08161a), 0 0 8px rgba(200,155,74,.55);
+  animation: navAvatarPulse 2.2s ease-in-out infinite;
+  pointer-events:none;
+}
+@keyframes navAvatarPulse{
+  0%, 100% { transform:scale(1);    box-shadow:0 0 0 2px var(--ink-bg, #08161a), 0 0 8px rgba(200,155,74,.55); }
+  50%      { transform:scale(1.15); box-shadow:0 0 0 2px var(--ink-bg, #08161a), 0 0 14px rgba(230,196,119,.85); }
+}

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Daily Programs — Canada &amp; New England 2026</title>
 <meta name="description" content="Daily Programs — every event from the HAL Navigator daily programme across all 8 days of the ms Zuiderdam voyage, June 2026.">
-<link rel="stylesheet" href="styles.css?v=166">
+<link rel="stylesheet" href="styles.css?v=169">
 <link rel="canonical" href="https://mondrianaire.github.io/Cruise/programs.html">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Daily Programs — ms Zuiderdam · June 2026">
@@ -116,6 +116,206 @@
      so the eye lands on what THEY picked. The base filter still hides
      non-matches; this just tightens the visual cue when 1+ crew is on. */
   .ev-list.is-crew-focused .ev-row{ filter:saturate(.95); }
+
+  /* ===== v.168 — Pass micro-action + Suggested-for-me ===== */
+  .pg-filt.pg-filt-forme{ position:relative; }
+  .pg-filt.pg-filt-forme.on{
+    background:rgba(127,180,200,.22); border-color:#7fb4c8; color:#aedbe9;
+  }
+  .pg-filt-forme[data-count]:not([data-count="0"])::after{
+    content:attr(data-count);
+    position:absolute; top:-6px; right:-6px;
+    min-width:18px; height:18px; padding:0 5px;
+    border-radius:9px; background:var(--brass); color:#08161a;
+    font:700 .62rem/18px var(--d-mono); text-align:center;
+    box-shadow:0 0 0 2px rgba(8,22,26,.95);
+  }
+
+  /* The pass button — sits to the LEFT of the status pill, looks like an
+     accent ear on the row. */
+  .ev-pass{
+    flex:0 0 auto; position:relative;
+    display:flex; align-items:center; justify-content:center;
+    padding:0 11px; min-width:42px;
+    border:0; border-left:1px solid rgba(255,255,255,.08);
+    background:rgba(0,0,0,.12); color:var(--ink-dim); cursor:pointer;
+    font:700 1rem/1 var(--d-mono);
+    transition:background .14s ease, color .14s ease;
+  }
+  .ev-pass:hover{ background:rgba(127,180,200,.16); color:#aedbe9; }
+  .ev-pass.is-direct{ color:#aedbe9; }
+  .ev-pass .ev-pass-to{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:18px; height:18px; border-radius:50%;
+    font:700 .65rem/1 var(--d-serif);
+    background:var(--brass); color:#08161a;
+    margin-left:6px;
+  }
+  /* Avatar picker popover */
+  .ev-pass-pop{
+    position:absolute; top:calc(100% + 6px); right:0;
+    display:flex; gap:5px; padding:7px;
+    background:rgba(8,22,26,.97); border:1px solid rgba(200,155,74,.4);
+    border-radius:10px; box-shadow:0 6px 20px rgba(0,0,0,.55);
+    z-index:30;
+  }
+  .ev-pass-pop::before{
+    content:''; position:absolute; top:-5px; right:14px;
+    width:8px; height:8px; transform:rotate(45deg);
+    background:rgba(8,22,26,.97);
+    border-top:1px solid rgba(200,155,74,.4);
+    border-left:1px solid rgba(200,155,74,.4);
+  }
+  .ev-pass-av{
+    width:30px; height:30px; border-radius:50%;
+    display:inline-flex; align-items:center; justify-content:center;
+    font:700 .82rem/1 var(--d-serif); cursor:pointer; border:0;
+    color:#08161a; background:var(--brass);
+    transition:transform .12s ease, box-shadow .12s ease;
+  }
+  .ev-pass-av:hover{ transform:scale(1.12); box-shadow:0 0 0 2px var(--brass-lt); }
+  .ev-pass-av[data-c="jett"]   { background:#e6c477; }
+  .ev-pass-av[data-c="laura"]  { background:#e0795a; color:#fffdf3; }
+  .ev-pass-av[data-c="sandra"] { background:#5fd6a0; }
+  .ev-pass-av[data-c="becca"]  { background:#7fb4c8; color:#fffdf3; }
+  .ev-pass-av[data-c="karen"]  { background:#c79bd1; }
+
+  /* Inline "X suggested" tags under event name */
+  .ev-sugg-row{
+    display:flex; flex-wrap:wrap; gap:5px; margin-top:4px;
+  }
+  .ev-sugg-tag{
+    display:inline-flex; align-items:center; gap:5px;
+    padding:3px 4px 3px 8px; border-radius:999px;
+    background:rgba(127,180,200,.16); border:1px solid rgba(127,180,200,.4);
+    color:#aedbe9;
+    font:700 .60rem/1 var(--d-mono); letter-spacing:.06em; text-transform:uppercase;
+  }
+  .ev-sugg-tag.is-mine{
+    background:rgba(239,178,40,.16); border-color:rgba(239,178,40,.45); color:var(--mod);
+  }
+  .ev-sugg-dis{
+    background:transparent; border:0; color:inherit; cursor:pointer;
+    padding:1px 4px; font:700 .72rem/1 var(--d-mono);
+    border-radius:50%; opacity:.7;
+  }
+  .ev-sugg-dis:hover{ opacity:1; background:rgba(0,0,0,.25); }
+  .ev-row.has-for-me{
+    border-color:rgba(127,180,200,.55);
+    background:linear-gradient(90deg,rgba(127,180,200,.10),rgba(255,255,255,.02));
+  }
+
+  @media(max-width:560px){
+    .ev-pass{ min-width:36px; padding:0 8px; font-size:.92rem; }
+    .ev-pass-pop{ padding:5px; }
+    .ev-pass-av{ width:26px; height:26px; font-size:.72rem; }
+    .ev-sugg-tag{ font-size:.55rem; padding:3px 4px 3px 7px; }
+  }
+
+  /* ===== v.169 — Dedicated Suggestions-for-you inbox panel =====
+     Surfaces incoming suggestions above the day-by-day list so the
+     recipient doesn't have to scroll the full schedule to act on them. */
+  .pg-inbox{
+    margin:4px 0 22px;
+    border:1px solid rgba(127,180,200,.45);
+    border-radius:12px;
+    background:linear-gradient(160deg, rgba(127,180,200,.10) 0%, rgba(8,22,26,.55) 70%);
+    box-shadow:inset 0 0 0 1px rgba(127,180,200,.08), 0 4px 14px rgba(0,0,0,.25);
+    overflow:hidden;
+  }
+  .pg-inbox[hidden]{ display:none; }
+  .pg-inbox-head{
+    display:flex; align-items:center; gap:10px;
+    padding:11px 16px; border-bottom:1px solid rgba(127,180,200,.25);
+    background:rgba(127,180,200,.10);
+  }
+  .pg-inbox-h{
+    flex:1; margin:0;
+    font:700 .82rem/1 var(--d-mono); letter-spacing:.10em; text-transform:uppercase;
+    color:#aedbe9;
+  }
+  .pg-inbox-cnt{
+    display:inline-flex; align-items:center; justify-content:center;
+    min-width:22px; height:22px; padding:0 7px;
+    border-radius:11px; background:var(--brass); color:#08161a;
+    font:700 .70rem/22px var(--d-mono);
+  }
+  .pg-inbox-list{ display:flex; flex-direction:column; }
+  .pg-inbox-row{
+    display:grid;
+    grid-template-columns: 70px 1fr auto;
+    gap:14px; align-items:center;
+    padding:12px 16px;
+    border-bottom:1px dashed rgba(127,180,200,.18);
+    transition:background .14s ease;
+  }
+  .pg-inbox-row:last-child{ border-bottom:0; }
+  .pg-inbox-row:hover{ background:rgba(127,180,200,.06); }
+  .pg-inbox-when{
+    display:flex; flex-direction:column; gap:3px;
+    border-right:1px dashed rgba(127,180,200,.25); padding-right:12px;
+  }
+  .pg-inbox-day{
+    font:700 .62rem/1 var(--d-mono); letter-spacing:.10em; text-transform:uppercase;
+    color:var(--brass-lt);
+  }
+  .pg-inbox-time{
+    font:700 .82rem/1 var(--d-mono); color:var(--cream); letter-spacing:.04em;
+  }
+  .pg-inbox-body{ display:flex; flex-direction:column; gap:5px; min-width:0; }
+  .pg-inbox-name{ font:600 .98rem/1.25 var(--d-serif); color:var(--cream); }
+  .pg-inbox-meta{
+    font:600 .68rem/1.3 var(--d-mono); color:var(--ink-dim);
+    letter-spacing:.04em; text-transform:uppercase;
+    display:inline-flex; flex-wrap:wrap; gap:8px;
+  }
+  .pg-inbox-meta .pg-inbox-from{
+    color:#aedbe9; display:inline-flex; align-items:center; gap:5px;
+  }
+  .pg-inbox-meta .pg-inbox-from-av{
+    width:16px; height:16px; border-radius:50%;
+    display:inline-flex; align-items:center; justify-content:center;
+    font:700 .56rem/1 var(--d-serif); color:#08161a;
+  }
+  .pg-inbox-meta .pg-inbox-from-av[data-c="jett"]   { background:#e6c477; }
+  .pg-inbox-meta .pg-inbox-from-av[data-c="laura"]  { background:#e0795a; color:#fffdf3; }
+  .pg-inbox-meta .pg-inbox-from-av[data-c="sandra"] { background:#5fd6a0; }
+  .pg-inbox-meta .pg-inbox-from-av[data-c="becca"]  { background:#7fb4c8; color:#fffdf3; }
+  .pg-inbox-meta .pg-inbox-from-av[data-c="karen"]  { background:#c79bd1; }
+  .pg-inbox-meta a{ color:var(--brass-lt); text-decoration:none; }
+  .pg-inbox-meta a:hover{ text-decoration:underline; }
+
+  .pg-inbox-acts{
+    display:flex; gap:6px; align-items:center; flex:0 0 auto;
+  }
+  .pg-inbox-act{
+    display:inline-flex; align-items:center; gap:5px;
+    padding:7px 12px; border-radius:7px; cursor:pointer; user-select:none;
+    border:1px solid rgba(255,255,255,.14); background:rgba(255,255,255,.04); color:var(--ink-dim);
+    font:700 .66rem/1 var(--d-mono); letter-spacing:.08em; text-transform:uppercase;
+    transition:background .14s, border-color .14s, color .14s;
+  }
+  .pg-inbox-act:hover{ background:rgba(200,155,74,.12); color:var(--cream); }
+  .pg-inbox-act-int:hover{ background:rgba(239,178,40,.20); border-color:var(--mod); color:var(--mod); }
+  .pg-inbox-act-go:hover { background:rgba(95,214,160,.20); border-color:var(--easy); color:var(--easy); }
+  .pg-inbox-act-go.on    { background:rgba(95,214,160,.20); border-color:var(--easy); color:var(--easy); }
+  .pg-inbox-act-int.on   { background:rgba(239,178,40,.20); border-color:var(--mod); color:var(--mod); }
+  .pg-inbox-act-dis{
+    background:transparent; border:0; color:var(--ink-dim); cursor:pointer;
+    width:28px; height:28px; border-radius:50%;
+    font:700 .92rem/1 var(--d-mono);
+  }
+  .pg-inbox-act-dis:hover{ background:rgba(224,121,90,.18); color:var(--stren); }
+
+  @media(max-width:560px){
+    .pg-inbox-row{ grid-template-columns: 56px 1fr; padding:10px 12px; gap:10px; }
+    .pg-inbox-acts{ grid-column:1 / -1; padding-top:6px; border-top:1px dashed rgba(127,180,200,.18); }
+    .pg-inbox-when{ font-size:.74rem; padding-right:9px; }
+    .pg-inbox-name{ font-size:.88rem; }
+    .pg-inbox-meta{ font-size:.60rem; }
+    .pg-inbox-act{ padding:6px 9px; font-size:.58rem; }
+  }
+
 
 
   .pg-meta{
@@ -293,6 +493,8 @@
         <button type="button" class="pg-filt pg-filt-going"      data-filter="going"      aria-pressed="false">✅ Going</button>
         <button type="button" class="pg-filt pg-filt-interested" data-filter="interested" aria-pressed="false">💛 Interested</button>
         <button type="button" class="pg-filt pg-filt-untouched"  data-filter="untouched"  aria-pressed="false">☆ Untouched</button>
+        <!-- v.168: suggestion inbox -->
+        <button type="button" class="pg-filt pg-filt-forme"      data-filter="for-me"     aria-pressed="false" data-count="0" hidden>📨 For me</button>
       </div>
       <div class="pg-meta">
         <span><b id="pg-shown">0</b> shown</span>
@@ -323,6 +525,9 @@
 
     <div class="day-jump" id="pg-jump"></div>
 
+    <!-- v.169: dedicated Suggestions-for-you inbox -->
+    <aside class="pg-inbox" id="pg-inbox" hidden aria-labelledby="pg-inbox-h"></aside>
+
     <div id="pg-body">
       <p class="lead" style="color:var(--ink-dim)">Loading events&hellip;</p>
     </div>
@@ -334,8 +539,8 @@
 </footer>
 
 <!-- Shared shell + event source -->
-<script src="app.js?v=166"></script>
-<script src="events.js?v=166"></script>
+<script src="app.js?v=169"></script>
+<script src="events.js?v=169"></script>
 
 <script>
 /* ===== v.165 — Programs page renderer + interest tracking + search =====
@@ -393,7 +598,11 @@
 
   /* ---------------- state ---------------- */
   var STORAGE_KEY = 'cnen_programs_interests';
-  /* interests = { eventKey: { interested: [crewKey...], going: [crewKey...] } } */
+  /* interests = { eventKey: {
+        interested: [crewKey...],
+        going:      [crewKey...],
+        suggestions: [{ from:crewKey, to:crewKey, at:ms }, ...]   // v.168
+     } } */
   var interests = {};
   try{ interests = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}') || {}; }
   catch(e){ interests = {}; }
@@ -433,6 +642,74 @@
     };
   }
 
+  /* ===== v.168 — suggestion helpers ===== */
+  /* All pending suggestions targeting me (across every event). */
+  function suggestionsForMe(){
+    var me = window.__crewKey;
+    if(!me) return [];
+    var out = [];
+    Object.keys(interests).forEach(function(k){
+      var arr = (interests[k] && interests[k].suggestions) || [];
+      arr.forEach(function(sg){
+        if(sg && sg.to === me) out.push({ key:k, from:sg.from, at:sg.at });
+      });
+    });
+    return out;
+  }
+  /* Suggestions on one event, dedup'd so a crew can only have one open
+     suggestion per event regardless of how many people "passed" it. */
+  function suggestionsOn(key){
+    var arr = (interests[key] && interests[key].suggestions) || [];
+    /* Group by `to` so the row only shows one tag per recipient. */
+    var byTo = {};
+    arr.forEach(function(sg){
+      if(!sg || !sg.to) return;
+      if(!byTo[sg.to] || sg.at > byTo[sg.to].at){ byTo[sg.to] = sg; }
+    });
+    return Object.keys(byTo).map(function(k){ return byTo[k]; });
+  }
+  /* Send a suggestion from me -> toCrew on event key. */
+  function sendSuggestion(key, toCrew){
+    var me = window.__crewKey;
+    if(!me || !toCrew || me === toCrew) return;
+    var entry = interests[key] || { interested:[], going:[] };
+    if(!entry.suggestions) entry.suggestions = [];
+    /* If recipient already marked this event, suggesting is moot — skip. */
+    if((entry.interested||[]).indexOf(toCrew) >= 0) return;
+    if((entry.going||[]).indexOf(toCrew) >= 0) return;
+    /* Remove any older suggestion with same (from,to) so we don't dup. */
+    entry.suggestions = entry.suggestions.filter(function(sg){
+      return !(sg && sg.from === me && sg.to === toCrew);
+    });
+    entry.suggestions.push({ from:me, to:toCrew, at:Date.now() });
+    interests[key] = entry;
+    saveAndPush();
+    render();
+  }
+  /* Drop one suggestion (recipient dismisses or sender retracts). */
+  function dismissSuggestion(key, fromCrew, toCrew){
+    var entry = interests[key];
+    if(!entry || !entry.suggestions) return;
+    entry.suggestions = entry.suggestions.filter(function(sg){
+      return !(sg && sg.from === fromCrew && sg.to === toCrew);
+    });
+    if(!entry.suggestions.length) delete entry.suggestions;
+    if(!entry.interested.length && !entry.going.length && !entry.suggestions){
+      delete interests[key];
+    }
+    saveAndPush();
+    render();
+  }
+  /* When recipient acts on the event, auto-clear suggestions targeting them. */
+  function clearMySuggestions(key){
+    var me = window.__crewKey;
+    if(!me) return;
+    var entry = interests[key];
+    if(!entry || !entry.suggestions) return;
+    entry.suggestions = entry.suggestions.filter(function(sg){ return sg && sg.to !== me; });
+    if(!entry.suggestions.length) delete entry.suggestions;
+  }
+
   /* Click cycle: none -> interested -> going -> none. */
   function cycleState(key){
     var crew = window.__crewKey;
@@ -454,8 +731,162 @@
     } else { /* was going */
       entry.going.splice(gIdx, 1);
     }
+    /* v.168: any suggestion targeting me on this event is now moot — I've
+       acted on it (or cycled back to none, which is also a "seen" signal). */
+    if(entry.suggestions){
+      entry.suggestions = entry.suggestions.filter(function(sg){ return sg && sg.to !== crew; });
+      if(!entry.suggestions.length) delete entry.suggestions;
+    }
     /* If empty, drop the entry to keep Firestore tidy. */
-    if(!entry.interested.length && !entry.going.length){
+    if(!entry.interested.length && !entry.going.length && (!entry.suggestions || !entry.suggestions.length)){
+      delete interests[key];
+    } else {
+      interests[key] = entry;
+    }
+    saveAndPush();
+    render();
+  }
+
+  /* ---------------- v.169 — Suggestions inbox panel ---------------- */
+  function renderInbox(forMeList){
+    var box = document.getElementById('pg-inbox');
+    if(!box) return;
+    var me = window.__crewKey;
+    if(!me || !forMeList || !forMeList.length){
+      box.hidden = true;
+      box.innerHTML = '';
+      return;
+    }
+    /* Resolve each suggestion to its full event record so we can render
+       day, time, venue, etc. SHIP_EVENTS is small enough (~372) to scan. */
+    var events = window.SHIP_EVENTS || [];
+    var days   = window.SHIP_DAYS || [];
+    var byDay  = {}; days.forEach(function(d){ byDay[d.day] = d; });
+    var eventByKey = {};
+    events.forEach(function(e){ eventByKey[eventKey(e)] = e; });
+
+    /* Sort suggestions by event chronology (day, then time), so the inbox
+       reads like a mini-itinerary of "what people want you to consider". */
+    var rows = forMeList.map(function(sg){
+      var e = eventByKey[sg.key];
+      return { sg:sg, e:e };
+    }).filter(function(r){ return !!r.e; });
+    rows.sort(function(a,b){
+      if(a.e.day !== b.e.day) return a.e.day - b.e.day;
+      return String(a.e.time24||'').localeCompare(String(b.e.time24||''));
+    });
+
+    var head = '<div class="pg-inbox-head">' +
+      '<h3 class="pg-inbox-h" id="pg-inbox-h">📨 Suggestions for you</h3>' +
+      '<span class="pg-inbox-cnt" aria-label="' + rows.length + ' pending">' + rows.length + '</span>' +
+      '</div>';
+
+    var list = '<div class="pg-inbox-list">';
+    rows.forEach(function(r){
+      var e = r.e, sg = r.sg;
+      var venueId = e.venueId || '';
+      var parts = venueId.split('-');
+      var deck = parts[0] || '';
+      var label = labels[venueId] || (parts.slice(1).join(' ') || 'Unknown venue');
+      if(label) label = label.charAt(0).toUpperCase() + label.slice(1);
+      var time = fmtTime12(e.time24);
+      var key  = eventKey(e);
+      var mine = myState(key);
+      var fromCap = (sg.from||'').charAt(0).toUpperCase() + (sg.from||'').slice(1);
+      var fromInit = (sg.from||'').charAt(0).toUpperCase();
+      var dayInfo = byDay[e.day] || {};
+      var dayLbl  = 'Day ' + e.day + (dayInfo.label ? ' · ' + esc(dayInfo.label.replace(/^[A-Za-z]{3}\s/,'')) : '');
+
+      list += '<div class="pg-inbox-row" data-key="' + esc(key) + '">' +
+        '<div class="pg-inbox-when">' +
+          '<span class="pg-inbox-day">' + dayLbl + '</span>' +
+          '<span class="pg-inbox-time">' + esc(time) + '</span>' +
+        '</div>' +
+        '<div class="pg-inbox-body">' +
+          '<span class="pg-inbox-name">' + esc(e.name) + '</span>' +
+          '<span class="pg-inbox-meta">' +
+            '<span class="pg-inbox-from">' +
+              '<span class="pg-inbox-from-av" data-c="' + esc(sg.from||'') + '" aria-hidden="true">' + fromInit + '</span>' +
+              'From ' + fromCap +
+            '</span>' +
+            '<span>' + esc(label) + ' · Deck ' + esc(deck) + '</span>' +
+            '<a href="#pg-day-' + e.day + '" class="pg-inbox-jump" data-key="' + esc(key) + '">Jump to →</a>' +
+          '</span>' +
+        '</div>' +
+        '<div class="pg-inbox-acts">' +
+          '<button type="button" class="pg-inbox-act pg-inbox-act-int' + (mine==='interested'?' on':'') + '" ' +
+            'data-key="' + esc(key) + '" data-target="interested" title="Mark interested">💛 Interested</button>' +
+          '<button type="button" class="pg-inbox-act pg-inbox-act-go'  + (mine==='going'?' on':'') + '" ' +
+            'data-key="' + esc(key) + '" data-target="going" title="Mark going">✅ Going</button>' +
+          '<button type="button" class="pg-inbox-act-dis" ' +
+            'data-key="' + esc(key) + '" data-from="' + esc(sg.from||'') + '" ' +
+            'aria-label="Dismiss suggestion" title="Dismiss (no thanks)">✕</button>' +
+        '</div>' +
+      '</div>';
+    });
+    list += '</div>';
+
+    box.innerHTML = head + list;
+    box.hidden = false;
+
+    /* Wire inbox controls. Setting state directly (not via cycle) — the
+       recipient picked an explicit intent, not a cycle position. */
+    box.querySelectorAll('.pg-inbox-act-int, .pg-inbox-act-go').forEach(function(b){
+      b.addEventListener('click', function(){
+        setStateExplicit(b.getAttribute('data-key'), b.getAttribute('data-target'));
+      });
+    });
+    box.querySelectorAll('.pg-inbox-act-dis').forEach(function(b){
+      b.addEventListener('click', function(){
+        dismissSuggestion(b.getAttribute('data-key'), b.getAttribute('data-from'), window.__crewKey);
+      });
+    });
+    /* Briefly flash the target row when the user taps "Jump to" so they
+       can spot it after the scroll-anchor takes them to the day section. */
+    box.querySelectorAll('.pg-inbox-jump').forEach(function(a){
+      a.addEventListener('click', function(){
+        var k = a.getAttribute('data-key');
+        setTimeout(function(){
+          var row = document.querySelector('.ev-row[data-key="' + (CSS.escape ? CSS.escape(k) : k) + '"]');
+          if(row){
+            row.style.transition = 'box-shadow .25s ease';
+            row.style.boxShadow = '0 0 0 2px var(--brass-lt), 0 0 18px rgba(230,196,119,.55)';
+            setTimeout(function(){ row.style.boxShadow=''; }, 1400);
+          }
+        }, 220);
+      });
+    });
+  }
+
+  /* v.169 — set my state on an event to a specific value (interested|going),
+     instead of cycling. Used by the Inbox's explicit buttons. */
+  function setStateExplicit(key, target){
+    var crew = window.__crewKey;
+    if(!crew) return;
+    var entry = interests[key] || { interested:[], going:[] };
+    if(!entry.interested) entry.interested = [];
+    if(!entry.going)      entry.going = [];
+    /* Strip me from both lists, then add to the target list. */
+    var iIdx = entry.interested.indexOf(crew);
+    if(iIdx >= 0) entry.interested.splice(iIdx,1);
+    var gIdx = entry.going.indexOf(crew);
+    if(gIdx >= 0) entry.going.splice(gIdx,1);
+    if(target === 'interested') entry.interested.push(crew);
+    else if(target === 'going') entry.going.push(crew);
+    /* Tapping the same button twice → clears the mark (toggle off). */
+    if(target === 'interested' && iIdx >= 0 && gIdx < 0){
+      /* user re-tapped "Interested" — they already had it → clear */
+      entry.interested = entry.interested.filter(function(c){ return c !== crew; });
+    }
+    if(target === 'going' && gIdx >= 0){
+      entry.going = entry.going.filter(function(c){ return c !== crew; });
+    }
+    /* Acting clears the suggestion targeting me on this event. */
+    if(entry.suggestions){
+      entry.suggestions = entry.suggestions.filter(function(sg){ return sg && sg.to !== crew; });
+      if(!entry.suggestions.length) delete entry.suggestions;
+    }
+    if(!entry.interested.length && !entry.going.length && (!entry.suggestions || !entry.suggestions.length)){
       delete interests[key];
     } else {
       interests[key] = entry;
@@ -504,6 +935,12 @@
       if(statusFilter === 'going')      return c.going > 0;
       if(statusFilter === 'interested') return c.interested > 0 && c.going === 0;
       if(statusFilter === 'untouched')  return c.interested === 0 && c.going === 0;
+      if(statusFilter === 'for-me'){
+        var me = window.__crewKey;
+        if(!me) return false;
+        var arr = (interests[key] && interests[key].suggestions) || [];
+        return arr.some(function(sg){ return sg && sg.to === me; });
+      }
       return true;
     }
     /* v.167: per-crew filter — show event if ANY selected crew has marked it
@@ -565,9 +1002,25 @@
     });
     jump.innerHTML = jumpHtml;
     var pickedCount = Object.keys(interests).length;
-    totalTag.textContent = events.length + ' events · ' + pickedCount + ' picked · ' + days.length + ' days';
-    kicker.textContent  = events.length + ' events · ' + pickedCount + ' picked · ' + days.length + ' days';
-    shownEl.textContent = filtered.length;
+    /* v.168: paint suggestion-inbox count on the For-me filter + nav avatar */
+    var forMeList = suggestionsForMe();
+    var forMeBtn  = document.querySelector('.pg-filt-forme');
+    if(forMeBtn){
+      forMeBtn.setAttribute('data-count', String(forMeList.length));
+      forMeBtn.hidden = !window.__crewKey;
+    }
+    if(window.__setNavAvatarBadge) window.__setNavAvatarBadge(forMeList.length);
+    renderInbox(forMeList);   // v.169
+    var sugTotal = 0;
+    Object.keys(interests).forEach(function(k){
+      sugTotal += ((interests[k]||{}).suggestions || []).length;
+    });
+    var sumLine = events.length + ' events · ' + pickedCount + ' picked';
+    if(sugTotal > 0) sumLine += ' · ' + sugTotal + ' suggested';
+    sumLine += ' · ' + days.length + ' days';
+    totalTag.textContent = sumLine;
+    kicker.textContent   = sumLine;
+    shownEl.textContent  = filtered.length;
 
     /* Day sections */
     if(!filtered.length){
@@ -608,12 +1061,67 @@
         var key  = eventKey(e);
         var mine = myState(key);
         var c    = counts(key);
+        /* v.168: precompute suggestion state for this row */
+        var rowSuggs = suggestionsOn(key);
+        var me       = window.__crewKey;
+        var iHaveOne = me && rowSuggs.some(function(sg){ return sg.to === me; });
         var rowCls = 'ev-row' + (mine === 'going' ? ' is-going' : (mine === 'interested' ? ' is-interested' : ''));
+        if(iHaveOne) rowCls += ' has-for-me';
         var btnIc  = mine === 'going' ? '✅' : (mine === 'interested' ? '💛' : '☆');
         var btnLab = mine === 'going' ? 'Going' : (mine === 'interested' ? 'Interested' : 'Mark');
         var countsTxt = '';
         if(c.going > 0)      countsTxt += c.going + '✅';
         if(c.interested > 0) countsTxt += (countsTxt ? ' · ' : '') + c.interested + '💛';
+
+        /* Suggestion row under event name */
+        var suggRowHtml = '';
+        if(rowSuggs.length){
+          suggRowHtml = '<span class="ev-sugg-row">';
+          rowSuggs.forEach(function(sg){
+            var mineToShow = (sg.to === me);
+            var fromCap = (sg.from||'').charAt(0).toUpperCase() + (sg.from||'').slice(1);
+            var toCap   = (sg.to||'').charAt(0).toUpperCase()   + (sg.to||'').slice(1);
+            var txt = mineToShow
+              ? '📨 ' + fromCap + ' → you'
+              : '📨 ' + fromCap + ' → ' + toCap;
+            suggRowHtml += '<span class="ev-sugg-tag' + (mineToShow?' is-mine':'') + '">' +
+              esc(txt) +
+              ' <button type="button" class="ev-sugg-dis" data-key="' + esc(key) + '" ' +
+                'data-from="' + esc(sg.from||'') + '" data-to="' + esc(sg.to||'') + '" ' +
+                'aria-label="Dismiss suggestion" title="Dismiss">✕</button>' +
+            '</span>';
+          });
+          suggRowHtml += '</span>';
+        }
+
+        /* Pass control — visible only if I'm signed in and recipient set exists.
+           Targets: by default everyone-but-me; if the crew filter has 1+ entries,
+           use that as the target subset (still minus me). */
+        var allOthers = CREW_KEYS.filter(function(c){ return c !== me; });
+        var targets;
+        if(crewFilter.size){
+          targets = [];
+          crewFilter.forEach(function(c){ if(c !== me) targets.push(c); });
+          if(!targets.length) targets = allOthers;
+        } else {
+          targets = allOthers;
+        }
+        var passHtml = '';
+        if(me){
+          var direct = targets.length === 1;
+          var directKey = direct ? targets[0] : '';
+          var directInitial = direct ? directKey.charAt(0).toUpperCase() : '';
+          passHtml = '<button type="button" class="ev-pass' + (direct?' is-direct':'') + '" ' +
+            'data-key="' + esc(key) + '" ' +
+            (direct ? 'data-to="' + esc(directKey) + '" ' : '') +
+            'data-targets="' + esc(targets.join(',')) + '" ' +
+            'aria-label="' + (direct ? 'Suggest to ' + directInitial : 'Suggest to&hellip;') + '" ' +
+            'title="' + (direct ? 'Pass to ' + directKey.charAt(0).toUpperCase()+directKey.slice(1) : 'Pass to a traveller&hellip;') + '">' +
+            '📨' +
+            (direct ? '<span class="ev-pass-to" aria-hidden="true">' + directInitial + '</span>' : '') +
+          '</button>';
+        }
+
         html += '<div class="' + rowCls + '" data-key="' + esc(key) + '">' +
           '<a class="ev-link" href="' + href + '">' +
             '<span class="ev-time">' +
@@ -626,9 +1134,11 @@
                 '<span>' + esc(label) + '</span>' +
                 '<span class="ev-deck">· Deck ' + esc(deck) + '</span>' +
               '</span>' +
+              suggRowHtml +
             '</span>' +
             '<span class="ev-arrow" aria-hidden="true">→</span>' +
           '</a>' +
+          passHtml +
           '<button type="button" class="ev-status" data-state="' + (mine === 'none' ? '' : mine) + '" data-key="' + esc(key) + '" ' +
             'aria-label="Toggle status: currently ' + btnLab + '" title="Tap to cycle: untouched → interested → going">' +
             '<span class="ev-status-ic" aria-hidden="true">' + btnIc + '</span>' +
@@ -647,7 +1157,67 @@
         cycleState(btn.getAttribute('data-key'));
       });
     });
+
+    /* v.168: wire pass buttons + dismiss tags */
+    body.querySelectorAll('.ev-pass').forEach(function(btn){
+      btn.addEventListener('click', function(ev){
+        ev.preventDefault();
+        ev.stopPropagation();
+        closeAllPopovers();
+        var key = btn.getAttribute('data-key');
+        var direct = btn.getAttribute('data-to');
+        if(direct){
+          sendSuggestion(key, direct);
+          flash(btn);
+          return;
+        }
+        var targets = (btn.getAttribute('data-targets')||'').split(',').filter(Boolean);
+        var pop = document.createElement('div');
+        pop.className = 'ev-pass-pop';
+        targets.forEach(function(t){
+          var b = document.createElement('button');
+          b.type = 'button';
+          b.className = 'ev-pass-av';
+          b.setAttribute('data-c', t);
+          b.setAttribute('aria-label', 'Suggest to ' + t.charAt(0).toUpperCase()+t.slice(1));
+          b.title = 'Suggest to ' + t.charAt(0).toUpperCase()+t.slice(1);
+          b.textContent = t.charAt(0).toUpperCase();
+          b.addEventListener('click', function(e2){
+            e2.preventDefault(); e2.stopPropagation();
+            sendSuggestion(key, t);
+            /* render() will tear this down */
+          });
+          pop.appendChild(b);
+        });
+        btn.appendChild(pop);
+      });
+    });
+    body.querySelectorAll('.ev-sugg-dis').forEach(function(b){
+      b.addEventListener('click', function(ev){
+        ev.preventDefault();
+        ev.stopPropagation();
+        dismissSuggestion(b.getAttribute('data-key'),
+                          b.getAttribute('data-from'),
+                          b.getAttribute('data-to'));
+      });
+    });
   }
+  function closeAllPopovers(){
+    document.querySelectorAll('.ev-pass-pop').forEach(function(p){
+      if(p.parentNode) p.parentNode.removeChild(p);
+    });
+  }
+  function flash(el){
+    el.style.background = 'rgba(95,214,160,.38)';
+    el.style.color = '#fffdf3';
+    setTimeout(function(){ el.style.background=''; el.style.color=''; }, 280);
+  }
+  /* Click outside closes any open popover */
+  document.addEventListener('click', function(e){
+    if(!e.target.closest('.ev-pass') && !e.target.closest('.ev-pass-pop')){
+      closeAllPopovers();
+    }
+  }, true);
 
   /* ---------------- search / filter wiring ---------------- */
   function wireControls(){

@@ -277,6 +277,23 @@ window.__paintNavAvatar = function(){
   }
 };
 
+/* v.168 — Suggestion inbox indicator on the nav avatar.
+   When a page (e.g. programs.html) finds the signed-in user has unread
+   suggestions, it calls __setNavAvatarBadge(N). We attach a brass dot
+   with a small numeric badge that pulses to nudge the eye. */
+window.__setNavAvatarBadge = function(n){
+  var av = document.querySelector('.nav-avatar');
+  if(!av) return;
+  var num = Math.max(0, parseInt(n,10) || 0);
+  if(num <= 0){
+    av.classList.remove('has-badge');
+    av.removeAttribute('data-badge');
+    return;
+  }
+  av.classList.add('has-badge');
+  av.setAttribute('data-badge', String(num));
+};
+
 /* Paint once on load (synchronous from the seed), then again after auth
    confirms via the per-page handlers (they call __writeCrewSeed, which
    re-paints). */
@@ -322,7 +339,7 @@ if(window.__crewSeed && window.__crewSeed.name){
 }
 
 /* ===== Site version badge in nav (visible across all pages) ===== */
-window.SITE_VERSION = 'v.166';
+window.SITE_VERSION = 'v.169';
 (function(){
   document.querySelectorAll('nav .brand .br-y').forEach(function(y){
     if(!y.querySelector('.br-ver')){
