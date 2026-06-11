@@ -545,13 +545,49 @@
 
   @media(max-width:560px){
     .pg-controls{ padding:11px 12px; }
-    .ev-link{ grid-template-columns: 70px 1fr; gap:10px; padding:10px 11px; }
+    /* v.174.1 — lock pass + status to a fixed slot at the right edge and
+       clamp the event title so a long name can't push them off-screen or
+       wrap them onto a new line. */
+    .ev-row{ align-items:stretch; }
+    .ev-link{
+      grid-template-columns: 66px 1fr; gap:10px; padding:10px 11px;
+      flex: 1 1 0;            /* basis 0 — shrink to whatever space is left */
+      min-width: 0;
+      overflow: hidden;
+    }
     .ev-arrow{ display:none; }
     .ev-time{ padding-right:9px; font-size:.74rem; }
-    .ev-name{ font-size:.86rem; }
-    .ev-place{ font-size:.62rem; }
-    .ev-status{ min-width:54px; padding:6px 10px; }
+    .ev-body{ min-width: 0; overflow: hidden; }
+    .ev-name{
+      font-size:.86rem;
+      /* Two-line clamp + ellipsis so long titles never reflow the buttons. */
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      word-break: break-word;
+    }
+    .ev-place{
+      font-size:.62rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .ev-pass{
+      flex: 0 0 auto;
+      min-width: 36px; width: 36px;
+      padding: 0 8px;
+    }
+    .ev-status{
+      flex: 0 0 auto;
+      min-width: 54px; width: 54px;
+      padding: 6px 6px;
+    }
     .ev-status .ev-status-ic{ font-size:1rem; }
+    .ev-status .ev-status-l{ font-size:.50rem; }
+    /* The inline Pass picker stays full-width (already flex-basis:100%)
+       and continues to wrap below the row. */
   }
 </style>
 </head>
