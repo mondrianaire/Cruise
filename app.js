@@ -339,7 +339,7 @@ if(window.__crewSeed && window.__crewSeed.name){
 }
 
 /* ===== Site version badge in nav (visible across all pages) ===== */
-window.SITE_VERSION = 'v.173';
+window.SITE_VERSION = 'v.175';
 (function(){
   document.querySelectorAll('nav .brand .br-y').forEach(function(y){
     if(!y.querySelector('.br-ver')){
@@ -668,7 +668,9 @@ window.SITE_VERSION = 'v.173';
       '</button>' +
       '<div class="sc-bar-spacer"></div>' +
       userChip +
-      '<button type="button" class="sc-bar-sync" id="scSyncNow"' + syncBtnAttrs + ' title="Force a re-push to the cloud">↻ <span class="sc-bar-sync-l">Sync now</span></button>' +
+      /* v.175 — bar button is hidden by CSS but kept in the DOM for
+         layout; rename its id so the panel's #scSyncNow stays unique. */
+      '<button type="button" class="sc-bar-sync" id="scBarSyncNow"' + syncBtnAttrs + ' title="Force a re-push to the cloud">↻ <span class="sc-bar-sync-l">Sync now</span></button>' +
       '</div>';
     if(SC.expanded){
       var errBlock = '';
@@ -687,9 +689,10 @@ window.SITE_VERSION = 'v.173';
         '<div class="sc-panel-row"><span class="sc-k">Last saved</span><span class="sc-v">' + (SC.lastSavedAt ? fmtAgo(SC.lastSavedAt) : 'not yet') + '</span></div>' +
         '<div class="sc-panel-row"><span class="sc-k">Pending</span><span class="sc-v">' + SC.pending + '</span></div>' +
         errBlock +
-        /* v.173: the bar already has a persistent Sync Now button, so
-           the expanded panel only needs Copy Diagnostics (no duplicate
-           id="scSyncNow"). */
+        /* v.175: the toolbar pill no longer has its own Sync Now button
+           (the wide bar is gone), so the expanded panel is the single
+           place to force a re-push. */
+        '<button type="button" class="sc-cta" id="scSyncNow"' + disabled + '>↻ Sync now</button>' +
         '<button type="button" class="sc-cta sc-cta-alt" id="scCopyDiag">⧉ Copy diagnostics</button>' +
         '</div>';
     }
@@ -848,8 +851,4 @@ window.SITE_VERSION = 'v.173';
   window.__SyncCenter = SC;
 
   if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', function(){ SC.init(); });
-  } else {
-    SC.init();
-  }
-})();
+    document.addEventListener('DOMContent
