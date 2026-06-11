@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Document Vault — Canada &amp; New England 2026</title>
 <meta name="description" content="Travel Document Vault — every reservation, boarding pass and conuirmation uor the ms Zuiderdam Canada &amp; New England voyage, June 2026.">
-<link rel="stylesheet" href="styles.css?v=208">
+<link rel="stylesheet" href="styles.css?v=209">
 <link rel="canonical" href="https://mondrianaire.github.io/Cruise/documents.html">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Document Vault — ms Zuiderdam · June 2026">
@@ -30,7 +30,52 @@
   }
   .dv-legend .dv-leg-i{ display:inline-flex; align-items:center; gap:6px; }
   .dv-legend .dv-dot{ width:8px; height:8px; }
-  .dv-sum{ display:flex; flex-wrap:wrap; gap:10px; margin:4px 0 26px; }
+  /* v.209 — per-user progress chart + sum pills. The bar stacks 3
+     segments (ready · pending · needed) whose widths are proportional
+     to the user's docs. 'na' is excluded; shown separately as a muted
+     "X excluded" aside. */
+  .dv-prog-row{ display:flex; align-items:center; gap:12px; margin:6px 0 10px; }
+  .dv-prog-lab{
+    font:700 .66rem/1 var(--d-mono);
+    letter-spacing:.08em; text-transform:uppercase;
+    color:var(--ink-dim); flex:0 0 auto;
+    white-space:nowrap;
+  }
+  .dv-prog{
+    position:relative;
+    flex:1 1 auto;
+    height:12px;
+    border-radius:7px;
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.08);
+    overflow:hidden;
+    display:flex;
+  }
+  .dv-prog-seg{
+    display:inline-block; height:100%;
+    transition:width .35s ease-out;
+  }
+  .dv-prog-seg.seg-ready  { background:linear-gradient(90deg, var(--easy,#5fd6a0), rgba(95,214,160,.6)); }
+  .dv-prog-seg.seg-pending{ background:linear-gradient(90deg, var(--mod,#efb228), rgba(239,178,40,.6)); }
+  .dv-prog-seg.seg-needed { background:linear-gradient(90deg, rgba(224,121,90,.7), var(--stren,#e0795a)); }
+  .dv-prog-empty{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:100%; height:100%;
+    font:600 .62rem/1 var(--d-mono);
+    color:var(--ink-dim);
+    letter-spacing:.06em;
+  }
+  .dv-prog-pct{
+    font:700 .76rem/1 var(--d-mono);
+    color:var(--brass-lt);
+    min-width:38px; text-align:right;
+    flex:0 0 auto;
+  }
+  .dv-sum-pills{ display:flex; flex-wrap:wrap; gap:10px; }
+  .dv-sum-pills .pill-stat.is-muted{ opacity:.55; }
+  .dv-sum-pills .dv-sum-total{ margin-left:auto; }
+  .dv-sum-pills .dv-na-aside{ opacity:.65; font-size:.86em; }
+  .dv-sum{ display:flex; flex-direction:column; gap:6px; margin:4px 0 26px; }
   .dv-sum .pill-stat{
     display:inline-flex; align-items:center; gap:8px;
     font:700 .82rem/1 var(--d-mono); letter-spacing:.02em;
@@ -598,15 +643,42 @@ window.__DV = (function(){
     return h;
   }
 
-  /* v.150: four-state summary — Outstanding (red) · Will upload (yellow) ·
-     Ready (green) · Disabled (grey). */
-  function setSummary(needed, pending, ready, na){
+  /* v.209: per-user, post-auth summary + progress chart. Counts only the
+     docs assigned to the signed-in user; 'na' (not needed) is excluded
+     from the total because the user has explicitly opted that card out.
+     If signed out, falls back to the catalogue-wide aggregate so the
+     home page still gives an honest at-a-glance state. */
+  function setSummary(needed, pending, ready, na, isSignedIn, who){
+    const total = needed + pending + ready;
+    const pNeed  = total ? (needed  / total * 100) : 0;
+    const pPend  = total ? (pending / total * 100) : 0;
+    const pReady = total ? (ready   / total * 100) : 0;
+    const scope = isSignedIn ? ((who||'you') + '&rsquo;s checklist') : 'overall';
     document.getElementById('dv-summary').innerHTML =
-      '<span class="pill-stat"><span class="dv-dot dot-needed"></span><b>'+needed+'</b> Outstanding</span>'
-     +'<span class="pill-stat"><span class="dv-dot dot-pending"></span><b>'+pending+'</b> Will upload</span>'
-     +'<span class="pill-stat"><span class="dv-dot dot-ready"></span><b>'+ready+'</b> Ready</span>'
-     +'<span class="pill-stat"><span class="dv-dot dot-na"></span><b>'+na+'</b> Disabled</span>'
-     +'<span class="pill-stat"><b>'+(needed+pending+ready+na)+'</b> total</span>';
+      '<div class="dv-prog-row">' +
+        '<span class="dv-prog-lab">' + scope + '</span>' +
+        '<div class="dv-prog" role="progressbar" aria-label="' + scope + ' progress" ' +
+          'aria-valuemin="0" aria-valuemax="' + total + '" aria-valuenow="' + ready + '">' +
+          (total
+            ? '<span class="dv-prog-seg seg-ready"   style="width:' + pReady + '%" title="' + ready   + ' ready"></span>' +
+              '<span class="dv-prog-seg seg-pending" style="width:' + pPend  + '%" title="' + pending + ' will upload"></span>' +
+              '<span class="dv-prog-seg seg-needed"  style="width:' + pNeed  + '%" title="' + needed  + ' outstanding"></span>'
+            : '<span class="dv-prog-empty">No documents assigned.</span>') +
+        '</div>' +
+        '<span class="dv-prog-pct">' + (total ? Math.round(pReady) : 0) + '%</span>' +
+      '</div>' +
+      '<div class="dv-sum-pills">' +
+        '<span class="pill-stat"><span class="dv-dot dot-needed"></span><b>'+needed+'</b> Outstanding</span>' +
+        '<span class="pill-stat"><span class="dv-dot dot-pending"></span><b>'+pending+'</b> Will upload</span>' +
+        '<span class="pill-stat"><span class="dv-dot dot-ready"></span><b>'+ready+'</b> Got it</span>' +
+        (na > 0
+          ? '<span class="pill-stat is-muted"><span class="dv-dot dot-na"></span><b>'+na+'</b> Not needed</span>'
+          : '') +
+        '<span class="pill-stat dv-sum-total"><b>'+total+'</b> total' +
+          (isSignedIn ? ' for you' : '') +
+          (na > 0 ? ' &middot; <span class="dv-na-aside">'+na+' excluded</span>' : '') +
+        '</span>' +
+      '</div>';
   }
 
   function render(data){
@@ -614,8 +686,10 @@ window.__DV = (function(){
     docs.forEach(function(d){ byId[d.id] = d; });
 
     /* everything starts Outstanding (red); Firestore snapshot may upgrade
-       individual entries to pending / ready / disabled once it loads. */
-    setSummary(docs.length, 0, 0, 0);
+       individual entries to pending / ready / disabled once it loads.
+       v.209: pass isSignedIn=false so the summary header reads "overall"
+       until the auth handler re-renders with a per-user view. */
+    setSummary(docs.length, 0, 0, 0, false, null);
 
     if(data.meta && data.meta.updated){
       document.getElementById('dv-updated').textContent = 'Updated '+fmtDate(data.meta.updated);
@@ -870,32 +944,57 @@ window.__DV = (function(){
   }
 
   /* ---------- status + summary ---------- */
+  /* v.209: per-user counts when signed in. Iterate every doc; for cards
+     the user is on, evaluate the user's personal status (statusForPerson);
+     for group cards, evaluate the shared '_group' slot. Cards the user
+     isn't on (per effectiveWhoFor) are completely skipped — they don't
+     contribute to outstanding OR total. 'na' (Not needed) is counted
+     separately and excluded from the total, so the chart only reflects
+     the docs the user has actually committed to handling. Card pills
+     still display the AGGREGATE status (statusFor) — that's the right
+     state for the per-card badge ("everyone's resolved" vs "you're done
+     but waiting on others"). */
   function updateStatuses(){
-    let need=0, pending=0, ready=0, na=0, done=0;
+    const me = isCrew ? (crewKey || '_group') : null;
+    let need=0, pending=0, ready=0, na=0;
     Object.keys(window.__DV.byId).forEach(function(docId){
-      const s = statusFor(docId);
-      if(s==='na') na++;
-      else if(s==='ready') ready++;
-      else if(s==='done') done++;
-      else if(s==='pending') pending++;
-      else need++;
+      /* Per-card pill always shows the AGGREGATE status. */
+      const aggregate = statusFor(docId);
       const cardEl = document.querySelector('.dv-card[data-doc="'+docId+'"]');
-      if(!cardEl) return;
-      const pill = cardEl.querySelector('.dv-status');
-      if(pill){
-        pill.className = 'dv-status st-' + s;
-        pill.textContent = s==='na'      ? 'Disabled'
-                         : s==='ready'   ? 'Ready'
-                         : s==='done'    ? 'Taken care of'   /* v.185 */
-                         : s==='pending' ? 'Will upload'
-                         : 'Outstanding';
+      if(cardEl){
+        const pill = cardEl.querySelector('.dv-status');
+        if(pill){
+          pill.className = 'dv-status st-' + aggregate;
+          pill.textContent = aggregate==='na'      ? 'Disabled'
+                           : aggregate==='ready'   ? 'Ready'
+                           : aggregate==='done'    ? 'Taken care of'
+                           : aggregate==='pending' ? 'Will upload'
+                           : 'Outstanding';
+        }
+        cardEl.classList.toggle('is-ready',   aggregate==='ready');
+        cardEl.classList.toggle('is-done',    aggregate==='done');
+        cardEl.classList.toggle('is-pending', aggregate==='pending');
+        cardEl.classList.toggle('is-na',      aggregate==='na');
       }
-      cardEl.classList.toggle('is-ready',   s==='ready');
-      cardEl.classList.toggle('is-done',    s==='done');   /* v.185 */
-      cardEl.classList.toggle('is-pending', s==='pending');
-      cardEl.classList.toggle('is-na',      s==='na');
+      /* Summary counters: per-user when signed in, aggregate when not. */
+      if(me){
+        const who = effectiveWhoFor(docId);
+        if(who.length && who.indexOf(me) < 0) return;   /* not my card */
+        const slot = who.length ? me : '_group';
+        const ps = statusForPerson(docId, slot);
+        if(ps === 'na') na++;
+        else if(ps === 'ready') ready++;
+        else if(ps === 'done') ready++;            /* "Taken care of" rolls into Got it */
+        else if(ps === 'pending') pending++;
+        else need++;
+      } else {
+        if(aggregate === 'na') na++;
+        else if(aggregate === 'ready' || aggregate === 'done') ready++;
+        else if(aggregate === 'pending') pending++;
+        else need++;
+      }
     });
-    window.__DV.setSummary(need, pending, ready, na);
+    window.__DV.setSummary(need, pending, ready, na, !!me, me ? (NAMES[me] || (crewName||'You')) : null);
   }
 
   /* ---------- rendering ---------- */
@@ -1827,8 +1926,7 @@ window.__DV = (function(){
         const members = (rs.exists() && rs.data() && rs.data().members) || {};
         if(members[user.email]){
           /* User's email is on the roster — accept directly. Falls back to
-             the user's first name from displayName if the roster has the
-             email but no name string. */
+             the user's first name from displayName if the roster has the email but no name string. */
           setCrew(members[user.email] || (user.displayName||'').split(/\s+/)[0]);
           if(window.__writeCrewSeed) window.__writeCrewSeed(crewName, user.email, user.photoURL);
         } else {
@@ -1861,10 +1959,6 @@ window.__DV = (function(){
           }
         }
       }catch(e){
-        /* Roster doc read failed — surface a reject rather than silently
-           leaving the user on the "Sign in via the Voyage Console" screen
-           forever (which is what was happening for every signed-in user
-           because the file was truncated mid-statement). */
         showRosterReject(user, 'roster-error');
       }
     });
@@ -1872,4 +1966,3 @@ window.__DV = (function(){
 </script>
 </body>
 </html>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
