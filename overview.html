@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Trip Overview — Canada &amp; New England 2026</title>
 <meta name="description" content="Trip Overview — ms Zuiderdam cruise hub for the Canada &amp; New England voyage, June 2026.">
-<link rel="stylesheet" href="styles.css?v=201">
+<link rel="stylesheet" href="styles.css?v=202">
 <link rel="canonical" href="https://mondrianaire.github.io/Cruise/overview.html">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Trip Overview — ms Zuiderdam · June 2026">
@@ -174,9 +174,12 @@
   /* Crew-only reveal — frontend gate, not a real security boundary. */
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
   import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+  import { initializeFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
   const cfg={apiKey:"AIzaSyCxc5ICHwz4Fp_2kRwHogeLdgUeCGKgHss",authDomain:"gto-poker-qui.firebaseapp.com",projectId:"gto-poker-qui",storageBucket:"gto-poker-qui.firebasestorage.app",messagingSenderId:"607915389446",appId:"1:607915389446:web:5b1c777bf4fad0bc1c0987"};
   try{
-    const auth = getAuth(initializeApp(cfg));
+    const app  = initializeApp(cfg);
+    const auth = getAuth(app);
+    const db   = initializeFirestore(app, {experimentalForceLongPolling:true});
     /* v.152: paint the crew-only blocks optimistically if the shared
        seed exists, so navigating from documents.html / index.html
        doesn't briefly flash the gated state. */
@@ -184,23 +187,37 @@
       document.querySelectorAll('.crew-only').forEach(function(el){ el.hidden = false; });
       if(window.__unlockCrewReveal) window.__unlockCrewReveal();
     }
-    onAuthStateChanged(auth, function(user){
-      if(!user){
-        if(window.__clearCrewSeed) window.__clearCrewSeed();
-        document.querySelectorAll('.crew-only').forEach(function(el){ el.hidden = true; });
-        if(window.__lockCrewReveal) window.__lockCrewReveal();
-        return;
-      }
+    /* v.202: previously, ANY signed-in Firebase user (including a stale
+       session from another app on this same project — gto-drill etc.)
+       would unlock all crew-only blocks here. That leaked confirmation
+       numbers, names, and the cabin to anyone with a persisted
+       gto-poker-qui auth token. Fix: ALWAYS verify the user is on the
+       cruise roster before unlocking, AND on first confirmation write
+       the shared seed so the nav-avatar + downstream pages know who is
+       signed in. Signed-out OR signed-in-but-not-on-roster both produce
+       the locked / seed-cleared state. */
+    var CRUISE_EMAILS = ['mondrianaire@gmail.com','laura.brentnell@gmail.com','sandraleedm@gmail.com','beccamcg99@gmail.com','kar8en@gmail.com'];
+    async function isOnRoster(email){
+      /* Fast path: well-known cruise emails. Avoids a Firestore read in
+         the common case so the page paints faster on every navigation. */
+      if(email && CRUISE_EMAILS.indexOf(String(email).toLowerCase()) >= 0) return { name: null };
+      try{
+        var snap = await getDoc(doc(db, "cruise", "roster"));
+        if(snap.exists()){
+          var members = (snap.data() && snap.data().members) || {};
+          if(members[email]) return { name: members[email] };
+        }
+      }catch(e){}
+      return null;
+    }
+    function lockEverything(){
+      if(window.__clearCrewSeed) window.__clearCrewSeed();
+      document.querySelectorAll('.crew-only').forEach(function(el){ el.hidden = true; });
+      if(window.__lockCrewReveal) window.__lockCrewReveal();
+    }
+    function unlockAndSeed(user, rostered){
       document.querySelectorAll('.crew-only').forEach(function(el){ el.hidden = false; });
       if(window.__unlockCrewReveal) window.__unlockCrewReveal();
-      /* Keep the seed fresh — overview doesn't know the rostered name
-         but a refresh on email is harmless if name unchanged. */
-      if(window.__writeCrewSeed && user.email && window.__crewSeed){
-        window.__writeCrewSeed(window.__crewSeed.name, user.email, user.photoURL);
-      }
-    });
-  }catch(e){}
-</script>
-</body>
-</html>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+      /* Persist a fresh seed so the nav-avatar + every other page on
+         the site knows who's signed in. Fall back to the first-word of
+   
