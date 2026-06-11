@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Document Vault — Canada &amp; New England 2026</title>
 <meta name="description" content="Travel Document Vault — every reservation, boarding pass and conuirmation uor the ms Zuiderdam Canada &amp; New England voyage, June 2026.">
-<link rel="stylesheet" href="styles.css?v=194">
+<link rel="stylesheet" href="styles.css?v=198">
 <link rel="canonical" href="https://mondrianaire.github.io/Cruise/documents.html">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Document Vault — ms Zuiderdam · June 2026">
@@ -107,6 +107,128 @@
     background:rgba(63,160,173,.16); color:var(--teal-lt); border:1px solid rgba(63,160,173,.3);
   }
   .dv-who .av-all{ background:rgba(230,196,119,.16); color:var(--brass-lt); border-color:rgba(230,196,119,.32); }
+  /* v.198 — Mark Complete! row. */
+  .dv-complete-row{ display:flex; align-items:center; gap:8px; margin-top:10px; padding-top:10px; border-top:1px dashed rgba(255,255,255,.08); }
+  .dv-complete-row.is-on{ border-top-color:rgba(95,214,160,.32); }
+  .dv-complete-btn{
+    margin-left:auto;
+    background:linear-gradient(180deg, rgba(95,214,160,.22), rgba(95,214,160,.10));
+    color:var(--mint, #5fd6a0);
+    border:1px solid rgba(95,214,160,.45);
+    padding:7px 14px;
+    border-radius:999px;
+    font:700 .74rem/1 var(--d-mono);
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    cursor:pointer;
+    box-shadow:inset 0 0 12px rgba(95,214,160,.10);
+  }
+  .dv-complete-btn:hover{ background:linear-gradient(180deg, rgba(95,214,160,.34), rgba(95,214,160,.18)); color:#aef0d0; }
+  .dv-complete-badge{
+    background:rgba(95,214,160,.14);
+    color:var(--mint, #5fd6a0);
+    border:1px solid rgba(95,214,160,.32);
+    padding:5px 10px;
+    border-radius:999px;
+    font:700 .68rem/1 var(--d-mono);
+    letter-spacing:.06em;
+  }
+  .dv-reopen-btn{
+    margin-left:auto;
+    background:rgba(200,155,74,.12);
+    color:var(--brass-lt);
+    border:1px dashed var(--brass);
+    padding:5px 12px;
+    border-radius:999px;
+    font:700 .66rem/1 var(--d-mono);
+    letter-spacing:.06em;
+    cursor:pointer;
+  }
+  .dv-reopen-btn:hover{ background:rgba(200,155,74,.22); color:var(--cream); }
+  /* When a card is marked complete, collapse it to a one-line strip:
+     status border outline + category typeline + title only. Everything
+     else inside the card is hidden. Hover reveals a subtle hint. */
+  .dv-card.is-card-completed{
+    cursor:default;
+    padding:10px 14px !important;
+    min-height:auto;
+    border-style:solid !important;
+    opacity:.88;
+  }
+  .dv-card.is-card-completed > *{ display:none !important; }
+  .dv-card.is-card-completed .dv-top{ display:flex !important; align-items:center; gap:10px; margin:0; padding:0; }
+  .dv-card.is-card-completed .dv-top > div{ display:flex !important; flex-direction:row; align-items:baseline; gap:10px; flex:1; min-width:0; }
+  .dv-card.is-card-completed .dv-typeline{ display:inline-flex !important; flex:0 0 auto; }
+  .dv-card.is-card-completed .dv-title{ display:inline-block !important; margin:0; font-size:.92rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .dv-card.is-card-completed .dv-vendor,
+  .dv-card.is-card-completed .dv-meta,
+  .dv-card.is-card-completed .dv-who,
+  .dv-card.is-card-completed .dv-conf,
+  .dv-card.is-card-completed .dv-docs,
+  .dv-card.is-card-completed .dv-vaultzone,
+  .dv-card.is-card-completed .dv-notes,
+  .dv-card.is-card-completed .dv-status{ display:none !important; }
+  /* Small completion glyph appended after the title via ::after. */
+  .dv-card.is-card-completed .dv-title::after{
+    content:" 🏁";
+    font-size:.85em;
+    margin-left:6px;
+    opacity:.85;
+  }
+  /* Always honour the status-tone border on completed cards too. */
+  .dv-card.is-card-completed.is-all-done{ border-color:rgba(95,214,160,.55); }
+  /* Override collapsed-complete display for completed cards (since the
+     vaultzone is hidden, the auto-expand-on-click ::after pseudo doesn\'t
+     render here). */
+  .dv-card.is-card-completed::after{ content:none !important; }
+
+  /* v.197 — admin chip editing (Jett only). */
+  .dv-who .av{ position:relative; padding-right:18px; }
+  .dv-who .av-all{ padding-right:8px; }
+  .dv-who .who-x{
+    position:absolute;
+    top:50%; right:3px;
+    transform:translateY(-50%);
+    width:14px; height:14px;
+    padding:0; line-height:1;
+    border:0; background:transparent;
+    color:var(--ink-dim);
+    font:700 .82rem/1 var(--d-mono);
+    cursor:pointer;
+    opacity:.7;
+    border-radius:50%;
+  }
+  .dv-who .who-x:hover{ opacity:1; color:var(--stren); background:rgba(224,121,90,.18); }
+  .dv-who .who-plus{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:22px; height:22px;
+    padding:0; border-radius:50%;
+    background:rgba(200,155,74,.10);
+    border:1px dashed var(--brass);
+    color:var(--brass-lt);
+    cursor:pointer;
+    font:700 .82rem/1 var(--d-mono);
+    position:relative;
+  }
+  .dv-who .who-plus:hover{ background:rgba(200,155,74,.22); color:var(--cream); }
+  .who-plus-pop{
+    position:absolute;
+    top:calc(100% + 6px); left:0;
+    display:flex; gap:4px; padding:6px;
+    background:rgba(8,22,26,.96);
+    border:1px solid var(--brass);
+    border-radius:8px;
+    box-shadow:0 6px 18px rgba(0,0,0,.45);
+    z-index:50;
+  }
+  .who-pop-av{
+    width:24px; height:24px; border-radius:50%;
+    display:inline-flex; align-items:center; justify-content:center;
+    border:0; cursor:pointer;
+    font:700 .72rem/1 var(--d-serif);
+    background:var(--brass); color:#08161a;
+  }
+  .who-pop-av:hover{ box-shadow:0 0 0 2px var(--brass-lt); transform:scale(1.1); }
 
   .dv-conf{ font:600 .8rem/1.4 var(--d-body); color:var(--ink); }
   .dv-conf .lab{ color:var(--ink-dim); font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; display:block; margin-bottom:2px; }
@@ -155,6 +277,16 @@
 
   .dv-add{ display:flex; flex-wrap:wrap; gap:6px; align-items:center; }
   .dv-add select.dv-type{ font:600 .72rem/1 var(--d-body); padding:7px 8px; border-radius:7px; background:var(--deep); color:var(--ink); border:1px solid rgba(255,255,255,.14); }
+  /* v.196: while the user hasn\'t picked an upload type, dim the file/value
+     controls + highlight the select so the path forward is obvious. */
+  .dv-add.is-no-type .dv-up,
+  .dv-add.is-no-type .dv-val,
+  .dv-add.is-no-type .dv-val-add{ opacity:.40; pointer-events:none; }
+  .dv-add.is-no-type select.dv-type{
+    border-color:var(--brass);
+    box-shadow:0 0 0 1px rgba(200,155,74,.30);
+    color:var(--brass-lt);
+  }
   .dv-add .dv-up{ display:inline-flex; align-items:center; gap:5px; cursor:pointer; border:1px dashed rgba(230,196,119,.45); border-radius:7px; font:700 .7rem/1 var(--d-mono); color:var(--brass-lt); padding:7px 9px; background:rgba(230,196,119,.05); }
   .dv-add .dv-up:hover{ background:rgba(230,196,119,.12); }
   .dv-add .dv-up input{ display:none; }
@@ -217,6 +349,53 @@
   /* Hide cards where the user is on the explicit `who` list and not
      included. Group cards (empty or missing `who`) stay visible. */
   .dv-card.is-hidden-for-me{ display:none; }
+
+  /* v.195 — status-tone outlines on every card so the user can scan the
+     list and immediately see which cards are fully resolved, which they
+     personally finished, which are pending, and which they\'ve disabled.
+     Priority precedence (highest wins):
+       all-resolved-by-everyone  → SOLID GREEN (the group is done)
+       my-status === na          → WIREFRAME (I\'ve dismissed; reminder card)
+       my-status === ready|done  → DOTTED GREEN (I\'m done; others aren\'t)
+       my-status === pending     → DOTTED YELLOW (will upload later) */
+  .dv-card.is-all-done{
+    border:2px solid #5fd6a0 !important;
+    box-shadow:0 0 0 1px rgba(95,214,160,.30), 0 2px 8px rgba(0,0,0,.35);
+  }
+  .dv-card.is-me-done{
+    border:2px dashed #5fd6a0 !important;
+  }
+  .dv-card.is-me-pending{
+    border:2px dashed var(--mod) !important;
+  }
+  .dv-card.is-me-na{
+    border:1px dashed rgba(255,255,255,.30) !important;
+    background:transparent !important;
+    opacity:.55;
+  }
+  .dv-card.is-me-na:hover{ opacity:.85; }
+
+  /* Small status-tone legend chip we paint at the top of the filter row
+     so the visual language is self-explanatory. */
+  .dv-tone-legend{
+    display:flex; flex-wrap:wrap; gap:8px;
+    margin-left:6px;
+    font:600 .58rem/1 var(--d-mono); letter-spacing:.06em; text-transform:uppercase;
+  }
+  .dv-tone-legend span{
+    display:inline-flex; align-items:center; gap:4px;
+    padding:2px 7px; border-radius:5px;
+    color:var(--ink-dim);
+  }
+  .dv-tone-legend i{
+    width:14px; height:10px; border-radius:2px;
+    display:inline-block;
+  }
+  .dv-tone-legend .tl-all  i{ background:transparent; border:2px solid #5fd6a0; }
+  .dv-tone-legend .tl-me   i{ background:transparent; border:2px dashed #5fd6a0; }
+  .dv-tone-legend .tl-pend i{ background:transparent; border:2px dashed var(--mod); }
+  .dv-tone-legend .tl-na   i{ background:transparent; border:1px dashed rgba(255,255,255,.4); }
+
 
   /* Top-of-list filter toggle row */
   .dv-filter-row{
@@ -589,7 +768,11 @@ window.__DV = (function(){
     other_file:    { label:'Other file', mode:'file', icon:'📎', accept:'image/*,application/pdf' }
   };
   const TYPE_ORDER = ['boarding_pass','confirmation','ticket','qr','barcode','passport','seat','link','photo','note','other_file'];
-  const TYPE_OPTS = TYPE_ORDER.map(function(id){ return '<option value="'+id+'">'+TYPES[id].icon+' '+esc(TYPES[id].label)+'</option>'; }).join('');
+  /* v.196: lead with a disabled "Select Upload Type" placeholder so the
+     select doesn\'t default to "Boarding pass" and silently land the wrong
+     type label on every quick upload. User must explicitly pick a type. */
+  const TYPE_OPTS = '<option value="" disabled selected>— Select Upload Type —</option>'
+    + TYPE_ORDER.map(function(id){ return '<option value="'+id+'">'+TYPES[id].icon+' '+esc(TYPES[id].label)+'</option>'; }).join('');
 
   let auth, db, storage, vaultRef;
   let isCrew = false, crewName = '', crewKey = '';
@@ -637,7 +820,8 @@ window.__DV = (function(){
     return (n/1048576).toFixed(1) + ' MB';
   }
   function personsFor(docId){
-    const d = window.__DV.byId[docId]; const who = (d && d.who) || [];
+    /* v.197: use effective who-list (with Jett\'s overrides applied). */
+    const who = effectiveWhoFor(docId);
     return who.length ? who : ['_group'];
   }
   function arrFor(docId, p){ return (items[docId] && items[docId][p]) || []; }
@@ -841,6 +1025,19 @@ window.__DV = (function(){
       }
       h += '<button type="button" class="dv-na-toggle" data-act="na" title="Disable - no documents needed">⚪ Not needed (disable)</button>';
       h += '</div>';
+      /* v.198: Mark Complete! — sits below the per-person controls. */
+      var isCompleted = !!completedMap[docId];
+      if(isCompleted){
+        var cBy = completedMap[docId].by ? ' · ' + esc(completedMap[docId].by) : '';
+        h += '<div class="dv-complete-row is-on">'
+           +   '<span class="dv-complete-badge">🏁 Card marked complete' + cBy + '</span>'
+           +   '<button type="button" class="dv-reopen-btn" data-act="reopen" title="Reopen this card">Reopen</button>'
+           + '</div>';
+      } else {
+        h += '<div class="dv-complete-row">'
+           +   '<button type="button" class="dv-complete-btn" data-act="complete" title="Verify all uploads and mark this card complete">🏁 Mark Complete!</button>'
+           + '</div>';
+      }
     }
     zone.innerHTML = h;
     zone.querySelectorAll('.dv-type').forEach(applyMode);
@@ -849,6 +1046,115 @@ window.__DV = (function(){
 
   function renderAllZones(){ document.querySelectorAll('.dv-vaultzone').forEach(renderZone); }
   function renderAll(){ renderAllZones(); updateStatuses(); applyCardModes(); }
+
+  /* v.197 — admin-only chip editing. When the signed-in user is Jett,
+     decorate each .dv-who chip with a small ✕ to remove that traveller
+     from the doc\'s effective who-list, plus a "+" chip that opens a
+     mini picker of currently-removed travellers to re-add them. */
+  function paintWhoEditors(card, docId){
+    var who = card.querySelector('.dv-who');
+    if(!who) return;
+    /* v.197.1: chips are re-rendered from the EFFECTIVE who-list (with
+       Jett\'s overrides applied) on every paintWhoEditors call. That way
+       both admin and non-admin views show only the current members; the
+       static whoChips() rendering is just the seed. We only do this when
+       there\'s an override OR when the current user is admin (so the
+       data-key attributes are present for ✕ clicks). */
+    var hasOverride = !!whoOverridesMap[docId];
+    if(!hasOverride && !isAdmin()){
+      who.querySelectorAll('.who-x, .who-plus, .who-plus-pop').forEach(function(n){ n.remove(); });
+      return;
+    }
+    var current = effectiveWhoFor(docId);
+    var ALL5 = ['jett','laura','sandra','becca','karen'];
+    var available = ALL5.filter(function(k){ return current.indexOf(k) < 0; });
+    /* Regenerate chip HTML. We escape via the local esc helper inherited
+       from window.__DV. */
+    var html = '';
+    if(!current.length){
+      /* No assigned people — render empty (the card is a group card). */
+      html = '<span class="av av-all">Everyone · all 5</span>';
+    } else if(current.length === 5){
+      html = '<span class="av av-all">Everyone · all 5</span>';
+    } else {
+      html = current.map(function(k){
+        var xBtn = isAdmin()
+          ? '<button type="button" class="who-x" data-doc="' + esc(docId) + '" data-key="' + esc(k) + '" title="Remove ' + esc(k) + '">×</button>'
+          : '';
+        return '<span class="av" data-key="' + esc(k) + '">' + esc(NAMES[k]||k) + xBtn + '</span>';
+      }).join('');
+    }
+    if(isAdmin() && available.length){
+      html += '<button type="button" class="who-plus" data-doc="' + esc(docId) + '" title="Add a traveller">+</button>';
+    }
+    who.innerHTML = html;
+  }
+
+  function setWhoOverride(docId, newList){
+    /* Persist + optimistic apply. */
+    if(newList && newList.length){
+      whoOverridesMap[docId] = newList;
+    } else {
+      delete whoOverridesMap[docId];
+    }
+    var payload = { updatedAt: Date.now() };
+    payload.whoOverrides = {};
+    payload.whoOverrides[docId] = (newList && newList.length) ? newList : deleteField();
+    renderAll();
+    setDoc(vaultRef, payload, { merge:true })
+      .catch(function(err){
+        console.error('[CnE2026 whoOverride write]', err);
+        alert('Could not update who-list.\n\n'
+          + (err && err.code ? err.code + '\n' : '')
+          + (err && err.message ? err.message : 'Unknown error'));
+      });
+  }
+
+  /* Delegated click for the admin editor controls. */
+  document.addEventListener('click', function(ev){
+    var x = ev.target.closest && ev.target.closest('.who-x');
+    if(x && isAdmin()){
+      ev.preventDefault(); ev.stopPropagation();
+      var docId = x.getAttribute('data-doc');
+      var key   = x.getAttribute('data-key');
+      var cur = effectiveWhoFor(docId).slice();
+      var idx = cur.indexOf(key);
+      if(idx >= 0){ cur.splice(idx, 1); setWhoOverride(docId, cur); }
+      return;
+    }
+    var plus = ev.target.closest && ev.target.closest('.who-plus');
+    if(plus && isAdmin()){
+      ev.preventDefault(); ev.stopPropagation();
+      var docId2 = plus.getAttribute('data-doc');
+      var cur2 = effectiveWhoFor(docId2).slice();
+      var avail = ['jett','laura','sandra','becca','karen'].filter(function(k){ return cur2.indexOf(k) < 0; });
+      /* Close any other open picker. */
+      document.querySelectorAll('.who-plus-pop').forEach(function(p){ p.remove(); });
+      if(!avail.length) return;
+      var pop = document.createElement('div');
+      pop.className = 'who-plus-pop';
+      avail.forEach(function(k){
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'who-pop-av';
+        b.setAttribute('data-c', k);
+        b.textContent = k.charAt(0).toUpperCase();
+        b.title = 'Add ' + k;
+        b.addEventListener('click', function(e2){
+          e2.preventDefault(); e2.stopPropagation();
+          cur2.push(k);
+          setWhoOverride(docId2, cur2);
+          pop.remove();
+        });
+        pop.appendChild(b);
+      });
+      plus.appendChild(pop);
+      return;
+    }
+    /* Click outside any picker closes it. */
+    if(!ev.target.closest('.who-plus, .who-plus-pop')){
+      document.querySelectorAll('.who-plus-pop').forEach(function(p){ p.remove(); });
+    }
+  }, true);
 
   /* v.194 — show/hide + collapse logic.
      Two state flags persisted in sessionStorage:
@@ -868,7 +1174,7 @@ window.__DV = (function(){
     document.querySelectorAll('.dv-card').forEach(function(card){
       var docId = card.getAttribute('data-doc');
       var doc = (window.__DV && window.__DV.byId && window.__DV.byId[docId]) || {};
-      var who = (doc && doc.who) || [];
+      var who = effectiveWhoFor(docId);
 
       /* Visibility: hide if the user is signed in, the doc has an explicit
          `who` list, and the user is not on it. Group docs (empty who)
@@ -886,6 +1192,35 @@ window.__DV = (function(){
       var iAmDone = (myStatus === 'ready' || myStatus === 'done' || myStatus === 'na');
       var shouldCollapse = isCrew && !showCompleted && iAmDone && !card.classList.contains('is-force-expanded');
       card.classList.toggle('is-collapsed-complete', shouldCollapse);
+
+      /* v.195 — paint the status-tone border. Skip on signed-out so the
+         page doesn\'t look like everything is resolved before auth lands. */
+      var toneAll = false, toneMeDone = false, tonePending = false, toneNA = false;
+      if(isCrew){
+        var persons = (typeof personsFor === 'function') ? personsFor(docId) : [];
+        var allResolved = persons.length > 0 && persons.every(function(p){
+          var ps = statusForPerson(docId, p);
+          return ps === 'ready' || ps === 'done' || ps === 'na';
+        });
+        if(allResolved){
+          toneAll = true;
+        } else if(myStatus === 'na'){
+          toneNA = true;
+        } else if(myStatus === 'ready' || myStatus === 'done'){
+          toneMeDone = true;
+        } else if(myStatus === 'pending'){
+          tonePending = true;
+        }
+      }
+      card.classList.toggle('is-all-done',    toneAll);
+      card.classList.toggle('is-me-done',     toneMeDone);
+      card.classList.toggle('is-me-pending',  tonePending);
+      card.classList.toggle('is-me-na',       toneNA);
+      /* v.198: card-completed strip mode. */
+      var cardCompleted = !!completedMap[docId] && isCrew;
+      card.classList.toggle('is-card-completed', cardCompleted);
+      /* v.197: paint admin chip editors (Jett only). */
+      paintWhoEditors(card, docId);
     });
     /* Count for the filter row badge */
     var hidden = document.querySelectorAll('.dv-card.is-hidden-for-me').length;
@@ -906,6 +1241,12 @@ window.__DV = (function(){
       '<span class="dv-filter-lbl">Filters</span>' +
       '<label><input type="checkbox" id="dv-show-completed">Show completed cards expanded</label>' +
       '<label><input type="checkbox" id="dv-show-all-assigned">Show cards I\'m not on</label>' +
+      '<span class="dv-tone-legend">' +
+        '<span class="tl-all"  title="All travellers resolved this card"><i></i>All done</span>' +
+        '<span class="tl-me"   title="You finished; others still pending"><i></i>You done</span>' +
+        '<span class="tl-pend" title="Will upload later"><i></i>Pending</span>' +
+        '<span class="tl-na"   title="You marked this not needed"><i></i>Disabled</span>' +
+      '</span>' +
       '<span id="dv-filter-stats" style="margin-left:auto;color:var(--ink-dim);font-size:.62rem;letter-spacing:.06em;"></span>';
     body.parentNode.insertBefore(row, body);
     var c1 = document.getElementById('dv-show-completed');
@@ -930,6 +1271,10 @@ window.__DV = (function(){
   document.addEventListener('click', function(ev){
     var card = ev.target.closest('.dv-card.is-collapsed-complete');
     if(!card) return;
+    /* v.198 — manually-completed cards stay collapsed regardless of clicks
+       anywhere on the strip. Use the Reopen button (visible inside the
+       hidden vaultzone — surfaced via hover or by toggling the filter). */
+    if(card.classList.contains('is-card-completed')) return;
     /* Don't intercept clicks on buttons / inputs inside the (currently
        hidden) vaultzone — but if user clicked the card body / header,
        expand it. */
@@ -946,10 +1291,21 @@ window.__DV = (function(){
 
   function applyMode(sel){
     const add = sel.closest('.dv-add'); if(!add) return;
+    /* v.196: when the placeholder is still selected (empty value), disable
+       the file picker + value field so the user can\'t bypass the type
+       selection. Re-enable on first valid pick. */
+    if(!sel.value){
+      add.className = 'dv-add mode-file is-no-type';
+      const fi = add.querySelector('.dv-up input'); if(fi){ fi.accept = 'image/*,application/pdf'; fi.disabled = true; }
+      const vi = add.querySelector('.dv-val'); if(vi){ vi.placeholder = 'Select a type first'; vi.disabled = true; }
+      const va = add.querySelector('.dv-val-add'); if(va){ va.disabled = true; }
+      return;
+    }
     const t = TYPES[sel.value] || {};
     add.className = 'dv-add mode-' + (t.mode || 'file');
-    const fi = add.querySelector('.dv-up input'); if(fi) fi.accept = t.accept || 'image/*,application/pdf';
-    const vi = add.querySelector('.dv-val'); if(vi) vi.placeholder = t.placeholder || 'value';
+    const fi = add.querySelector('.dv-up input'); if(fi){ fi.accept = t.accept || 'image/*,application/pdf'; fi.disabled = false; }
+    const vi = add.querySelector('.dv-val'); if(vi){ vi.placeholder = t.placeholder || 'value'; vi.disabled = false; }
+    const va = add.querySelector('.dv-val-add'); if(va){ va.disabled = false; }
   }
 
   /* ---------- event wiring (delegated per zone, once) ---------- */
@@ -978,6 +1334,8 @@ window.__DV = (function(){
         if(act === 'na'){ toggleNA(docId); return; }
         if(act === 'pending'){ togglePending(docId); return; }
         if(act === 'done'){ toggleDone(docId); return; }   /* v.185 */
+        if(act === 'complete'){ markCardComplete(docId); return; }   /* v.198 */
+        if(act === 'reopen'){ reopenCard(docId); return; }           /* v.198 */
         const person = btn.closest('.dv-person'); const p = person && person.getAttribute('data-person');
         if(act === 'val-add'){
           const type = person.querySelector('.dv-type').value;
@@ -1319,6 +1677,55 @@ window.__DV = (function(){
       });
   }
 
+  /* v.198 — verify every assigned traveller has resolved this card (uploaded,
+     marked done, or marked NA), then stamp completed[docId] in Firestore. The
+     card then collapses to a one-line strip (border + category + title only).
+     Anyone can mark complete (it\'s a collaborative checkpoint), and anyone
+     can reopen — the by/at fields preserve audit trail. */
+  function markCardComplete(docId){
+    if(!isCrew){ alert('Sign in first.'); return; }
+    var persons = personsFor(docId);
+    /* Treat group cards (_group) like a single-slot doc — verify the group
+       slot has a file OR is marked done/pending/na. */
+    var unresolved = [];
+    persons.forEach(function(p){
+      var ps = statusForPerson(docId, p);
+      if(ps === 'needed' || ps === 'pending'){
+        var label = (p === '_group') ? 'Group slot' : (NAMES[p] || p);
+        unresolved.push(label + ' (' + ps + ')');
+      }
+    });
+    if(unresolved.length){
+      alert('Cannot mark complete — still pending:\n\n• ' + unresolved.join('\n• ')
+        + '\n\nUpload, mark Taken care of, or mark Not needed for each before completing.');
+      return;
+    }
+    var payload = { updatedAt: Date.now(), completed: {} };
+    payload.completed[docId] = { by: crewName || crewKey || 'Crew', at: Date.now() };
+    /* Optimistic local update so the collapse happens immediately. */
+    completedMap[docId] = payload.completed[docId];
+    renderAll();
+    setDoc(vaultRef, payload, { merge:true })
+      .catch(function(err){
+        console.error('[CnE2026 markComplete write]', err);
+        alert('Could not save completion.\n\n'
+          + (err && err.code ? err.code + '\n' : '')
+          + (err && err.message ? err.message : 'Unknown error'));
+      });
+  }
+  function reopenCard(docId){
+    if(!isCrew){ return; }
+    delete completedMap[docId];
+    var payload = { updatedAt: Date.now(), completed: {} };
+    payload.completed[docId] = deleteField();
+    renderAll();
+    setDoc(vaultRef, payload, { merge:true })
+      .catch(function(err){
+        console.error('[CnE2026 reopenCard write]', err);
+        alert('Could not reopen card.\n\n' + (err && err.code ? err.code + '\n' : '') + (err && err.message ? err.message : ''));
+      });
+  }
+
   function togglePending(docId, personKey){
     personKey = personKey || (crewKey || '_group');
     if(!personKey) return;
@@ -1388,6 +1795,8 @@ window.__DV = (function(){
       naMap      = normalizePerPersonMap(d.na);
       pendingMap = normalizePerPersonMap(d.pending);
       doneMap    = normalizePerPersonMap(d.done);
+      whoOverridesMap = d.whoOverrides || {};   /* v.197 */
+      completedMap    = d.completed    || {};   /* v.198 */
       renderAll();
       /* v.189: the pill leaves "Connecting" the moment the first vault
          snapshot arrives — the page is now talking to Firestore. */

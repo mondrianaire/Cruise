@@ -140,14 +140,14 @@
       "title": "Montreal pre-cruise hotel",
       "date": "2026-06-11",
       "who": ["jett", "laura", "sandra", "becca", "karen"],
-      "vendor": "Marriott (Autograph / Renaissance)",
+      "vendor": "Marriott (Autograph Collection)",
       "confirmation": "",
       "status": "pending",
       "flag": "conflict",
       "sensitive": true,
       "docs": ["Hotel confirmation"],
       "files": [],
-      "notes": "CONFLICT: Overview lists 'Renaissance Montreal'; the daily plan lists 'Humaniti Hotel Montreal (Autograph Collection), 340 de la Gauchetière O'. These are different properties. Resolve which is booked, then capture the confirmation."
+      "notes": "Humaniti Hotel Montreal — Autograph Collection by Marriott, 340 de la Gauchetière O, Montreal. Confirmed booking for the pre-cruise stay June 11."
     },
     {
       "id": "hotel-quebec",
