@@ -13,6 +13,9 @@
      l : location
      o : description
      allDay : true for whole-day items (sea days)
+     info   : true marks an informational milestone (ship departures,
+              arrival pings, sail-away markers) — excluded from conflict
+              detection on programs.html.
 */
 window.SCHEDULE_PLAN = [
     {d:'2026-06-11',k:'jun11-bs-yul',w:['becca','sandra'],a:'Montreal',W:'Arrival day',t:'11:00 AM',e:'1:00 PM',n:'Becca & Sandra: land at YUL — pick up rental',l:'Montréal-Trudeau Airport (YUL)',lat:45.4595,lng:-73.7497,drive:'qc'},
@@ -37,7 +40,7 @@ window.SCHEDULE_PLAN = [
     {d:'2026-06-13',k:'jun13-fortifs',t:'4:00 PM',e:'5:30 PM',n:'Walk the Fortifications',l:'Old Quebec city walls',o:'Saint-Louis Gate, Kent Gate.',lat:46.81082,lng:-71.21054,tent:true},
     {d:'2026-06-13',k:'jun13-sunset',t:'5:30 PM',e:'6:30 PM',n:'Sunset on Dufferin Terrace',l:'Terrasse Dufferin',o:'',lat:46.81215,lng:-71.20502,tent:true},
     {d:'2026-06-13',k:'jun13-embark',t:'6:30 PM',e:'10:00 PM',n:'Check out · Uber to ship · dinner onboard',l:'Quebec City cruise terminal',o:'',lat:46.81860,lng:-71.19872},
-    {d:'2026-06-13',k:'jun13-depart',t:'11:00 PM',e:'',n:'⚓ Depart Quebec City — Bon Voyage',l:'ms Zuiderdam',o:''},
+    {d:'2026-06-13',k:'jun13-depart',info:true,t:'11:00 PM',e:'',n:'⚓ Depart Quebec City — Bon Voyage',l:'ms Zuiderdam',o:''},
     {d:'2026-06-14',k:'jun14-seaday1',a:'St. Lawrence River',W:'Sea day',allDay:true,n:'Cruising the Saint Lawrence River',l:'ms Zuiderdam',o:'Settling-in day — spa, ship exploration, scenic cruising.'},
     {d:'2026-06-15',k:'jun15-seaday2',a:'Gulf of St. Lawrence',W:'Sea day',allDay:true,n:'Cruising the Gulf of St. Lawrence',l:'ms Zuiderdam',o:'Watch for whales — rich June habitat.'},
     {d:'2026-06-15',k:'jun15-massage',w:['becca','laura'],t:'10:30 AM',e:'11:30 AM',n:'💆 Becca & Laura: couples massage',l:'Greenhouse Spa, ms Zuiderdam',o:'Treatment at the Greenhouse Spa.'},
