@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Ship — Canada &amp; New England 2026</title>
 <meta name="description" content="The Ship — ms Zuiderdam cruise hub for the Canada &amp; New England voyage, June 2026.">
-<link rel="stylesheet" href="styles.css?v=175.2">
+<link rel="stylesheet" href="styles.css?v=177">
 <style id="ship-critical-v121">
   /* v.121: critical overlay + Night Owl rules shipped inline with the HTML
      so they always take effect, even if styles.css is served from CDN cache. */
@@ -1513,9 +1513,9 @@
     <div class="vsd-ic" aria-hidden="true">📱↻</div>
 
 <script src="venues.js?v=173.1"></script>
-<script src="events.js?v=175.1"></script>
+<script src="events.js?v=177"></script>
 <script src="events-drawer.js?v=173.1"></script>
-<script src="app.js?v=175.2"></script>
+<script src="app.js?v=177"></script>
 <script>
 /* ===== Ship view toggle + floor-plan deck picker + cross-section clicks + modal ===== */
 (function(){
@@ -1552,9 +1552,14 @@
   tabs.forEach(function(b){ b.addEventListener('click', function(){
     /* v.101: explicit click counts as a user override and is remembered for the session */
     try{ sessionStorage.setItem('shipViewOverride', '1'); }catch(e){}
+    /* v.177: capture the leaving view + restore the entering view's anchor. */
+    var activeTab = document.querySelector('.ship-view-tabs .svt.active');
+    var currentView = activeTab ? activeTab.dataset.view : null;
+    if(currentView && currentView !== b.dataset.view) captureAnchor(currentView);
     setTab(b.dataset.view);
-    /* v.140: snap above the view-selector (title visible above) on click */
-    setTimeout(snapToDeckchart, 40);
+    setTimeout(function(){
+      if(!restoreAnchor(b.dataset.view)) snapToDeckchart();
+    }, 40);
   }); });
   /* v.078: prime the body class so the mobile rotate-hint CSS scopes correctly on first paint */
   document.body.classList.add('view-elev');
@@ -1631,6 +1636,48 @@
     });
   }
 
+  /* ===== v.177 — per-view anchor restore on orientation flip =====
+     Each view (elev = cross-section landscape, floor = deck-plan portrait)
+     remembers where the user left it. When the device rotates and the
+     view swaps, the destination view restores to its saved anchor
+     instead of snapping to the top of the deckchart. */
+  var anchors = { elev: null, floor: null };
+  function captureAnchor(view){
+    if(view === 'elev'){
+      anchors.elev = { scrollY: window.scrollY || window.pageYOffset || 0 };
+    } else if(view === 'floor'){
+      var activeBtn = document.querySelector('.fp-deck-btn.active');
+      var deck = activeBtn ? activeBtn.dataset.deck : null;
+      /* Currently-flashed venue, or first venue drawer that is open. */
+      var hl = document.querySelector('.dv-item.is-flash')
+            || document.querySelector('.dv-item.is-open');
+      var venueId = null;
+      if(hl && hl.id){
+        var m = hl.id.match(/^venue-(\d+)-(.+)$/);
+        if(m){ deck = deck || m[1]; venueId = m[2]; }
+      }
+      if(deck) anchors.floor = { deck: String(deck), venue: venueId };
+    }
+  }
+  function restoreAnchor(view){
+    if(view === 'elev'){
+      if(anchors.elev && anchors.elev.scrollY != null){
+        window.scrollTo({ top: anchors.elev.scrollY, behavior: 'smooth' });
+        return true;
+      }
+    } else if(view === 'floor'){
+      if(anchors.floor && anchors.floor.deck){
+        setDeck(anchors.floor.deck);
+        if(anchors.floor.venue){
+          var d = anchors.floor.deck, v = anchors.floor.venue;
+          setTimeout(function(){ highlightVenue(d, v); }, 220);
+        }
+        return true;
+      }
+    }
+    return false;
+  }
+
   function autoOrientView(){
     if(window.matchMedia('(min-width:1101px)').matches) return; // desktop: no auto
     var portrait = window.matchMedia('(orientation:portrait)').matches;
@@ -1638,11 +1685,19 @@
     /* Landscape always dismisses the gate (visually — no need to persist). */
     if(!portrait){ hideOrientationGate(); }
     var activeTab = document.querySelector('.ship-view-tabs .svt.active');
-    var needSwitch = !activeTab || activeTab.dataset.view !== targetView;
-    if(needSwitch) setTab(targetView);
-    /* v.113: snap to the top of the deckchart on every orientation flip so
-       the user always lands at the top of the active view. */
-    setTimeout(snapToDeckchart, needSwitch ? 60 : 0);
+    var currentView = activeTab ? activeTab.dataset.view : null;
+    var needSwitch = !activeTab || currentView !== targetView;
+    if(needSwitch){
+      /* v.177: capture the view we're leaving, then restore the view we're
+         entering. Fallback to snapToDeckchart only when no anchor exists. */
+      if(currentView) captureAnchor(currentView);
+      setTab(targetView);
+      setTimeout(function(){
+        if(!restoreAnchor(targetView)) snapToDeckchart();
+      }, 100);
+    } else {
+      setTimeout(snapToDeckchart, 0);
+    }
   }
   /* v.131: deep-link URL params — let other pages link straight to a
      specific deck + venue in deck-plans view. Examples:
