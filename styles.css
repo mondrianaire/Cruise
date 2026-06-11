@@ -2685,11 +2685,14 @@ body.view-floor .ship-no-toggle{ display:none !important; }
   /* The sheet itself becomes a compact card, not a full-screen modal. */
   .nav-sheet{
     position:fixed;
+    /* v.208: inset:auto shorthand was being applied AFTER top/right and
+       resetting all four sides to auto, which made the dropdown render
+       at the document origin (top-left) and slide off-screen. Drop the
+       shorthand and use only the long-hand sides. */
     top:60px;            /* sits just below the nav bar */
     right:18px;          /* aligned with the nav padding-right */
     left:auto;
     bottom:auto;
-    inset:auto;
     width:320px;
     max-height:calc(100vh - 80px);
     overflow-y:auto;
