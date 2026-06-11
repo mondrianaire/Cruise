@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Daily Programs — Canada &amp; New England 2026</title>
 <meta name="description" content="Daily Programs — every event from the HAL Navigator daily programme across all 8 days of the ms Zuiderdam voyage, June 2026.">
-<link rel="stylesheet" href="styles.css?v=189">
+<link rel="stylesheet" href="styles.css?v=191">
 <link rel="canonical" href="https://mondrianaire.github.io/Cruise/programs.html">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Daily Programs — ms Zuiderdam · June 2026">
@@ -911,10 +911,10 @@
 </footer>
 
 <!-- Shared shell + event source -->
-<script src="app.js?v=189"></script>
-<script src="events.js?v=189"></script>
+<script src="app.js?v=191"></script>
+<script src="events.js?v=191"></script>
 <!-- v.176: shared schedule data for conflict detection -->
-<script src="schedule.js?v=189"></script>
+<script src="schedule.js?v=191"></script>
 
 <script>
 /* ===== v.165 — Programs page renderer + interest tracking + search =====
@@ -1348,14 +1348,30 @@
 
     /* Wire inbox controls. Setting state directly (not via cycle) — the
        recipient picked an explicit intent, not a cycle position. */
+    /* v.191: animate the card out before the state change so the user sees
+       a clear visual signal that their tap took effect. The .is-leaving
+       class fades + collapses the row; we then call the actual handler
+       after the animation so render() removes the row cleanly. */
+    function leaveAndCall(row, fn){
+      if(!row) return fn();
+      row.classList.add('is-leaving');
+      setTimeout(fn, 240);
+    }
     box.querySelectorAll('.pg-inbox-act-int, .pg-inbox-act-go').forEach(function(b){
       b.addEventListener('click', function(){
-        setStateExplicit(b.getAttribute('data-key'), b.getAttribute('data-target'));
+        var row = b.closest('.pg-inbox-row');
+        var k = b.getAttribute('data-key'), t = b.getAttribute('data-target');
+        leaveAndCall(row, function(){ setStateExplicit(k, t); flashSaved(); });
       });
     });
     box.querySelectorAll('.pg-inbox-act-dis').forEach(function(b){
       b.addEventListener('click', function(){
-        dismissSuggestion(b.getAttribute('data-key'), b.getAttribute('data-from'), window.__crewKey);
+        var row = b.closest('.pg-inbox-row');
+        var k = b.getAttribute('data-key'), f = b.getAttribute('data-from');
+        leaveAndCall(row, function(){
+          dismissSuggestion(k, f, window.__crewKey);
+          flashSaved();
+        });
       });
     });
     /* v.182: jump straight to the event row (not the day section). */
@@ -1464,7 +1480,15 @@
 
     box.querySelectorAll('.pg-notif-dismiss').forEach(function(b){
       b.addEventListener('click', function(){
-        dismissResponse(b.getAttribute('data-key'), b.getAttribute('data-from'));
+        var row = b.closest('.pg-notif-row');
+        var k = b.getAttribute('data-key'), f = b.getAttribute('data-from');
+        if(row){
+          row.classList.add('is-leaving');
+          setTimeout(function(){ dismissResponse(k, f); flashSaved(); }, 240);
+        } else {
+          dismissResponse(k, f);
+          flashSaved();
+        }
       });
     });
     /* v.182: jump-to-event link on every notification row. */
@@ -1736,6 +1760,10 @@
     /* v.167: per-crew filter — show event if ANY selected crew has marked it
        (interested OR going). When no crew is selected the filter is inert. */
     function matchesCrew(e){
+      /* v.191: surface ALL activity for the filtered crew, not just
+         interested/going. Includes suggestions they sent or received and
+         responses they gave or received — so the per-crew chip on the
+         filter row shows every event that traveller has touched. */
       if(!crewFilter.size) return true;
       var entry = interests[eventKey(e)];
       if(!entry) return false;
@@ -1743,6 +1771,14 @@
       var gset = entry.going || [];
       for(var i=0;i<iset.length;i++) if(crewFilter.has(iset[i])) return true;
       for(var j=0;j<gset.length;j++) if(crewFilter.has(gset[j])) return true;
+      var sugs = entry.suggestions || [];
+      for(var k=0;k<sugs.length;k++){
+        if(sugs[k] && (crewFilter.has(sugs[k].from) || crewFilter.has(sugs[k].to))) return true;
+      }
+      var resps = entry.responses || [];
+      for(var l=0;l<resps.length;l++){
+        if(resps[l] && (crewFilter.has(resps[l].from) || crewFilter.has(resps[l].to))) return true;
+      }
       return false;
     }
     var filtered = events.filter(function(e){
@@ -2022,6 +2058,7 @@
     body.querySelectorAll('.ev-status').forEach(function(btn){
       btn.addEventListener('click', function(){
         cycleState(btn.getAttribute('data-key'));
+        flashSaved();
       });
     });
 
@@ -2048,7 +2085,7 @@
       b.addEventListener('click', function(ev){
         ev.preventDefault(); ev.stopPropagation();
         var act = b.getAttribute('data-act');
-        if(act === 'confirm') confirmPicker();
+        if(act === 'confirm'){ confirmPicker(); flashSaved('✓ Suggestions sent'); }
         else closePicker();
       });
     });
@@ -2059,6 +2096,7 @@
         dismissSuggestion(b.getAttribute('data-key'),
                           b.getAttribute('data-from'),
                           b.getAttribute('data-to'));
+        flashSaved();
       });
     });
     /* v.179 — conflict chip handlers */
@@ -2120,6 +2158,33 @@
       if(p.parentNode) p.parentNode.removeChild(p);
     });
   }
+
+  /* v.191: per-action "Saved" toast. Sync Center pill flash is too subtle
+     when actions land in quick succession (multi-select picker, inbox
+     burst-through, etc.). flashSaved() shows a brief brass-bordered
+     toast near the bottom of the viewport so users get clear feedback
+     for every individual action. */
+  var __flashTO = null;
+  function flashSaved(text){
+    var t = document.getElementById('pg-save-toast');
+    if(!t){
+      t = document.createElement('div');
+      t.id = 'pg-save-toast';
+      t.className = 'pg-save-toast';
+      document.body.appendChild(t);
+    }
+    t.textContent = text || '✓ Saved';
+    t.classList.remove('show');
+    /* reflow so the animation can re-run */
+    void t.offsetWidth;
+    t.classList.add('show');
+    if(__flashTO) clearTimeout(__flashTO);
+    __flashTO = setTimeout(function(){ t.classList.remove('show'); }, 1600);
+  }
+  /* Also surface flashSaved on the standard programs renderer hooks so
+     event-row actions (the 💛 Interested / ✅ Going button cycle, the
+     suggestion picker confirm) all get the same toast confirmation. */
+  window.__pgFlashSaved = flashSaved;
   function flash(el){
     el.style.background = 'rgba(95,214,160,.38)';
     el.style.color = '#fffdf3';

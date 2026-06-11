@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Document Vault — Canada &amp; New England 2026</title>
 <meta name="description" content="Travel Document Vault — every reservation, boarding pass and conuirmation uor the ms Zuiderdam Canada &amp; New England voyage, June 2026.">
-<link rel="stylesheet" href="styles.css?v=189">
+<link rel="stylesheet" href="styles.css?v=191">
 <link rel="canonical" href="https://mondrianaire.github.io/Cruise/documents.html">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Document Vault — ms Zuiderdam · June 2026">
@@ -502,7 +502,7 @@ window.__DV = (function(){
   import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
   import { initializeFirestore, doc, getDoc, setDoc, onSnapshot, deleteField }
     from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
-  import { getStorage, ref as sref, uploadBytesResumable, getBlob, deleteObject }
+  import { getStorage, ref as sref, uploadBytes, uploadBytesResumable, getBlob, deleteObject }
     from "https://www.gstatic.com/firebasejs/10.12.5/firebase-storage.js";
 
   const cfg={apiKey:"AIzaSyCxc5ICHwz4Fp_2kRwHogeLdgUeCGKgHss",authDomain:"gto-poker-qui.firebaseapp.com",
@@ -870,32 +870,53 @@ window.__DV = (function(){
     if(!/^image\/|application\/pdf$/.test(file.type)){ flash(st, 'Only images or PDFs are accepted.', 'err'); return; }
     const safe = file.name.replace(/[^\w.\-]+/g,'_');
     const path = 'cruise-docs/' + docId + '/' + p + '/' + Date.now() + '__' + safe;
-    const task = uploadBytesResumable(sref(storage, path), file, { contentType:file.type });
-    flash(st, 'Uploading... 0%', 'busy');
+    flash(st, 'Uploading…', 'busy');
     if(window.__SyncCenter) window.__SyncCenter.markSaving();
-    task.on('state_changed',
-      function(s){ flash(st, 'Uploading... ' + Math.round((s.bytesTransferred/s.totalBytes)*100) + '%', 'busy'); },
-      function(err){
-        console.error('[CnE2026 storage upload]', err);
-        flash(st, 'Upload failed (' + (err&&err.code?err.code:'error') + '). ' +
-          ((err&&err.code) === 'storage/unauthorized'
-            ? 'Storage rules deny this write — the maintainer needs to allow cruise-docs/ for signed-in users.'
-            : 'On the crew roster?'),
-          'err');
-        if(window.__SyncCenter) window.__SyncCenter.markError(err);
-      },
-      function(){
+
+    /* v.190: non-resumable single-shot uploadBytes. The previous
+       uploadBytesResumable could silently sit on 0% when the resumable
+       session creation failed (CORS / no storage rules / region quirk)
+       because the error fires inside a different callback that some
+       client builds drop on bucket-level denials. uploadBytes returns
+       a single promise that ALWAYS resolves or rejects — no hang state.
+       Combined with a 30-second watchdog so even a network black hole
+       reports a visible error rather than persistent "saving…". */
+    let settled = false;
+    const watchdog = setTimeout(function(){
+      if(settled) return;
+      settled = true;
+      const fakeErr = { code:'timeout', message:'Upload did not complete within 30 seconds. The Storage rules may not allow this write, the storage bucket may not be initialised, or CORS may not be configured.' };
+      console.error('[CnE2026 storage upload watchdog]', fakeErr);
+      flash(st, 'Upload timed out. Check Firebase Storage rules for cruise-docs/.', 'err');
+      if(window.__SyncCenter) window.__SyncCenter.markError(fakeErr);
+    }, 30000);
+
+    uploadBytes(sref(storage, path), file, { contentType: file.type })
+      .then(function(){
+        if(settled) return; settled = true; clearTimeout(watchdog);
         const att = { id:uid(), type:type, kind:'file', name:file.name, path:path, size:file.size, mime:file.type, value:value||'', by:crewName, at:Date.now() };
-        appendAtt(docId, p, att)
+        return appendAtt(docId, p, att)
           .then(function(){
             if(st) st.hidden = true;
             if(window.__SyncCenter) window.__SyncCenter.markSaved();
-          })
-          .catch(function(err){
-            console.error('[CnE2026 docvault append]', err);
-            flash(st, 'Saved file but could not record it: ' + (err&&err.message||'error'), 'err');
-            if(window.__SyncCenter) window.__SyncCenter.markError(err);
           });
+      })
+      .catch(function(err){
+        if(settled && err.code !== 'timeout') return;
+        if(!settled){ settled = true; clearTimeout(watchdog); }
+        console.error('[CnE2026 storage upload]', err);
+        let msg = 'Upload failed (' + (err && err.code ? err.code : 'error') + ').';
+        if(err && err.code === 'storage/unauthorized'){
+          msg += ' Firebase Storage rules deny this write — the maintainer needs to publish a rule allowing signed-in users to write to cruise-docs/.';
+        } else if(err && err.code === 'storage/unknown'){
+          msg += ' Likely CORS not configured on the bucket, or the bucket has no rules deployed at all.';
+        } else if(err && err.code === 'storage/object-not-found'){
+          msg += ' Bucket path is wrong — confirm storageBucket = gto-poker-qui.firebasestorage.app.';
+        } else if(err && err.message){
+          msg += '\n' + err.message;
+        }
+        flash(st, msg, 'err');
+        if(window.__SyncCenter) window.__SyncCenter.markError(err);
       });
   }
 
