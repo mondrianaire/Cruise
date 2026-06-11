@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Document Vault — Canada &amp; New England 2026</title>
 <meta name="description" content="Travel Document Vault — every reservation, boarding pass and conuirmation uor the ms Zuiderdam Canada &amp; New England voyage, June 2026.">
-<link rel="stylesheet" href="styles.css?v=192.1">
+<link rel="stylesheet" href="styles.css?v=194">
 <link rel="canonical" href="https://mondrianaire.github.io/Cruise/documents.html">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Document Vault — ms Zuiderdam · June 2026">
@@ -182,6 +182,66 @@
   /* v.150: per-card status-action row that holds both "Will upload later"
      and "Not needed (disable)" toggles side by side. */
   .dv-status-actions{ display:flex; flex-wrap:wrap; gap:8px; padding-top:4px; }
+
+  /* ===== v.194 — auto-collapse complete cards + hide non-assigned ===== */
+  /* When the signed-in user has resolved their entry on a card (ready /
+     done / na), collapse the per-traveller vault so it stops taking up
+     screen real estate. The header (title, who chips, status pill) stays
+     visible so they can still see the row at a glance and re-expand on
+     click if they need to revisit. */
+  .dv-card.is-collapsed-complete .dv-vaultzone{ display:none; }
+  .dv-card.is-collapsed-complete{
+    padding-bottom:14px;
+    cursor:pointer;
+    transition: background .15s ease;
+  }
+  .dv-card.is-collapsed-complete:hover{
+    background:rgba(255,255,255,.03);
+  }
+  .dv-card.is-collapsed-complete::after{
+    content:'Tap to expand';
+    display:block;
+    margin-top:8px;
+    text-align:center;
+    font:700 .58rem/1 var(--d-mono);
+    letter-spacing:.10em; text-transform:uppercase;
+    color:var(--ink-dim);
+    opacity:.7;
+  }
+  /* Override class — when user clicks a collapsed card to expand, set
+     this so the next renderAll doesn\'t re-collapse it. */
+  .dv-card.is-force-expanded .dv-vaultzone{ display:block !important; }
+  .dv-card.is-force-expanded{ cursor:default; }
+  .dv-card.is-force-expanded::after{ content:none; }
+
+  /* Hide cards where the user is on the explicit `who` list and not
+     included. Group cards (empty or missing `who`) stay visible. */
+  .dv-card.is-hidden-for-me{ display:none; }
+
+  /* Top-of-list filter toggle row */
+  .dv-filter-row{
+    display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+    padding:10px 14px; margin:0 0 18px;
+    border:1px solid rgba(200,155,74,.22);
+    border-radius:10px;
+    background:rgba(255,255,255,.03);
+    font:600 .72rem/1 var(--d-mono);
+  }
+  .dv-filter-row .dv-filter-lbl{
+    color:var(--ink-dim);
+    font:700 .60rem/1 var(--d-mono); letter-spacing:.10em; text-transform:uppercase;
+  }
+  .dv-filter-row label{
+    display:inline-flex; align-items:center; gap:6px;
+    padding:5px 10px; border-radius:6px;
+    background:rgba(200,155,74,.10);
+    border:1px solid rgba(200,155,74,.30);
+    cursor:pointer;
+    color:var(--cream);
+  }
+  .dv-filter-row label:hover{ background:rgba(200,155,74,.18); }
+  .dv-filter-row input[type=checkbox]{ accent-color: var(--brass); }
+
 
   /* v.185 — Taken-care-of banner + pill */
   .dv-done{
@@ -788,7 +848,101 @@ window.__DV = (function(){
   }
 
   function renderAllZones(){ document.querySelectorAll('.dv-vaultzone').forEach(renderZone); }
-  function renderAll(){ renderAllZones(); updateStatuses(); }
+  function renderAll(){ renderAllZones(); updateStatuses(); applyCardModes(); }
+
+  /* v.194 — show/hide + collapse logic.
+     Two state flags persisted in sessionStorage:
+       cnen_dv_show_all_assigned : bool  — show cards I'm not on
+       cnen_dv_show_completed    : bool  — keep completed cards expanded
+     Default: both OFF (hide non-assigned, collapse completed). */
+  function dvFlag(key){
+    try{ return sessionStorage.getItem(key) === '1'; }catch(e){ return false; }
+  }
+  function setDvFlag(key, val){
+    try{ sessionStorage.setItem(key, val ? '1' : '0'); }catch(e){}
+  }
+  function applyCardModes(){
+    var showAll       = dvFlag('cnen_dv_show_all_assigned');
+    var showCompleted = dvFlag('cnen_dv_show_completed');
+    var me = crewKey || '_group';
+    document.querySelectorAll('.dv-card').forEach(function(card){
+      var docId = card.getAttribute('data-doc');
+      var doc = (window.__DV && window.__DV.byId && window.__DV.byId[docId]) || {};
+      var who = (doc && doc.who) || [];
+
+      /* Visibility: hide if the user is signed in, the doc has an explicit
+         `who` list, and the user is not on it. Group docs (empty who)
+         remain visible. */
+      var hideUnassigned = false;
+      if(isCrew && !showAll && who.length && who.indexOf(me) < 0){
+        hideUnassigned = true;
+      }
+      card.classList.toggle('is-hidden-for-me', hideUnassigned);
+
+      /* Collapse complete: only when signed in, my status for this doc
+         is ready/done/na, and the user hasn't asked to show completed. */
+      var myStatus = (typeof statusForPerson === 'function')
+        ? statusForPerson(docId, me) : 'needed';
+      var iAmDone = (myStatus === 'ready' || myStatus === 'done' || myStatus === 'na');
+      var shouldCollapse = isCrew && !showCompleted && iAmDone && !card.classList.contains('is-force-expanded');
+      card.classList.toggle('is-collapsed-complete', shouldCollapse);
+    });
+    /* Count for the filter row badge */
+    var hidden = document.querySelectorAll('.dv-card.is-hidden-for-me').length;
+    var collapsed = document.querySelectorAll('.dv-card.is-collapsed-complete').length;
+    var s = document.getElementById('dv-filter-stats');
+    if(s) s.textContent = collapsed + ' collapsed · ' + hidden + ' hidden';
+  }
+
+  /* Install the filter row once the body has rendered the first card. */
+  function ensureFilterRow(){
+    if(document.getElementById('dv-filter-row')) return;
+    var body = document.getElementById('dv-body');
+    if(!body) return;
+    var row = document.createElement('div');
+    row.id = 'dv-filter-row';
+    row.className = 'dv-filter-row';
+    row.innerHTML =
+      '<span class="dv-filter-lbl">Filters</span>' +
+      '<label><input type="checkbox" id="dv-show-completed">Show completed cards expanded</label>' +
+      '<label><input type="checkbox" id="dv-show-all-assigned">Show cards I\'m not on</label>' +
+      '<span id="dv-filter-stats" style="margin-left:auto;color:var(--ink-dim);font-size:.62rem;letter-spacing:.06em;"></span>';
+    body.parentNode.insertBefore(row, body);
+    var c1 = document.getElementById('dv-show-completed');
+    var c2 = document.getElementById('dv-show-all-assigned');
+    c1.checked = dvFlag('cnen_dv_show_completed');
+    c2.checked = dvFlag('cnen_dv_show_all_assigned');
+    c1.addEventListener('change', function(){
+      setDvFlag('cnen_dv_show_completed', c1.checked);
+      /* Reset all manual expansions when re-engaging auto-collapse. */
+      if(!c1.checked) document.querySelectorAll('.dv-card.is-force-expanded')
+        .forEach(function(card){ card.classList.remove('is-force-expanded'); });
+      applyCardModes();
+    });
+    c2.addEventListener('change', function(){
+      setDvFlag('cnen_dv_show_all_assigned', c2.checked);
+      applyCardModes();
+    });
+  }
+
+  /* Click on a collapsed-complete card → expand it for this session (until
+     filter toggle or sign-out). */
+  document.addEventListener('click', function(ev){
+    var card = ev.target.closest('.dv-card.is-collapsed-complete');
+    if(!card) return;
+    /* Don't intercept clicks on buttons / inputs inside the (currently
+       hidden) vaultzone — but if user clicked the card body / header,
+       expand it. */
+    if(ev.target.closest('button, input, a, select')) return;
+    card.classList.add('is-force-expanded');
+    card.classList.remove('is-collapsed-complete');
+    /* Re-render the zone so the now-visible contents are populated. */
+    var docId = card.getAttribute('data-doc');
+    if(docId){
+      var zone = card.querySelector('.dv-vaultzone');
+      if(zone && typeof renderZone === 'function') renderZone(zone);
+    }
+  });
 
   function applyMode(sel){
     const add = sel.closest('.dv-add'); if(!add) return;
@@ -864,6 +1018,59 @@ window.__DV = (function(){
     return appendAtt(docId, p, { id:uid(), type:type, kind:'value', value:value, by:crewName, at:Date.now() });
   }
 
+  /* v.193 — Filename suggestion + prompt. Before we run compression or
+     upload, ask the user what to name the file. Pre-fill a camelCase
+     suggestion derived from context: doc title + traveller + type. The
+     user can edit or accept. Cancelling aborts the upload. */
+  function toCamel(str){
+    if(!str) return '';
+    var parts = String(str)
+      .replace(/[^A-Za-z0-9\s]/g, ' ')      // drop punctuation
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean);
+    if(!parts.length) return '';
+    return parts.map(function(w, i){
+      var lower = w.toLowerCase();
+      if(i === 0) return lower;
+      return lower.charAt(0).toUpperCase() + lower.slice(1);
+    }).join('');
+  }
+  function suggestFilename(docId, personKey, type){
+    var docMeta = (window.__DV && window.__DV.byId && window.__DV.byId[docId]) || {};
+    var docTitle = docMeta.title || '';
+    var personName = NAMES[personKey] || '';
+    /* Build a meaningful camelCase: docTitleTravellerName, e.g.
+       "passportScanJett" or "boardingPassLaura". When the doc title is
+       generic (e.g. "Other file"), fall back to type label. */
+    var base = docTitle;
+    if(!base || /^other/i.test(base)){
+      base = (TYPES[type] && TYPES[type].label) || 'document';
+    }
+    return toCamel(base + ' ' + personName);
+  }
+  function promptFilename(originalFile, suggested){
+    /* Promise-returning prompt — resolves with chosen name (sans
+       extension) or null if the user cancelled. */
+    return new Promise(function(resolve){
+      var dotIdx = originalFile.name.lastIndexOf('.');
+      var origExt = dotIdx >= 0 ? originalFile.name.slice(dotIdx) : '';
+      var entered = window.prompt(
+        'Name this file (camelCase suggested):\n\n' +
+        'Original: ' + originalFile.name + '\n' +
+        'Saved as: <yourName>' + origExt,
+        suggested
+      );
+      if(entered == null){ resolve(null); return; }
+      var clean = String(entered).trim();
+      if(!clean){ resolve(null); return; }
+      /* Strip any extension the user typed — we re-append based on the
+         actual processed file later. Also strip any path separators. */
+      clean = clean.replace(/[\/\\]+/g, '').replace(/\.[A-Za-z0-9]{2,5}$/, '');
+      resolve(clean);
+    });
+  }
+
   /* v.192.1 — Client-side image compression. Phone-camera photos are
      typically 5-15 MB at full resolution. We downscale the long edge to
      2400 px and re-encode as JPEG quality 0.85 — produces ~600 KB-1 MB
@@ -918,6 +1125,14 @@ window.__DV = (function(){
   async function upload(docId, p, type, file, value, personEl){
     const st = personEl.querySelector('.dv-add-status');
     if(!/^image\/|application\/pdf$/.test(file.type)){ flash(st, 'Only images or PDFs are accepted.', 'err'); return; }
+    /* v.193: prompt for a filename BEFORE compression so the user sees
+       a sensible camelCase default they can accept or override. */
+    const suggested = suggestFilename(docId, p, type);
+    const chosenBase = await promptFilename(file, suggested);
+    if(!chosenBase){
+      flash(st, 'Upload cancelled.', 'err');
+      return;
+    }
     /* v.192.1: compress oversized images before checking the cap. PDFs
        and other types still get the hard cap check. */
     let processedFile = file;
@@ -931,6 +1146,25 @@ window.__DV = (function(){
         processedFile = file;
       }
     }
+    /* v.193: re-wrap the processed file under the chosen name so the
+       Storage path AND the display name reflect it. Extension follows
+       whatever the processed file actually is (e.g. .jpg if compressed). */
+    (function(){
+      var ext = '';
+      if(processedFile.type === 'image/jpeg') ext = '.jpg';
+      else if(processedFile.type === 'image/png') ext = '.png';
+      else if(processedFile.type === 'image/webp') ext = '.webp';
+      else if(processedFile.type === 'application/pdf') ext = '.pdf';
+      else {
+        var dot = processedFile.name.lastIndexOf('.');
+        ext = dot >= 0 ? processedFile.name.slice(dot) : '';
+      }
+      try{
+        processedFile = new File([processedFile], chosenBase + ext, { type: processedFile.type });
+      }catch(e){
+        /* File constructor missing on very old browsers — leave as-is. */
+      }
+    })();
     if(processedFile.size > MAX_BYTES){
       if(/^image\//.test(processedFile.type)){
         flash(st, 'Even after compression this photo is over 25 MB. Please reduce the resolution manually before uploading.', 'err');
@@ -1144,6 +1378,9 @@ window.__DV = (function(){
   function startVault(){
     if(!vaultRef || vaultStarted) return;
     vaultStarted = true;
+    /* v.194: install the filter row above the document list once we have
+       a confirmed signed-in user and the body has been hydrated. */
+    ensureFilterRow();
     onSnapshot(vaultRef, function(snap){
       const d = (snap.exists() && snap.data()) || {};
       items = d.items || {};
