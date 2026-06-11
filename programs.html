@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Daily Programs — Canada &amp; New England 2026</title>
 <meta name="description" content="Daily Programs — every event from the HAL Navigator daily programme across all 8 days of the ms Zuiderdam voyage, June 2026.">
-<link rel="stylesheet" href="styles.css?v=178">
+<link rel="stylesheet" href="styles.css?v=179.1">
 <link rel="canonical" href="https://mondrianaire.github.io/Cruise/programs.html">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Daily Programs — ms Zuiderdam · June 2026">
@@ -135,6 +135,88 @@
     border-color:rgba(239,178,40,.55);
     background:linear-gradient(90deg, rgba(239,178,40,.10), rgba(255,255,255,.02));
   }
+  /* v.179 — full-width conflict detail line under the event row */
+  .ev-conflict-detail{
+    flex: 0 0 100%;
+    display:flex; align-items:center; flex-wrap:wrap; gap:8px;
+    padding:8px 14px 10px;
+    border-top:1px dashed rgba(239,178,40,.35);
+    background:rgba(239,178,40,.06);
+  }
+  .ev-conflict-detail-lbl{
+    font:700 .62rem/1 var(--d-mono); letter-spacing:.10em; text-transform:uppercase;
+    color:var(--mod);
+    flex:0 0 auto;
+  }
+  .ev-conflict-chip{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:6px 11px;
+    border-radius:8px;
+    border:1px solid rgba(239,178,40,.45);
+    background:rgba(239,178,40,.10);
+    color:var(--cream);
+    font:600 .72rem/1 var(--d-mono);
+    cursor:pointer;
+    text-align:left;
+    transition: background .14s, border-color .14s, transform .12s;
+  }
+  .ev-conflict-chip:hover{
+    background:rgba(239,178,40,.18);
+    border-color:var(--mod);
+    transform:translateY(-1px);
+  }
+  .ev-conflict-chip-time{
+    font-weight:700; color:var(--mod); letter-spacing:.04em;
+    border-right:1px solid rgba(239,178,40,.4); padding-right:8px;
+  }
+  .ev-conflict-chip-name{
+    flex:1 1 auto; min-width:0;
+    overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+    max-width:260px;
+  }
+  .ev-conflict-chip-src{
+    font:700 .56rem/1 var(--d-mono); letter-spacing:.10em; text-transform:uppercase;
+    padding:3px 6px; border-radius:4px;
+    background:rgba(0,0,0,.30); color:var(--ink-dim);
+  }
+  .ev-conflict-chip-program .ev-conflict-chip-src{ color:#aedbe9; background:rgba(127,180,200,.18); }
+  .ev-conflict-chip-journey .ev-conflict-chip-src{ color:#e6c477; background:rgba(200,155,74,.18); }
+  /* v.179 — popover for journey-plan chip details */
+  .ev-plan-pop{
+    position:fixed; z-index:10001;
+    width:min(320px, calc(100vw - 24px));
+    padding:14px 16px;
+    border-radius:12px;
+    border:1.5px solid var(--brass);
+    background:linear-gradient(160deg, #0f2c3a 0%, #08161a 100%);
+    box-shadow:0 8px 28px rgba(0,0,0,.55);
+    color:var(--cream);
+    font-family:var(--d-mono);
+  }
+  .ev-plan-pop h5{
+    margin:0 0 8px;
+    font:700 .82rem/1.2 var(--d-serif);
+    color:var(--brass-lt);
+  }
+  .ev-plan-pop dl{
+    margin:0; display:grid; grid-template-columns:80px 1fr; gap:6px 10px;
+    font:600 .68rem/1.3 var(--d-mono);
+  }
+  .ev-plan-pop dt{ color:var(--ink-dim); text-transform:uppercase; letter-spacing:.06em; font-size:.58rem; padding-top:2px; }
+  .ev-plan-pop dd{ margin:0; color:var(--cream); }
+  .ev-plan-pop .pp-close{
+    position:absolute; top:6px; right:8px;
+    background:none; border:0; color:var(--ink-dim);
+    font:700 1.1rem/1 var(--d-mono); cursor:pointer;
+  }
+  .ev-plan-pop .pp-close:hover{ color:var(--brass-lt); }
+
+  /* v.179 — flash highlight for cross-row scroll-target */
+  .ev-row.is-conflict-flash{
+    box-shadow:0 0 0 2px var(--mod), 0 0 18px rgba(239,178,40,.55);
+    transition:box-shadow .25s ease;
+  }
+
   .ev-row.has-conflict:hover{
     border-color:rgba(239,178,40,.75);
     background:linear-gradient(90deg, rgba(239,178,40,.16), rgba(255,255,255,.02));
@@ -714,10 +796,10 @@
 </footer>
 
 <!-- Shared shell + event source -->
-<script src="app.js?v=178"></script>
-<script src="events.js?v=178"></script>
+<script src="app.js?v=179.1"></script>
+<script src="events.js?v=179.1"></script>
 <!-- v.176: shared schedule data for conflict detection -->
-<script src="schedule.js?v=178"></script>
+<script src="schedule.js?v=179.1"></script>
 
 <script>
 /* ===== v.165 — Programs page renderer + interest tracking + search =====
@@ -1132,15 +1214,26 @@
       if(hasW && p.w.indexOf(me) < 0) return;     // someone else's commitment
       var day = window.scheduleDayFromDate ? window.scheduleDayFromDate(p.d) : null;
       if(!day) return;                             // pre-cruise / post-cruise day
+      var location = p.l || '';
+      var who = hasW ? p.w.join(', ') : 'everyone';
       if(p.allDay){
-        out.push({day:day, startMin:0, endMin:24*60, name:p.n||'Plan', source:'journey'});
+        out.push({
+          day:day, startMin:0, endMin:24*60, name:p.n||'Plan',
+          source:'journey', timeLabel:'all day', location:location, who:who, planKey:p.k
+        });
         return;
       }
       var sm = window.scheduleTimeToMin ? window.scheduleTimeToMin(p.t) : null;
       if(sm == null) return;
       var em = window.scheduleTimeToMin ? window.scheduleTimeToMin(p.e) : null;
       if(em == null) em = sm + 60;                 // point event → assume 1h slot
-      out.push({day:day, startMin:sm, endMin:em, name:p.n||'Plan', source:'journey'});
+      out.push({
+        day:day, startMin:sm, endMin:em, name:p.n||'Plan',
+        source:'journey',
+        timeLabel: p.t || '',
+        endLabel:  p.e || '',
+        location:location, who:who, planKey:p.k
+      });
     });
     /* (2) Program events I'm going to */
     Object.keys(interests).forEach(function(k){
@@ -1156,7 +1249,12 @@
           var m = parseInt(String(e.time24||'0:00').split(':')[1],10);
           var sm = h*60 + m;
           var em = sm + (e.durationMin || 60);
-          out.push({day:e.day, startMin:sm, endMin:em, name:e.name, source:'program', selfKey:k});
+          out.push({
+            day:e.day, startMin:sm, endMin:em,
+            name:e.name, source:'program', selfKey:k,
+            timeLabel: fmtTime12(e.time24),
+            programKey: k                   /* v.179: scroll target */
+          });
           break;
         }
       }
@@ -1431,12 +1529,43 @@
            (the row's own "going" stripe carries the message). */
         var conflicts = (mine === 'going') ? [] : eventConflicts(e);
         var conflictHtml = '';
+        var conflictDetailHtml = '';   /* v.179 */
         if(conflicts.length){
           var names = conflicts.map(function(c){ return c.name; }).join(' · ');
+          /* Keep a small top-line marker so the row still reads as a
+             conflict at a glance. */
           conflictHtml = '<span class="ev-conflict-tag" data-tip="Conflicts with: ' + esc(names) + '" title="Conflicts with: ' + esc(names) + '">' +
             '<span class="ev-conflict-ic" aria-hidden="true">⚠</span>' +
             'Conflict' + (conflicts.length > 1 ? ' (' + conflicts.length + ')' : '') +
           '</span>';
+          /* v.179: dedicated detail line showing exactly which commitments
+             overlap. Each chip is clickable — Program events scroll to
+             themselves and flash; journey-plan entries open an inline
+             popover with full details. */
+          conflictDetailHtml = '<div class="ev-conflict-detail" role="note" aria-label="Conflict details">' +
+            '<span class="ev-conflict-detail-lbl" aria-hidden="true">⚠ Overlaps</span>' +
+            conflicts.map(function(c){
+              var srcLbl = c.source === 'program' ? 'Programme' : 'Trip plan';
+              var startLbl = c.timeLabel || '';
+              var endLbl   = c.endLabel  || '';
+              var rangeLbl = startLbl + (endLbl ? '–' + endLbl : '');
+              var data = '';
+              if(c.source === 'program' && c.programKey){
+                data = ' data-prog-key="' + esc(c.programKey) + '"';
+              } else if(c.source === 'journey' && c.planKey){
+                data = ' data-plan-key="' + esc(c.planKey) + '"' +
+                       ' data-plan-name="' + esc(c.name) + '"' +
+                       ' data-plan-time="' + esc(rangeLbl) + '"' +
+                       ' data-plan-loc="'  + esc(c.location || '') + '"' +
+                       ' data-plan-who="'  + esc(c.who || '') + '"';
+              }
+              return '<button type="button" class="ev-conflict-chip ev-conflict-chip-' + esc(c.source) + '"' + data + ' title="View ' + esc(c.name) + '">' +
+                '<span class="ev-conflict-chip-time">' + esc(rangeLbl) + '</span>' +
+                '<span class="ev-conflict-chip-name">' + esc(c.name) + '</span>' +
+                '<span class="ev-conflict-chip-src">' + srcLbl + '</span>' +
+              '</button>';
+            }).join('') +
+          '</div>';
         }
         var rowCls = 'ev-row' + (mine === 'going' ? ' is-going' : (mine === 'interested' ? ' is-interested' : ''));
         if(iHaveOne) rowCls += ' has-for-me';
@@ -1543,6 +1672,7 @@
             '<span class="ev-status-l">' + esc(btnLab) + '</span>' +
             (countsTxt ? '<span class="ev-status-counts">' + countsTxt + '</span>' : '') +
           '</button>' +
+          conflictDetailHtml +
           pickerHtml +
         '</div>';
       });
@@ -1593,9 +1723,62 @@
                           b.getAttribute('data-to'));
       });
     });
+    /* v.179 — conflict chip handlers */
+    body.querySelectorAll('.ev-conflict-chip').forEach(function(chip){
+      chip.addEventListener('click', function(ev){
+        ev.preventDefault(); ev.stopPropagation();
+        closePlanPop();
+        var progKey = chip.getAttribute('data-prog-key');
+        if(progKey){
+          /* Cross-scroll + flash to the conflicting Programme event. */
+          var row = document.querySelector('.ev-row[data-key="' + (CSS && CSS.escape ? CSS.escape(progKey) : progKey) + '"]');
+          if(row){
+            row.scrollIntoView({behavior:'smooth', block:'center'});
+            row.classList.add('is-conflict-flash');
+            setTimeout(function(){ row.classList.remove('is-conflict-flash'); }, 2200);
+          }
+          return;
+        }
+        /* Journey-plan chip → popover with full details */
+        var rect = chip.getBoundingClientRect();
+        var pop = document.createElement('div');
+        pop.className = 'ev-plan-pop';
+        var name = chip.getAttribute('data-plan-name') || '';
+        var time = chip.getAttribute('data-plan-time') || '';
+        var loc  = chip.getAttribute('data-plan-loc')  || '';
+        var who  = chip.getAttribute('data-plan-who')  || '';
+        pop.innerHTML =
+          '<button type="button" class="pp-close" aria-label="Close">×</button>' +
+          '<h5>' + esc(name) + '</h5>' +
+          '<dl>' +
+            (time ? '<dt>Time</dt><dd>' + esc(time) + '</dd>' : '') +
+            (loc  ? '<dt>Where</dt><dd>' + esc(loc) + '</dd>' : '') +
+            (who  ? '<dt>Who</dt><dd>'   + esc(who) + '</dd>' : '') +
+            '<dt>Source</dt><dd>Itinerary / Daily Plan</dd>' +
+          '</dl>';
+        document.body.appendChild(pop);
+        /* Position below chip, falling back to above if not enough room. */
+        var ph = pop.offsetHeight, pw = pop.offsetWidth;
+        var top = rect.bottom + 8;
+        if(top + ph > window.innerHeight - 8) top = rect.top - ph - 8;
+        var left = Math.min(rect.left, window.innerWidth - pw - 12);
+        if(left < 12) left = 12;
+        pop.style.top  = top  + 'px';
+        pop.style.left = left + 'px';
+        pop.querySelector('.pp-close').addEventListener('click', function(e2){
+          e2.preventDefault(); e2.stopPropagation();
+          closePlanPop();
+        });
+      });
+    });
   }
   function closeAllPopovers(){
     document.querySelectorAll('.ev-pass-pop').forEach(function(p){
+      if(p.parentNode) p.parentNode.removeChild(p);
+    });
+  }
+  function closePlanPop(){
+    document.querySelectorAll('.ev-plan-pop').forEach(function(p){
       if(p.parentNode) p.parentNode.removeChild(p);
     });
   }
@@ -1610,6 +1793,10 @@
   document.addEventListener('click', function(e){
     if(!e.target.closest('.ev-pass') && !e.target.closest('.ev-pass-pop')){
       closeAllPopovers();
+    }
+    /* v.179: close journey-plan popover when clicking outside it. */
+    if(!e.target.closest('.ev-plan-pop') && !e.target.closest('.ev-conflict-chip')){
+      closePlanPop();
     }
     if(pickerOpenKey){
       if(!e.target.closest('.ev-row') && !e.target.closest('.ev-picker')){

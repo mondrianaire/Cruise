@@ -3462,3 +3462,81 @@ body{ padding-bottom:0 !important; }
 @media(max-width:760px){
   .br-ver{ font-size:.50rem !important; padding:1px 5px; margin-left:4px; }
 }
+
+
+/* ============================================================
+   v.179.1 — Sync pill positioning hotfix (max specificity)
+   ============================================================
+   The bar was being reported as "below the site" — likely it was either
+   colliding with the .toolbar (Replay button) at bottom-left, or an
+   earlier rule was reasserting full-width-bar layout on a media-query
+   match. This block uses the ID selector (#syncCenter) to guarantee
+   it wins the cascade no matter what. Pinned to BOTTOM-RIGHT so it
+   doesn't overlap the .toolbar at all. */
+#syncCenter,
+#syncCenter.sync-center{
+  position: fixed !important;
+  right: 12px !important;
+  bottom: calc(12px + env(safe-area-inset-bottom, 0px)) !important;
+  left: auto !important;
+  top:  auto !important;
+  width: auto !important;
+  display: inline-flex !important;
+  flex-direction: column !important;
+  align-items: flex-end !important;
+  gap: 8px !important;
+  padding: 0 !important;
+  z-index: 9500 !important;
+  pointer-events: none !important;
+}
+#syncCenter > *{ pointer-events: auto !important; }
+#syncCenter .sc-bar{
+  display: inline-flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  width: auto !important;
+  max-width: calc(100vw - 24px) !important;
+  min-height: 38px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+#syncCenter .sc-bar-toggle{
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 9px !important;
+  padding: 8px 14px !important;
+  min-height: 38px !important;
+  border-radius: 999px !important;
+  background: rgba(8,22,26,.92) !important;
+  border: 1px solid rgba(200,155,74,.45) !important;
+  box-shadow: 0 4px 14px rgba(0,0,0,.45) !important;
+  color: var(--cream) !important;
+  cursor: pointer !important;
+}
+/* Hide the bar's internal sync button + spacer + user chip — the expanded
+   panel handles those. */
+#syncCenter .sc-bar-spacer,
+#syncCenter .sc-bar-sync,
+#syncCenter .sc-bar-user{ display: none !important; }
+/* Expanded panel hangs ABOVE the pill in the column flex (order:-1) */
+#syncCenter .sc-panel{
+  position: relative !important;
+  right: auto !important; bottom: auto !important;
+  width: min(260px, calc(100vw - 24px)) !important;
+  margin: 0 0 6px 0 !important;
+  order: -1 !important;
+}
+/* Mobile — tighten the pill a touch but keep bottom-right placement */
+@media(max-width:560px){
+  #syncCenter{
+    right: 10px !important;
+    bottom: calc(10px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+  #syncCenter .sc-bar-toggle{ padding: 7px 12px !important; min-height: 36px !important; }
+  #syncCenter .sc-panel{ width: calc(100vw - 20px) !important; max-width: 320px !important; }
+}
+/* Old leftover .sc-chip floating rules — kill anything that tries to
+   render the v.170 floating chip. */
+.sc-chip{ display:none !important; }
