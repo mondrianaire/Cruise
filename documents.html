@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Document Vault — Canada &amp; New England 2026</title>
 <meta name="description" content="Travel Document Vault — every reservation, boarding pass and conuirmation uor the ms Zuiderdam Canada &amp; New England voyage, June 2026.">
-<link rel="stylesheet" href="styles.css?v=210">
+<link rel="stylesheet" href="styles.css?v=211">
 <link rel="canonical" href="https://mondrianaire.github.io/Cruise/documents.html">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Document Vault — ms Zuiderdam · June 2026">
@@ -163,6 +163,23 @@
     background:rgba(63,160,173,.16); color:var(--teal-lt); border:1px solid rgba(63,160,173,.3);
   }
   .dv-who .av-all{ background:rgba(230,196,119,.16); color:var(--brass-lt); border-color:rgba(230,196,119,.32); }
+  /* v.211 — shared-vs-per-user pill in the typeline. */
+  .dv-shared-pill{
+    display:inline-flex; align-items:center;
+    margin-left:8px;
+    padding:2px 7px;
+    border-radius:3px;
+    font:700 .56rem/1 var(--d-mono);
+    letter-spacing:.10em;
+    background:rgba(95,214,160,.14);
+    color:var(--easy, #5fd6a0);
+    border:1px solid rgba(95,214,160,.30);
+  }
+  .dv-shared-pill.is-peruser{
+    background:rgba(168,180,255,.10);
+    color:#a8b4ff;
+    border-color:rgba(168,180,255,.28);
+  }
   /* v.206 — Mark Complete! row (per-user). The strip-mode CSS and the
      completion-badge / reopen-button styles from v.198 are gone since
      Mark Complete now flips the user's slot to done and the card
@@ -609,7 +626,13 @@ window.__DV = (function(){
     h += '<div class="dv-top"><div>';
     if(cat){
       h += '<span class="dv-typeline"><span class="dv-type-ic" aria-hidden="true">'+esc(cat.icon)+'</span>'
-         + '<span class="dv-type-l">'+esc(cat.label)+'</span></span>';
+         + '<span class="dv-type-l">'+esc(cat.label)+'</span>'
+         /* v.211: tiny "Shared" pill so users know one upload covers the
+            group (vs. per-user docs like passports where each traveller
+            needs to upload their own). */
+         + (doc.shared ? '<span class="dv-shared-pill" title="One upload covers everyone on this card">SHARED</span>'
+                       : (doc.shared === false ? '<span class="dv-shared-pill is-peruser" title="Each traveller uploads their own copy">PER USER</span>' : ''))
+         + '</span>';
     }
     h += '<h3 class="dv-title">'+esc(doc.title)+'</h3>';
     if(doc.vendor && doc.vendor!=='—') h += '<p class="dv-vendor">'+esc(doc.vendor)+'</p>';
@@ -878,7 +901,14 @@ window.__DV = (function(){
     return (n/1048576).toFixed(1) + ' MB';
   }
   function personsFor(docId){
-    /* v.197: use effective who-list (with Jett\'s overrides applied). */
+    /* v.197: use effective who-list (with Jett\'s overrides applied).
+       v.211: if the doc is flagged shared:true (one document covers
+       everyone — e.g. excursion booking, hotel reservation, dining
+       reservation), collapse to a single '_group' slot regardless of
+       the who-list. Per-user docs (passports, insurance) still get one
+       slot per traveller because each person's copy is unique. */
+    const doc = (window.__DV && window.__DV.byId && window.__DV.byId[docId]) || {};
+    if(doc.shared) return ['_group'];
     const who = effectiveWhoFor(docId);
     return who.length ? who : ['_group'];
   }
@@ -980,7 +1010,11 @@ window.__DV = (function(){
       if(me){
         const who = effectiveWhoFor(docId);
         if(who.length && who.indexOf(me) < 0) return;   /* not my card */
-        const slot = who.length ? me : '_group';
+        /* v.211: shared cards have a single '_group' slot — any traveller
+           on the who-list reads the SAME slot for their personal count,
+           so one upload satisfies the card for everyone. */
+        const docMeta = (window.__DV && window.__DV.byId && window.__DV.byId[docId]) || {};
+        const slot = docMeta.shared ? '_group' : (who.length ? me : '_group');
         const ps = statusForPerson(docId, slot);
         if(ps === 'na') na++;
         else if(ps === 'ready') ready++;
@@ -1948,18 +1982,10 @@ window.__DV = (function(){
           setCrew(members[user.email] || (user.displayName||'').split(/\s+/)[0]);
           if(window.__writeCrewSeed) window.__writeCrewSeed(crewName, user.email, user.photoURL);
         } else {
-          /* v.187: if the signed-in user's first name matches one of the 5,
-             accept LOCALLY even if the roster doc write fails (rules drift,
-             stale taken-check, etc.). The roster is a coordination hint, not
-             the source of truth for "am I allowed to use this page". */
           const firstName = ((user.displayName||'').trim().split(/\s+/)[0] || '').toLowerCase();
           if(ALL5.indexOf(firstName) >= 0){
-            /* Accept this user locally regardless of roster state. */
             setCrew(user.displayName || firstName);
             if(window.__writeCrewSeed) window.__writeCrewSeed(crewName, user.email, user.photoURL);
-            /* Best-effort roster claim. If it fails (members already has
-               this name under a different email, rules drift, etc.) we just
-               log it — the user is already accepted client-side. */
             const taken = Object.values(members).some(function(n){
               return ((n||'').trim().split(/\s+/)[0] || '').toLowerCase() === firstName;
             });

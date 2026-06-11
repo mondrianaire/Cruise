@@ -4,7 +4,7 @@
     "ship": "ms Zuiderdam",
     "sailing": "June 13-20, 2026",
     "primaryBooking": "4LMNGG",
-    "updated": "2026-06-08",
+    "updated": "2026-06-11",
     "note": "First-pass inventory of every reservation, ticket, pass, and confirmation across the trip. 'status' tracks where each document stands: confirmed = booked with a reference number on file; pending = booked or arranged but the number / downloadable document is not yet captured; gap = not booked, unknown, or needs a decision. Sensitive fields (confirmation numbers, file links) are crew-only and reveal after sign-in.",
     "statuses": {
       "confirmed": "Booked — reference number on file",
@@ -19,19 +19,55 @@
       "karen": "Karen"
     },
     "staterooms": {
-      "4LMNGG": ["jett", "laura"],
-      "4LMNGC": ["sandra", "becca"],
-      "4LMNGT": ["karen"]
+      "4LMNGG": [
+        "jett",
+        "laura"
+      ],
+      "4LMNGC": [
+        "sandra",
+        "becca"
+      ],
+      "4LMNGT": [
+        "karen"
+      ]
     }
   },
   "categories": [
-    { "id": "air",       "label": "Air Travel",            "icon": "✈" },
-    { "id": "cruise",    "label": "Cruise",                "icon": "🚢" },
-    { "id": "hotel",     "label": "Hotels & Lodging",      "icon": "🏨" },
-    { "id": "ground",    "label": "Ground Transport",      "icon": "🚗" },
-    { "id": "excursion", "label": "Shore Excursions",      "icon": "🧭" },
-    { "id": "dining",    "label": "Dining & Spa",          "icon": "🍽" },
-    { "id": "identity",  "label": "Identity & Compliance", "icon": "🪪" }
+    {
+      "id": "air",
+      "label": "Air Travel",
+      "icon": "✈"
+    },
+    {
+      "id": "cruise",
+      "label": "Cruise",
+      "icon": "🚢"
+    },
+    {
+      "id": "hotel",
+      "label": "Hotels & Lodging",
+      "icon": "🏨"
+    },
+    {
+      "id": "ground",
+      "label": "Ground Transport",
+      "icon": "🚗"
+    },
+    {
+      "id": "excursion",
+      "label": "Shore Excursions",
+      "icon": "🧭"
+    },
+    {
+      "id": "dining",
+      "label": "Dining & Spa",
+      "icon": "🍽"
+    },
+    {
+      "id": "identity",
+      "label": "Identity & Compliance",
+      "icon": "🪪"
+    }
   ],
   "documents": [
     {
@@ -39,174 +75,263 @@
       "category": "air",
       "title": "Delta — Greensboro → Montreal",
       "date": "2026-06-11",
-      "who": ["jett", "laura"],
+      "who": [
+        "jett",
+        "laura"
+      ],
       "vendor": "Delta Air Lines",
       "confirmation": "GYHRHV",
       "status": "confirmed",
       "sensitive": true,
-      "docs": ["Boarding passes (×2)", "E-ticket receipt"],
+      "docs": [
+        "Boarding passes (×2)",
+        "E-ticket receipt"
+      ],
       "files": [],
-      "notes": "DL 3052 GSO→ATL (12:26 PM), then DL 2665 ATL→YUL (arr 5:45 PM). Seats 17E (Jett) & 17D (Laura), Delta Main. Total 5h 19m."
+      "notes": "DL 3052 GSO→ATL (12:26 PM), then DL 2665 ATL→YUL (arr 5:45 PM). Seats 17E (Jett) & 17D (Laura), Delta Main. Total 5h 19m.",
+      "shared": true
     },
     {
       "id": "air-return",
       "category": "air",
       "title": "American — Boston → Greensboro",
       "date": "2026-06-21",
-      "who": ["jett", "laura"],
+      "who": [
+        "jett",
+        "laura"
+      ],
       "vendor": "American Airlines",
       "confirmation": "MNUWWX",
       "status": "confirmed",
       "sensitive": true,
-      "docs": ["Boarding passes (×2)", "E-ticket receipt"],
+      "docs": [
+        "Boarding passes (×2)",
+        "E-ticket receipt"
+      ],
       "files": [],
-      "notes": "AA 3043 BOS→PHL (12:32 PM), then AA 5518 PHL→GSO (arr 5:02 PM, operated by PSA as American Eagle). 1h 12m connection at PHL."
+      "notes": "AA 3043 BOS→PHL (12:32 PM), then AA 5518 PHL→GSO (arr 5:02 PM, operated by PSA as American Eagle). 1h 12m connection at PHL.",
+      "shared": true
     },
     {
       "id": "air-becca-sandra",
       "category": "air",
       "title": "Flights into Montreal (YUL)",
       "date": "2026-06-11",
-      "who": ["becca", "sandra"],
+      "who": [
+        "becca",
+        "sandra"
+      ],
       "vendor": "Unknown",
       "confirmation": "",
       "status": "gap",
       "sensitive": true,
-      "docs": ["Boarding passes", "E-ticket receipt"],
+      "docs": [
+        "Boarding passes",
+        "E-ticket receipt"
+      ],
       "files": [],
-      "notes": "Land at YUL ~11:00 AM Jun 11 to pick up the rental. Airline & confirmation not yet recorded."
+      "notes": "Land at YUL ~11:00 AM Jun 11 to pick up the rental. Airline & confirmation not yet recorded.",
+      "shared": true
     },
     {
       "id": "air-karen",
       "category": "air",
       "title": "Flight into Montreal (YUL)",
       "date": "2026-06-11",
-      "who": ["karen"],
+      "who": [
+        "karen"
+      ],
       "vendor": "Unknown",
       "confirmation": "",
       "status": "gap",
       "sensitive": true,
-      "docs": ["Boarding pass", "E-ticket receipt"],
+      "docs": [
+        "Boarding pass",
+        "E-ticket receipt"
+      ],
       "files": [],
-      "notes": "Lands at YUL ~5:00 PM Jun 11 (same arrival window as Jett & Laura). Airline & confirmation not yet recorded."
+      "notes": "Lands at YUL ~5:00 PM Jun 11 (same arrival window as Jett & Laura). Airline & confirmation not yet recorded.",
+      "shared": true
     },
-
     {
       "id": "cruise-jl",
       "category": "cruise",
       "title": "ms Zuiderdam — Stateroom 5161",
       "date": "2026-06-13",
-      "who": ["jett", "laura"],
+      "who": [
+        "jett",
+        "laura"
+      ],
       "vendor": "Holland America Line",
       "confirmation": "4LMNGG",
       "status": "confirmed",
       "sensitive": true,
-      "docs": ["Cruise boarding pass", "Luggage tags", "Have It All package confirmation"],
+      "docs": [
+        "Cruise boarding pass",
+        "Luggage tags",
+        "Have It All package confirmation"
+      ],
       "files": [],
-      "notes": "Cabin 5161, Deck 5. Have It All package. Complete Online Check-In by Jun 10 to generate the boarding pass & luggage tags."
+      "notes": "Cabin 5161, Deck 5. Have It All package. Complete Online Check-In by Jun 10 to generate the boarding pass & luggage tags.",
+      "shared": true
     },
     {
       "id": "cruise-sb",
       "category": "cruise",
       "title": "ms Zuiderdam — Sandra & Becca's stateroom",
       "date": "2026-06-13",
-      "who": ["sandra", "becca"],
+      "who": [
+        "sandra",
+        "becca"
+      ],
       "vendor": "Holland America Line",
       "confirmation": "4LMNGC",
       "status": "confirmed",
       "sensitive": true,
-      "docs": ["Cruise boarding pass", "Luggage tags", "Have It All package confirmation"],
+      "docs": [
+        "Cruise boarding pass",
+        "Luggage tags",
+        "Have It All package confirmation"
+      ],
       "files": [],
-      "notes": "Have It All package. Complete Online Check-In by Jun 10 to generate the boarding pass & luggage tags."
+      "notes": "Have It All package. Complete Online Check-In by Jun 10 to generate the boarding pass & luggage tags.",
+      "shared": true
     },
     {
       "id": "cruise-k",
       "category": "cruise",
       "title": "ms Zuiderdam — Karen's stateroom",
       "date": "2026-06-13",
-      "who": ["karen"],
+      "who": [
+        "karen"
+      ],
       "vendor": "Holland America Line",
       "confirmation": "4LMNGT",
       "status": "confirmed",
       "sensitive": true,
-      "docs": ["Cruise boarding pass", "Luggage tags", "Have It All package confirmation"],
+      "docs": [
+        "Cruise boarding pass",
+        "Luggage tags",
+        "Have It All package confirmation"
+      ],
       "files": [],
-      "notes": "Have It All package. Complete Online Check-In by Jun 10 to generate the boarding pass & luggage tags."
+      "notes": "Have It All package. Complete Online Check-In by Jun 10 to generate the boarding pass & luggage tags.",
+      "shared": true
     },
-
     {
       "id": "hotel-montreal",
       "category": "hotel",
       "title": "Montreal pre-cruise hotel",
       "date": "2026-06-11",
-      "who": ["jett", "laura", "sandra", "becca", "karen"],
+      "who": [
+        "jett",
+        "laura",
+        "sandra",
+        "becca",
+        "karen"
+      ],
       "vendor": "Marriott (Autograph Collection)",
       "confirmation": "",
       "status": "pending",
       "flag": "conflict",
       "sensitive": true,
-      "docs": ["Hotel confirmation"],
+      "docs": [
+        "Hotel confirmation"
+      ],
       "files": [],
-      "notes": "Humaniti Hotel Montreal — Autograph Collection by Marriott, 340 de la Gauchetière O, Montreal. Confirmed booking for the pre-cruise stay June 11."
+      "notes": "Humaniti Hotel Montreal — Autograph Collection by Marriott, 340 de la Gauchetière O, Montreal. Confirmed booking for the pre-cruise stay June 11.",
+      "shared": true
     },
     {
       "id": "hotel-quebec",
       "category": "hotel",
       "title": "Les Lofts St-Pierre — Old Quebec",
       "date": "2026-06-12",
-      "who": ["jett", "laura", "sandra", "becca", "karen"],
+      "who": [
+        "jett",
+        "laura",
+        "sandra",
+        "becca",
+        "karen"
+      ],
       "vendor": "Les Lofts Vieux-Québec (loftsvieuxquebec.com)",
       "confirmation": "",
       "status": "pending",
       "sensitive": true,
-      "docs": ["Booking confirmation — Unit SP304", "Booking confirmation — Unit SP109"],
+      "docs": [
+        "Booking confirmation — Unit SP304",
+        "Booking confirmation — Unit SP109"
+      ],
       "files": [],
-      "notes": "Two units booked: SP304 (Jett & Laura), SP109 (Sandra, Becca & Karen). Confirmation numbers not yet recorded."
+      "notes": "Two units booked: SP304 (Jett & Laura), SP109 (Sandra, Becca & Karen). Confirmation numbers not yet recorded.",
+      "shared": true
     },
     {
       "id": "hotel-boston",
       "category": "hotel",
       "title": "Boston Harbor Hotel — birthday night",
       "date": "2026-06-20",
-      "who": ["jett", "laura", "sandra", "becca", "karen"],
+      "who": [
+        "jett",
+        "laura",
+        "sandra",
+        "becca",
+        "karen"
+      ],
       "vendor": "Boston Harbor Hotel (via Chase Travel)",
       "confirmation": "26834SG340300 + 26834SG340301",
       "status": "confirmed",
       "sensitive": true,
-      "docs": ["Hotel confirmation (×2)"],
+      "docs": [
+        "Hotel confirmation (×2)"
+      ],
       "files": [],
-      "notes": "70 Rowes Wharf. Two City Superior King rooms. Check-in Sat Jun 20 3:00 PM, check-out Sun Jun 21 12:00 PM. Daily breakfast for 2 per room, $100 property credit, welcome amenity, Wi-Fi. Free cancellation until Thu Jun 18 12:00 AM property local time."
+      "notes": "70 Rowes Wharf. Two City Superior King rooms. Check-in Sat Jun 20 3:00 PM, check-out Sun Jun 21 12:00 PM. Daily breakfast for 2 per room, $100 property credit, welcome amenity, Wi-Fi. Free cancellation until Thu Jun 18 12:00 AM property local time.",
+      "shared": true
     },
-
     {
       "id": "car-montreal",
       "category": "ground",
       "title": "Rental car — Montreal → Quebec City",
       "date": "2026-06-11",
-      "who": ["becca", "sandra"],
+      "who": [
+        "becca",
+        "sandra"
+      ],
       "vendor": "Unknown",
       "confirmation": "",
       "status": "pending",
       "sensitive": true,
-      "docs": ["Rental agreement / voucher"],
+      "docs": [
+        "Rental agreement / voucher"
+      ],
       "files": [],
-      "notes": "Pick up at YUL Jun 11; return at Québec City (YQB) Jun 12 evening. Used for the Montreal→Quebec scenic drive. Rental company & confirmation not yet recorded."
+      "notes": "Pick up at YUL Jun 11; return at Québec City (YQB) Jun 12 evening. Used for the Montreal→Quebec scenic drive. Rental company & confirmation not yet recorded.",
+      "shared": true
     },
     {
       "id": "car-pei",
       "category": "ground",
       "title": "Minivan rental — PEI driving loop",
       "date": "2026-06-16",
-      "who": ["jett", "laura", "sandra", "becca", "karen"],
+      "who": [
+        "jett",
+        "laura",
+        "sandra",
+        "becca",
+        "karen"
+      ],
       "vendor": "PEI Car Rental, 18 Queen St, Charlottetown",
       "confirmation": "",
       "status": "pending",
       "sensitive": true,
-      "docs": ["Rental agreement / voucher"],
+      "docs": [
+        "Rental agreement / voucher"
+      ],
       "files": [],
-      "notes": "Pick up ~9:15 AM in Charlottetown for the ~119 km island loop; return before all-aboard (port 7am–5pm). Confirmation not yet recorded."
+      "notes": "Pick up ~9:15 AM in Charlottetown for the ~119 km island loop; return before all-aboard (port 7am–5pm). Confirmation not yet recorded.",
+      "shared": true
     },
-
     {
       "id": "exc-quebec-optional",
       "category": "excursion",
@@ -217,51 +342,77 @@
       "confirmation": "",
       "status": "gap",
       "sensitive": true,
-      "docs": ["Excursion ticket / voucher"],
+      "docs": [
+        "Excursion ticket / voucher"
+      ],
       "files": [],
-      "notes": "Optional embarkation-day tour. Not confirmed — decide whether to book."
+      "notes": "Optional embarkation-day tour. Not confirmed — decide whether to book.",
+      "shared": true
     },
     {
       "id": "exc-charlottetown-gps",
       "category": "excursion",
       "title": "Charlottetown GPS scavenger-hunt unit",
       "date": "2026-06-16",
-      "who": ["becca"],
+      "who": [
+        "becca"
+      ],
       "vendor": "Holland America (shore excursion)",
       "confirmation": "",
       "status": "pending",
       "sensitive": true,
-      "docs": ["Excursion ticket / voucher"],
+      "docs": [
+        "Excursion ticket / voucher"
+      ],
       "files": [],
-      "notes": "Becca picks up the self-guided GPS unit ~8:30 AM. Booking/confirmation not yet recorded."
+      "notes": "Becca picks up the self-guided GPS unit ~8:30 AM. Booking/confirmation not yet recorded.",
+      "shared": true
     },
     {
       "id": "exc-sydney-highland",
       "category": "excursion",
       "title": "Sydney — Highland Village & Gaelic Experience",
       "date": "2026-06-17",
-      "who": ["jett", "laura", "sandra", "becca", "karen"],
+      "who": [
+        "jett",
+        "laura",
+        "sandra",
+        "becca",
+        "karen"
+      ],
       "vendor": "Holland America (ship tour)",
       "confirmation": "",
       "status": "pending",
       "sensitive": true,
-      "docs": ["Excursion ticket / voucher"],
+      "docs": [
+        "Excursion ticket / voucher"
+      ],
       "files": [],
-      "notes": "11:30 AM–3:00 PM ship tour through the Bras d'Or Lakes to the Highland Village living-history museum. Confirmation not yet recorded."
+      "notes": "11:30 AM–3:00 PM ship tour through the Bras d'Or Lakes to the Highland Village living-history museum. Confirmation not yet recorded.",
+      "shared": true
     },
     {
       "id": "exc-halifax-viator",
       "category": "excursion",
       "title": "Halifax Coastal — Peggy's Cove & Lunenburg",
       "date": "2026-06-18",
-      "who": ["jett", "laura", "sandra", "becca", "karen"],
+      "who": [
+        "jett",
+        "laura",
+        "sandra",
+        "becca",
+        "karen"
+      ],
       "vendor": "Viator (private full-day tour)",
       "confirmation": "",
       "status": "pending",
       "sensitive": true,
-      "docs": ["Viator voucher / confirmation"],
+      "docs": [
+        "Viator voucher / confirmation"
+      ],
       "files": [],
-      "notes": "8:30 AM–4:00 PM private tour: Lunenburg (UNESCO) → Mahone Bay → Peggy's Cove → optional Citadel. Booked through Viator (not Holland America) — keep the Viator voucher handy. Confirmation not yet recorded."
+      "notes": "8:30 AM–4:00 PM private tour: Lunenburg (UNESCO) → Mahone Bay → Peggy's Cove → optional Citadel. Booked through Viator (not Holland America) — keep the Viator voucher handy. Confirmation not yet recorded.",
+      "shared": true
     },
     {
       "id": "exc-portland",
@@ -275,22 +426,28 @@
       "sensitive": false,
       "docs": [],
       "files": [],
-      "notes": "In port 12:30 PM–10:00 PM. Nothing booked. Suggested self-guided: Portland Head Light + Old Port. No document required unless a tour is added."
+      "notes": "In port 12:30 PM–10:00 PM. Nothing booked. Suggested self-guided: Portland Head Light + Old Port. No document required unless a tour is added.",
+      "shared": true
     },
-
     {
       "id": "dine-pinnacle",
       "category": "dining",
       "title": "Pinnacle Grill dinner",
       "date": "2026-06-18",
-      "who": ["jett", "laura"],
+      "who": [
+        "jett",
+        "laura"
+      ],
       "vendor": "ms Zuiderdam — Pinnacle Grill",
       "confirmation": "",
       "status": "pending",
       "sensitive": true,
-      "docs": ["Dining reservation"],
+      "docs": [
+        "Dining reservation"
+      ],
       "files": [],
-      "notes": "6:00 PM, Laura's booking (redeems the Have It All specialty dinner). Reservation number not yet recorded."
+      "notes": "6:00 PM, Laura's booking (redeems the Have It All specialty dinner). Reservation number not yet recorded.",
+      "shared": true
     },
     {
       "id": "dine-seafoodboil",
@@ -302,66 +459,102 @@
       "confirmation": "",
       "status": "pending",
       "sensitive": true,
-      "docs": ["Dining reservation"],
+      "docs": [
+        "Dining reservation"
+      ],
       "files": [],
-      "notes": "5:15 PM New England-style specialty dinner aboard. Attendees & reservation number not yet recorded."
+      "notes": "5:15 PM New England-style specialty dinner aboard. Attendees & reservation number not yet recorded.",
+      "shared": true
     },
     {
       "id": "spa-massage",
       "category": "dining",
       "title": "Greenhouse Spa — couples massage",
       "date": "2026-06-15",
-      "who": ["becca", "laura"],
+      "who": [
+        "becca",
+        "laura"
+      ],
       "vendor": "ms Zuiderdam — Greenhouse Spa",
       "confirmation": "",
       "status": "pending",
       "sensitive": true,
-      "docs": ["Spa reservation"],
+      "docs": [
+        "Spa reservation"
+      ],
       "files": [],
-      "notes": "10:30 AM couples massage (sea day). Reservation number not yet recorded."
+      "notes": "10:30 AM couples massage (sea day). Reservation number not yet recorded.",
+      "shared": true
     },
-
     {
       "id": "id-passports",
       "category": "identity",
       "title": "Passports (all 5 travellers)",
       "date": "",
-      "who": ["jett", "laura", "sandra", "becca", "karen"],
+      "who": [
+        "jett",
+        "laura",
+        "sandra",
+        "becca",
+        "karen"
+      ],
       "vendor": "—",
       "confirmation": "",
       "status": "pending",
       "sensitive": true,
-      "docs": ["Passport scans / photos (×5)"],
+      "docs": [
+        "Passport scans / photos (×5)"
+      ],
       "files": [],
-      "notes": "Required document for this cross-border Canada/USA cruise. Store a scan of each as backup; check expiry well before sailing."
+      "notes": "Required document for this cross-border Canada/USA cruise. Store a scan of each as backup; check expiry well before sailing.",
+      "shared": false
     },
     {
       "id": "id-online-checkin",
       "category": "identity",
       "title": "Holland America Online Check-In",
       "date": "2026-06-10",
-      "who": ["jett", "laura", "sandra", "becca", "karen"],
+      "who": [
+        "jett",
+        "laura",
+        "sandra",
+        "becca",
+        "karen"
+      ],
       "vendor": "Holland America (Navigator app / hollandamerica.com)",
       "confirmation": "",
       "status": "pending",
       "sensitive": false,
-      "docs": ["Check-in confirmation per stateroom"],
+      "docs": [
+        "Check-in confirmation per stateroom"
+      ],
       "files": [],
-      "notes": "Must be completed by Jun 10 for all three staterooms. Produces the boarding pass + luggage tags tracked under each Cruise record."
+      "notes": "Must be completed by Jun 10 for all three staterooms. Produces the boarding pass + luggage tags tracked under each Cruise record.",
+      "shared": false
     },
     {
       "id": "id-insurance",
       "category": "identity",
       "title": "Travel insurance",
       "date": "",
-      "who": ["jett", "laura", "sandra", "becca", "karen"],
+      "who": [
+        "jett",
+        "laura",
+        "sandra",
+        "becca",
+        "karen"
+      ],
       "vendor": "Unknown",
       "confirmation": "",
       "status": "gap",
       "sensitive": true,
-      "docs": ["Policy document", "Emergency assistance card"],
+      "docs": [
+        "Policy document",
+        "Emergency assistance card"
+      ],
       "files": [],
-      "notes": "Not referenced anywhere in the trip plan. Confirm whether anyone holds a policy (or a card with travel coverage) and store the document + 24h assistance number."
+      "notes": "Not referenced anywhere in the trip plan. Confirm whether anyone holds a policy (or a card with travel coverage) and store the document + 24h assistance number.",
+      "shared": false
     }
   ]
 }
