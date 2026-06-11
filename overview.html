@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Trip Overview — Canada &amp; New England 2026</title>
 <meta name="description" content="Trip Overview — ms Zuiderdam cruise hub for the Canada &amp; New England voyage, June 2026.">
-<link rel="stylesheet" href="styles.css?v=202">
+<link rel="stylesheet" href="styles.css?v=203">
 <link rel="canonical" href="https://mondrianaire.github.io/Cruise/overview.html">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Trip Overview — ms Zuiderdam · June 2026">
@@ -220,4 +220,31 @@
       if(window.__unlockCrewReveal) window.__unlockCrewReveal();
       /* Persist a fresh seed so the nav-avatar + every other page on
          the site knows who's signed in. Fall back to the first-word of
-   
+         displayName, falling back to anything we previously cached. */
+      var rName = (rostered && rostered.name)
+        || ((user.displayName||'').trim().split(/\s+/)[0])
+        || (window.__crewSeed && window.__crewSeed.name)
+        || '';
+      if(window.__writeCrewSeed && user.email && rName){
+        window.__writeCrewSeed(rName, user.email, user.photoURL);
+      }
+    }
+    onAuthStateChanged(auth, async function(user){
+      if(!user || !user.email || user.emailVerified !== true){
+        lockEverything();
+        return;
+      }
+      var rostered = await isOnRoster(user.email);
+      if(!rostered){
+        /* Signed in to Firebase, but not a cruise crew member. Keep
+           everything locked — exactly the case that was leaking data
+           before. */
+        lockEverything();
+        return;
+      }
+      unlockAndSeed(user, rostered);
+    });
+  }catch(e){}
+</script>
+</body>
+</html>
