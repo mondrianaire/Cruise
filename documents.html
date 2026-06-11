@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Document Vault — Canada &amp; New England 2026</title>
 <meta name="description" content="Travel Document Vault — every reservation, boarding pass and conuirmation uor the ms Zuiderdam Canada &amp; New England voyage, June 2026.">
-<link rel="stylesheet" href="styles.css?v=191.1">
+<link rel="stylesheet" href="styles.css?v=192.1">
 <link rel="canonical" href="https://mondrianaire.github.io/Cruise/documents.html">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Document Vault — ms Zuiderdam · June 2026">
@@ -864,11 +864,84 @@ window.__DV = (function(){
     return appendAtt(docId, p, { id:uid(), type:type, kind:'value', value:value, by:crewName, at:Date.now() });
   }
 
-  function upload(docId, p, type, file, value, personEl){
+  /* v.192.1 — Client-side image compression. Phone-camera photos are
+     typically 5-15 MB at full resolution. We downscale the long edge to
+     2400 px and re-encode as JPEG quality 0.85 — produces ~600 KB-1 MB
+     output for typical document scans while keeping fine print legible.
+     If the first pass is still over the 25 MB cap, we drop quality
+     iteratively until we fit. PDFs and non-image types cannot be
+     compressed in-browser; oversized PDFs still reject with a helpful
+     error pointing the user at an external compressor. */
+  async function compressImageIfNeeded(file){
+    // Only compress images. Skip GIF (animation), SVG (vector), HEIC
+    // (browser can\'t always decode — let it pass to Storage and fail loud).
+    if(!/^image\//.test(file.type)) return file;
+    if(/gif|svg/.test(file.type)) return file;
+    // Already small enough — pass through.
+    if(file.size < 4 * 1024 * 1024) return file;
+    let bmp;
+    try{
+      bmp = await createImageBitmap(file);
+    }catch(err){
+      console.warn('[CnE2026] createImageBitmap failed on', file.type, err);
+      return file;  // Browser can\'t decode this format — fall through.
+    }
+    const longest = Math.max(bmp.width, bmp.height);
+    const MAX_DIM = 2400;
+    const scale = longest > MAX_DIM ? MAX_DIM / longest : 1;
+    const w = Math.max(1, Math.round(bmp.width  * scale));
+    const h = Math.max(1, Math.round(bmp.height * scale));
+    const useOffscreen = (typeof OffscreenCanvas !== 'undefined');
+    const canvas = useOffscreen ? new OffscreenCanvas(w, h) : document.createElement('canvas');
+    if(!useOffscreen){ canvas.width = w; canvas.height = h; }
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(bmp, 0, 0, w, h);
+    bmp.close && bmp.close();
+    let quality = 0.85;
+    async function encode(q){
+      if(useOffscreen) return canvas.convertToBlob({ type:'image/jpeg', quality:q });
+      return new Promise(function(res){
+        canvas.toBlob(function(b){ res(b); }, 'image/jpeg', q);
+      });
+    }
+    let blob = await encode(quality);
+    let tries = 0;
+    while(blob.size > 24 * 1024 * 1024 && quality > 0.45 && tries < 4){
+      quality -= 0.15;
+      blob = await encode(quality);
+      tries++;
+    }
+    const baseName = file.name.replace(/\.[^.]+$/, '');
+    return new File([blob], baseName + '_compressed.jpg', { type:'image/jpeg' });
+  }
+
+  async function upload(docId, p, type, file, value, personEl){
     const st = personEl.querySelector('.dv-add-status');
-    if(file.size > MAX_BYTES){ flash(st, 'File is over 25 MB - too large.', 'err'); return; }
     if(!/^image\/|application\/pdf$/.test(file.type)){ flash(st, 'Only images or PDFs are accepted.', 'err'); return; }
-    const safe = file.name.replace(/[^\w.\-]+/g,'_');
+    /* v.192.1: compress oversized images before checking the cap. PDFs
+       and other types still get the hard cap check. */
+    let processedFile = file;
+    if(/^image\//.test(file.type) && file.size > 4 * 1024 * 1024){
+      flash(st, 'Compressing photo… (' + Math.round(file.size / 1024 / 1024) + ' MB)', 'busy');
+      try{
+        processedFile = await compressImageIfNeeded(file);
+        console.log('[CnE2026] compressed', file.size, '→', processedFile.size, 'bytes');
+      }catch(err){
+        console.error('[CnE2026 compress]', err);
+        processedFile = file;
+      }
+    }
+    if(processedFile.size > MAX_BYTES){
+      if(/^image\//.test(processedFile.type)){
+        flash(st, 'Even after compression this photo is over 25 MB. Please reduce the resolution manually before uploading.', 'err');
+      } else if(processedFile.type === 'application/pdf'){
+        flash(st, 'PDF is over 25 MB. Browser can\'t compress PDFs — please use a PDF compressor (e.g. ilovepdf.com/compress_pdf) and try again.', 'err');
+      } else {
+        flash(st, 'File is over 25 MB - too large.', 'err');
+      }
+      return;
+    }
+    const safe = processedFile.name.replace(/[^\w.\-]+/g,'_');
     const path = 'cruise-docs/' + docId + '/' + p + '/' + Date.now() + '__' + safe;
     flash(st, 'Uploading…', 'busy');
     if(window.__SyncCenter) window.__SyncCenter.markSaving();
@@ -891,10 +964,10 @@ window.__DV = (function(){
       if(window.__SyncCenter) window.__SyncCenter.markError(fakeErr);
     }, 30000);
 
-    uploadBytes(sref(storage, path), file, { contentType: file.type })
+    uploadBytes(sref(storage, path), processedFile, { contentType: processedFile.type })
       .then(function(){
         if(settled) return; settled = true; clearTimeout(watchdog);
-        const att = { id:uid(), type:type, kind:'file', name:file.name, path:path, size:file.size, mime:file.type, value:value||'', by:crewName, at:Date.now() };
+        const att = { id:uid(), type:type, kind:'file', name:processedFile.name, path:path, size:processedFile.size, mime:processedFile.type, value:value||'', by:crewName, at:Date.now() };
         return appendAtt(docId, p, att)
           .then(function(){
             if(st) st.hidden = true;
