@@ -133,13 +133,75 @@
   window.openVenueDrawer = openVenue;
   window.closeAllVenueDrawers = closeAll;
 
+  /* v.163: count events per venue so we can mark each dv-item with
+     .dv-has-events / .dv-no-events. Counts run once on init; the
+     SHIP_EVENTS array is static for the session. */
+  function eventCountFor(deck, slug){
+    if(!window.SHIP_EVENTS) return 0;
+    var id = String(deck) + '-' + slug;
+    var n = 0;
+    for(var i=0;i<window.SHIP_EVENTS.length;i++){
+      if(window.SHIP_EVENTS[i].venueId === id) n++;
+    }
+    return n;
+  }
+
+  /* v.163: toggle a highlight on dv-items that have no scheduled
+     events, instead of opening an empty drawer. Same toggle behaviour
+     as the drawer (second tap clears). Also pulses the matching
+     fp-hot hotspot on the deck plan so the user can locate the venue
+     on the schematic above. */
+  function toggleEmptyHighlight(li, deck, slug){
+    var wasSelected = li.classList.contains('is-selected');
+    /* Clear any other selection / open drawer first so only one venue
+       is foregrounded at a time. */
+    closeAll();
+    document.querySelectorAll('.dv-item.is-selected').forEach(function(x){
+      x.classList.remove('is-selected');
+    });
+    if(wasSelected) return;
+    li.classList.add('is-selected');
+    document.querySelectorAll('.fp-hot[data-deck="'+deck+'"][data-venue-id="'+slug+'"]')
+      .forEach(function(h){ h.classList.add('is-active'); });
+    setTimeout(function(){
+      li.scrollIntoView({behavior:'smooth', block:'center'});
+    }, 60);
+  }
+
+  function handleVenueClick(li, deck, slug){
+    if(li.classList.contains('dv-no-events')){
+      toggleEmptyHighlight(li, deck, slug);
+    } else {
+      openVenue(deck, slug);
+    }
+  }
+
   function init(){
     document.querySelectorAll('.dv-item').forEach(function(li){
       var m = (li.id||'').match(/^venue-(\d+)-(.+)$/);
       if(!m) return;
+      var deck = m[1], slug = m[2];
+      /* v.163: tag each dv-item with whether it has events + insert a
+         small badge so the user sees the count at a glance. */
+      var n = eventCountFor(deck, slug);
+      li.classList.add(n > 0 ? 'dv-has-events' : 'dv-no-events');
+      li.setAttribute('data-event-count', String(n));
+      if(!li.querySelector('.dv-evt-pill')){
+        var pill = document.createElement('span');
+        pill.className = 'dv-evt-pill';
+        if(n > 0){
+          pill.textContent = String(n);
+          pill.setAttribute('aria-label', n + ' scheduled event' + (n === 1 ? '' : 's'));
+        } else {
+          pill.textContent = '\u2014';   /* em-dash for "none" */
+          pill.classList.add('dv-evt-pill--none');
+          pill.setAttribute('aria-label', 'No scheduled events');
+        }
+        li.appendChild(pill);
+      }
       li.addEventListener('click', function(e){
         if(e.target.closest('a,button')) return;
-        openVenue(m[1], m[2]);
+        handleVenueClick(li, deck, slug);
       });
       li.setAttribute('tabindex','0');
       li.setAttribute('role','button');
@@ -147,7 +209,7 @@
       li.addEventListener('keydown', function(e){
         if(e.key === 'Enter' || e.key === ' '){
           e.preventDefault();
-          openVenue(m[1], m[2]);
+          handleVenueClick(li, deck, slug);
         }
       });
     });
@@ -155,7 +217,13 @@
       h.addEventListener('click', function(){
         var d = h.getAttribute('data-deck');
         var v = h.getAttribute('data-venue-id');
-        if(d && v) openVenue(d, v);
+        if(!d || !v) return;
+        var li = document.getElementById('venue-' + d + '-' + v);
+        if(li){
+          handleVenueClick(li, d, v);
+        } else {
+          openVenue(d, v);
+        }
       });
     });
   }

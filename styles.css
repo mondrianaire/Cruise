@@ -2771,3 +2771,70 @@ nav .inner{max-width:1180px;}
    step empties title= attributes, but this is a belt-and-braces guard
    against any tooltip racing in before the JS runs. */
 body.has-custom-tip [title]{ /* no-op selector hook for future use */ }
+
+/* ============================================================
+   v.163 — Venue event indicators
+   ============================================================
+   The events-drawer.js init() tags each .dv-item with .dv-has-events or
+   .dv-no-events based on how many SHIP_EVENTS rows reference it, and
+   injects a small .dv-evt-pill badge with the count (or em-dash for "none").
+   Venues with events still expand a drawer on click. Venues without
+   events get .is-selected toggled instead — a quiet container highlight
+   so the user can locate the venue on the deck plan without seeing an
+   empty "no events" panel. */
+
+/* Make room for the badge on the right edge of each dv-item. The
+   grid in ship.html already has padding-right:24px for the chevron
+   indicator; we sit the badge inside that gutter. */
+.dv-evt-pill{
+  position:absolute;
+  top:50%;
+  right:8px;
+  transform:translateY(-50%);
+  display:inline-flex; align-items:center; justify-content:center;
+  min-width:22px; height:22px;
+  padding:0 7px;
+  font:700 .7rem/1 var(--d-mono);
+  letter-spacing:.04em;
+  border-radius:11px;
+  color:#08161a;
+  background:linear-gradient(180deg, var(--brass-lt) 0%, var(--brass) 100%);
+  border:1px solid var(--brass-dk);
+  box-shadow:0 1px 2px rgba(0,0,0,.25);
+  pointer-events:none;
+}
+.dv-evt-pill--none{
+  color:var(--ink-dim);
+  background:rgba(255,255,255,.04);
+  border-color:rgba(255,255,255,.16);
+  box-shadow:none;
+  font-weight:600;
+}
+
+/* Visually mute the dv-item for venues with no events, so the active
+   "has-events" venues stand out at a glance. */
+.dv-item.dv-no-events{ opacity:.78; }
+.dv-item.dv-no-events .dv-l{ color:var(--ink-dim); }
+.dv-item.dv-no-events:hover, .dv-item.dv-no-events.is-hover{ opacity:1; }
+
+/* Active dv-items (those with events) keep their normal brass cursor +
+   the existing chevron indicator. */
+.dv-item.dv-has-events{ cursor:pointer; }
+
+/* The .is-selected state replaces drawer-expansion for no-event venues.
+   Quiet brass tint, same touch target, NO chevron rotation, NO drawer
+   panel. Pairs with the fp-hot.is-active highlight on the deck-plan
+   schematic above. */
+.dv-item.is-selected{
+  background:linear-gradient(180deg, rgba(200,155,74,.18), rgba(200,155,74,.06));
+  border-left:3px solid var(--brass);
+  padding-left:9px;       /* compensate for the 3px border */
+}
+.dv-item.is-selected .dv-l{ color:var(--cream); }
+.dv-item.is-selected .dv-evt-pill--none{
+  color:var(--brass-lt);
+  border-color:var(--brass);
+  background:rgba(200,155,74,.16);
+}
+/* Suppress the chevron on .is-selected since there's nothing to expand. */
+.dv-item.is-selected::after{ opacity:0; }
