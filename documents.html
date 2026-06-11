@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Document Vault — Canada &amp; New England 2026</title>
 <meta name="description" content="Travel Document Vault — every reservation, boarding pass and conuirmation uor the ms Zuiderdam Canada &amp; New England voyage, June 2026.">
-<link rel="stylesheet" href="styles.css?v=185">
+<link rel="stylesheet" href="styles.css?v=187">
 <link rel="canonical" href="https://mondrianaire.github.io/Cruise/documents.html">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Document Vault — ms Zuiderdam · June 2026">
@@ -521,6 +521,10 @@ window.__DV = (function(){
      acknowledged this entry but the document is not in the vault yet.
      Stored in Firestore at `pending.{docId}` parallel to `na`. */
   let pendingMap = {};
+  /* v.185: doneMap tracks "Taken care of" — done without upload.
+     For items like "Complete online check-in" that don't need a file.
+     Precedence: na > ready (has file) > done > pending > needed. */
+  let doneMap = {};
   const uiCollapsed = {};    // { docId|personKey: bool } — preserves manual toggles
   /* v.152: track whether Firebase Auth has fired its first onAuthStateChanged
      callback yet. Until it has, we render the "restoring" placeholder
@@ -1010,26 +1014,32 @@ window.__DV = (function(){
           setCrew(members[user.email] || (user.displayName||'').split(/\s+/)[0]);
           if(window.__writeCrewSeed) window.__writeCrewSeed(crewName, user.email, user.photoURL);
         } else {
-          /* v.152 trust-on-first-use: claim a free berth if the signed-in
-             user's first name matches one of the five crew keys AND nobody
-             else has already claimed that name. Mirrors the same path on
-             index.html so that landing on documents.html as a returning
-             traveller for the first time still completes the roster pair. */
+          /* v.187: if the signed-in user's first name matches one of the 5,
+             accept LOCALLY even if the roster doc write fails (rules drift,
+             stale taken-check, etc.). The roster is a coordination hint, not
+             the source of truth for "am I allowed to use this page". */
           const firstName = ((user.displayName||'').trim().split(/\s+/)[0] || '').toLowerCase();
-          const taken = Object.values(members).some(function(n){
-            return ((n||'').trim().split(/\s+/)[0] || '').toLowerCase() === firstName;
-          });
-          if(ALL5.indexOf(firstName) >= 0 && !taken){
-            try{
-              const m = {}; m[user.email] = user.displayName || firstName;
-              await setDoc(doc(db,"cruise","roster"), { members: m }, { merge:true });
-              setCrew(user.displayName || firstName);
-              if(window.__writeCrewSeed) window.__writeCrewSeed(crewName, user.email, user.photoURL);
-            }catch(e2){
-              showRosterReject(user, 'roster-locked');
+          if(ALL5.indexOf(firstName) >= 0){
+            /* Accept this user locally regardless of roster state. */
+            setCrew(user.displayName || firstName);
+            if(window.__writeCrewSeed) window.__writeCrewSeed(crewName, user.email, user.photoURL);
+            /* Best-effort roster claim. If it fails (members already has
+               this name under a different email, rules drift, etc.) we just
+               log it — the user is already accepted client-side. */
+            const taken = Object.values(members).some(function(n){
+              return ((n||'').trim().split(/\s+/)[0] || '').toLowerCase() === firstName;
+            });
+            if(!taken){
+              try{
+                const m = {}; m[user.email] = user.displayName || firstName;
+                setDoc(doc(db,"cruise","roster"), { members: m }, { merge:true })
+                  .catch(function(err){ console.warn('[CnE2026] roster claim failed (non-fatal)', err); });
+              }catch(e2){
+                console.warn('[CnE2026] roster claim threw (non-fatal)', e2);
+              }
             }
           } else {
-            showRosterReject(user, ALL5.indexOf(firstName) < 0 ? 'not-on-roster' : 'roster-locked');
+            showRosterReject(user, 'not-on-roster');
           }
         }
       }catch(e){

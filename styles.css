@@ -2179,13 +2179,22 @@ body.view-floor .ship-no-toggle{ display:none !important; }
 /* View-switch confirmation dialog. */
 .view-switch-dlg{
   position:fixed; inset:0; z-index:9998;
-  display:flex; align-items:center; justify-content:center;
+  /* v.186: default display:none so the dialog respects its [hidden]
+     attribute. Previously this rule was display:flex which OVERRODE
+     the [hidden] attribute (CSS display always beats the HTML hidden
+     attribute), and because of position:fixed inset:0 the invisible
+     overlay sat across the whole viewport eating every click and
+     blocking scroll. */
+  display:none; align-items:center; justify-content:center;
   padding:18px;
   background:rgba(4,19,28,.7);
   -webkit-backdrop-filter:blur(8px);
           backdrop-filter:blur(8px);
   opacity:0; transition:opacity .18s ease;
 }
+/* When the JS toggles `dlg.hidden = false` to show the dialog, restore
+   the flex layout. */
+.view-switch-dlg:not([hidden]){ display:flex; }
 .view-switch-dlg.visible{ opacity:1; }
 .view-switch-dlg .vsd-card{
   max-width:340px; width:100%;
