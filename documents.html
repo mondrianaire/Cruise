@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Document Vault — Canada &amp; New England 2026</title>
 <meta name="description" content="Travel Document Vault — every reservation, boarding pass and conuirmation uor the ms Zuiderdam Canada &amp; New England voyage, June 2026.">
-<link rel="stylesheet" href="styles.css?v=187">
+<link rel="stylesheet" href="styles.css?v=189">
 <link rel="canonical" href="https://mondrianaire.github.io/Cruise/documents.html">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Document Vault — ms Zuiderdam · June 2026">
@@ -209,6 +209,24 @@
     border:1px solid rgba(95,214,160,.45);
   }
   .dv-card.is-done{ background:rgba(95,214,160,.05); }
+
+  /* v.188 — per-person status pill in the person header */
+  .dv-p-state{
+    margin-left:8px;
+    padding:2px 8px;
+    border-radius:999px;
+    font:700 .58rem/1 var(--d-mono); letter-spacing:.04em; text-transform:uppercase;
+    border:1px solid rgba(255,255,255,.14);
+    background:rgba(255,255,255,.04); color:var(--ink-dim);
+  }
+  .dv-p-state-ready  { color:#9beac4; background:rgba(95,214,160,.14); border-color:rgba(95,214,160,.35); }
+  .dv-p-state-done   { color:#9beac4; background:rgba(95,214,160,.14); border-color:rgba(95,214,160,.35); }
+  .dv-p-state-pending{ color:var(--mod); background:rgba(239,178,40,.14); border-color:rgba(239,178,40,.35); }
+  .dv-p-state-na     { color:var(--ink-dim); background:rgba(255,255,255,.04); }
+  .dv-p-state-needed { color:var(--stren); background:rgba(224,121,90,.10); border-color:rgba(224,121,90,.30); }
+  .dv-person.dv-p-na .dv-atts,
+  .dv-person.dv-p-na .dv-add{ opacity:.5; pointer-events:none; }
+
 
 
   .dv-nofile{ font:600 .72rem/1.3 var(--d-body); color:var(--ink-dim); font-style:italic; }
@@ -566,17 +584,61 @@ window.__DV = (function(){
   function setArr(docId, p, arr){ (items[docId] || (items[docId] = {}))[p] = arr; }
   function findAtt(docId, p, id){ return arrFor(docId,p).find(function(a){ return a.id===id; }); }
 
-  function statusFor(docId){
-    /* v.150 precedence: na > ready > pending > needed.
-       "Ready" still wins over "pending" — once a file's actually on file,
-       the yellow flag is informational and we surface green. */
-    if(naMap[docId]) return 'na';
-    const m = items[docId] || {};
-    const has = Object.keys(m).some(function(p){ return (m[p]||[]).length > 0; });
-    if(has) return 'ready';
-    if(doneMap[docId]) return 'done';         /* v.185 */
-    if(pendingMap[docId]) return 'pending';
+  /* v.188: per-person state model. naMap/pendingMap/doneMap are now
+     2-level maps shaped { docId: { personKey: { by, at } } }. Each toggle
+     button affects ONLY the signed-in user\'s entry; others see read-only
+     state for their teammates. Doc-level pill shows the aggregate. */
+  function isPersonNA(docId, p)     { return !!(naMap[docId]      && naMap[docId][p]); }
+  function isPersonPending(docId, p){ return !!(pendingMap[docId] && pendingMap[docId][p]); }
+  function isPersonDone(docId, p)   { return !!(doneMap[docId]    && doneMap[docId][p]); }
+  function personEntryBy(map, docId, p){
+    const e = (map[docId] || {})[p];
+    return e && e.by ? e.by : '';
+  }
+  function statusForPerson(docId, p){
+    if(isPersonNA(docId, p)) return 'na';
+    if((arrFor(docId, p) || []).length) return 'ready';
+    if(isPersonDone(docId, p)) return 'done';
+    if(isPersonPending(docId, p)) return 'pending';
     return 'needed';
+  }
+  function statusFor(docId){
+    /* Aggregate state across all persons on this doc. Priority:
+         all NA       → na
+         all ready    → ready (everyone has uploaded)
+         all done/ready/na (mix, no needed/pending) → done
+         any pending  → pending
+         otherwise    → needed (still has outstanding entries) */
+    const ps = personsFor(docId);
+    if(!ps.length) return 'needed';
+    const states = ps.map(function(p){ return statusForPerson(docId, p); });
+    if(states.every(function(s){ return s === 'na'; })) return 'na';
+    if(states.every(function(s){ return s === 'ready'; })) return 'ready';
+    if(states.every(function(s){ return s === 'done' || s === 'ready' || s === 'na'; })) return 'done';
+    if(states.some(function(s){ return s === 'pending'; })) return 'pending';
+    return 'needed';
+  }
+  /* Convert legacy { docId: {by,at} } shape to per-person; pass-through
+     anything already shaped { docId: {personKey: {by,at}} }. */
+  function normalizePerPersonMap(raw){
+    if(!raw || typeof raw !== 'object') return {};
+    const out = {};
+    Object.keys(raw).forEach(function(docId){
+      const v = raw[docId];
+      if(!v || typeof v !== 'object') return;
+      const isOldShape = ('by' in v) || ('at' in v);
+      if(isOldShape){
+        /* Best-effort migration: assign to the original marker\'s person
+           if we can recognise them; otherwise stash under "_legacy". */
+        const byName = String(v.by || '');
+        const byKey  = byName.toLowerCase().split(/\s+/)[0];
+        const target = ALL5.indexOf(byKey) >= 0 ? byKey : '_legacy';
+        out[docId] = {}; out[docId][target] = { by: v.by, at: v.at };
+      } else {
+        out[docId] = v;
+      }
+    });
+    return out;
   }
 
   /* ---------- status + summary ---------- */
@@ -638,9 +700,18 @@ window.__DV = (function(){
     const key = docId + '|' + p;
     const def = !(p === crewKey || p === '_group');   // others start collapsed
     const collapsed = (key in uiCollapsed) ? uiCollapsed[key] : def;
-    let h = '<div class="dv-person'+(isMe?' is-me':'')+(collapsed?' collapsed':'')+'" data-person="'+esc(p)+'">';
+    /* v.188: per-person status pill on the header so the user can see each
+       traveller\'s state at a glance without expanding their block. */
+    const pState = statusForPerson(docId, p);
+    const pLbl   = pState === 'na'      ? '⚪ Not needed'
+                 : pState === 'ready'   ? '✓ Ready'
+                 : pState === 'done'    ? '✅ Taken care of'
+                 : pState === 'pending' ? '🟡 Will upload'
+                 : '— Outstanding';
+    let h = '<div class="dv-person'+(isMe?' is-me':'')+(collapsed?' collapsed':'')+' dv-p-' + pState + '" data-person="'+esc(p)+'">';
     h += '<div class="dv-person-h"><span class="chev" aria-hidden="true">▸</span>'+esc(name)+(isMe?' <span class="me">(you)</span>':'')
-       + '<span class="cnt">'+atts.length+'</span></div>';
+       + '<span class="cnt">'+atts.length+'</span>'
+       + '<span class="dv-p-state dv-p-state-' + pState + '">' + pLbl + '</span></div>';
     h += '<div class="dv-atts">'
        + (atts.length ? atts.map(attHtml).join('') : '<span class="dv-nofile">Nothing yet</span>')
        + '</div>';
@@ -801,13 +872,30 @@ window.__DV = (function(){
     const path = 'cruise-docs/' + docId + '/' + p + '/' + Date.now() + '__' + safe;
     const task = uploadBytesResumable(sref(storage, path), file, { contentType:file.type });
     flash(st, 'Uploading... 0%', 'busy');
+    if(window.__SyncCenter) window.__SyncCenter.markSaving();
     task.on('state_changed',
       function(s){ flash(st, 'Uploading... ' + Math.round((s.bytesTransferred/s.totalBytes)*100) + '%', 'busy'); },
-      function(err){ flash(st, 'Upload failed (' + (err&&err.code?err.code:'error') + '). On the crew roster?', 'err'); },
+      function(err){
+        console.error('[CnE2026 storage upload]', err);
+        flash(st, 'Upload failed (' + (err&&err.code?err.code:'error') + '). ' +
+          ((err&&err.code) === 'storage/unauthorized'
+            ? 'Storage rules deny this write — the maintainer needs to allow cruise-docs/ for signed-in users.'
+            : 'On the crew roster?'),
+          'err');
+        if(window.__SyncCenter) window.__SyncCenter.markError(err);
+      },
       function(){
         const att = { id:uid(), type:type, kind:'file', name:file.name, path:path, size:file.size, mime:file.type, value:value||'', by:crewName, at:Date.now() };
-        appendAtt(docId, p, att).then(function(){ if(st) st.hidden = true; })
-          .catch(function(){ flash(st, 'Saved file but could not record it.', 'err'); });
+        appendAtt(docId, p, att)
+          .then(function(){
+            if(st) st.hidden = true;
+            if(window.__SyncCenter) window.__SyncCenter.markSaved();
+          })
+          .catch(function(err){
+            console.error('[CnE2026 docvault append]', err);
+            flash(st, 'Saved file but could not record it: ' + (err&&err.message||'error'), 'err');
+            if(window.__SyncCenter) window.__SyncCenter.markError(err);
+          });
       });
   }
 
@@ -836,53 +924,24 @@ window.__DV = (function(){
   }
 
   /* v.150: three-state status toggles. */
-  function toggleNA(docId){
-    const on = !naMap[docId];
+  function toggleNA(docId, personKey){
+    /* v.188: per-person. Default to the signed-in user; fall through to
+       _group for docs without a who-list. */
+    personKey = personKey || (crewKey || '_group');
+    if(!personKey) return;
+    const on = !isPersonNA(docId, personKey);
     const payload = { updatedAt: Date.now() };
     if(on){
-      naMap[docId] = { by:crewName, at:Date.now() };
-      delete pendingMap[docId];
-      delete doneMap[docId];   /* v.185 */
-      payload.na = { [docId]: { by:crewName, at:Date.now() } };
-      payload.pending = { [docId]: deleteField() };
-      payload.done = { [docId]: deleteField() };
+      if(!naMap[docId]) naMap[docId] = {};
+      naMap[docId][personKey] = { by: crewName, at: Date.now() };
+      if(pendingMap[docId]) delete pendingMap[docId][personKey];
+      if(doneMap[docId])    delete doneMap[docId][personKey];
+      payload.na      = { [docId]: { [personKey]: { by: crewName, at: Date.now() } } };
+      payload.pending = { [docId]: { [personKey]: deleteField() } };
+      payload.done    = { [docId]: { [personKey]: deleteField() } };
     } else {
-      delete naMap[docId];
-      payload.na = { [docId]: deleteField() };
-    }
-    renderAll();
-    setDoc(vaultRef, payload, { merge:true })
-      .catch(function(err){
-        console.error('[CnE2026 docvault write]', err);
-        alert('Could not update status.\n\n'
-          + (err && err.code ? err.code + '\n' : '')
-          + (err && err.message ? err.message : 'Unknown error') + '\n\n'
-          + 'If you see permission-denied here, the Firestore rules block the docvault fields (items/na/pending). The cruise hub maintainer needs to expand the cruise rule. Reload the page to undo the local change.');
-      });
-  }
-
-  /* v.185: Mark an item as "Taken care of" — done with no upload required.
-     Confirms before flipping ON so a misclick doesn't accidentally mark
-     something as handled. Flipping back OFF (Undo) is always a single tap. */
-  function toggleDone(docId){
-    if(naMap[docId]) return;
-    const on = !doneMap[docId];
-    if(on){
-      const docMeta = (window.__DV && window.__DV.byId && window.__DV.byId[docId]) || {};
-      const label = (docMeta.title || docMeta.name || 'this item');
-      if(!confirm('Mark "' + label + '" as taken care of?\n\nThis is for items that are done but don\'t need an upload (e.g. "Complete online check-in"). You can undo with a single tap.')){
-        return;
-      }
-    }
-    const payload = { updatedAt: Date.now() };
-    if(on){
-      doneMap[docId] = { by: crewName, at: Date.now() };
-      delete pendingMap[docId];
-      payload.done = { [docId]: { by: crewName, at: Date.now() } };
-      payload.pending = { [docId]: deleteField() };
-    } else {
-      delete doneMap[docId];
-      payload.done = { [docId]: deleteField() };
+      if(naMap[docId]) delete naMap[docId][personKey];
+      payload.na = { [docId]: { [personKey]: deleteField() } };
     }
     renderAll();
     setDoc(vaultRef, payload, { merge:true })
@@ -895,16 +954,31 @@ window.__DV = (function(){
       });
   }
 
-  function togglePending(docId){
-    if(naMap[docId]) return;
-    const on = !pendingMap[docId];
+  /* v.185: Mark an item as "Taken care of" — done with no upload required.
+     Confirms before flipping ON so a misclick doesn't accidentally mark
+     something as handled. Flipping back OFF (Undo) is always a single tap. */
+  function toggleDone(docId, personKey){
+    personKey = personKey || (crewKey || '_group');
+    if(!personKey) return;
+    if(isPersonNA(docId, personKey)) return;
+    const on = !isPersonDone(docId, personKey);
+    if(on){
+      const docMeta = (window.__DV && window.__DV.byId && window.__DV.byId[docId]) || {};
+      const label = (docMeta.title || docMeta.name || 'this item');
+      if(!confirm('Mark "' + label + '" as taken care of for you?\n\nThis is for items that are done but don\'t need an upload (e.g. "Complete online check-in"). Each traveller has their own state — this affects only you. You can undo with a single tap.')){
+        return;
+      }
+    }
     const payload = { updatedAt: Date.now() };
     if(on){
-      pendingMap[docId] = { by:crewName, at:Date.now() };
-      payload.pending = { [docId]: { by:crewName, at:Date.now() } };
+      if(!doneMap[docId]) doneMap[docId] = {};
+      doneMap[docId][personKey] = { by: crewName, at: Date.now() };
+      if(pendingMap[docId]) delete pendingMap[docId][personKey];
+      payload.done    = { [docId]: { [personKey]: { by: crewName, at: Date.now() } } };
+      payload.pending = { [docId]: { [personKey]: deleteField() } };
     } else {
-      delete pendingMap[docId];
-      payload.pending = { [docId]: deleteField() };
+      if(doneMap[docId]) delete doneMap[docId][personKey];
+      payload.done = { [docId]: { [personKey]: deleteField() } };
     }
     renderAll();
     setDoc(vaultRef, payload, { merge:true })
@@ -913,7 +987,32 @@ window.__DV = (function(){
         alert('Could not update status.\n\n'
           + (err && err.code ? err.code + '\n' : '')
           + (err && err.message ? err.message : 'Unknown error') + '\n\n'
-          + 'If you see permission-denied here, the Firestore rules block the docvault fields (items/na/pending). The cruise hub maintainer needs to expand the cruise rule. Reload the page to undo the local change.');
+          + 'Reload the page to undo the local change.');
+      });
+  }
+
+  function togglePending(docId, personKey){
+    personKey = personKey || (crewKey || '_group');
+    if(!personKey) return;
+    if(isPersonNA(docId, personKey)) return;
+    const on = !isPersonPending(docId, personKey);
+    const payload = { updatedAt: Date.now() };
+    if(on){
+      if(!pendingMap[docId]) pendingMap[docId] = {};
+      pendingMap[docId][personKey] = { by: crewName, at: Date.now() };
+      payload.pending = { [docId]: { [personKey]: { by: crewName, at: Date.now() } } };
+    } else {
+      if(pendingMap[docId]) delete pendingMap[docId][personKey];
+      payload.pending = { [docId]: { [personKey]: deleteField() } };
+    }
+    renderAll();
+    setDoc(vaultRef, payload, { merge:true })
+      .catch(function(err){
+        console.error('[CnE2026 docvault write]', err);
+        alert('Could not update status.\n\n'
+          + (err && err.code ? err.code + '\n' : '')
+          + (err && err.message ? err.message : 'Unknown error') + '\n\n'
+          + 'Reload the page to undo the local change.');
       });
   }
 
@@ -932,6 +1031,9 @@ window.__DV = (function(){
     crewKey = crewName.toLowerCase().split(/\s+/)[0];
     if(ALL5.indexOf(crewKey) < 0) crewKey = '';
     isCrew = true;
+    /* v.189: surface the signed-in identity on the Sync pill so the user
+       sees who they're signed in as without expanding the panel. */
+    if(window.__SyncCenter) window.__SyncCenter.setUser(crewName);
     const note = document.getElementById('dv-crewnote');
     if(note){
       note.classList.add('is-crew');
@@ -951,11 +1053,18 @@ window.__DV = (function(){
     onSnapshot(vaultRef, function(snap){
       const d = (snap.exists() && snap.data()) || {};
       items = d.items || {};
-      naMap = d.na || {};
-      pendingMap = d.pending || {};
-      doneMap = d.done || {};   /* v.185 */
+      /* v.188: normalize legacy single-marker shape to per-person. */
+      naMap      = normalizePerPersonMap(d.na);
+      pendingMap = normalizePerPersonMap(d.pending);
+      doneMap    = normalizePerPersonMap(d.done);
       renderAll();
-    }, function(){});
+      /* v.189: the pill leaves "Connecting" the moment the first vault
+         snapshot arrives — the page is now talking to Firestore. */
+      if(window.__SyncCenter) window.__SyncCenter.markSaved();
+    }, function(err){
+      console.error('[CnE2026 vault onSnapshot]', err);
+      if(window.__SyncCenter) window.__SyncCenter.markError(err);
+    });
   }
 
   window.__dvOnRendered = function(){ if(isCrew){ revealConfs(); renderAll(); } };
@@ -1000,6 +1109,8 @@ window.__DV = (function(){
           }
         }
         if(window.__clearCrewSeed) window.__clearCrewSeed();
+        /* v.189: leave the connecting state — signed-out is its own pill colour. */
+        if(window.__SyncCenter) window.__SyncCenter.markSignedOut();
         renderAll();
         return;
       }
