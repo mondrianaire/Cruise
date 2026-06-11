@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Document Vault — Canada &amp; New England 2026</title>
 <meta name="description" content="Travel Document Vault — every reservation, boarding pass and conuirmation uor the ms Zuiderdam Canada &amp; New England voyage, June 2026.">
-<link rel="stylesheet" href="styles.css?v=203">
+<link rel="stylesheet" href="styles.css?v=204">
 <link rel="canonical" href="https://mondrianaire.github.io/Cruise/documents.html">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Document Vault — ms Zuiderdam · June 2026">
@@ -1916,4 +1916,31 @@ window.__DV = (function(){
                this name under a different email, rules drift, etc.) we just
                log it — the user is already accepted client-side. */
             const taken = Object.values(members).some(function(n){
-              return ((n||'').trim().split(/\s+/)[0]
+              return ((n||'').trim().split(/\s+/)[0] || '').toLowerCase() === firstName;
+            });
+            if(!taken){
+              try{
+                const m = {}; m[user.email] = user.displayName || firstName;
+                setDoc(doc(db,"cruise","roster"), { members: m }, { merge:true })
+                  .catch(function(err){ console.warn('[CnE2026] roster claim failed (non-fatal)', err); });
+              }catch(e2){
+                console.warn('[CnE2026] roster claim threw (non-fatal)', e2);
+              }
+            }
+          } else {
+            showRosterReject(user, 'not-on-roster');
+          }
+        }
+      }catch(e){
+        /* Roster doc read failed — surface a reject rather than silently
+           leaving the user on the "Sign in via the Voyage Console" screen
+           forever (which is what was happening for every signed-in user
+           because the file was truncated mid-statement). */
+        showRosterReject(user, 'roster-error');
+      }
+    });
+  }
+})();
+</script>
+</body>
+</html>
