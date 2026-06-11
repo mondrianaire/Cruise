@@ -339,16 +339,42 @@ if(window.__crewSeed && window.__crewSeed.name){
 }
 
 /* ===== Site version badge in nav (visible across all pages) ===== */
-window.SITE_VERSION = 'v.175';
+window.SITE_VERSION = 'v.178';
 (function(){
-  document.querySelectorAll('nav .brand .br-y').forEach(function(y){
-    if(!y.querySelector('.br-ver')){
-      var ver = document.createElement('span');
-      ver.className = 'br-ver';
-      ver.textContent = window.SITE_VERSION;
-      y.appendChild(ver);
+  function paint(){
+    /* v.178: paint the version badge in the brand area on every page so
+       the user can verify the cache busted to the latest build. Prefer
+       the .br-y year slot; fall back to .brand itself if br-y is missing
+       on a particular page. */
+    var slots = document.querySelectorAll('nav .brand .br-y');
+    if(slots.length){
+      slots.forEach(function(y){
+        var existing = y.querySelector('.br-ver');
+        if(existing){ existing.textContent = window.SITE_VERSION; return; }
+        var ver = document.createElement('span');
+        ver.className = 'br-ver';
+        ver.textContent = window.SITE_VERSION;
+        y.appendChild(ver);
+      });
+      return;
     }
-  });
+    /* Fallback: nav .brand directly. */
+    document.querySelectorAll('nav .brand').forEach(function(b){
+      var existing = b.querySelector('.br-ver');
+      if(existing){ existing.textContent = window.SITE_VERSION; return; }
+      var ver = document.createElement('span');
+      ver.className = 'br-ver br-ver-fallback';
+      ver.textContent = window.SITE_VERSION;
+      b.appendChild(ver);
+    });
+  }
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', paint);
+  } else {
+    paint();
+  }
+  /* Re-paint if some other script later re-renders the nav. */
+  setTimeout(paint, 600);
 })();
 
 
