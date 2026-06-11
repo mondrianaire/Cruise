@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Ship — Canada &amp; New England 2026</title>
 <meta name="description" content="The Ship — ms Zuiderdam cruise hub for the Canada &amp; New England voyage, June 2026.">
-<link rel="stylesheet" href="styles.css?v=177">
+<link rel="stylesheet" href="styles.css?v=178">
 <style id="ship-critical-v121">
   /* v.121: critical overlay + Night Owl rules shipped inline with the HTML
      so they always take effect, even if styles.css is served from CDN cache. */
@@ -114,14 +114,22 @@
     -webkit-user-drag: none;
   }
 
-  /* v.129: consolidated deck-plan image sizing (inlined for cache resistance) */
+  /* v.129/v.135 base + v.178 aspect-ratio fix.
+     Original sizing pinned height to 88vh and width to a derived value,
+     with max-width:100%. On narrow viewports the max-width clamp left
+     the stage at height:88vh while shrinking horizontally — the stage's
+     aspect ratio diverged from the 214:1449 deck PNG, so the image (with
+     object-fit:contain) letterboxed and the .fp-hot/.fp-route-img layers
+     (positioned by % of the STAGE) drifted off the actual image.
+     Fix: drive height from width via aspect-ratio so the stage's bounding
+     box always exactly matches the image's bounds at every viewport
+     size. The 88vh stays as a max-height target via max-block-size. */
   .fp-img-stage{
-    /* v.135: tight container — canvas is 214x1449 (the largest deck after
-       minimal-padding crop). Explicit width forces narrow container so cream
-       margin doesn't bleed out beyond ship. */
-    height: 88vh !important;
     width: calc(88vh * 214 / 1449) !important;
     max-width: 100% !important;
+    aspect-ratio: 214 / 1449 !important;
+    height: auto !important;
+    max-height: 88vh !important;
     margin: 0 auto !important;
     padding: 0 !important;
     overflow: hidden !important;
@@ -1513,9 +1521,9 @@
     <div class="vsd-ic" aria-hidden="true">📱↻</div>
 
 <script src="venues.js?v=173.1"></script>
-<script src="events.js?v=177"></script>
+<script src="events.js?v=178"></script>
 <script src="events-drawer.js?v=173.1"></script>
-<script src="app.js?v=177"></script>
+<script src="app.js?v=178"></script>
 <script>
 /* ===== Ship view toggle + floor-plan deck picker + cross-section clicks + modal ===== */
 (function(){
