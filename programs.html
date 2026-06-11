@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Daily Programs — Canada &amp; New England 2026</title>
 <meta name="description" content="Daily Programs — every event from the HAL Navigator daily programme across all 8 days of the ms Zuiderdam voyage, June 2026.">
-<link rel="stylesheet" href="styles.css?v=173.1.1">
+<link rel="stylesheet" href="styles.css?v=174.1">
 <link rel="canonical" href="https://mondrianaire.github.io/Cruise/programs.html">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Daily Programs — ms Zuiderdam · June 2026">
@@ -118,6 +118,116 @@
      so the eye lands on what THEY picked. The base filter still hides
      non-matches; this just tightens the visual cue when 1+ crew is on. */
   .ev-list.is-crew-focused .ev-row{ filter:saturate(.95); }
+
+  /* ===== v.174 — Inline Pass picker (drops below the event row) =====
+     Replaces the floating avatar popover with an in-flow drawer that
+     opens beneath the row using flex-wrap. Multi-select with explicit
+     Confirm / Cancel buttons. */
+  .ev-row{ flex-wrap:wrap; }   /* lets the picker wrap to a new line */
+  .ev-picker{
+    flex: 0 0 100%;
+    display:flex; flex-wrap:wrap; align-items:center; gap:12px;
+    padding:14px 16px;
+    border-top:1px dashed rgba(200,155,74,.32);
+    background:linear-gradient(180deg, rgba(127,180,200,.10) 0%, rgba(8,22,26,.65) 100%);
+    box-shadow:inset 0 1px 0 rgba(127,180,200,.18);
+  }
+  .ev-picker-lbl{
+    font:700 .68rem/1 var(--d-mono); letter-spacing:.10em; text-transform:uppercase;
+    color:#aedbe9;
+    flex:0 0 auto;
+  }
+  .ev-picker-avs{
+    display:flex; flex-wrap:wrap; gap:8px; align-items:center;
+    flex:1 1 auto;
+  }
+  .ev-picker-av{
+    display:inline-flex; align-items:center; gap:7px;
+    padding:6px 12px 6px 6px;
+    border-radius:999px; cursor:pointer; user-select:none;
+    border:1.5px solid rgba(255,255,255,.12);
+    background:rgba(255,255,255,.04); color:var(--ink-dim);
+    font:700 .74rem/1 var(--d-mono); letter-spacing:.04em;
+    transition:background .14s, border-color .14s, color .14s, transform .12s;
+  }
+  .ev-picker-av:hover{ background:rgba(200,155,74,.10); color:var(--cream); transform:translateY(-1px); }
+  .ev-picker-av .ev-picker-av-bubble{
+    width:24px; height:24px; border-radius:50%;
+    display:inline-flex; align-items:center; justify-content:center;
+    font:700 .78rem/1 var(--d-serif); color:#08161a;
+    background:var(--brass); border:1px solid rgba(0,0,0,.25);
+    transition:box-shadow .14s ease;
+  }
+  .ev-picker-av[data-c="jett"]   .ev-picker-av-bubble{ background:#e6c477; }
+  .ev-picker-av[data-c="laura"]  .ev-picker-av-bubble{ background:#e0795a; color:#fffdf3; }
+  .ev-picker-av[data-c="sandra"] .ev-picker-av-bubble{ background:#5fd6a0; }
+  .ev-picker-av[data-c="becca"]  .ev-picker-av-bubble{ background:#7fb4c8; color:#fffdf3; }
+  .ev-picker-av[data-c="karen"]  .ev-picker-av-bubble{ background:#c79bd1; }
+  .ev-picker-av.on{
+    border-color:var(--brass);
+    background:rgba(200,155,74,.20);
+    color:var(--cream);
+    box-shadow:inset 0 0 0 1px rgba(200,155,74,.40);
+  }
+  .ev-picker-av.on .ev-picker-av-bubble{
+    box-shadow:0 0 0 2px var(--brass-lt), 0 0 8px rgba(230,196,119,.5);
+  }
+  .ev-picker-av .ev-picker-av-check{
+    margin-left:2px; opacity:0;
+    font:700 .82rem/1 var(--d-mono); color:var(--easy);
+    transition:opacity .14s ease;
+  }
+  .ev-picker-av.on .ev-picker-av-check{ opacity:1; }
+  /* For travellers I previously suggested but is now deselected, hint the
+     retraction. */
+  .ev-picker-av.was-suggested:not(.on){
+    border-style:dashed; opacity:.78;
+  }
+  .ev-picker-av.was-suggested:not(.on)::after{
+    content:'will retract'; margin-left:4px;
+    font:700 .54rem/1 var(--d-mono); color:var(--stren); letter-spacing:.06em; text-transform:uppercase;
+  }
+
+  .ev-picker-acts{
+    display:flex; gap:8px; align-items:center;
+    margin-left:auto; flex:0 0 auto;
+  }
+  .ev-picker-btn{
+    display:inline-flex; align-items:center; gap:6px;
+    padding:9px 16px; border-radius:8px; cursor:pointer;
+    font:700 .68rem/1 var(--d-mono); letter-spacing:.10em; text-transform:uppercase;
+    transition:background .14s ease, color .14s ease, border-color .14s ease;
+  }
+  .ev-picker-btn-confirm{
+    border:1px solid var(--brass);
+    background:linear-gradient(180deg, rgba(200,155,74,.28), rgba(200,155,74,.10));
+    color:var(--cream);
+  }
+  .ev-picker-btn-confirm:hover{
+    background:linear-gradient(180deg, rgba(200,155,74,.40), rgba(200,155,74,.18));
+  }
+  .ev-picker-btn-confirm[disabled]{ opacity:.45; cursor:not-allowed; }
+  .ev-picker-btn-cancel{
+    border:1px solid rgba(255,255,255,.18);
+    background:transparent; color:var(--ink-dim);
+  }
+  .ev-picker-btn-cancel:hover{ background:rgba(255,255,255,.05); color:var(--cream); }
+
+  /* Highlight the Pass button when this row's picker is open. */
+  .ev-pass.is-open{
+    background:rgba(127,180,200,.22) !important;
+    color:#aedbe9 !important;
+  }
+
+  @media(max-width:560px){
+    .ev-picker{ padding:10px 12px; gap:10px; }
+    .ev-picker-lbl{ flex-basis:100%; font-size:.60rem; }
+    .ev-picker-acts{ flex-basis:100%; margin-left:0; justify-content:flex-end; }
+    .ev-picker-btn{ padding:8px 12px; font-size:.60rem; }
+    .ev-picker-av{ padding:5px 9px 5px 5px; font-size:.68rem; }
+    .ev-picker-av-bubble{ width:22px; height:22px; }
+  }
+
 
   /* ===== v.168 — Pass micro-action + Suggested-for-me ===== */
   .pg-filt.pg-filt-forme{ position:relative; }
@@ -541,8 +651,8 @@
 </footer>
 
 <!-- Shared shell + event source -->
-<script src="app.js?v=173.1.1"></script>
-<script src="events.js?v=173.1.1"></script>
+<script src="app.js?v=174.1"></script>
+<script src="events.js?v=174.1"></script>
 
 <script>
 /* ===== v.165 — Programs page renderer + interest tracking + search =====
@@ -614,6 +724,11 @@
   /* v.167: per-crew filter — Set of crewKeys; empty = no filter. */
   var crewFilter = new Set();
   var CREW_KEYS = ['jett','laura','sandra','becca','karen'];
+  /* v.174: inline Pass picker — only one row can have its picker open at
+     a time. pickerSelection is the working multi-select that gets
+     committed when the user clicks Confirm. */
+  var pickerOpenKey = null;
+  var pickerSelection = new Set();
   /* v.172: never write to the cloud until Firebase auth has CONFIRMED a
      roster member. Prevents anonymous "_anon" writes (which Firestore
      security rules will reject — surfacing as a "Sync error" even though
@@ -934,6 +1049,76 @@
     render();
   }
 
+  /* v.174: Pass picker helpers. */
+  function mySentTo(key){
+    /* The set of crew I've already passed this event to. Used to
+       pre-populate the picker and to compute deltas at Confirm. */
+    var me = window.__crewKey;
+    var out = new Set();
+    if(!me) return out;
+    var arr = (interests[key] && interests[key].suggestions) || [];
+    arr.forEach(function(sg){ if(sg && sg.from === me) out.add(sg.to); });
+    return out;
+  }
+  function openPicker(key){
+    pickerOpenKey = key;
+    pickerSelection = mySentTo(key);
+    render();
+  }
+  function closePicker(){
+    pickerOpenKey = null;
+    pickerSelection = new Set();
+    render();
+  }
+  function togglePickerSel(crew){
+    if(pickerSelection.has(crew)) pickerSelection.delete(crew);
+    else pickerSelection.add(crew);
+    render();
+  }
+  function confirmPicker(){
+    var key = pickerOpenKey;
+    if(!key) return;
+    var me = window.__crewKey;
+    if(!me){
+      if(window.__SyncCenter) window.__SyncCenter.markSignedOut();
+      closePicker();
+      return;
+    }
+    var prev = mySentTo(key);
+    /* Send to newly-selected, retract from newly-deselected. We update
+       `interests` ourselves then call saveAndPush once instead of
+       multiple sendSuggestion/dismiss round-trips (each of those would
+       render() + push() and the picker would be torn down mid-loop). */
+    var entry = interests[key] || { interested:[], going:[] };
+    if(!entry.suggestions) entry.suggestions = [];
+    CREW_KEYS.forEach(function(c){
+      if(c === me) return;
+      var wantsIt = pickerSelection.has(c);
+      var hadIt   = prev.has(c);
+      if(wantsIt && !hadIt){
+        /* If recipient already marked this event, suggesting is moot. */
+        if((entry.interested||[]).indexOf(c) >= 0) return;
+        if((entry.going||[]).indexOf(c) >= 0) return;
+        entry.suggestions.push({ from:me, to:c, at:Date.now() });
+      } else if(!wantsIt && hadIt){
+        /* Retract — drop any suggestion from me to c. */
+        entry.suggestions = entry.suggestions.filter(function(sg){
+          return !(sg && sg.from === me && sg.to === c);
+        });
+      }
+    });
+    if(!entry.suggestions.length) delete entry.suggestions;
+    if(!entry.interested.length && !entry.going.length && (!entry.suggestions || !entry.suggestions.length)){
+      delete interests[key];
+    } else {
+      interests[key] = entry;
+    }
+    pickerOpenKey = null;
+    pickerSelection = new Set();
+    saveAndPush();
+    render();
+  }
+
   /* ---------------- render ---------------- */
   function render(){
     var events = window.SHIP_EVENTS || [];
@@ -1133,30 +1318,55 @@
           suggRowHtml += '</span>';
         }
 
-        /* v.173: Pass button always opens the popover, regardless of crew
-           filter. The old "1-filtered-crew = one-tap-direct" mode was
-           inconsistent and could send a suggestion the user didn't mean
-           to send. Targets respect the filter though — if the crew filter
-           has 1+ entries, the popover only shows those (minus me); if it's
-           empty, the popover shows everyone else. */
+        /* v.174: Pass button is now just a toggle for the inline picker.
+           No targets attribute — selection happens in the picker drawer
+           itself. */
         var allOthers = CREW_KEYS.filter(function(c){ return c !== me; });
-        var targets;
-        if(crewFilter.size){
-          targets = [];
-          crewFilter.forEach(function(c){ if(c !== me) targets.push(c); });
-          if(!targets.length) targets = allOthers;
-        } else {
-          targets = allOthers;
-        }
+        var pickerHere = (pickerOpenKey === key);
         var passHtml = '';
         if(me){
-          passHtml = '<button type="button" class="ev-pass" ' +
+          passHtml = '<button type="button" class="ev-pass' + (pickerHere ? ' is-open' : '') + '" ' +
             'data-key="' + esc(key) + '" ' +
-            'data-targets="' + esc(targets.join(',')) + '" ' +
-            'aria-label="Suggest this event to&hellip;" ' +
-            'title="Pass to a traveller&hellip;">' +
+            'aria-expanded="' + (pickerHere?'true':'false') + '" ' +
+            'aria-label="' + (pickerHere ? 'Close pass picker' : 'Suggest this event to&hellip;') + '" ' +
+            'title="Pass to one or more travellers&hellip;">' +
             '📨' +
           '</button>';
+        }
+
+        /* v.174: inline picker drawer beneath the row content. Built only
+           when this row is the open picker — keeps DOM lean. */
+        var pickerHtml = '';
+        if(pickerHere){
+          var prev = mySentTo(key);
+          var avs = allOthers.map(function(c){
+            var on    = pickerSelection.has(c);
+            var hadIt = prev.has(c);
+            var classes = 'ev-picker-av' + (on ? ' on' : '') + (hadIt ? ' was-suggested' : '');
+            var initial = c.charAt(0).toUpperCase();
+            var name    = initial + c.slice(1);
+            return '<button type="button" class="' + classes + '" ' +
+              'data-c="' + esc(c) + '" data-key="' + esc(key) + '" ' +
+              'aria-pressed="' + (on?'true':'false') + '" ' +
+              'title="' + (on ? 'Selected — tap to remove' : 'Tap to select') + '">' +
+              '<span class="ev-picker-av-bubble" aria-hidden="true">' + initial + '</span>' +
+              '<span>' + name + '</span>' +
+              '<span class="ev-picker-av-check" aria-hidden="true">✓</span>' +
+              '</button>';
+          }).join('');
+          /* Confirm enabled only if selection differs from current
+             outgoing suggestions. */
+          var same = (prev.size === pickerSelection.size) &&
+            Array.from(prev).every(function(x){ return pickerSelection.has(x); });
+          var confirmDisabled = same ? ' disabled' : '';
+          pickerHtml = '<div class="ev-picker" data-key="' + esc(key) + '" role="group" aria-label="Suggest to travellers">' +
+            '<span class="ev-picker-lbl">Suggest to:</span>' +
+            '<div class="ev-picker-avs">' + avs + '</div>' +
+            '<div class="ev-picker-acts">' +
+              '<button type="button" class="ev-picker-btn ev-picker-btn-cancel" data-act="cancel">Cancel</button>' +
+              '<button type="button" class="ev-picker-btn ev-picker-btn-confirm" data-act="confirm"' + confirmDisabled + '>Confirm</button>' +
+            '</div>' +
+          '</div>';
         }
 
         html += '<div class="' + rowCls + '" data-key="' + esc(key) + '">' +
@@ -1182,6 +1392,7 @@
             '<span class="ev-status-l">' + esc(btnLab) + '</span>' +
             (countsTxt ? '<span class="ev-status-counts">' + countsTxt + '</span>' : '') +
           '</button>' +
+          pickerHtml +
         '</div>';
       });
       html += '</div></div>';
@@ -1196,57 +1407,30 @@
     });
 
     /* v.168: wire pass buttons + dismiss tags */
+    /* v.174: Pass button now toggles the inline picker for that row. */
     body.querySelectorAll('.ev-pass').forEach(function(btn){
       btn.addEventListener('click', function(ev){
         ev.preventDefault();
         ev.stopPropagation();
-        closeAllPopovers();
         var key = btn.getAttribute('data-key');
-        var targets = (btn.getAttribute('data-targets')||'').split(',').filter(Boolean);
-        /* v.173.1: render the popover at <body> level (NOT inside the
-           button — a <div> inside a <button> is an HTML anti-pattern that
-           breaks click delivery to inner <button> avatars). Position it
-           with fixed coords derived from the trigger's bounding rect so
-           it can't get hidden behind the bottom Sync bar (z-index war). */
-        var rect = btn.getBoundingClientRect();
-        var pop = document.createElement('div');
-        pop.className = 'ev-pass-pop';
-        pop.setAttribute('role','menu');
-        pop.style.position = 'fixed';
-        pop.style.zIndex = '10000';
-        /* Default: place below the button. If the button is too close to
-           the viewport bottom (Sync bar lives there), flip above. */
-        var spaceBelow = window.innerHeight - rect.bottom;
-        var popHeight = 48;   // approx — single row of 30px avatars + padding
-        if(spaceBelow < popHeight + 76 /* Sync bar */){
-          pop.style.bottom = (window.innerHeight - rect.top + 6) + 'px';
-          pop.style.top    = 'auto';
-          pop.classList.add('ev-pass-pop-up');
-        } else {
-          pop.style.top    = (rect.bottom + 6) + 'px';
-          pop.style.bottom = 'auto';
-        }
-        /* Right-align with the trigger button's right edge. */
-        pop.style.right = Math.max(8, (window.innerWidth - rect.right)) + 'px';
-        pop.style.left  = 'auto';
-
-        targets.forEach(function(t){
-          var b = document.createElement('button');
-          b.type = 'button';
-          b.className = 'ev-pass-av';
-          b.setAttribute('data-c', t);
-          b.setAttribute('aria-label', 'Suggest to ' + t.charAt(0).toUpperCase()+t.slice(1));
-          b.title = 'Suggest to ' + t.charAt(0).toUpperCase()+t.slice(1);
-          b.textContent = t.charAt(0).toUpperCase();
-          b.addEventListener('click', function(e2){
-            e2.preventDefault(); e2.stopPropagation();
-            closeAllPopovers();
-            sendSuggestion(key, t);
-            /* render() will tear down the row but pop is on body — kill it. */
-          });
-          pop.appendChild(b);
-        });
-        document.body.appendChild(pop);
+        if(pickerOpenKey === key) closePicker();
+        else openPicker(key);
+      });
+    });
+    /* v.174: avatar toggles within the open picker — multi-select. */
+    body.querySelectorAll('.ev-picker-av').forEach(function(av){
+      av.addEventListener('click', function(ev){
+        ev.preventDefault(); ev.stopPropagation();
+        togglePickerSel(av.getAttribute('data-c'));
+      });
+    });
+    /* v.174: Confirm / Cancel buttons. */
+    body.querySelectorAll('.ev-picker-btn').forEach(function(b){
+      b.addEventListener('click', function(ev){
+        ev.preventDefault(); ev.stopPropagation();
+        var act = b.getAttribute('data-act');
+        if(act === 'confirm') confirmPicker();
+        else closePicker();
       });
     });
     body.querySelectorAll('.ev-sugg-dis').forEach(function(b){
@@ -1269,10 +1453,17 @@
     el.style.color = '#fffdf3';
     setTimeout(function(){ el.style.background=''; el.style.color=''; }, 280);
   }
-  /* Click outside closes any open popover */
+  /* v.174: click far from any event row closes the inline picker too.
+     Clicks on the picker itself, the Pass button, or anything inside a
+     row are ignored so multi-select doesn't get cut short. */
   document.addEventListener('click', function(e){
     if(!e.target.closest('.ev-pass') && !e.target.closest('.ev-pass-pop')){
       closeAllPopovers();
+    }
+    if(pickerOpenKey){
+      if(!e.target.closest('.ev-row') && !e.target.closest('.ev-picker')){
+        closePicker();
+      }
     }
   }, true);
 
