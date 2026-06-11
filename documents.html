@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Document Vault — Canada &amp; New England 2026</title>
 <meta name="description" content="Travel Document Vault — every reservation, boarding pass and conuirmation uor the ms Zuiderdam Canada &amp; New England voyage, June 2026.">
-<link rel="stylesheet" href="styles.css?v=200">
+<link rel="stylesheet" href="styles.css?v=201">
 <link rel="canonical" href="https://mondrianaire.github.io/Cruise/documents.html">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Document Vault — ms Zuiderdam · June 2026">
@@ -19,6 +19,17 @@
 <meta name="twitter:image" content="https://mondrianaire.github.io/Cruise/voyage-preview.png">
 <style>
   /* ===== Document Vault — page-scoped styles (kept out of the shared styles.css) ===== */
+  /* v.201: compact inline status legend that replaces the long prose paragraph. */
+  .dv-legend{
+    display:flex; flex-wrap:wrap; gap:6px 14px;
+    margin:4px 0 12px;
+    font:600 .68rem/1 var(--d-mono);
+    letter-spacing:.06em;
+    color:var(--ink-dim);
+    text-transform:uppercase;
+  }
+  .dv-legend .dv-leg-i{ display:inline-flex; align-items:center; gap:6px; }
+  .dv-legend .dv-dot{ width:8px; height:8px; }
   .dv-sum{ display:flex; flex-wrap:wrap; gap:10px; margin:4px 0 26px; }
   .dv-sum .pill-stat{
     display:inline-flex; align-items:center; gap:8px;
@@ -514,7 +525,18 @@
   </header>
 <section id="vault" aria-labelledby="vault-h">
   <div class="sec-head"><h2 id="vault-h">All Documents</h2><span class="tag" id="dv-updated">First pass</span></div>
-  <p class="lead">A running checklist of everything that might carry a reservation number, ticket, pass or confirmation across the trip, <strong>ordered by when you'll need it</strong> — boarding passes at the airport on Jun 11, the rental-car voucher when you land at YUL, the hotel confirmation at check-in, cruise boarding on embark day, then each port's tour voucher on its port day. Every entry starts <strong style="color:var(--stren)">🔴 Outstanding</strong>. Flag it <strong style="color:var(--mod)">🟡 Will upload later</strong> once you've acknowledged it and are tracking down the document. It turns <strong style="color:var(--easy)">🟢 Ready</strong> automatically as soon as anyone uploads a file or enters a confirmation number. Mark it <strong style="color:var(--ink-dim)">⚪ Not needed (disabled)</strong> for events that require no paperwork — the entry stays visible in the list but its upload zone is disabled until you re-enable it. Sign in via the Voyage Console to reveal numbers and manage documents per traveller — your own section opens first.</p>
+  <!-- v.201: dramatically reduced intro. The wall of prose that explained
+       every status colour in long form has been replaced with one short
+       sentence + a tight inline legend immediately below; the dv-sum pills
+       further down show live counts using the same dot vocabulary. -->
+  <p class="lead">Sorted by when you'll need it — open a card, upload a file, or tap a status.</p>
+
+  <div class="dv-legend" aria-label="Status legend">
+    <span class="dv-leg-i"><span class="dv-dot dot-needed"></span>Need it</span>
+    <span class="dv-leg-i"><span class="dv-dot dot-pending"></span>Will upload</span>
+    <span class="dv-leg-i"><span class="dv-dot dot-ready"></span>Got it</span>
+    <span class="dv-leg-i"><span class="dv-dot dot-na"></span>Not needed</span>
+  </div>
 
   <div class="dv-sum" id="dv-summary" aria-live="polite"></div>
   <!-- v.152: the initial copy here is now neutral "restoring" text; the
@@ -1894,8 +1916,4 @@ window.__DV = (function(){
                this name under a different email, rules drift, etc.) we just
                log it — the user is already accepted client-side. */
             const taken = Object.values(members).some(function(n){
-              return ((n||'').trim().split(/\s+/)[0] || '').toLowerCase() === firstName;
-            });
-            if(!taken){
-              try{
-                con
+              return ((n||'').trim().split(/\s+/)[0]
