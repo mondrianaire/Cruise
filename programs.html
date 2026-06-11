@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Daily Programs — Canada &amp; New England 2026</title>
 <meta name="description" content="Daily Programs — every event from the HAL Navigator daily programme across all 8 days of the ms Zuiderdam voyage, June 2026.">
-<link rel="stylesheet" href="styles.css?v=175.1">
+<link rel="stylesheet" href="styles.css?v=176">
 <link rel="canonical" href="https://mondrianaire.github.io/Cruise/programs.html">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Daily Programs — ms Zuiderdam · June 2026">
@@ -124,6 +124,33 @@
      opens beneath the row using flex-wrap. Multi-select with explicit
      Confirm / Cancel buttons. */
   .ev-row{ flex-wrap:wrap; }   /* lets the picker wrap to a new line */
+
+  /* ===== v.176 — Schedule conflict indicator =====
+     When the current user has another commitment overlapping this
+     event's time slot, tint the row amber and show a small ⚠ badge in
+     the meta line. Conflict sources: another program event you marked
+     "going", or a journey-plan entry (private dinner, drive, shore
+     tour) where you're on the participants list. */
+  .ev-row.has-conflict{
+    border-color:rgba(239,178,40,.55);
+    background:linear-gradient(90deg, rgba(239,178,40,.10), rgba(255,255,255,.02));
+  }
+  .ev-row.has-conflict:hover{
+    border-color:rgba(239,178,40,.75);
+    background:linear-gradient(90deg, rgba(239,178,40,.16), rgba(255,255,255,.02));
+  }
+  .ev-conflict-tag{
+    display:inline-flex; align-items:center; gap:5px;
+    margin-left:auto;
+    padding:3px 8px; border-radius:999px;
+    background:rgba(239,178,40,.18);
+    border:1px solid rgba(239,178,40,.45);
+    color:var(--mod);
+    font:700 .58rem/1 var(--d-mono); letter-spacing:.06em; text-transform:uppercase;
+    cursor:help;
+  }
+  .ev-conflict-tag .ev-conflict-ic{ font-size:.78rem; line-height:1; }
+
   .ev-picker{
     flex: 0 0 100%;
     display:flex; flex-wrap:wrap; align-items:center; gap:12px;
@@ -687,8 +714,10 @@
 </footer>
 
 <!-- Shared shell + event source -->
-<script src="app.js?v=175.1"></script>
-<script src="events.js?v=175.1"></script>
+<script src="app.js?v=176"></script>
+<script src="events.js?v=176"></script>
+<!-- v.176: shared schedule data for conflict detection -->
+<script src="schedule.js?v=176"></script>
 
 <script>
 /* ===== v.165 — Programs page renderer + interest tracking + search =====
@@ -1085,6 +1114,79 @@
     render();
   }
 
+  /* ===== v.176 — conflict detection ===== */
+  /* Build a list of "I'm busy from X to Y on day Z" intervals for the
+     current user, drawing from:
+       (1) journey-plan entries where I'm on the `w` participants list
+           (or w is absent — treated as "applies to everyone")
+       (2) program events I've marked "going" to */
+  function getMyCommitments(){
+    var me = window.__crewKey;
+    if(!me) return [];
+    var out = [];
+    /* (1) Journey daily plan */
+    var plan = (window.SCHEDULE_PLAN || []);
+    plan.forEach(function(p){
+      if(!p) return;
+      var hasW = Array.isArray(p.w) && p.w.length > 0;
+      if(hasW && p.w.indexOf(me) < 0) return;     // someone else's commitment
+      var day = window.scheduleDayFromDate ? window.scheduleDayFromDate(p.d) : null;
+      if(!day) return;                             // pre-cruise / post-cruise day
+      if(p.allDay){
+        out.push({day:day, startMin:0, endMin:24*60, name:p.n||'Plan', source:'journey'});
+        return;
+      }
+      var sm = window.scheduleTimeToMin ? window.scheduleTimeToMin(p.t) : null;
+      if(sm == null) return;
+      var em = window.scheduleTimeToMin ? window.scheduleTimeToMin(p.e) : null;
+      if(em == null) em = sm + 60;                 // point event → assume 1h slot
+      out.push({day:day, startMin:sm, endMin:em, name:p.n||'Plan', source:'journey'});
+    });
+    /* (2) Program events I'm going to */
+    Object.keys(interests).forEach(function(k){
+      var entry = interests[k];
+      if(!entry || !entry.going || entry.going.indexOf(me) < 0) return;
+      /* The key encodes day_HHMM_venue_slug — but we need the event
+         metadata. Use SHIP_EVENTS to find the matching record. */
+      var events = window.SHIP_EVENTS || [];
+      for(var i=0;i<events.length;i++){
+        var e = events[i];
+        if(eventKey(e) === k){
+          var h = parseInt(String(e.time24||'0:00').split(':')[0],10);
+          var m = parseInt(String(e.time24||'0:00').split(':')[1],10);
+          var sm = h*60 + m;
+          var em = sm + (e.durationMin || 60);
+          out.push({day:e.day, startMin:sm, endMin:em, name:e.name, source:'program', selfKey:k});
+          break;
+        }
+      }
+    });
+    return out;
+  }
+
+  /* For one program event, return the list of commitments it overlaps.
+     Excludes any commitment whose selfKey === eventKey(e) so an event I'm
+     going to doesn't show "conflicts with itself". */
+  function eventConflicts(e){
+    var me = window.__crewKey;
+    if(!me) return [];
+    var commitments = getMyCommitments();
+    if(!commitments.length) return [];
+    var h = parseInt(String(e.time24||'0:00').split(':')[0],10);
+    var m = parseInt(String(e.time24||'0:00').split(':')[1],10);
+    var sm = h*60 + m;
+    var em = sm + (e.durationMin || 60);
+    var k = eventKey(e);
+    var out = [];
+    commitments.forEach(function(c){
+      if(c.day !== e.day) return;
+      if(c.selfKey === k) return;                  // skip "I'm going" matching itself
+      /* Overlap iff start < c.end AND end > c.start. */
+      if(sm < c.endMin && em > c.startMin) out.push(c);
+    });
+    return out;
+  }
+
   /* v.174: Pass picker helpers. */
   function mySentTo(key){
     /* The set of crew I've already passed this event to. Used to
@@ -1325,8 +1427,20 @@
         var rowSuggs = suggestionsOn(key);
         var me       = window.__crewKey;
         var iHaveOne = me && rowSuggs.some(function(sg){ return sg.to === me; });
+        /* v.176: schedule conflict check. Skip when I'm already going
+           (the row's own "going" stripe carries the message). */
+        var conflicts = (mine === 'going') ? [] : eventConflicts(e);
+        var conflictHtml = '';
+        if(conflicts.length){
+          var names = conflicts.map(function(c){ return c.name; }).join(' · ');
+          conflictHtml = '<span class="ev-conflict-tag" data-tip="Conflicts with: ' + esc(names) + '" title="Conflicts with: ' + esc(names) + '">' +
+            '<span class="ev-conflict-ic" aria-hidden="true">⚠</span>' +
+            'Conflict' + (conflicts.length > 1 ? ' (' + conflicts.length + ')' : '') +
+          '</span>';
+        }
         var rowCls = 'ev-row' + (mine === 'going' ? ' is-going' : (mine === 'interested' ? ' is-interested' : ''));
         if(iHaveOne) rowCls += ' has-for-me';
+        if(conflicts.length) rowCls += ' has-conflict';
         var btnIc  = mine === 'going' ? '✅' : (mine === 'interested' ? '💛' : '☆');
         var btnLab = mine === 'going' ? 'Going' : (mine === 'interested' ? 'Interested' : 'Mark');
         var countsTxt = '';
@@ -1416,6 +1530,7 @@
               '<span class="ev-place">' +
                 '<span>' + esc(label) + '</span>' +
                 '<span class="ev-deck">· Deck ' + esc(deck) + '</span>' +
+                conflictHtml +
               '</span>' +
               suggRowHtml +
             '</span>' +

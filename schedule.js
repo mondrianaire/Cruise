@@ -1,0 +1,98 @@
+/* Canada & New England 2026 — shared schedule data.
+   Mirrors journey.html's daily plan array P. Used by programs.html to
+   detect conflicts between Daily Programme events and trip-wide
+   commitments (private dinners, ship tours, drives, etc.).
+   Per-entry shape:
+     d : 'YYYY-MM-DD' date
+     k : stable key
+     w : optional array of crew keys (jett/laura/sandra/becca/karen).
+         If absent, treat as "applies to everyone".
+     t : start time, 12-hour (e.g. '6:00 PM'), or 'evening' / 'morning'
+     e : end time, 12-hour (optional — if absent, treat as point event)
+     n : display name
+     l : location
+     o : description
+     allDay : true for whole-day items (sea days)
+*/
+window.SCHEDULE_PLAN = [
+    {d:'2026-06-11',k:'jun11-bs-yul',w:['becca','sandra'],a:'Montreal',W:'Arrival day',t:'11:00 AM',e:'1:00 PM',n:'Becca & Sandra: land at YUL — pick up rental',l:'Montréal-Trudeau Airport (YUL)',lat:45.4595,lng:-73.7497,drive:'qc'},
+    {d:'2026-06-11',k:'jun11-oldmtl',w:['becca','sandra'],t:'1:00 PM',e:'5:00 PM',n:'Old Montreal walking tour',l:'Old Montreal',o:'Suggested adds: Notre-Dame Basilica · Place Jacques-Cartier · Mount Royal lookout.',lat:45.5079,lng:-73.5546,drive:'qc'},
+    {d:'2026-06-11',k:'jun11-jlk-yul',w:['jett','laura','karen'],t:'5:00 PM',e:'6:00 PM',n:'Jett, Laura & Karen land at YUL',l:'YUL',o:'Uber, or Sandra returns to pick up.',lat:45.4595,lng:-73.7497,drive:'qc'},
+    {d:'2026-06-11',k:'jun11-checkin',t:'evening',e:'',n:'Check in — Humaniti Hotel Montreal',l:'340 de la Gauchetière O, Montreal',o:'Autograph Collection (Marriott). Dinner.',lat:45.5036,lng:-73.5651,drive:'qc'},
+    {d:'2026-06-11',k:'jun11-sqdc',w:['jett'],t:'6:30 PM',e:'7:15 PM',n:'🍃 Jett: SQDC Saint-Laurent',l:'855 Boul. Saint-Laurent, Montréal',o:'Société québécoise du cannabis · ~10 min walk from Humaniti Hotel · Thursday hours 10 AM – 9 PM · bring photo ID, must be 21+.',lat:45.5105,lng:-73.5614,drive:'qc'},
+    {d:'2026-06-12',k:'jun12-drive1',a:'Montreal → Québec City',W:'Scenic drive day',t:'9:45 AM',e:'11:30 AM',n:'Drive: Montreal → Trois-Rivières',l:'Autoroute 20 East',o:'~1h 45m, ~145 km.',lat:45.5036,lng:-73.5651,drive:'qc'},
+    {d:'2026-06-12',k:'jun12-cafelewis',t:'11:30 AM',e:'12:45 PM',n:'Café Lewis — coffee + brunch',l:'Trois-Rivières area',o:'Latte / flat white, breakfast sandwich, pastries for the road. ~60–75 min.',lat:46.3559,lng:-72.5510,drive:'qc',tent:true},
+    {d:'2026-06-12',k:'jun12-trivieres',t:'12:45 PM',e:'2:00 PM',n:'Trois-Rivières walk — Rue des Forges',l:'Trois-Rivières',o:'Historic street, cafés, riverfront. Optional Amphithéâtre Cogeco.',lat:46.3441,lng:-72.5450,drive:'qc',tent:true},
+    {d:'2026-06-12',k:'jun12-chutes',t:'2:30 PM',e:'3:30 PM',n:'Parc des Chutes-de-la-Chaudière',l:'Lévis, QC',o:'Suspension bridge, waterfall overlook, forest trails (~45–60 min). Optional Le Corsaire microbrasserie.',lat:46.7252,lng:-71.2728,drive:'qc',tent:true},
+    {d:'2026-06-12',k:'jun12-arrqc',t:'4:15 PM',e:'5:30 PM',n:'Arrive Old Québec — first walk',l:'Old Quebec',o:'Petit-Champlain · Château Frontenac · Terrasse Dufferin · Place Royale.',lat:46.8131,lng:-71.2076,drive:'qc'},
+    {d:'2026-06-12',k:'jun12-checkin',t:'5:30 PM',e:'6:30 PM',n:'Check in — Les Lofts St-Pierre',l:'Old Quebec',o:'Unit <span class="crew-reveal locked" data-val="SP304" data-mask="•••••"></span> Jett & Laura · Unit <span class="crew-reveal locked" data-val="SP109" data-mask="•••••"></span> Sandra, Becca & Karen.',lat:46.8128,lng:-71.2052,drive:'qc'},
+    {d:'2026-06-12',k:'jun12-rental',t:'6:30 PM',e:'7:30 PM',n:'Return rental car at YQB airport',l:'Québec City Jean Lesage (YQB)',o:'',lat:46.7911,lng:-71.3927,drive:'qc'},
+    {d:'2026-06-13',k:'jun13-breakfast',a:'Québec City + Embark',W:'Walking tour + sail-away',t:'8:30 AM',e:'9:30 AM',n:'Breakfast — Place Royale (Lower Town)',l:'Old Quebec',o:'Wander Place Royale, Notre-Dame-des-Victoires, Petit-Champlain.',lat:46.81272,lng:-71.20379,tent:true},
+    {d:'2026-06-13',k:'jun13-petit',t:'9:30 AM',e:'10:30 AM',n:'Explore Petit-Champlain',l:'Quartier Petit-Champlain',o:'Boutiques, the famous Breakneck Stairs.',lat:46.81192,lng:-71.20379,tent:true},
+    {d:'2026-06-13',k:'jun13-funicular',t:'10:30 AM',e:'11:00 AM',n:'Ride the Funicular up to Upper Town',l:'Old Quebec Funicular',o:'',lat:46.81181,lng:-71.20451,tent:true},
+    {d:'2026-06-13',k:'jun13-frontenac',t:'11:00 AM',e:'12:00 PM',n:'Dufferin Terrace & Château Frontenac',l:'Fairmont Le Château Frontenac',o:'Optional: book afternoon tea at the Fairmont in advance.',lat:46.81289,lng:-71.20461,tent:true},
+    {d:'2026-06-13',k:'jun13-lunch',t:'12:00 PM',e:'1:30 PM',n:'Lunch — Upper Town',l:"Rue Saint-Jean / Place d'Armes",o:'Tourtière, French onion soup, Québec cheeses, maple desserts.',lat:46.81311,lng:-71.20654,tent:true},
+    {d:'2026-06-13',k:'jun13-upper',t:'1:30 PM',e:'2:30 PM',n:'Historic Upper Town',l:'Cathedral-Basilica of Notre-Dame de Québec',o:'Cathedral · Morrin Centre · City Hall.',lat:46.81414,lng:-71.20461,tent:true},
+    {d:'2026-06-13',k:'jun13-citadel',t:'2:30 PM',e:'4:00 PM',n:'Citadelle & Plains of Abraham',l:'La Citadelle de Québec',o:'River views and Canadian history.',lat:46.80764,lng:-71.20733,tent:true},
+    {d:'2026-06-13',k:'jun13-fortifs',t:'4:00 PM',e:'5:30 PM',n:'Walk the Fortifications',l:'Old Quebec city walls',o:'Saint-Louis Gate, Kent Gate.',lat:46.81082,lng:-71.21054,tent:true},
+    {d:'2026-06-13',k:'jun13-sunset',t:'5:30 PM',e:'6:30 PM',n:'Sunset on Dufferin Terrace',l:'Terrasse Dufferin',o:'',lat:46.81215,lng:-71.20502,tent:true},
+    {d:'2026-06-13',k:'jun13-embark',t:'6:30 PM',e:'10:00 PM',n:'Check out · Uber to ship · dinner onboard',l:'Quebec City cruise terminal',o:'',lat:46.81860,lng:-71.19872},
+    {d:'2026-06-13',k:'jun13-depart',t:'11:00 PM',e:'',n:'⚓ Depart Quebec City — Bon Voyage',l:'ms Zuiderdam',o:''},
+    {d:'2026-06-14',k:'jun14-seaday1',a:'St. Lawrence River',W:'Sea day',allDay:true,n:'Cruising the Saint Lawrence River',l:'ms Zuiderdam',o:'Settling-in day — spa, ship exploration, scenic cruising.'},
+    {d:'2026-06-15',k:'jun15-seaday2',a:'Gulf of St. Lawrence',W:'Sea day',allDay:true,n:'Cruising the Gulf of St. Lawrence',l:'ms Zuiderdam',o:'Watch for whales — rich June habitat.'},
+    {d:'2026-06-15',k:'jun15-massage',w:['becca','laura'],t:'10:30 AM',e:'11:30 AM',n:'💆 Becca & Laura: couples massage',l:'Greenhouse Spa, ms Zuiderdam',o:'Treatment at the Greenhouse Spa.'},
+    {d:'2026-06-16',k:'jun16-gps',w:['becca'],a:'🍁 Charlottetown PEI',W:'In port 7am–5pm',t:'8:30 AM',e:'9:00 AM',n:'Becca: pick up GPS scavenger-hunt unit',l:'ms Zuiderdam',o:'Self-guided GPS walking tour with clues + crossword.'},
+    {d:'2026-06-16',k:'jun16-rental',t:'9:15 AM',e:'9:45 AM',n:'Pick up minivan rental',l:'PEI Car Rental, 18 Queen St',o:'PEI driving loop — ~1h 54m total (~119 km).',lat:46.2347,lng:-63.1336,drive:'pei'},
+    {d:'2026-06-16',k:'jun16-cavendish',t:'10:00 AM',e:'11:00 AM',n:'Cavendish & Anne of Green Gables',l:'Cavendish, PEI',o:'~40 min in Anne country.',lat:46.4986,lng:-63.4123,drive:'pei'},
+    {d:'2026-06-16',k:'jun16-pei',t:'11:00 AM',e:'11:45 AM',n:'PEI National Park',l:'PEI National Park',o:'Red shores and dunes.',lat:46.4500,lng:-63.0764,drive:'pei'},
+    {d:'2026-06-16',k:'jun16-rustico',t:'11:45 AM',e:'1:00 PM',n:'North Rustico Harbour — lobster rolls',l:'North Rustico Harbour',o:'PEI mussels, lobster rolls, fresh oysters — best oyster destination in eastern Canada.',lat:46.4517,lng:-63.2851,drive:'pei'},
+    {d:'2026-06-16',k:'jun16-gulf',t:'1:00 PM',e:'2:00 PM',n:'Gulf Shore Parkway + Dalvay-by-the-Sea',l:'Gulf Shore Parkway',o:'Optional: Covehead Harbour Lighthouse — very photogenic short detour.',lat:46.4108,lng:-63.0028,drive:'pei'},
+    {d:'2026-06-16',k:'jun16-greenwich',t:'2:00 PM',e:'3:30 PM',n:'Greenwich Dunes (if time)',l:'Greenwich Dunes, PEI',o:'Most impressive natural area on PEI. Skip if running tight.',lat:46.4517,lng:-62.6536,drive:'pei',tent:true},
+    {d:'2026-06-17',k:'jun17-free',a:'🎻 Sydney, Nova Scotia',W:'In port 7am–4pm',t:'7:00 AM',e:'11:00 AM',n:"Free time — World's Largest Fiddle",l:'Sydney waterfront',o:'Classic Sydney photo.'},
+    {d:'2026-06-17',k:'jun17-highland',t:'11:30 AM',e:'3:00 PM',n:'Ship tour: Highland Village & Gaelic Experience',l:"Bras d'Or Lakes / Iona",o:'Scenic drive through the Bras d’Or Lakes. Living history museum on 43 acres — 11 buildings reflecting Gaelic settlement late 1700s–1800s.'},
+    {d:'2026-06-17',k:'jun17-seafoodboil',t:'5:15 PM',e:'7:00 PM',n:'🍽 Seafood Boil dinner',l:'ms Zuiderdam — Seafood Boil',o:'New England-style specialty dinner aboard the ship.'},
+    {d:'2026-06-18',k:'jun18-viator',a:'🚢 Halifax',W:'In port 8am–4pm',t:'8:30 AM',e:'4:00 PM',n:"Viator: Halifax Coastal — Peggy's Cove & Lunenburg",l:'Halifax → coast → Halifax',o:'Full-day private tour: Lunenburg (UNESCO) → Mahone Bay → Peggy’s Cove Lighthouse & Swissair 111 Memorial → optional Fairview Lawn / Citadel → back to ship. ~3h 25m driving (~249 km via NS-103 W).'},
+    {d:'2026-06-18',k:'jun18-pinnacle',w:['jett','laura'],t:'6:00 PM',e:'8:00 PM',n:'🍽 Pinnacle Grill dinner',l:'ms Zuiderdam — Pinnacle Grill',o:"Specialty dining — Laura's booking. Signature steak & seafood."},
+    {d:'2026-06-19',k:'jun19-portland',a:'🦞 Portland, Maine',W:'In port 12:30pm–10pm',t:'12:30 PM',e:'1:00 PM',n:'Arrive Portland',l:'Portland Port',o:'Long evening in port. Nothing booked yet.'},
+    {d:'2026-06-19',k:'jun19-headlight',t:'1:00 PM',e:'6:00 PM',n:'Suggested: Portland Head Light + Old Port',l:'Cape Elizabeth + Portland Old Port',o:'One of the most photographed lighthouses in North America. Combine with the Old Port, a lobster-roll lunch, and a waterfront walk.'},
+    {d:'2026-06-20',k:'jun20-disembark',a:'⚓ Boston',W:'Disembark · arrives 7am',t:'7:00 AM',e:'10:00 AM',n:'Arrive Boston — Disembark',l:'Boston Cruise Terminal',o:'Voyage ends.'},
+    {d:'2026-06-20',k:'jun20-boston',t:'10:00 AM',e:'6:00 PM',n:'Boston: Freedom Trail / Faneuil Hall / Quincy Market',l:'Boston, MA',o:'Suggested priorities before the hotel: Faneuil Hall, Quincy Market, Boston Common, Freedom Trail highlights.'},
+    {d:'2026-06-20',k:'jun20-hotel',w:['jett','laura','sandra','becca','karen'],t:'3:00 PM',e:'',n:'🎂🏨 Boston Harbor Hotel — birthday night',l:'70 Rowes Wharf, Boston MA 02110',o:'BOOKED via Chase Travel. 2 City Superior rooms (1 King each). Includes daily breakfast for 2 per room, $100 property credit, welcome amenity, Wi-Fi, possible upgrade/early check-in. Free cancellation until Thu Jun 18 12:00 AM property local time. Check-out Sun 12:00 PM.',cf:'Confirmations <span class="crew-reveal locked" data-val="26834SG340300" data-mask="••••••••••"></span> + <span class="crew-reveal locked" data-val="26834SG340301" data-mask="••••••••••"></span>'},
+    {d:'2026-06-20',k:'jun20-cannabis-natures',w:['jett','laura'],t:'4:00 PM',e:'4:45 PM',n:"🌿 Possible: Nature's Remedy (Chinatown)",l:'14 Tyler St, Boston MA 02111',o:"Recreational dispensary in Chinatown. ~13 min walk (0.7 mi) from Boston Harbor Hotel. Massachusetts is adult-use legal (21+). Verify hours and product availability before walking over.",lat:42.3502,lng:-71.0612,tent:true},
+    {d:'2026-06-20',k:'jun20-cannabis-ascend',w:['jett','laura'],t:'4:00 PM',e:'4:45 PM',n:'🌿 Possible: Ascend Boston (West End)',l:'272 Friend St, Boston MA 02114',o:'Recreational dispensary in the West End. ~18 min walk (1.0 mi) from Boston Harbor Hotel. Massachusetts is adult-use legal (21+). Verify hours and product availability before walking over.',lat:42.3645,lng:-71.0617,tent:true},
+    {d:'2026-06-21',k:'jun21-checkout',w:['jett','laura','sandra','becca','karen'],t:'11:00 AM',e:'12:00 PM',n:'🧳 Check out — Boston Harbor Hotel',l:'70 Rowes Wharf, Boston MA 02110',o:'Hotel check-out by 12:00 PM. Aim for 11:00 to comfortably reach BOS for the 12:32 PM flight.'},
+
+    {d:'2026-06-21',k:'jun21-bos-phl',w:['jett','laura'],a:'Fly home',W:'Boston → Greensboro',t:'12:32 PM',e:'2:08 PM',n:'✈ Flight: BOS → PHL — •• ••••',l:'BOS → PHL',o:'Jett & Laura. Confirmation <span class="crew-reveal locked" data-val="MNUWWX" data-mask="••••••"></span>. 1h 12m connection at PHL.'},
+    {d:'2026-06-21',k:'jun21-phl-gso',w:['jett','laura'],t:'3:20 PM',e:'5:02 PM',n:'✈ Flight: PHL → GSO — •• ••••',l:'PHL → GSO',o:'Jett & Laura. PSA Airlines as American Eagle.'}
+];
+
+/* Helper — convert a 12-hour time string like "6:00 PM" or "11:45 AM"
+   to minutes-since-midnight, or null if unparseable. */
+window.scheduleTimeToMin = function(t){
+  if(!t) return null;
+  var s = String(t).trim();
+  if(/^all\s*day$/i.test(s)) return 0;
+  if(/^morning$/i.test(s))   return 9*60;
+  if(/^afternoon$/i.test(s)) return 13*60;
+  if(/^evening$/i.test(s))   return 19*60;
+  if(/^night$/i.test(s))     return 21*60;
+  var m = s.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)?$/i);
+  if(!m){ m = s.match(/^(\d{1,2})\s*(AM|PM)$/i); if(m){ m = [s, m[1], '00', m[2]]; } }
+  if(!m) return null;
+  var h = parseInt(m[1],10), mm = parseInt(m[2],10);
+  var ap = (m[3]||'').toUpperCase();
+  if(ap === 'PM' && h < 12) h += 12;
+  if(ap === 'AM' && h === 12) h = 0;
+  return h*60 + mm;
+};
+
+/* Map cruise date string -> program "day" number. */
+window.scheduleDayFromDate = function(dateStr){
+  /* The cruise sails Jun 13–20 → days 1..8 in events.js numbering. */
+  if(!dateStr) return null;
+  var m = String(dateStr).match(/^2026-06-(\d{2})$/);
+  if(!m) return null;
+  var d = parseInt(m[1], 10);
+  if(d < 13 || d > 20) return null;
+  return d - 12;
+};
