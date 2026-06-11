@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Document Vault — Canada &amp; New England 2026</title>
 <meta name="description" content="Travel Document Vault — every reservation, boarding pass and conuirmation uor the ms Zuiderdam Canada &amp; New England voyage, June 2026.">
-<link rel="stylesheet" href="styles.css?v=205">
+<link rel="stylesheet" href="styles.css?v=206">
 <link rel="canonical" href="https://mondrianaire.github.io/Cruise/documents.html">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Document Vault — ms Zuiderdam · June 2026">
@@ -118,9 +118,12 @@
     background:rgba(63,160,173,.16); color:var(--teal-lt); border:1px solid rgba(63,160,173,.3);
   }
   .dv-who .av-all{ background:rgba(230,196,119,.16); color:var(--brass-lt); border-color:rgba(230,196,119,.32); }
-  /* v.198 — Mark Complete! row. */
+  /* v.206 — Mark Complete! row (per-user). The strip-mode CSS and the
+     completion-badge / reopen-button styles from v.198 are gone since
+     Mark Complete now flips the user's slot to done and the card
+     collapses via the existing v.194 per-user rule, not via a separate
+     card-completed class. */
   .dv-complete-row{ display:flex; align-items:center; gap:8px; margin-top:10px; padding-top:10px; border-top:1px dashed rgba(255,255,255,.08); }
-  .dv-complete-row.is-on{ border-top-color:rgba(95,214,160,.32); }
   .dv-complete-btn{
     margin-left:auto;
     background:linear-gradient(180deg, rgba(95,214,160,.22), rgba(95,214,160,.10));
@@ -135,63 +138,6 @@
     box-shadow:inset 0 0 12px rgba(95,214,160,.10);
   }
   .dv-complete-btn:hover{ background:linear-gradient(180deg, rgba(95,214,160,.34), rgba(95,214,160,.18)); color:#aef0d0; }
-  .dv-complete-badge{
-    background:rgba(95,214,160,.14);
-    color:var(--mint, #5fd6a0);
-    border:1px solid rgba(95,214,160,.32);
-    padding:5px 10px;
-    border-radius:999px;
-    font:700 .68rem/1 var(--d-mono);
-    letter-spacing:.06em;
-  }
-  .dv-reopen-btn{
-    margin-left:auto;
-    background:rgba(200,155,74,.12);
-    color:var(--brass-lt);
-    border:1px dashed var(--brass);
-    padding:5px 12px;
-    border-radius:999px;
-    font:700 .66rem/1 var(--d-mono);
-    letter-spacing:.06em;
-    cursor:pointer;
-  }
-  .dv-reopen-btn:hover{ background:rgba(200,155,74,.22); color:var(--cream); }
-  /* When a card is marked complete, collapse it to a one-line strip:
-     status border outline + category typeline + title only. Everything
-     else inside the card is hidden. Hover reveals a subtle hint. */
-  .dv-card.is-card-completed{
-    cursor:default;
-    padding:10px 14px !important;
-    min-height:auto;
-    border-style:solid !important;
-    opacity:.88;
-  }
-  .dv-card.is-card-completed > *{ display:none !important; }
-  .dv-card.is-card-completed .dv-top{ display:flex !important; align-items:center; gap:10px; margin:0; padding:0; }
-  .dv-card.is-card-completed .dv-top > div{ display:flex !important; flex-direction:row; align-items:baseline; gap:10px; flex:1; min-width:0; }
-  .dv-card.is-card-completed .dv-typeline{ display:inline-flex !important; flex:0 0 auto; }
-  .dv-card.is-card-completed .dv-title{ display:inline-block !important; margin:0; font-size:.92rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .dv-card.is-card-completed .dv-vendor,
-  .dv-card.is-card-completed .dv-meta,
-  .dv-card.is-card-completed .dv-who,
-  .dv-card.is-card-completed .dv-conf,
-  .dv-card.is-card-completed .dv-docs,
-  .dv-card.is-card-completed .dv-vaultzone,
-  .dv-card.is-card-completed .dv-notes,
-  .dv-card.is-card-completed .dv-status{ display:none !important; }
-  /* Small completion glyph appended after the title via ::after. */
-  .dv-card.is-card-completed .dv-title::after{
-    content:" 🏁";
-    font-size:.85em;
-    margin-left:6px;
-    opacity:.85;
-  }
-  /* Always honour the status-tone border on completed cards too. */
-  .dv-card.is-card-completed.is-all-done{ border-color:rgba(95,214,160,.55); }
-  /* Override collapsed-complete display for completed cards (since the
-     vaultzone is hidden, the auto-expand-on-click ::after pseudo doesn\'t
-     render here). */
-  .dv-card.is-card-completed::after{ content:none !important; }
 
   /* v.197 — admin chip editing (Jett only). */
   .dv-who .av{ position:relative; padding-right:18px; }
@@ -813,10 +759,10 @@ window.__DV = (function(){
      doc.who from the static catalogue so removed members stop seeing
      the card on their device. Stored at cruise/docvault.whoOverrides. */
   let whoOverridesMap = {};
-  /* v.198: per-card "Mark Complete!" flag. Once verified-and-stamped, the
-     card renders as a 1-line strip (border + category + title only).
-     Shape: { [docId]: { by, at } } — stored at cruise/docvault.completed. */
-  let completedMap = {};
+  /* v.206: removed completedMap (was the per-card Mark Complete stamp).
+     Mark Complete is now per-user — it just flips the signed-in user's
+     own slot to done via the existing doneMap pipeline, so we don't need
+     a separate per-card data structure. */
   const ADMIN_KEY = 'jett';
   function isAdmin(){ return crewKey === ADMIN_KEY; }
   function effectiveWhoFor(docId){
@@ -1063,19 +1009,14 @@ window.__DV = (function(){
       }
       h += '<button type="button" class="dv-na-toggle" data-act="na" title="Disable - no documents needed">⚪ Not needed (disable)</button>';
       h += '</div>';
-      /* v.198: Mark Complete! — sits below the per-person controls. */
-      var isCompleted = !!completedMap[docId];
-      if(isCompleted){
-        var cBy = completedMap[docId].by ? ' · ' + esc(completedMap[docId].by) : '';
-        h += '<div class="dv-complete-row is-on">'
-           +   '<span class="dv-complete-badge">🏁 Card marked complete' + cBy + '</span>'
-           +   '<button type="button" class="dv-reopen-btn" data-act="reopen" title="Reopen this card">Reopen</button>'
-           + '</div>';
-      } else {
-        h += '<div class="dv-complete-row">'
-           +   '<button type="button" class="dv-complete-btn" data-act="complete" title="Verify all uploads and mark this card complete">🏁 Mark Complete!</button>'
-           + '</div>';
-      }
+      /* v.206: Mark Complete! is per-user. Pressing it flips MY slot(s)
+         to done — the card then collapses for me via v.194 while
+         remaining visible for travellers who still have outstanding
+         work. The solid-green border only paints once everyone is
+         resolved (v.195 is-all-done). */
+      h += '<div class="dv-complete-row">'
+         +   '<button type="button" class="dv-complete-btn" data-act="complete" title="Mark this card complete for you (other travellers keep their own status)">🏁 Mark Complete!</button>'
+         + '</div>';
     }
     zone.innerHTML = h;
     zone.querySelectorAll('.dv-type').forEach(applyMode);
@@ -1254,9 +1195,6 @@ window.__DV = (function(){
       card.classList.toggle('is-me-done',     toneMeDone);
       card.classList.toggle('is-me-pending',  tonePending);
       card.classList.toggle('is-me-na',       toneNA);
-      /* v.198: card-completed strip mode. */
-      var cardCompleted = !!completedMap[docId] && isCrew;
-      card.classList.toggle('is-card-completed', cardCompleted);
       /* v.197: paint admin chip editors (Jett only). */
       paintWhoEditors(card, docId);
     });
@@ -1309,10 +1247,7 @@ window.__DV = (function(){
   document.addEventListener('click', function(ev){
     var card = ev.target.closest('.dv-card.is-collapsed-complete');
     if(!card) return;
-    /* v.198 — manually-completed cards stay collapsed regardless of clicks
-       anywhere on the strip. Use the Reopen button (visible inside the
-       hidden vaultzone — surfaced via hover or by toggling the filter). */
-    if(card.classList.contains('is-card-completed')) return;
+    /* v.206: per-card completion strip is gone — nothing to skip here. */
     /* Don't intercept clicks on buttons / inputs inside the (currently
        hidden) vaultzone — but if user clicked the card body / header,
        expand it. */
@@ -1372,8 +1307,7 @@ window.__DV = (function(){
         if(act === 'na'){ toggleNA(docId); return; }
         if(act === 'pending'){ togglePending(docId); return; }
         if(act === 'done'){ toggleDone(docId); return; }   /* v.185 */
-        if(act === 'complete'){ markCardComplete(docId); return; }   /* v.198 */
-        if(act === 'reopen'){ reopenCard(docId); return; }           /* v.198 */
+        if(act === 'complete'){ markMyselfDone(docId); return; }   /* v.206 */
         const person = btn.closest('.dv-person'); const p = person && person.getAttribute('data-person');
         if(act === 'val-add'){
           const type = person.querySelector('.dv-type').value;
@@ -1715,52 +1649,47 @@ window.__DV = (function(){
       });
   }
 
-  /* v.198 — verify every assigned traveller has resolved this card (uploaded,
-     marked done, or marked NA), then stamp completed[docId] in Firestore. The
-     card then collapses to a one-line strip (border + category + title only).
-     Anyone can mark complete (it\'s a collaborative checkpoint), and anyone
-     can reopen — the by/at fields preserve audit trail. */
-  function markCardComplete(docId){
+  /* v.206 — Mark Complete is PER-USER, not per-card. Pressing it marks
+     the signed-in user's own slot(s) on the card as done (so the card
+     collapses for them via the existing v.194 hide-when-my-status-done
+     logic), but does NOT affect other travellers' state. The solid-green
+     "all done" outline still only appears when every traveller has
+     resolved their slot (v.195 is-all-done — unchanged). Group cards
+     (no explicit who-list) treat the shared '_group' slot the same way. */
+  function markMyselfDone(docId){
     if(!isCrew){ alert('Sign in first.'); return; }
+    var me = crewKey || '_group';
     var persons = personsFor(docId);
-    /* Treat group cards (_group) like a single-slot doc — verify the group
-       slot has a file OR is marked done/pending/na. */
-    var unresolved = [];
-    persons.forEach(function(p){
-      var ps = statusForPerson(docId, p);
-      if(ps === 'needed' || ps === 'pending'){
-        var label = (p === '_group') ? 'Group slot' : (NAMES[p] || p);
-        unresolved.push(label + ' (' + ps + ')');
-      }
+    /* My slots: my own person key, plus the group slot if this is a
+       group card. Other travellers' slots are never touched. */
+    var mySlots = persons.filter(function(p){ return p === me || p === '_group'; });
+    if(!mySlots.length){ return; /* card isn't assigned to me */ }
+    /* Only flip slots that are still outstanding (needed/pending). If I
+       already have a file uploaded (ready), marked Taken care of (done),
+       or marked Not needed (na), there's nothing to do — the card is
+       already in a collapsed state for me. */
+    var payload = { updatedAt: Date.now() };
+    var changed = false;
+    mySlots.forEach(function(p){
+      var st = statusForPerson(docId, p);
+      if(st !== 'needed' && st !== 'pending') return;
+      if(!doneMap[docId]) doneMap[docId] = {};
+      doneMap[docId][p] = { by: crewName, at: Date.now() };
+      if(pendingMap[docId] && pendingMap[docId][p]) delete pendingMap[docId][p];
+      payload.done    = payload.done    || {}; payload.done[docId]    = payload.done[docId]    || {};
+      payload.pending = payload.pending || {}; payload.pending[docId] = payload.pending[docId] || {};
+      payload.done[docId][p]    = { by: crewName, at: Date.now() };
+      payload.pending[docId][p] = deleteField();
+      changed = true;
     });
-    if(unresolved.length){
-      alert('Cannot mark complete — still pending:\n\n• ' + unresolved.join('\n• ')
-        + '\n\nUpload, mark Taken care of, or mark Not needed for each before completing.');
-      return;
-    }
-    var payload = { updatedAt: Date.now(), completed: {} };
-    payload.completed[docId] = { by: crewName || crewKey || 'Crew', at: Date.now() };
-    /* Optimistic local update so the collapse happens immediately. */
-    completedMap[docId] = payload.completed[docId];
+    if(!changed){ return; /* already in a done/ready/na state for me */ }
     renderAll();
     setDoc(vaultRef, payload, { merge:true })
       .catch(function(err){
-        console.error('[CnE2026 markComplete write]', err);
-        alert('Could not save completion.\n\n'
+        console.error('[CnE2026 markMyselfDone write]', err);
+        alert('Could not save.\n\n'
           + (err && err.code ? err.code + '\n' : '')
           + (err && err.message ? err.message : 'Unknown error'));
-      });
-  }
-  function reopenCard(docId){
-    if(!isCrew){ return; }
-    delete completedMap[docId];
-    var payload = { updatedAt: Date.now(), completed: {} };
-    payload.completed[docId] = deleteField();
-    renderAll();
-    setDoc(vaultRef, payload, { merge:true })
-      .catch(function(err){
-        console.error('[CnE2026 reopenCard write]', err);
-        alert('Could not reopen card.\n\n' + (err && err.code ? err.code + '\n' : '') + (err && err.message ? err.message : ''));
       });
   }
 
@@ -1834,7 +1763,7 @@ window.__DV = (function(){
       pendingMap = normalizePerPersonMap(d.pending);
       doneMap    = normalizePerPersonMap(d.done);
       whoOverridesMap = d.whoOverrides || {};   /* v.197 */
-      completedMap    = d.completed    || {};   /* v.198 */
+      /* v.206: completedMap removed — see Mark Complete is now per-user. */
       renderAll();
       /* v.189: the pill leaves "Connecting" the moment the first vault
          snapshot arrives — the page is now talking to Firestore. */
@@ -1943,4 +1872,4 @@ window.__DV = (function(){
 </script>
 </body>
 </html>
-      
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
