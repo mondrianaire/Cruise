@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Ship — Canada &amp; New England 2026</title>
 <meta name="description" content="The Ship — ms Zuiderdam cruise hub for the Canada &amp; New England voyage, June 2026.">
-<link rel="stylesheet" href="styles.css?v=198.1">
+<link rel="stylesheet" href="styles.css?v=199">
 <style id="ship-critical-v121">
   /* v.121: critical overlay + Night Owl rules shipped inline with the HTML
      so they always take effect, even if styles.css is served from CDN cache. */
@@ -1520,10 +1520,10 @@
   <div class="vsd-card">
     <div class="vsd-ic" aria-hidden="true">📱↻</div>
 
-<script src="venues.js?v=198.1"></script>
-<script src="events.js?v=198.1"></script>
-<script src="events-drawer.js?v=173.1"></script>
-<script src="app.js?v=198.1"></script>
+<script src="venues.js?v=199"></script>
+<script src="events.js?v=199"></script>
+<script src="events-drawer.js?v=199"></script>
+<script src="app.js?v=199"></script>
 <script>
 /* ===== Ship view toggle + floor-plan deck picker + cross-section clicks + modal ===== */
 (function(){
@@ -1676,8 +1676,20 @@
     if(view === 'elev'){
       anchors.elev = { scrollY: window.scrollY || window.pageYOffset || 0 };
     } else if(view === 'floor'){
-      var activeBtn = document.querySelector('.fp-deck-btn.active');
-      var deck = activeBtn ? activeBtn.dataset.deck : null;
+      /* v.199: prefer the persistent __lastFpDeck (updated by setDeck) so
+         we don't lose the deck during a transient DOM state when the
+         orientation handlers fire twice (orientationchange + matchMedia
+         change). Fall back to .fp-deck-btn.active and then .fp-panel.active
+         for full belt-and-braces. */
+      var deck = window.__lastFpDeck;
+      if(!deck){
+        var activeBtn = document.querySelector('.fp-deck-btn.active');
+        deck = activeBtn ? activeBtn.dataset.deck : null;
+      }
+      if(!deck){
+        var activePanel = document.querySelector('.fp-panel.active');
+        deck = activePanel ? activePanel.dataset.deck : null;
+      }
       /* Currently-flashed venue, or first venue drawer that is open. */
       var hl = document.querySelector('.dv-item.is-flash')
             || document.querySelector('.dv-item.is-open');
@@ -1860,6 +1872,13 @@
 
   var deckBtns = document.querySelectorAll('.fp-deck-btn');
   var panels   = document.querySelectorAll('.fp-panel');
+  /* v.199: persistent source-of-truth for the most recently selected deck.
+     captureAnchor used to read .fp-deck-btn.active off the DOM, which is
+     fragile during orientation transitions — if the active class hadn't
+     been applied yet or had just been cleared by a re-render, the
+     querySelector returned null and the anchor was lost. Reading from
+     this variable means we never lose the user's deck on rotate. */
+  window.__lastFpDeck = window.__lastFpDeck || null;
   function setDeck(d){
     d = String(d);
     deckBtns.forEach(function(x){ x.classList.toggle('active', x.dataset.deck === d); });
@@ -1868,6 +1887,7 @@
       p.classList.toggle('active', match);
       p.hidden = !match;
     });
+    window.__lastFpDeck = d;   /* v.199: remember for rotate restore */
     /* v.141: switching decks closes any open venue drawer so we don't
        silently carry an "open" drawer onto the new deck (which would
        persist when the user navigates back). */
@@ -2104,11 +2124,24 @@
         setTimeout(function(){ if(v) highlightVenue(deck, v.id); }, 80);
       }
     }
-    z.addEventListener('click', go);
-    z.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); go(); } });
+    /* v.199: stop the click from bubbling to any outer <g> wrapper. The
+       second loop below used to attach a fall-back handler to every <g>
+       containing a glyph — including the .multi-deck container wrapper,
+       which has no data-deck and used yToDeck on its FIRST emoji-glyph
+       descendant (y=294 → Deck 2). That meant every md-zone click was
+       being overwritten by setDeck(2). The narrowed selector in the
+       second loop is the primary fix; this is the belt-and-braces. */
+    z.addEventListener('click', function(e){ e.stopPropagation(); go(); });
+    z.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); e.stopPropagation(); go(); } });
   });
 
-  document.querySelectorAll('.dc-svg g').forEach(function(g){
+  /* v.199: only attach the cross-section click handler to <g> elements
+     that explicitly declare which deck they belong to (data-deck) plus
+     the cabin-you pin. The previous selector ('.dc-svg g') also matched
+     the outer .multi-deck wrapper (no data-deck) which then fell back to
+     yToDeck on its first emoji-glyph descendant — and that descendant's
+     y was inside the Deck-2 band, sending every bubbled click to Deck 2. */
+  document.querySelectorAll('.dc-svg g[data-deck], .dc-svg .cabin-you').forEach(function(g){
     /* v.108: also pick up emoji sub-glyphs (text.emoji-glyph wrapped in a g) */
     var glyph = g.querySelector('use.glyph') || g.querySelector('text.emoji-glyph');
     if(glyph){
@@ -2267,71 +2300,4 @@
       var d = z.querySelector('desc.z-hours');
       if(d){
         z.setAttribute('data-247-on', d.getAttribute('data-247') || '0');
-        z.setAttribute('data-late-on', d.getAttribute('data-late') || '0');
-      }
-    });
-    noBtn.addEventListener('click', function(){
-      var on = noBtn.getAttribute('aria-pressed') !== 'true';
-      noBtn.setAttribute('aria-pressed', String(on));
-      wrap.classList.toggle('night-owl', on);
-    });
-  }
-
-  /* ---- Rotate-to-landscape gate (mobile / tablet portrait) ---- */
-  var gate = document.getElementById('orientationGate');
-  function isMobilePortrait(){
-    return window.matchMedia('(max-width:1100px)').matches &&
-           window.matchMedia('(orientation:portrait)').matches;
-  }
-  function showGate(){
-    if(!gate) return;
-    gate.classList.add('visible');
-    document.body.style.overflow = 'hidden';
-  }
-  function hideGate(){
-    if(!gate) return;
-    gate.classList.remove('visible');
-    document.body.style.overflow = '';
-  }
-  /* If user already chose "Use deck plans" this session, don't re-prompt. */
-  function sessionOverride(){
-    try{ return sessionStorage.getItem('shipViewOverride') === '1'; }
-    catch(e){ return false; }
-  }
-  function maybeShow(){
-    if(!gate) return;
-    if(sessionOverride()){ hideGate(); return; }
-    if(isMobilePortrait()){ showGate(); }
-    else { hideGate(); }
-  }
-
-  /* "Use deck plans (portrait) instead" — switch view + dismiss. */
-  var altBtn = document.getElementById('roUseDeckPlans');
-  if(altBtn){
-    altBtn.addEventListener('click', function(){
-      try{ sessionStorage.setItem('shipViewOverride', '1'); }catch(e){}
-      var floorTab = document.querySelector('.ship-view-tabs .svt[data-view="floor"]');
-      if(floorTab && !floorTab.classList.contains('active')) floorTab.click();
-      hideGate();
-    });
-  }
-
-  /* React to orientation / resize. */
-  window.addEventListener('resize', maybeShow);
-  if(window.matchMedia){
-    var mqOr = window.matchMedia('(orientation:portrait)');
-    if(mqOr.addEventListener) mqOr.addEventListener('change', maybeShow);
-    else if(mqOr.addListener) mqOr.addListener(maybeShow);
-  }
-
-  /* Initial check on load. */
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', maybeShow);
-  } else {
-    maybeShow();
-  }
-})();
-</script>
-
-</body>
-</html>
+        z.setAttribute('data-late-on', d.getAttribute('dat
