@@ -2096,7 +2096,8 @@ body.view-elev  .mobile-rotate-hint.mrh-portrait { display:none !important; }
   stroke:#a8b4ff !important;
   stroke-width:1.8 !important;
   fill:rgba(124,137,224,.42) !important;
-  filter:drop-shadow(0 0 5
+  filter:drop-shadow(0 0 5px rgba(168,180,255,.55)) !important;
+}
 
 /* v.117: landscape-deck-hint now reuses .rotate-overlay (full-screen). */
 
