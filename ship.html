@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Ship — Canada &amp; New England 2026</title>
 <meta name="description" content="The Ship — ms Zuiderdam cruise hub for the Canada &amp; New England voyage, June 2026.">
-<link rel="stylesheet" href="styles.css?v=183">
+<link rel="stylesheet" href="styles.css?v=184">
 <style id="ship-critical-v121">
   /* v.121: critical overlay + Night Owl rules shipped inline with the HTML
      so they always take effect, even if styles.css is served from CDN cache. */
@@ -1520,10 +1520,10 @@
   <div class="vsd-card">
     <div class="vsd-ic" aria-hidden="true">📱↻</div>
 
-<script src="venues.js?v=181"></script>
-<script src="events.js?v=183"></script>
+<script src="venues.js?v=184"></script>
+<script src="events.js?v=184"></script>
 <script src="events-drawer.js?v=173.1"></script>
-<script src="app.js?v=183"></script>
+<script src="app.js?v=184"></script>
 <script>
 /* ===== Ship view toggle + floor-plan deck picker + cross-section clicks + modal ===== */
 (function(){
@@ -1619,12 +1619,22 @@
   }
 
   /* v.113: orientation-gate modal control. */
+  /* v.184: persist dismissal in sessionStorage. The previous behaviour
+     re-popped the gate on every page load + every orientation change,
+     which blocked all interaction with the deck plan view in portrait
+     and locked the user into clicking the dismiss button repeatedly. */
+  function shouldShowGate(){
+    try{
+      if(sessionStorage.getItem('cnen_gate_dismissed') === '1') return false;
+    }catch(e){}
+    if(!window.matchMedia('(max-width:1100px)').matches) return false; // desktop bail
+    if(!window.matchMedia('(orientation:portrait)').matches) return false;
+    return true;
+  }
   function showOrientationGate(){
     var g = document.getElementById('orientationGate');
     if(!g) return;
-    if(!window.matchMedia('(max-width:1100px)').matches) return; // desktop bail
-    if(!window.matchMedia('(orientation:portrait)').matches) return;
-    /* v.118: visibility is CSS-controlled via .visible class (iOS-safe). */
+    if(!shouldShowGate()) return;
     g.classList.add('visible');
     document.body.style.overflow = 'hidden';
   }
@@ -1633,14 +1643,26 @@
     if(!g) return;
     g.classList.remove('visible');
     document.body.style.overflow = '';
+    try{ sessionStorage.setItem('cnen_gate_dismissed','1'); }catch(e){}
   }
   var roAlt = document.getElementById('roUseDeckPlans');
   if(roAlt){
     roAlt.addEventListener('click', function(){
-      /* v.116: don't persist the dismissal — user wants the prompt on every load. */
       try{ sessionStorage.setItem('shipViewOverride', '1'); }catch(e){}
       setTab('floor');
       hideOrientationGate();
+    });
+  }
+  /* v.184: tapping the backdrop (outside the card) also dismisses. */
+  var gateEl = document.getElementById('orientationGate');
+  if(gateEl){
+    gateEl.addEventListener('click', function(ev){
+      /* Only when the click target IS the overlay itself, not a child. */
+      if(ev.target === gateEl){
+        try{ sessionStorage.setItem('shipViewOverride', '1'); }catch(e){}
+        setTab('floor');
+        hideOrientationGate();
+      }
     });
   }
 
