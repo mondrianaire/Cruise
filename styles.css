@@ -3234,3 +3234,39 @@ body{ padding-bottom:60px; }
   .sync-center .sc-panel{ right:8px; bottom:56px; width:calc(100vw - 16px); max-width:320px; }
   body{ padding-bottom:56px; }
 }
+
+
+/* ============================================================
+   v.173.1 — Sync bar + Pass popover hotfix
+   ============================================================
+   The v.170 styles for the floating chip are still in the stylesheet
+   and a stale @media rule was overriding the bar's edge-pinned
+   position on mobile. Re-pin defensively at every viewport size and
+   make sure the popover sits above the bar instead of behind it. */
+.sync-center{
+  position:fixed !important;
+  left:0 !important; right:0 !important; bottom:0 !important;
+  top:auto !important;
+  display:block !important;
+  z-index:9000;
+}
+@media(max-width:560px){
+  .sync-center{
+    left:0 !important; right:0 !important; bottom:0 !important; top:auto !important;
+    gap:0 !important;
+  }
+}
+/* Pop avatar picker — when rendered at body level via fixed coords, it
+   needs a high z-index to clear the Sync bar (9000). Position rules are
+   set inline by JS now, so the rule mostly just lifts z-index. */
+.ev-pass-pop{
+  z-index:10000 !important;
+}
+/* When the popover is flipped to appear above the trigger, give the
+   little tail arrow the right orientation. */
+.ev-pass-pop.ev-pass-pop-up::before{
+  top:auto; bottom:-5px;
+  border-top:0; border-left:0;
+  border-bottom:1px solid rgba(200,155,74,.4);
+  border-right:1px solid rgba(200,155,74,.4);
+}
