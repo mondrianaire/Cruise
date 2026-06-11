@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Document Vault — Canada &amp; New England 2026</title>
 <meta name="description" content="Travel Document Vault — every reservation, boarding pass and conuirmation uor the ms Zuiderdam Canada &amp; New England voyage, June 2026.">
-<link rel="stylesheet" href="styles.css?v=181.1">
+<link rel="stylesheet" href="styles.css?v=183">
 <link rel="canonical" href="https://mondrianaire.github.io/Cruise/documents.html">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Document Vault — ms Zuiderdam · June 2026">
@@ -911,4 +911,43 @@ window.__DV = (function(){
         const rs = await getDoc(doc(db, "cruise", "roster"));
         const members = (rs.exists() && rs.data() && rs.data().members) || {};
         if(members[user.email]){
-          setCrew(members[user.email] || (user.displayName||'').split(/
+          /* User's email is on the roster — accept directly. Falls back to
+             the user's first name from displayName if the roster has the
+             email but no name string. */
+          setCrew(members[user.email] || (user.displayName||'').split(/\s+/)[0]);
+          if(window.__writeCrewSeed) window.__writeCrewSeed(crewName, user.email, user.photoURL);
+        } else {
+          /* v.152 trust-on-first-use: claim a free berth if the signed-in
+             user's first name matches one of the five crew keys AND nobody
+             else has already claimed that name. Mirrors the same path on
+             index.html so that landing on documents.html as a returning
+             traveller for the first time still completes the roster pair. */
+          const firstName = ((user.displayName||'').trim().split(/\s+/)[0] || '').toLowerCase();
+          const taken = Object.values(members).some(function(n){
+            return ((n||'').trim().split(/\s+/)[0] || '').toLowerCase() === firstName;
+          });
+          if(ALL5.indexOf(firstName) >= 0 && !taken){
+            try{
+              const m = {}; m[user.email] = user.displayName || firstName;
+              await setDoc(doc(db,"cruise","roster"), { members: m }, { merge:true });
+              setCrew(user.displayName || firstName);
+              if(window.__writeCrewSeed) window.__writeCrewSeed(crewName, user.email, user.photoURL);
+            }catch(e2){
+              showRosterReject(user, 'roster-locked');
+            }
+          } else {
+            showRosterReject(user, ALL5.indexOf(firstName) < 0 ? 'not-on-roster' : 'roster-locked');
+          }
+        }
+      }catch(e){
+        /* Roster doc read failed — surface a reject rather than silently
+           leaving the user on the "Sign in via the Voyage Console" screen
+           forever (which is what was happening for every signed-in user
+           because the file was truncated mid-statement). */
+        showRosterReject(user, 'roster-error');
+      }
+    });
+  }
+</script>
+</body>
+</html>

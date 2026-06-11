@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Daily Programs — Canada &amp; New England 2026</title>
 <meta name="description" content="Daily Programs — every event from the HAL Navigator daily programme across all 8 days of the ms Zuiderdam voyage, June 2026.">
-<link rel="stylesheet" href="styles.css?v=181.1">
+<link rel="stylesheet" href="styles.css?v=183">
 <link rel="canonical" href="https://mondrianaire.github.io/Cruise/programs.html">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Daily Programs — ms Zuiderdam · June 2026">
@@ -433,6 +433,118 @@
     .ev-sugg-tag{ font-size:.55rem; padding:3px 4px 3px 7px; }
   }
 
+  /* ===== v.182 — Notifications panel (responses to my suggestions) ===== */
+  .pg-notifications{
+    margin:4px 0 18px;
+    border:1px solid rgba(200,155,74,.45);
+    border-radius:12px;
+    background:linear-gradient(160deg, rgba(200,155,74,.10) 0%, rgba(8,22,26,.55) 70%);
+    box-shadow:inset 0 0 0 1px rgba(200,155,74,.08), 0 4px 14px rgba(0,0,0,.25);
+    overflow:hidden;
+  }
+  .pg-notifications[hidden]{ display:none; }
+  .pg-notif-head{
+    display:flex; align-items:center; gap:10px;
+    padding:11px 16px; border-bottom:1px solid rgba(200,155,74,.25);
+    background:rgba(200,155,74,.10);
+  }
+  .pg-notif-h{
+    flex:1; margin:0;
+    font:700 .82rem/1 var(--d-mono); letter-spacing:.10em; text-transform:uppercase;
+    color:var(--brass-lt);
+  }
+  .pg-notif-cnt{
+    display:inline-flex; align-items:center; justify-content:center;
+    min-width:22px; height:22px; padding:0 7px;
+    border-radius:11px; background:var(--brass); color:#08161a;
+    font:700 .70rem/22px var(--d-mono);
+  }
+  .pg-notif-list{ display:flex; flex-direction:column; }
+  .pg-notif-row{
+    display:grid;
+    grid-template-columns:70px 1fr auto;
+    gap:14px; align-items:center;
+    padding:11px 16px;
+    border-bottom:1px dashed rgba(200,155,74,.18);
+  }
+  .pg-notif-row:last-child{ border-bottom:0; }
+  .pg-notif-row:hover{ background:rgba(200,155,74,.06); }
+  .pg-notif-when{
+    display:flex; flex-direction:column; gap:3px;
+    border-right:1px dashed rgba(200,155,74,.25); padding-right:12px;
+  }
+  .pg-notif-day{
+    font:700 .60rem/1 var(--d-mono); letter-spacing:.10em; text-transform:uppercase;
+    color:var(--brass-lt);
+  }
+  .pg-notif-time{
+    font:700 .82rem/1 var(--d-mono); color:var(--cream); letter-spacing:.04em;
+  }
+  .pg-notif-body{ display:flex; flex-direction:column; gap:4px; min-width:0; }
+  .pg-notif-name{
+    font:600 .94rem/1.25 var(--d-serif); color:var(--cream);
+    overflow:hidden; text-overflow:ellipsis;
+  }
+  .pg-notif-meta{
+    display:inline-flex; flex-wrap:wrap; gap:10px; align-items:center;
+    font:600 .66rem/1.3 var(--d-mono); letter-spacing:.04em; text-transform:uppercase;
+  }
+  .pg-notif-from{
+    display:inline-flex; align-items:center; gap:5px;
+    color:var(--ink-dim);
+  }
+  .pg-notif-from-av{
+    width:18px; height:18px; border-radius:50%;
+    display:inline-flex; align-items:center; justify-content:center;
+    font:700 .62rem/1 var(--d-serif); color:#08161a;
+  }
+  .pg-notif-from-av[data-c="jett"]   { background:#e6c477; }
+  .pg-notif-from-av[data-c="laura"]  { background:#e0795a; color:#fffdf3; }
+  .pg-notif-from-av[data-c="sandra"] { background:#5fd6a0; }
+  .pg-notif-from-av[data-c="becca"]  { background:#7fb4c8; color:#fffdf3; }
+  .pg-notif-from-av[data-c="karen"]  { background:#c79bd1; }
+  .pg-notif-act{
+    display:inline-flex; align-items:center; gap:5px;
+    padding:3px 8px; border-radius:999px;
+    border:1px solid rgba(255,255,255,.14);
+    background:rgba(255,255,255,.03);
+  }
+  .pg-notif-act.act-going{ color:var(--easy);  border-color:rgba(95,214,160,.45); background:rgba(95,214,160,.12); }
+  .pg-notif-act.act-int  { color:var(--mod);   border-color:rgba(239,178,40,.45); background:rgba(239,178,40,.12); }
+  .pg-notif-act.act-dis  { color:var(--stren); border-color:rgba(224,121,90,.45); background:rgba(224,121,90,.12); }
+  .pg-notif-act.act-none { color:var(--ink-dim); }
+  .pg-notif-dismiss{
+    background:none; border:0; cursor:pointer;
+    color:var(--ink-dim); width:32px; height:32px; border-radius:50%;
+    font:700 1rem/1 var(--d-mono);
+  }
+  .pg-notif-dismiss:hover{ background:rgba(224,121,90,.18); color:var(--stren); }
+
+
+  .pg-notif-jump,
+  .pg-inbox-jump{
+    display:inline-flex; align-items:center;
+    padding:3px 8px; border-radius:5px; cursor:pointer;
+    border:1px solid rgba(200,155,74,.4);
+    background:rgba(200,155,74,.10);
+    color:var(--brass-lt);
+    font:700 .58rem/1 var(--d-mono); letter-spacing:.06em; text-transform:uppercase;
+    transition:background .14s, color .14s, border-color .14s;
+  }
+  .pg-notif-jump:hover,
+  .pg-inbox-jump:hover{
+    background:rgba(200,155,74,.22);
+    color:var(--cream);
+    border-color:var(--brass);
+  }
+
+  @media(max-width:560px){
+    .pg-notif-row{ grid-template-columns:56px 1fr auto; padding:9px 12px; gap:10px; }
+    .pg-notif-when{ font-size:.74rem; padding-right:9px; }
+    .pg-notif-name{ font-size:.86rem; }
+    .pg-notif-meta{ font-size:.58rem; }
+  }
+
   /* ===== v.169 — Dedicated Suggestions-for-you inbox panel =====
      Surfaces incoming suggestions above the day-by-day list so the
      recipient doesn't have to scroll the full schedule to act on them. */
@@ -782,6 +894,9 @@
 
     <div class="day-jump" id="pg-jump"></div>
 
+    <!-- v.182: notifications panel for responses to my outgoing suggestions -->
+    <aside class="pg-notifications" id="pg-notifications" hidden aria-labelledby="pg-notif-h"></aside>
+
     <!-- v.169: dedicated Suggestions-for-you inbox -->
     <aside class="pg-inbox" id="pg-inbox" hidden aria-labelledby="pg-inbox-h"></aside>
 
@@ -796,10 +911,10 @@
 </footer>
 
 <!-- Shared shell + event source -->
-<script src="app.js?v=181.1"></script>
-<script src="events.js?v=181.1"></script>
+<script src="app.js?v=183"></script>
+<script src="events.js?v=183"></script>
 <!-- v.176: shared schedule data for conflict detection -->
-<script src="schedule.js?v=181.1"></script>
+<script src="schedule.js?v=183"></script>
 
 <script>
 /* ===== v.165 — Programs page renderer + interest tracking + search =====
@@ -889,7 +1004,8 @@
   /* interests = { eventKey: {
         interested: [crewKey...],
         going:      [crewKey...],
-        suggestions: [{ from:crewKey, to:crewKey, at:ms }, ...]   // v.168
+        suggestions: [{ from:crewKey, to:crewKey, at:ms }, ...]                  // v.168 pending
+        responses:   [{ from:crewKey, to:crewKey, action, at:ms }, ...]          // v.182 awaiting sender ack
      } } */
   var interests = {};
   try{ interests = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}') || {}; }
@@ -1004,15 +1120,42 @@
     saveAndPush();
     render();
   }
+  /* v.182: When recipient resolves a suggestion, record a response so the
+     original sender sees a notification next page load. action is one of:
+     'interested' | 'going' | 'dismissed' | 'none' */
+  function addResponseFromSuggestions(entry, me, action){
+    if(!entry || !entry.suggestions || !entry.suggestions.length) return;
+    if(!entry.responses) entry.responses = [];
+    entry.suggestions.forEach(function(sg){
+      if(!sg || sg.to !== me) return;
+      /* Dedup against any prior response from-me-to-this-sender. Newest wins. */
+      entry.responses = entry.responses.filter(function(r){
+        return !(r && r.from === me && r.to === sg.from);
+      });
+      entry.responses.push({ from: me, to: sg.from, action: action, at: Date.now() });
+    });
+  }
   /* Drop one suggestion (recipient dismisses or sender retracts). */
   function dismissSuggestion(key, fromCrew, toCrew){
     var entry = interests[key];
     if(!entry || !entry.suggestions) return;
+    var me = window.__crewKey;
+    /* v.182: if the dismisser is the RECIPIENT (toCrew === me), log a
+       response so the sender finds out. Sender-retract case (fromCrew===me)
+       just silently drops the suggestion without notifying anyone. */
+    if(me && toCrew === me){
+      if(!entry.responses) entry.responses = [];
+      entry.responses = entry.responses.filter(function(r){
+        return !(r && r.from === me && r.to === fromCrew);
+      });
+      entry.responses.push({ from:me, to:fromCrew, action:'dismissed', at:Date.now() });
+    }
     entry.suggestions = entry.suggestions.filter(function(sg){
       return !(sg && sg.from === fromCrew && sg.to === toCrew);
     });
     if(!entry.suggestions.length) delete entry.suggestions;
-    if(!entry.interested.length && !entry.going.length && !entry.suggestions){
+    if(!entry.interested.length && !entry.going.length && !entry.suggestions
+       && (!entry.responses || !entry.responses.length)){
       delete interests[key];
     }
     saveAndPush();
@@ -1061,6 +1204,15 @@
     } else { /* was going */
       entry.going.splice(gIdx, 1);
     }
+    /* v.182: log responses for any suggestion targeting me before clearing it. */
+    if(entry.suggestions && entry.suggestions.some(function(sg){ return sg && sg.to === crew; })){
+      /* Determine the action from the new state. */
+      var act = 'none';
+      if(entry.going.indexOf(crew) >= 0) act = 'going';
+      else if(entry.interested.indexOf(crew) >= 0) act = 'interested';
+      else act = 'dismissed';
+      addResponseFromSuggestions(entry, crew, act);
+    }
     /* v.168: any suggestion targeting me on this event is now moot — I've
        acted on it (or cycled back to none, which is also a "seen" signal). */
     if(entry.suggestions){
@@ -1068,10 +1220,45 @@
       if(!entry.suggestions.length) delete entry.suggestions;
     }
     /* If empty, drop the entry to keep Firestore tidy. */
-    if(!entry.interested.length && !entry.going.length && (!entry.suggestions || !entry.suggestions.length)){
+    if(!entry.interested.length && !entry.going.length
+       && (!entry.suggestions || !entry.suggestions.length)
+       && (!entry.responses    || !entry.responses.length)){
       delete interests[key];
     } else {
       interests[key] = entry;
+    }
+    saveAndPush();
+    render();
+  }
+
+  /* ===== v.182 — Responses to my outgoing suggestions ===== */
+  function responsesForMe(){
+    var me = window.__crewKey;
+    if(!me) return [];
+    var out = [];
+    Object.keys(interests).forEach(function(k){
+      var arr = (interests[k] && interests[k].responses) || [];
+      arr.forEach(function(r){
+        if(r && r.to === me) out.push({ key:k, from:r.from, action:r.action, at:r.at });
+      });
+    });
+    return out;
+  }
+  /* Sender acknowledges a response → remove from interests so it doesn't
+     show again. */
+  function dismissResponse(key, fromCrew){
+    var me = window.__crewKey;
+    if(!me) return;
+    var entry = interests[key];
+    if(!entry || !entry.responses) return;
+    entry.responses = entry.responses.filter(function(r){
+      return !(r && r.from === fromCrew && r.to === me);
+    });
+    if(!entry.responses.length) delete entry.responses;
+    if(!entry.interested.length && !entry.going.length
+       && (!entry.suggestions || !entry.suggestions.length)
+       && (!entry.responses    || !entry.responses.length)){
+      delete interests[key];
     }
     saveAndPush();
     render();
@@ -1140,7 +1327,7 @@
               'From ' + fromCap +
             '</span>' +
             '<span>' + esc(label) + ' · Deck ' + esc(deck) + '</span>' +
-            '<a href="#pg-day-' + e.day + '" class="pg-inbox-jump" data-key="' + esc(key) + '">Jump to →</a>' +
+            '<button type="button" class="pg-inbox-jump" data-key="' + esc(key) + '">Jump to event →</button>' +
           '</span>' +
         '</div>' +
         '<div class="pg-inbox-acts">' +
@@ -1171,19 +1358,119 @@
         dismissSuggestion(b.getAttribute('data-key'), b.getAttribute('data-from'), window.__crewKey);
       });
     });
-    /* Briefly flash the target row when the user taps "Jump to" so they
-       can spot it after the scroll-anchor takes them to the day section. */
+    /* v.182: jump straight to the event row (not the day section). */
     box.querySelectorAll('.pg-inbox-jump').forEach(function(a){
       a.addEventListener('click', function(){
-        var k = a.getAttribute('data-key');
-        setTimeout(function(){
-          var row = document.querySelector('.ev-row[data-key="' + (CSS.escape ? CSS.escape(k) : k) + '"]');
-          if(row){
-            row.style.transition = 'box-shadow .25s ease';
-            row.style.boxShadow = '0 0 0 2px var(--brass-lt), 0 0 18px rgba(230,196,119,.55)';
-            setTimeout(function(){ row.style.boxShadow=''; }, 1400);
-          }
-        }, 220);
+        jumpToEvent(a.getAttribute('data-key'));
+      });
+    });
+  }
+
+  /* v.182 — Scroll the page so the event row for `eventKeyStr` is in view,
+     clearing any active filter that would hide it, then flash it. Used by
+     both the Suggestions Inbox "Jump to" link and the Notifications panel
+     "Jump to event" link. */
+  function jumpToEvent(eventKeyStr){
+    if(!eventKeyStr) return;
+    /* If the current filter would hide this event, clear conflicting
+       filters first so the row is actually in the DOM after render. */
+    var changed = false;
+    if(query){ query = ''; var q = document.getElementById('pg-q'); if(q){ q.value=''; var qc = document.getElementById('pg-q-clear'); if(qc) qc.hidden = true; } changed = true; }
+    if(statusFilter){ statusFilter = null; changed = true; }
+    if(crewFilter.size){ crewFilter.clear(); changed = true; }
+    if(changed){
+      document.querySelectorAll('.pg-filt').forEach(function(b){ b.classList.remove('on'); b.setAttribute('aria-pressed','false'); });
+      document.querySelectorAll('.pg-crew').forEach(function(b){ b.classList.remove('on'); b.setAttribute('aria-pressed','false'); });
+      render();
+    }
+    setTimeout(function(){
+      var sel = '.ev-row[data-key="' + (window.CSS && CSS.escape ? CSS.escape(eventKeyStr) : eventKeyStr) + '"]';
+      var row = document.querySelector(sel);
+      if(!row) return;
+      row.scrollIntoView({ behavior:'smooth', block:'center' });
+      row.style.transition = 'box-shadow .25s ease';
+      row.style.boxShadow = '0 0 0 2px var(--brass-lt), 0 0 18px rgba(230,196,119,.55)';
+      setTimeout(function(){ row.style.boxShadow = ''; }, 1800);
+    }, changed ? 80 : 0);
+  }
+
+  /* v.182 — Notifications panel: responses to my suggestions awaiting ack. */
+  function renderNotifications(myResponses){
+    var box = document.getElementById('pg-notifications');
+    if(!box) return;
+    var me = window.__crewKey;
+    if(!me || !myResponses || !myResponses.length){
+      box.hidden = true;
+      box.innerHTML = '';
+      return;
+    }
+    var events = window.SHIP_EVENTS || [];
+    var eventByKey = {};
+    events.forEach(function(e){ eventByKey[eventKey(e)] = e; });
+
+    var rows = myResponses.map(function(r){
+      var e = eventByKey[r.key];
+      return { r:r, e:e };
+    }).filter(function(x){ return !!x.e; });
+    /* Sort by event chronology so the panel reads like an upcoming-schedule view. */
+    rows.sort(function(a,b){
+      if(a.e.day !== b.e.day) return a.e.day - b.e.day;
+      return String(a.e.time24||'').localeCompare(String(b.e.time24||''));
+    });
+
+    var head = '<div class="pg-notif-head">' +
+      '<h3 class="pg-notif-h">📬 Responses to your suggestions</h3>' +
+      '<span class="pg-notif-cnt">' + rows.length + '</span>' +
+      '</div>';
+
+    var list = '<div class="pg-notif-list">';
+    rows.forEach(function(x){
+      var e = x.e, r = x.r;
+      var time = fmtTime12(e.time24);
+      var fromCap = (r.from||'').charAt(0).toUpperCase() + (r.from||'').slice(1);
+      var fromInit = (r.from||'').charAt(0).toUpperCase();
+      var actLbl, actIc, actCls;
+      switch(r.action){
+        case 'going':      actIc='✅'; actLbl='Going';      actCls='act-going'; break;
+        case 'interested': actIc='💛'; actLbl='Interested'; actCls='act-int';   break;
+        case 'dismissed':  actIc='✕'; actLbl="Passed";      actCls='act-dis';   break;
+        default:           actIc='○'; actLbl='Saw it';      actCls='act-none';
+      }
+      list += '<div class="pg-notif-row" data-key="' + esc(eventKey(e)) + '">' +
+        '<div class="pg-notif-when">' +
+          '<span class="pg-notif-day">Day ' + e.day + '</span>' +
+          '<span class="pg-notif-time">' + esc(time) + '</span>' +
+        '</div>' +
+        '<div class="pg-notif-body">' +
+          '<span class="pg-notif-name">' + esc(e.name) + '</span>' +
+          '<span class="pg-notif-meta">' +
+            '<span class="pg-notif-from">' +
+              '<span class="pg-notif-from-av" data-c="' + esc(r.from||'') + '" aria-hidden="true">' + fromInit + '</span>' +
+              fromCap +
+            '</span>' +
+            '<span class="pg-notif-act ' + actCls + '">' + actIc + ' ' + actLbl + '</span>' +
+            '<button type="button" class="pg-notif-jump" data-key="' + esc(eventKey(e)) + '">Jump to event →</button>' +
+          '</span>' +
+        '</div>' +
+        '<button type="button" class="pg-notif-dismiss" ' +
+          'data-key="' + esc(eventKey(e)) + '" data-from="' + esc(r.from||'') + '" ' +
+          'aria-label="Dismiss notification" title="Dismiss">✕</button>' +
+      '</div>';
+    });
+    list += '</div>';
+
+    box.innerHTML = head + list;
+    box.hidden = false;
+
+    box.querySelectorAll('.pg-notif-dismiss').forEach(function(b){
+      b.addEventListener('click', function(){
+        dismissResponse(b.getAttribute('data-key'), b.getAttribute('data-from'));
+      });
+    });
+    /* v.182: jump-to-event link on every notification row. */
+    box.querySelectorAll('.pg-notif-jump').forEach(function(b){
+      b.addEventListener('click', function(){
+        jumpToEvent(b.getAttribute('data-key'));
       });
     });
   }
@@ -1211,12 +1498,22 @@
     if(target === 'going' && gIdx >= 0){
       entry.going = entry.going.filter(function(c){ return c !== crew; });
     }
+    /* v.182: log responses for any suggestion targeting me before clearing it. */
+    if(entry.suggestions && entry.suggestions.some(function(sg){ return sg && sg.to === crew; })){
+      var act2 = 'none';
+      if(entry.going.indexOf(crew) >= 0) act2 = 'going';
+      else if(entry.interested.indexOf(crew) >= 0) act2 = 'interested';
+      else act2 = 'dismissed';
+      addResponseFromSuggestions(entry, crew, act2);
+    }
     /* Acting clears the suggestion targeting me on this event. */
     if(entry.suggestions){
       entry.suggestions = entry.suggestions.filter(function(sg){ return sg && sg.to !== crew; });
       if(!entry.suggestions.length) delete entry.suggestions;
     }
-    if(!entry.interested.length && !entry.going.length && (!entry.suggestions || !entry.suggestions.length)){
+    if(!entry.interested.length && !entry.going.length
+       && (!entry.suggestions || !entry.suggestions.length)
+       && (!entry.responses    || !entry.responses.length)){
       delete interests[key];
     } else {
       interests[key] = entry;
@@ -1502,8 +1799,11 @@
       forMeBtn.setAttribute('data-count', String(forMeList.length));
       forMeBtn.hidden = !window.__crewKey;
     }
-    if(window.__setNavAvatarBadge) window.__setNavAvatarBadge(forMeList.length);
-    renderInbox(forMeList);   // v.169
+    var myResponses = responsesForMe();   // v.182
+    /* v.182: nav badge sums incoming suggestions + responses awaiting ack. */
+    if(window.__setNavAvatarBadge) window.__setNavAvatarBadge(forMeList.length + myResponses.length);
+    renderInbox(forMeList);     // v.169
+    renderNotifications(myResponses);   // v.182
     var sugTotal = 0;
     Object.keys(interests).forEach(function(k){
       sugTotal += ((interests[k]||{}).suggestions || []).length;
