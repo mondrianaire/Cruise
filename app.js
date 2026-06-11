@@ -339,7 +339,7 @@ if(window.__crewSeed && window.__crewSeed.name){
 }
 
 /* ===== Site version badge in nav (visible across all pages) ===== */
-window.SITE_VERSION = 'v.180.1';
+window.SITE_VERSION = 'v.181';
 (function(){
   function paint(){
     /* v.178: paint the version badge in the brand area on every page so
@@ -789,8 +789,15 @@ window.SITE_VERSION = 'v.180.1';
     if(SC.state === 'synced' && SC.el) render();
   }
 
-  SC.init = function(){
-    if(SC.el) return;
+  /* v.181: SC.init is now a no-op shim — kept for back-compat with any
+     old caller. The widget DOM is only created when a page explicitly
+     opts in via SC.activate(). Pages without Firestore wiring (ship,
+     journey, kbyg, overview) don't call activate() and therefore never
+     see a perpetually "Connecting" pill in their corner. */
+  SC.init = function(){ /* no-op — see activate() */ };
+
+  SC.activate = function(){
+    if(SC.el) return;             /* already active for this page */
     SC.el = document.createElement('div');
     SC.el.id = 'syncCenter';
     SC.el.className = 'sync-center';
@@ -876,9 +883,6 @@ window.SITE_VERSION = 'v.180.1';
 
   window.__SyncCenter = SC;
 
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', function(){ SC.init(); });
-  } else {
-    SC.init();
-  }
+  /* v.181: No auto-init. Pages that use Firestore call window.__SyncCenter.activate()
+     explicitly (programs.html, ports.html, documents.html, index.html). */
 })();

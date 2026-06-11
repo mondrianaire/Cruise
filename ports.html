@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ports &amp; Group Picks — Canada &amp; New England 2026</title>
 <meta name="description" content="Ports &amp; Group Picks — ms Zuiderdam cruise hub for the Canada &amp; New England voyage, June 2026.">
-<link rel="stylesheet" href="styles.css?v=180.1">
+<link rel="stylesheet" href="styles.css?v=181">
 <link rel="canonical" href="https://mondrianaire.github.io/Cruise/ports.html">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Ports &amp; Group Picks — ms Zuiderdam · June 2026">
@@ -389,6 +389,8 @@ renderBoard();
     projectId:"gto-poker-qui",storageBucket:"gto-poker-qui.firebasestorage.app",
     messagingSenderId:"607915389446",appId:"1:607915389446:web:5b1c777bf4fad0bc1c0987"};
   /* v.170: bridge to the shared Sync Center widget. */
+  /* v.181: activate the Sync Center on this page (Firestore-enabled). */
+  if(window.__SyncCenter) window.__SyncCenter.activate();
   function status(t,c){
     const e=document.getElementById('syncStatus');
     if(e){ e.textContent=t; e.className='syncstatus '+c; }
