@@ -339,7 +339,7 @@ if(window.__crewSeed && window.__crewSeed.name){
 }
 
 /* ===== Site version badge in nav (visible across all pages) ===== */
-window.SITE_VERSION = 'v.169';
+window.SITE_VERSION = 'v.170';
 (function(){
   document.querySelectorAll('nav .brand .br-y').forEach(function(y){
     if(!y.querySelector('.br-ver')){
@@ -551,5 +551,219 @@ window.SITE_VERSION = 'v.169';
       mo.observe(document.body, {childList:true, subtree:true, attributes:true, attributeFilter:['title']});
     }
     startMO();
+  }
+})();
+
+
+/* ============================================================
+   v.170 — Sync Center widget (shared across sync-enabled pages)
+   ============================================================
+   Renders a fixed bottom-right "save status" chip that is always
+   visible while you scroll. It owns the canonical sync state
+   (connecting | saving | synced | offline | signedout | error)
+   and any per-page Firebase wiring just notifies it via
+   __SyncCenter.setState(...). Click the chip to expand a panel
+   with the last-saved timestamp, pending change count, and a
+   manual "Sync Now" button — solves the "did it actually save?"
+   feedback gap and the "always shows OFFLINE on reload" bug
+   (default state is now "connecting", not "offline"). */
+(function(){
+  if(window.__SyncCenter) return;
+  var SC = {
+    el: null,
+    state: 'idle',
+    label: 'Cloud sync',
+    domain: '',
+    expanded: false,
+    lastSavedAt: 0,
+    pending: 0,
+    syncFn: null,         // called when user taps "Sync Now"
+    user: '',
+    /* timer to refresh the "Saved Xs ago" label */
+    _tickT: null
+  };
+
+  function fmtAgo(ts){
+    if(!ts) return 'never';
+    var s = Math.max(0, Math.floor((Date.now() - ts) / 1000));
+    if(s < 5)   return 'just now';
+    if(s < 60)  return s + 's ago';
+    if(s < 3600)return Math.floor(s/60) + 'm ago';
+    if(s < 86400)return Math.floor(s/3600) + 'h ago';
+    return Math.floor(s/86400) + 'd ago';
+  }
+
+  function render(){
+    if(!SC.el) return;
+    var st = SC.state;
+    var ico, txt, sub;
+    switch(st){
+      case 'connecting':
+        ico = '<svg viewBox="0 0 24 24" class="sc-spin" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2.5" stroke-dasharray="14 28" stroke-linecap="round"/></svg>';
+        txt = 'Connecting';
+        sub = 'Reaching the cloud';
+        break;
+      case 'saving':
+        ico = '<svg viewBox="0 0 24 24" class="sc-spin" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2.5" stroke-dasharray="14 28" stroke-linecap="round"/></svg>';
+        txt = 'Saving…';
+        sub = 'Uploading change';
+        break;
+      case 'synced':
+        ico = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l4 4 10-10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+        txt = 'Saved';
+        sub = 'Saved ' + fmtAgo(SC.lastSavedAt);
+        break;
+      case 'offline':
+        ico = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3l18 18M5 12a14 14 0 0 1 4-3.4M19 12a14 14 0 0 0-7-3" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>';
+        txt = 'Offline';
+        sub = SC.pending ? (SC.pending + ' change' + (SC.pending===1?'':'s') + ' pending') : 'Saved on this device';
+        break;
+      case 'signedout':
+        ico = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="9" r="3.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M5 20c1-3 4-5 7-5s6 2 7 5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>';
+        txt = 'Sign in';
+        sub = 'to sync to the cloud';
+        break;
+      case 'error':
+        ico = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v8m0 4v.01" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2.2"/></svg>';
+        txt = 'Sync error';
+        sub = 'Tap to retry';
+        break;
+      default:
+        ico = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 17a4 4 0 0 1 1-7.9 5 5 0 0 1 9.6-1.4A4 4 0 0 1 18 17H6z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg>';
+        txt = 'Cloud sync';
+        sub = SC.user ? 'as ' + SC.user : 'standby';
+    }
+    var chipCls = 'sc-chip sc-' + st;
+    var pendBadge = (SC.pending > 0 && st !== 'saving')
+      ? '<span class="sc-pend">' + SC.pending + '</span>' : '';
+    var html = '<button type="button" class="' + chipCls + '" aria-expanded="' + (SC.expanded?'true':'false') + '" id="scChip" title="' + txt + ' — click for details">' +
+      '<span class="sc-ic" aria-hidden="true">' + ico + '</span>' +
+      '<span class="sc-lbl">' + txt + '</span>' +
+      pendBadge +
+      '</button>';
+    if(SC.expanded){
+      var canSync = (st === 'offline' || st === 'error' || st === 'synced') && !!SC.syncFn;
+      var disabled = !canSync ? ' disabled' : '';
+      html += '<div class="sc-panel" role="dialog" aria-label="Sync status detail">' +
+        '<div class="sc-panel-row"><span class="sc-k">Status</span><span class="sc-v">' + txt + '</span></div>' +
+        '<div class="sc-panel-row"><span class="sc-k">Detail</span><span class="sc-v">' + sub + '</span></div>' +
+        (SC.user ? '<div class="sc-panel-row"><span class="sc-k">Signed in</span><span class="sc-v">' + SC.user + '</span></div>' : '') +
+        '<div class="sc-panel-row"><span class="sc-k">Last saved</span><span class="sc-v">' + (SC.lastSavedAt ? fmtAgo(SC.lastSavedAt) : 'not yet') + '</span></div>' +
+        '<div class="sc-panel-row"><span class="sc-k">Pending</span><span class="sc-v">' + SC.pending + '</span></div>' +
+        '<button type="button" class="sc-cta" id="scSyncNow"' + disabled + '>↻ Sync now</button>' +
+        '</div>';
+    }
+    SC.el.innerHTML = html;
+    var chip = SC.el.querySelector('#scChip');
+    if(chip){
+      chip.addEventListener('click', function(e){
+        e.stopPropagation();
+        SC.expanded = !SC.expanded;
+        render();
+      });
+    }
+    var btn = SC.el.querySelector('#scSyncNow');
+    if(btn){
+      btn.addEventListener('click', function(e){
+        e.stopPropagation();
+        if(SC.syncFn){
+          SC.setState('saving');
+          try{
+            var p = SC.syncFn();
+            if(p && typeof p.then === 'function'){
+              p.then(function(){ SC.markSaved(); }).catch(function(){ SC.setState('error'); });
+            } else {
+              SC.markSaved();
+            }
+          }catch(err){ SC.setState('error'); }
+        }
+      });
+    }
+  }
+
+  function tick(){
+    if(SC.state === 'synced' && SC.expanded) render();
+    if(SC.state === 'synced' && !SC.expanded && SC.el){
+      /* Update the sub-label in the chip's title attribute even when collapsed. */
+      var chip = SC.el.querySelector('#scChip');
+      if(chip) chip.setAttribute('title', 'Saved ' + fmtAgo(SC.lastSavedAt) + ' — click for details');
+    }
+  }
+
+  SC.init = function(){
+    if(SC.el) return;
+    SC.el = document.createElement('div');
+    SC.el.id = 'syncCenter';
+    SC.el.className = 'sync-center';
+    document.body.appendChild(SC.el);
+    SC.state = 'connecting';
+    render();
+    if(!SC._tickT) SC._tickT = setInterval(tick, 10000);
+    /* Click outside closes the expanded panel */
+    document.addEventListener('click', function(e){
+      if(!SC.expanded || !SC.el) return;
+      if(SC.el.contains(e.target)) return;
+      SC.expanded = false;
+      render();
+    });
+    /* Browser online/offline transitions */
+    window.addEventListener('online', function(){
+      if(SC.state === 'offline'){
+        SC.setState('connecting');
+        if(SC.syncFn){
+          try{ SC.syncFn(); SC.markSaved(); }catch(e){ SC.setState('error'); }
+        }
+      }
+    });
+    window.addEventListener('offline', function(){ SC.setState('offline'); });
+  };
+
+  SC.setState = function(state){
+    SC.state = state;
+    render();
+  };
+  SC.markSaving = function(){
+    SC.state = 'saving';
+    render();
+  };
+  SC.markSaved = function(){
+    SC.state = 'synced';
+    SC.lastSavedAt = Date.now();
+    SC.pending = 0;
+    if(SC.el){
+      SC.el.classList.remove('sc-flash');
+      /* force reflow so the animation re-runs every save */
+      void SC.el.offsetWidth;
+      SC.el.classList.add('sc-flash');
+    }
+    render();
+  };
+  SC.markError = function(){ SC.setState('error'); };
+  SC.markOffline = function(){ SC.setState('offline'); };
+  SC.markSignedOut = function(){
+    SC.user = '';
+    SC.setState('signedout');
+  };
+  SC.setUser = function(name){
+    SC.user = name || '';
+    render();
+  };
+  SC.bumpPending = function(n){
+    SC.pending = Math.max(0, (SC.pending|0) + (n|0));
+    render();
+  };
+  SC.setPending = function(n){
+    SC.pending = Math.max(0, n|0);
+    render();
+  };
+  SC.setSyncFn = function(fn){ SC.syncFn = fn; };
+  SC.setDomain = function(d){ SC.domain = d; };
+
+  window.__SyncCenter = SC;
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', function(){ SC.init(); });
+  } else {
+    SC.init();
   }
 })();

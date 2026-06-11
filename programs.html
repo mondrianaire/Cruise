@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Daily Programs — Canada &amp; New England 2026</title>
 <meta name="description" content="Daily Programs — every event from the HAL Navigator daily programme across all 8 days of the ms Zuiderdam voyage, June 2026.">
-<link rel="stylesheet" href="styles.css?v=169">
+<link rel="stylesheet" href="styles.css?v=170">
 <link rel="canonical" href="https://mondrianaire.github.io/Cruise/programs.html">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Daily Programs — ms Zuiderdam · June 2026">
@@ -539,8 +539,8 @@
 </footer>
 
 <!-- Shared shell + event source -->
-<script src="app.js?v=169"></script>
-<script src="events.js?v=169"></script>
+<script src="app.js?v=170"></script>
+<script src="events.js?v=170"></script>
 
 <script>
 /* ===== v.165 — Programs page renderer + interest tracking + search =====
@@ -1299,8 +1299,19 @@
   const cfg={apiKey:"AIzaSyCxc5ICHwz4Fp_2kRwHogeLdgUeCGKgHss",authDomain:"gto-poker-qui.firebaseapp.com",
     projectId:"gto-poker-qui",storageBucket:"gto-poker-qui.firebasestorage.app",
     messagingSenderId:"607915389446",appId:"1:607915389446:web:5b1c777bf4fad0bc1c0987"};
-  function status(t,c){ const e=document.getElementById('evSync');
-    if(e){ e.textContent=t; e.className='syncstatus ev-sync '+c; } }
+  /* v.170: bridge to the shared Sync Center widget. The old #evSync pill
+     is hidden by CSS but still updated for back-compat. */
+  function status(t,c){
+    const e=document.getElementById('evSync');
+    if(e){ e.textContent=t; e.className='syncstatus ev-sync '+c; }
+    const SC = window.__SyncCenter;
+    if(!SC) return;
+    if(/sign in/i.test(t))         SC.markSignedOut();
+    else if(/connecting/i.test(t)) SC.setState('connecting');
+    else if(/^synced/i.test(t))    SC.markSaved();
+    else if(/sync error/i.test(t)) SC.markError();
+    else if(/offline/i.test(t))    SC.markOffline();
+  }
   let auth, boardRef, boardReady=false, firstSnap=true;
   try{
     const app = initializeApp(cfg); auth = getAuth(app);
@@ -1312,10 +1323,18 @@
     boardReady = true;
     status('connecting…','wait');
     window.__cruisePushInterests = function(p){
-      setDoc(boardRef, {interests:p, updatedAt:Date.now()}, {merge:true})
+      if(window.__SyncCenter) window.__SyncCenter.markSaving();
+      return setDoc(boardRef, {interests:p, updatedAt:Date.now()}, {merge:true})
         .then(function(){ status('synced','ok'); })
         .catch(function(){ status('sync error','err'); });
     };
+    /* v.170 register the manual "Sync now" hook so the user can force a
+       re-push from the Sync Center if they get worried. */
+    if(window.__SyncCenter){
+      window.__SyncCenter.setSyncFn(function(){
+        return window.__cruisePushInterests(window.__getInterests ? window.__getInterests() : {});
+      });
+    }
     onSnapshot(boardRef, function(snap){
       if(snap.exists() && snap.data() && snap.data().interests){
         if(window.__applyRemoteInterests) window.__applyRemoteInterests(snap.data().interests);
@@ -1349,6 +1368,7 @@
           }
           if(window.__unlockCrewReveal) window.__unlockCrewReveal();
           if(window.__rerender) window.__rerender();
+          if(window.__SyncCenter) window.__SyncCenter.setUser(window.__crewName);
         }
         startBoard();
       } else {

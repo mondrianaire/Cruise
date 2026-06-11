@@ -2902,3 +2902,117 @@ body.has-custom-tip [title]{ /* no-op selector hook for future use */ }
   0%, 100% { transform:scale(1);    box-shadow:0 0 0 2px var(--ink-bg, #08161a), 0 0 8px rgba(200,155,74,.55); }
   50%      { transform:scale(1.15); box-shadow:0 0 0 2px var(--ink-bg, #08161a), 0 0 14px rgba(230,196,119,.85); }
 }
+
+
+/* ============================================================
+   v.170 — Sync Center widget (always-visible cloud-save status)
+   ============================================================
+   Fixed bottom-right pill that owns the canonical sync state.
+   Click the chip to expand a small panel with details + a manual
+   "Sync now" button. Pulses green on every successful save so the
+   user gets immediate visual confirmation that their edit landed
+   on the server. */
+.sync-center{
+  position:fixed; right:18px; bottom:18px;
+  z-index:9000;
+  display:flex; flex-direction:column; align-items:flex-end; gap:10px;
+  font-family: var(--d-mono);
+  pointer-events:none;
+}
+.sync-center > *{ pointer-events:auto; }
+.sc-chip{
+  display:inline-flex; align-items:center; gap:9px;
+  padding:10px 16px;
+  border-radius:999px; cursor:pointer;
+  border:1.5px solid rgba(200,155,74,.4);
+  background:linear-gradient(160deg, #0f2c3a 0%, #08161a 100%);
+  color:var(--cream);
+  font:700 .75rem/1 var(--d-mono); letter-spacing:.08em; text-transform:uppercase;
+  box-shadow:0 4px 14px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.05);
+  transition:transform .15s ease, border-color .15s ease, box-shadow .15s ease, background .25s ease;
+  position:relative;
+}
+.sc-chip:hover{
+  transform:translateY(-1px);
+  border-color:var(--brass-lt);
+  box-shadow:0 6px 18px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.06);
+}
+.sc-chip:focus-visible{ outline:2px solid var(--brass-lt); outline-offset:2px; }
+.sc-ic{
+  display:inline-flex; align-items:center; justify-content:center;
+  width:16px; height:16px;
+}
+.sc-ic svg{ width:100%; height:100%; }
+.sc-spin{ animation: scSpin 1.1s linear infinite; }
+@keyframes scSpin{ to{ transform:rotate(360deg); } }
+.sc-lbl{ white-space:nowrap; }
+.sc-pend{
+  display:inline-flex; align-items:center; justify-content:center;
+  min-width:18px; height:18px; padding:0 5px;
+  border-radius:9px; background:var(--brass); color:#08161a;
+  font:700 .58rem/18px var(--d-mono); margin-left:2px;
+}
+/* State coloring */
+.sc-chip.sc-connecting{ border-color:rgba(127,180,200,.55); color:#aedbe9; }
+.sc-chip.sc-saving    { border-color:rgba(127,180,200,.7);  color:#aedbe9; background:linear-gradient(160deg, #102f3f 0%, #08161a 100%); }
+.sc-chip.sc-synced    { border-color:rgba(95,214,160,.55); color:#9beac4; background:linear-gradient(160deg, #0c2c24 0%, #08161a 100%); }
+.sc-chip.sc-offline   { border-color:rgba(239,178,40,.6);  color:var(--mod); background:linear-gradient(160deg, #2a2310 0%, #08161a 100%); }
+.sc-chip.sc-signedout { border-color:rgba(200,155,74,.4);  color:var(--ink); }
+.sc-chip.sc-error     { border-color:rgba(224,121,90,.6);  color:var(--stren); background:linear-gradient(160deg, #2c1310 0%, #08161a 100%); }
+/* Flash on successful save */
+.sync-center.sc-flash .sc-chip{
+  animation: scFlash 1.1s ease-out;
+}
+@keyframes scFlash{
+  0%   { box-shadow:0 0 0 0 rgba(95,214,160,.7), 0 4px 14px rgba(0,0,0,.45); transform:scale(1.0); }
+  20%  { box-shadow:0 0 0 8px rgba(95,214,160,.18), 0 4px 14px rgba(0,0,0,.45); transform:scale(1.06); }
+  100% { box-shadow:0 0 0 0 rgba(95,214,160,0), 0 4px 14px rgba(0,0,0,.45); transform:scale(1.0); }
+}
+
+/* Expanded details panel */
+.sc-panel{
+  display:flex; flex-direction:column; gap:6px;
+  width:240px; padding:14px;
+  border-radius:12px;
+  border:1.5px solid rgba(200,155,74,.45);
+  background:linear-gradient(160deg, #0f2c3a 0%, #08161a 100%);
+  box-shadow:0 8px 28px rgba(0,0,0,.55);
+  animation: scPanelIn .18s ease-out;
+}
+@keyframes scPanelIn{
+  from{ transform:translateY(6px); opacity:0; }
+  to  { transform:translateY(0);   opacity:1; }
+}
+.sc-panel-row{
+  display:flex; justify-content:space-between; gap:10px;
+  font:700 .62rem/1 var(--d-mono); letter-spacing:.06em; text-transform:uppercase;
+}
+.sc-panel-row .sc-k{ color:var(--ink-dim); }
+.sc-panel-row .sc-v{ color:var(--cream); text-transform:none; letter-spacing:0; text-align:right; }
+.sc-cta{
+  margin-top:6px; padding:9px 12px;
+  border-radius:8px; cursor:pointer;
+  border:1px solid var(--brass);
+  background:linear-gradient(180deg, rgba(200,155,74,.18), rgba(200,155,74,.06));
+  color:var(--brass-lt);
+  font:700 .68rem/1 var(--d-mono); letter-spacing:.10em; text-transform:uppercase;
+  transition:background .15s ease, color .15s ease;
+}
+.sc-cta:hover:not([disabled]){
+  background:linear-gradient(180deg, rgba(200,155,74,.28), rgba(200,155,74,.10));
+  color:var(--cream);
+}
+.sc-cta[disabled]{ opacity:.45; cursor:not-allowed; }
+
+@media(max-width:560px){
+  .sync-center{ right:10px; bottom:10px; gap:8px; }
+  .sc-chip{ padding:9px 13px; font-size:.66rem; }
+  .sc-panel{ width:220px; padding:12px; }
+}
+
+/* Hide the old in-page pill once Sync Center is active — the new widget
+   is the canonical surface. We keep the element so existing JS that
+   sets its text still works, just out of sight. */
+.syncstatus.ev-sync,
+.gp-syncstatus,
+#syncStatus{ display:none !important; }
