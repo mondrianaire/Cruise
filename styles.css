@@ -3391,13 +3391,14 @@ body{ padding-bottom:0 !important; }
    rule with higher specificity was beating the size lock. Fix both
    with later rules + !important. */
 
-/* === Burger right-alignment on every viewport === */
-nav .inner{
-  align-items:center !important;
-}
+/* v.175.2 — Minimal mobile-only burger right-alignment fix.
+   The v.175.1 attempt set align-items:center on nav .inner globally, which
+   collapsed the desktop links (they relied on align-items:stretch for the
+   active pill + underline hover heights). Revert that and use a single
+   targeted rule: on mobile, restore burger's margin-left:auto behavior
+   (which the earlier @media(max-width:760px) had overridden to 4px). */
 @media(max-width:760px){
-  nav .inner{ justify-content:flex-end !important; }
-  nav .brand{ margin-right:auto !important; }
+  nav .nav-burger{ margin-left:auto !important; }
 }
 
 /* === Avatar: locked size + guaranteed circle === */
