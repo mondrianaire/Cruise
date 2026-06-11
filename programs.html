@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Daily Programs — Canada &amp; New England 2026</title>
 <meta name="description" content="Daily Programs — every event from the HAL Navigator daily programme across all 8 days of the ms Zuiderdam voyage, June 2026.">
-<link rel="stylesheet" href="styles.css?v=172.1">
+<link rel="stylesheet" href="styles.css?v=173">
 <link rel="canonical" href="https://mondrianaire.github.io/Cruise/programs.html">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Daily Programs — ms Zuiderdam · June 2026">
@@ -539,8 +539,8 @@
 </footer>
 
 <!-- Shared shell + event source -->
-<script src="app.js?v=172.1"></script>
-<script src="events.js?v=172.1"></script>
+<script src="app.js?v=173"></script>
+<script src="events.js?v=173"></script>
 
 <script>
 /* ===== v.165 — Programs page renderer + interest tracking + search =====
@@ -1131,9 +1131,12 @@
           suggRowHtml += '</span>';
         }
 
-        /* Pass control — visible only if I'm signed in and recipient set exists.
-           Targets: by default everyone-but-me; if the crew filter has 1+ entries,
-           use that as the target subset (still minus me). */
+        /* v.173: Pass button always opens the popover, regardless of crew
+           filter. The old "1-filtered-crew = one-tap-direct" mode was
+           inconsistent and could send a suggestion the user didn't mean
+           to send. Targets respect the filter though — if the crew filter
+           has 1+ entries, the popover only shows those (minus me); if it's
+           empty, the popover shows everyone else. */
         var allOthers = CREW_KEYS.filter(function(c){ return c !== me; });
         var targets;
         if(crewFilter.size){
@@ -1145,17 +1148,12 @@
         }
         var passHtml = '';
         if(me){
-          var direct = targets.length === 1;
-          var directKey = direct ? targets[0] : '';
-          var directInitial = direct ? directKey.charAt(0).toUpperCase() : '';
-          passHtml = '<button type="button" class="ev-pass' + (direct?' is-direct':'') + '" ' +
+          passHtml = '<button type="button" class="ev-pass" ' +
             'data-key="' + esc(key) + '" ' +
-            (direct ? 'data-to="' + esc(directKey) + '" ' : '') +
             'data-targets="' + esc(targets.join(',')) + '" ' +
-            'aria-label="' + (direct ? 'Suggest to ' + directInitial : 'Suggest to&hellip;') + '" ' +
-            'title="' + (direct ? 'Pass to ' + directKey.charAt(0).toUpperCase()+directKey.slice(1) : 'Pass to a traveller&hellip;') + '">' +
+            'aria-label="Suggest this event to&hellip;" ' +
+            'title="Pass to a traveller&hellip;">' +
             '📨' +
-            (direct ? '<span class="ev-pass-to" aria-hidden="true">' + directInitial + '</span>' : '') +
           '</button>';
         }
 
@@ -1202,12 +1200,7 @@
         ev.stopPropagation();
         closeAllPopovers();
         var key = btn.getAttribute('data-key');
-        var direct = btn.getAttribute('data-to');
-        if(direct){
-          sendSuggestion(key, direct);
-          flash(btn);
-          return;
-        }
+        /* v.173: always open the avatar picker — no direct-send shortcut. */
         var targets = (btn.getAttribute('data-targets')||'').split(',').filter(Boolean);
         var pop = document.createElement('div');
         pop.className = 'ev-pass-pop';

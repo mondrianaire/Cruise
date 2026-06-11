@@ -339,7 +339,7 @@ if(window.__crewSeed && window.__crewSeed.name){
 }
 
 /* ===== Site version badge in nav (visible across all pages) ===== */
-window.SITE_VERSION = 'v.172';
+window.SITE_VERSION = 'v.173';
 (function(){
   document.querySelectorAll('nav .brand .br-y').forEach(function(y){
     if(!y.querySelector('.br-ver')){
@@ -612,49 +612,65 @@ window.SITE_VERSION = 'v.172';
       case 'connecting':
         ico = '<svg viewBox="0 0 24 24" class="sc-spin" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2.5" stroke-dasharray="14 28" stroke-linecap="round"/></svg>';
         txt = 'Connecting';
-        sub = 'Reaching the cloud';
+        sub = 'reaching the cloud…';
         break;
       case 'saving':
         ico = '<svg viewBox="0 0 24 24" class="sc-spin" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2.5" stroke-dasharray="14 28" stroke-linecap="round"/></svg>';
-        txt = 'Saving…';
-        sub = 'Uploading change';
+        txt = 'Saving';
+        sub = 'uploading change';
         break;
       case 'synced':
         ico = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l4 4 10-10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-        txt = 'Saved';
-        sub = 'Saved ' + fmtAgo(SC.lastSavedAt);
+        txt = 'Saved to cloud';
+        sub = SC.lastSavedAt ? fmtAgo(SC.lastSavedAt) : 'just now';
         break;
       case 'offline':
         ico = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3l18 18M5 12a14 14 0 0 1 4-3.4M19 12a14 14 0 0 0-7-3" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>';
         txt = 'Offline';
-        sub = SC.pending ? (SC.pending + ' change' + (SC.pending===1?'':'s') + ' pending') : 'Saved on this device';
+        sub = SC.pending ? (SC.pending + ' change' + (SC.pending===1?'':'s') + ' pending') : 'saved on this device';
         break;
       case 'signedout':
         ico = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="9" r="3.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M5 20c1-3 4-5 7-5s6 2 7 5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>';
-        txt = 'Sign in';
-        sub = 'to sync to the cloud';
+        txt = 'Sign in to sync';
+        sub = 'edits saved on this device only';
         break;
       case 'error':
         ico = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v8m0 4v.01" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2.2"/></svg>';
         txt = 'Sync error';
-        sub = 'Tap to retry';
+        sub = SC.lastErrorCode ? SC.lastErrorCode : 'tap to retry';
         break;
       default:
         ico = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 17a4 4 0 0 1 1-7.9 5 5 0 0 1 9.6-1.4A4 4 0 0 1 18 17H6z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg>';
         txt = 'Cloud sync';
-        sub = SC.user ? 'as ' + SC.user : 'standby';
+        sub = SC.user ? 'standby — signed in as ' + SC.user : 'standby';
     }
-    var chipCls = 'sc-chip sc-' + st;
+    /* v.173: bottom-edge bar (always visible) — shows icon + state +
+       last-saved time + signed-in identity + Sync Now button. Click the
+       bar itself to expand a details panel UPWARD with diagnostics. */
+    var canSync = (st === 'offline' || st === 'error' || st === 'synced' || st === 'idle') && !!SC.syncFn;
+    var syncBtnAttrs = canSync ? '' : ' disabled';
     var pendBadge = (SC.pending > 0 && st !== 'saving')
-      ? '<span class="sc-pend">' + SC.pending + '</span>' : '';
-    var html = '<button type="button" class="' + chipCls + '" aria-expanded="' + (SC.expanded?'true':'false') + '" id="scChip" title="' + txt + ' — click for details">' +
-      '<span class="sc-ic" aria-hidden="true">' + ico + '</span>' +
-      '<span class="sc-lbl">' + txt + '</span>' +
-      pendBadge +
-      '</button>';
+      ? '<span class="sc-bar-pend">' + SC.pending + '</span>' : '';
+    var userChip = SC.user
+      ? '<span class="sc-bar-user" title="Signed in as ' + escHtml(SC.user) + '">' +
+          '<span class="sc-bar-user-av" aria-hidden="true">' + escHtml(SC.user.charAt(0).toUpperCase()) + '</span>' +
+          '<span class="sc-bar-user-n">' + escHtml(SC.user) + '</span>' +
+        '</span>'
+      : '';
+    var html = '<div class="sc-bar sc-' + st + '" id="scBar">' +
+      '<button type="button" class="sc-bar-toggle" id="scBarToggle" aria-expanded="' + (SC.expanded?'true':'false') + '" aria-label="Toggle sync details">' +
+        '<span class="sc-bar-ic" aria-hidden="true">' + ico + '</span>' +
+        '<span class="sc-bar-txt">' +
+          '<span class="sc-bar-lbl">' + txt + '</span>' +
+          '<span class="sc-bar-sub">' + escHtml(sub) + '</span>' +
+        '</span>' +
+        pendBadge +
+      '</button>' +
+      '<div class="sc-bar-spacer"></div>' +
+      userChip +
+      '<button type="button" class="sc-bar-sync" id="scSyncNow"' + syncBtnAttrs + ' title="Force a re-push to the cloud">↻ <span class="sc-bar-sync-l">Sync now</span></button>' +
+      '</div>';
     if(SC.expanded){
-      var canSync = (st === 'offline' || st === 'error' || st === 'synced') && !!SC.syncFn;
-      var disabled = !canSync ? ' disabled' : '';
       var errBlock = '';
       if(SC.lastError){
         var code = SC.lastErrorCode ? ' <span class="sc-err-code">' + escHtml(SC.lastErrorCode) + '</span>' : '';
@@ -671,14 +687,16 @@ window.SITE_VERSION = 'v.172';
         '<div class="sc-panel-row"><span class="sc-k">Last saved</span><span class="sc-v">' + (SC.lastSavedAt ? fmtAgo(SC.lastSavedAt) : 'not yet') + '</span></div>' +
         '<div class="sc-panel-row"><span class="sc-k">Pending</span><span class="sc-v">' + SC.pending + '</span></div>' +
         errBlock +
-        '<button type="button" class="sc-cta" id="scSyncNow"' + disabled + '>↻ Sync now</button>' +
+        /* v.173: the bar already has a persistent Sync Now button, so
+           the expanded panel only needs Copy Diagnostics (no duplicate
+           id="scSyncNow"). */
         '<button type="button" class="sc-cta sc-cta-alt" id="scCopyDiag">⧉ Copy diagnostics</button>' +
         '</div>';
     }
     SC.el.innerHTML = html;
-    var chip = SC.el.querySelector('#scChip');
-    if(chip){
-      chip.addEventListener('click', function(e){
+    var toggle = SC.el.querySelector('#scBarToggle');
+    if(toggle){
+      toggle.addEventListener('click', function(e){
         e.stopPropagation();
         SC.expanded = !SC.expanded;
         render();
@@ -737,12 +755,9 @@ window.SITE_VERSION = 'v.172';
   }
 
   function tick(){
-    if(SC.state === 'synced' && SC.expanded) render();
-    if(SC.state === 'synced' && !SC.expanded && SC.el){
-      /* Update the sub-label in the chip's title attribute even when collapsed. */
-      var chip = SC.el.querySelector('#scChip');
-      if(chip) chip.setAttribute('title', 'Saved ' + fmtAgo(SC.lastSavedAt) + ' — click for details');
-    }
+    /* v.173: refresh the bar so "Saved · 12s ago" stays current even when
+       no other state changes. Cheap render — DOM is tiny. */
+    if(SC.state === 'synced' && SC.el) render();
   }
 
   SC.init = function(){
