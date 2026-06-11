@@ -2717,3 +2717,57 @@ body.view-floor .ship-no-toggle{ display:none !important; }
 /* v.156: nav .inner now stretches a bit wider so nav and main content
    line up at the same visual rail. */
 nav .inner{max-width:1180px;}
+
+/* ============================================================
+   v.159 — Custom branded tooltip (replaces native title= popups)
+   ============================================================
+   A single floating card injected into <body> by app.js. Triggered
+   by hover on desktop and tap/long-press on mobile. Styled in the
+   brass / cream palette so it reads as part of the design language
+   instead of the browser's system tooltip. */
+.tip{
+  position:fixed; z-index:9999;
+  max-width:280px; min-width:80px;
+  padding:9px 12px;
+  background:linear-gradient(180deg, #fbf6e4 0%, #f4ecd2 100%);
+  color:#08161a;
+  font:600 .82rem/1.45 var(--d-body);
+  letter-spacing:.005em;
+  border:1px solid var(--brass);
+  border-radius:8px;
+  box-shadow:0 12px 28px rgba(0,0,0,.55), 0 0 0 1px rgba(200,155,74,.18);
+  pointer-events:none;
+  opacity:0;
+  transform:translateY(-4px) scale(.98);
+  transition:opacity .14s ease, transform .14s ease;
+  visibility:hidden;
+}
+.tip.open{
+  opacity:1;
+  transform:translateY(0) scale(1);
+  visibility:visible;
+}
+.tip-body strong{ color:var(--brass-dk); font-weight:700; }
+.tip-body em{ color:var(--teal); font-style:italic; }
+.tip-arrow{
+  position:absolute;
+  width:9px; height:9px;
+  background:linear-gradient(135deg, #fbf6e4 0%, #f4ecd2 100%);
+  border-right:1px solid var(--brass);
+  border-bottom:1px solid var(--brass);
+  transform:rotate(45deg);
+  bottom:-5px;
+  left:50%;
+  margin-left:-4.5px;
+}
+.tip.tip-bottom .tip-arrow{
+  top:-5px; bottom:auto;
+  border-right:0; border-bottom:0;
+  border-left:1px solid var(--brass);
+  border-top:1px solid var(--brass);
+  background:linear-gradient(315deg, #fbf6e4 0%, #f4ecd2 100%);
+}
+/* Hide native browser tooltips while a custom tip is up — the harvest
+   step empties title= attributes, but this is a belt-and-braces guard
+   against any tooltip racing in before the JS runs. */
+body.has-custom-tip [title]{ /* no-op selector hook for future use */ }

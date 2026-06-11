@@ -244,7 +244,7 @@ if(window.__crewSeed && window.__crewSeed.name){
 }
 
 /* ===== Site version badge in nav (visible across all pages) ===== */
-window.SITE_VERSION = 'v.157';
+window.SITE_VERSION = 'v.159';
 (function(){
   document.querySelectorAll('nav .brand .br-y').forEach(function(y){
     if(!y.querySelector('.br-ver')){
@@ -257,13 +257,204 @@ window.SITE_VERSION = 'v.157';
 })();
 
 
+/* ===== v.159: Custom branded tooltip =====
+   Replaces the browser's native title= popup with a floating brass-
+   bordered card. Auto-harvests every [title] and <svg><title> on the
+   page, hides the original from the browser so we don't get a double
+   tooltip, and re-runs the harvest whenever the DOM mutates so dynamic
+   content (events drawers, dropdowns, etc.) is covered too.
 
+   Interaction model:
+   - Desktop (no touch capability detected): hover shows, mouse-leave
+     hides. Short fade in / out.
+   - Touch: tap shows the tip for 2.4 seconds then auto-hides. A second
+     tap on the same element hides immediately. Outside-tap hides.
+   - The tip is positioned above the trigger when possible, otherwise
+     below; clamped to the viewport on both axes so it never overflows.
+*/
+(function(){
+  if(window.__tipReady) return;
+  window.__tipReady = true;
 
+  var tip = document.createElement('div');
+  tip.className = 'tip';
+  tip.setAttribute('role','tooltip');
+  tip.setAttribute('aria-hidden','true');
+  tip.innerHTML = '<div class="tip-body"></div><div class="tip-arrow"></div>';
+  function attach(){
+    if(document.body){ document.body.appendChild(tip); }
+    else { setTimeout(attach, 30); }
+  }
+  attach();
+  var tipBody = tip.querySelector('.tip-body');
 
+  var IS_TOUCH = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+  var hideTimer = null;
+  var currentTarget = null;
 
+  /* Harvest title attributes -> data-tip, then strip the title so the
+     browser does not race in with its own popup. Also climb up from
+     <svg><title> children to mark their parent <g>. */
+  function harvest(root){
+    root = root || document;
+    /* Skip <head> child <title> (the page title). */
+    var els = root.querySelectorAll('[title]');
+    for(var i=0;i<els.length;i++){
+      var el = els[i];
+      if(el.tagName === 'TITLE') continue;          /* page title */
+      if(el.closest && el.closest('head')) continue;
+      var t = el.getAttribute('title');
+      if(t){
+        if(!el.getAttribute('data-tip')) el.setAttribute('data-tip', t);
+        el.removeAttribute('title');
+      }
+    }
+    /* SVG <title>: hoist the text onto the parent <g> as data-tip. We
+       leave the <title> in place for accessibility (screen readers). */
+    var stitles = root.querySelectorAll('svg title');
+    for(var j=0;j<stitles.length;j++){
+      var st = stitles[j];
+      var p = st.parentElement;
+      if(p && !p.getAttribute('data-tip')){
+        var txt = (st.textContent || '').trim();
+        if(txt) p.setAttribute('data-tip', txt);
+      }
+    }
+  }
 
+  function setTip(text){ tipBody.innerHTML = String(text); }
 
+  function position(target){
+    /* Force layout so we have real dimensions. */
+    tip.style.visibility = 'hidden';
+    tip.classList.add('open');
+    var tr = tip.getBoundingClientRect();
+    var rr = target.getBoundingClientRect();
+    var x = rr.left + rr.width/2 - tr.width/2;
+    var y = rr.top - tr.height - 10;
+    var below = false;
+    if(y < 6){
+      y = rr.bottom + 10;
+      below = true;
+    }
+    var maxX = window.innerWidth - tr.width - 8;
+    if(x < 8) x = 8;
+    if(x > maxX) x = maxX;
+    tip.style.left = Math.round(x) + 'px';
+    tip.style.top  = Math.round(y) + 'px';
+    tip.classList.toggle('tip-bottom', below);
+    /* Arrow horizontal: keep it pointing at the trigger centre. */
+    var arrow = tip.querySelector('.tip-arrow');
+    if(arrow){
+      var triggerCx = rr.left + rr.width/2;
+      var arrowLeft = triggerCx - x - 4.5;
+      arrowLeft = Math.max(8, Math.min(tr.width - 18, arrowLeft));
+      arrow.style.left = Math.round(arrowLeft) + 'px';
+      arrow.style.marginLeft = '0';
+    }
+    tip.style.visibility = '';
+  }
 
+  function show(target){
+    if(!target || !target.getAttribute) return;
+    var txt = target.getAttribute('data-tip');
+    if(!txt) return;
+    currentTarget = target;
+    setTip(txt);
+    position(target);
+    tip.setAttribute('aria-hidden','false');
+  }
 
+  function hide(){
+    currentTarget = null;
+    tip.classList.remove('open');
+    tip.setAttribute('aria-hidden','true');
+    clearTimeout(hideTimer);
+  }
 
+  /* Desktop hover */
+  if(!IS_TOUCH){
+    document.addEventListener('mouseover', function(e){
+      var t = e.target.closest && e.target.closest('[data-tip]');
+      if(!t){ if(currentTarget) hide(); return; }
+      if(t !== currentTarget) show(t);
+    });
+    document.addEventListener('mouseout', function(e){
+      var t = e.target.closest && e.target.closest('[data-tip]');
+      if(!t) return;
+      var to = e.relatedTarget && e.relatedTarget.closest && e.relatedTarget.closest('[data-tip]');
+      if(to === t) return;
+      hide();
+    });
+    /* Hide on scroll so the tip does not sit floating over moved content. */
+    window.addEventListener('scroll', hide, {passive:true});
+  }
 
+  /* Touch: tap to show with auto-dismiss; second tap on same element hides. */
+  if(IS_TOUCH){
+    document.addEventListener('click', function(e){
+      var t = e.target.closest && e.target.closest('[data-tip]');
+      if(!t){ hide(); return; }
+      if(t === currentTarget){
+        hide();
+        return;
+      }
+      show(t);
+      clearTimeout(hideTimer);
+      hideTimer = setTimeout(hide, 2400);
+    }, true);
+  }
+
+  /* Escape always hides. */
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape') hide();
+  });
+
+  /* Initial harvest after DOM ready, plus a MutationObserver so any
+     dynamic content (drawer renders, dropdowns, etc.) gets covered. */
+  function bootHarvest(){
+    harvest(document);
+  }
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', bootHarvest);
+  } else {
+    bootHarvest();
+  }
+  if(window.MutationObserver){
+    var mo = new MutationObserver(function(records){
+      var needRehome = false;
+      for(var i=0;i<records.length;i++){
+        var r = records[i];
+        if(r.addedNodes && r.addedNodes.length){
+          for(var k=0;k<r.addedNodes.length;k++){
+            var n = r.addedNodes[k];
+            if(n.nodeType === 1){
+              if(n.getAttribute && n.getAttribute('title')){
+                if(!n.getAttribute('data-tip')) n.setAttribute('data-tip', n.getAttribute('title'));
+                n.removeAttribute('title');
+              }
+              if(n.querySelector && (n.querySelector('[title]') || n.querySelector('title'))){
+                harvest(n);
+              }
+            }
+          }
+        }
+        if(r.type === 'attributes' && r.attributeName === 'title'){
+          var el = r.target;
+          if(el.tagName !== 'TITLE'){
+            var t2 = el.getAttribute('title');
+            if(t2){
+              if(!el.getAttribute('data-tip')) el.setAttribute('data-tip', t2);
+              el.removeAttribute('title');
+            }
+          }
+        }
+      }
+    });
+    function startMO(){
+      if(!document.body){ setTimeout(startMO, 30); return; }
+      mo.observe(document.body, {childList:true, subtree:true, attributes:true, attributeFilter:['title']});
+    }
+    startMO();
+  }
+})();
