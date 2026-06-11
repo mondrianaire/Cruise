@@ -851,4 +851,8 @@ window.SITE_VERSION = 'v.175';
   window.__SyncCenter = SC;
 
   if(document.readyState === 'loading'){
-    document.addEventListener('DOMContent
+    document.addEventListener('DOMContentLoaded', function(){ SC.init(); });
+  } else {
+    SC.init();
+  }
+})();
