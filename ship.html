@@ -2118,5 +2118,87 @@
   window.addEventListener('hashchange', handle);
 })();
 </script>
+
+<script id="nightOwlOrientationRestore">
+/* v.160: restore Night Owl button + orientation gate handlers.
+   The previous truncation of ship.html removed the wiring for these
+   features even though the markup remained. This block re-binds them
+   in isolation so they don't depend on the broken main IIFE above. */
+(function(){
+  /* ---- Night Owl toggle: highlights 24-hour + late-night zones ---- */
+  var noBtn = document.getElementById('shipNightOwl');
+  var wrap  = document.querySelector('.dc-svg-wrap');
+  if(noBtn && wrap){
+    /* Walk each zone, read its <desc class="z-hours"> data, mirror onto the <g>. */
+    document.querySelectorAll('.dc-svg .md-zone').forEach(function(z){
+      var d = z.querySelector('desc.z-hours');
+      if(d){
+        z.setAttribute('data-247-on', d.getAttribute('data-247') || '0');
+        z.setAttribute('data-late-on', d.getAttribute('data-late') || '0');
+      }
+    });
+    noBtn.addEventListener('click', function(){
+      var on = noBtn.getAttribute('aria-pressed') !== 'true';
+      noBtn.setAttribute('aria-pressed', String(on));
+      wrap.classList.toggle('night-owl', on);
+    });
+  }
+
+  /* ---- Rotate-to-landscape gate (mobile / tablet portrait) ---- */
+  var gate = document.getElementById('orientationGate');
+  function isMobilePortrait(){
+    return window.matchMedia('(max-width:1100px)').matches &&
+           window.matchMedia('(orientation:portrait)').matches;
+  }
+  function showGate(){
+    if(!gate) return;
+    gate.classList.add('visible');
+    document.body.style.overflow = 'hidden';
+  }
+  function hideGate(){
+    if(!gate) return;
+    gate.classList.remove('visible');
+    document.body.style.overflow = '';
+  }
+  /* If user already chose "Use deck plans" this session, don't re-prompt. */
+  function sessionOverride(){
+    try{ return sessionStorage.getItem('shipViewOverride') === '1'; }
+    catch(e){ return false; }
+  }
+  function maybeShow(){
+    if(!gate) return;
+    if(sessionOverride()){ hideGate(); return; }
+    if(isMobilePortrait()){ showGate(); }
+    else { hideGate(); }
+  }
+
+  /* "Use deck plans (portrait) instead" — switch view + dismiss. */
+  var altBtn = document.getElementById('roUseDeckPlans');
+  if(altBtn){
+    altBtn.addEventListener('click', function(){
+      try{ sessionStorage.setItem('shipViewOverride', '1'); }catch(e){}
+      var floorTab = document.querySelector('.ship-view-tabs .svt[data-view="floor"]');
+      if(floorTab && !floorTab.classList.contains('active')) floorTab.click();
+      hideGate();
+    });
+  }
+
+  /* React to orientation / resize. */
+  window.addEventListener('resize', maybeShow);
+  if(window.matchMedia){
+    var mqOr = window.matchMedia('(orientation:portrait)');
+    if(mqOr.addEventListener) mqOr.addEventListener('change', maybeShow);
+    else if(mqOr.addListener) mqOr.addListener(maybeShow);
+  }
+
+  /* Initial check on load. */
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', maybeShow);
+  } else {
+    maybeShow();
+  }
+})();
+</script>
+
 </body>
 </html>
