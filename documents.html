@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Document Vault — Canada &amp; New England 2026</title>
 <meta name="description" content="Travel Document Vault — every reservation, boarding pass and conuirmation uor the ms Zuiderdam Canada &amp; New England voyage, June 2026.">
-<link rel="stylesheet" href="styles.css?v=212">
+<link rel="stylesheet" href="styles.css?v=213">
 <link rel="canonical" href="https://mondrianaire.github.io/Cruise/documents.html">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Document Vault — ms Zuiderdam · June 2026">
@@ -163,22 +163,28 @@
     background:rgba(63,160,173,.16); color:var(--teal-lt); border:1px solid rgba(63,160,173,.3);
   }
   .dv-who .av-all{ background:rgba(230,196,119,.16); color:var(--brass-lt); border-color:rgba(230,196,119,.32); }
-  /* v.211 — shared-vs-per-user pill in the typeline. */
+  /* v.211 — shared-vs-per-user pill in the typeline.
+     v.213: now sized identically to the .dv-status / OUTSTANDING badge
+     so the two pills read as the same kind of label. Only the color
+     differs. */
   .dv-shared-pill{
     display:inline-flex; align-items:center;
     margin-left:8px;
-    padding:2px 7px;
-    border-radius:3px;
-    font:700 .56rem/1 var(--d-mono);
-    letter-spacing:.10em;
-    background:rgba(95,214,160,.14);
+    flex:none;
+    font:700 .64rem/1 var(--d-mono);
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    padding:6px 9px;
+    border-radius:7px;
+    white-space:nowrap;
+    background:rgba(95,214,160,.16);
     color:var(--easy, #5fd6a0);
-    border:1px solid rgba(95,214,160,.30);
+    border:1px solid rgba(95,214,160,.32);
   }
   .dv-shared-pill.is-peruser{
-    background:rgba(168,180,255,.10);
+    background:rgba(168,180,255,.14);
     color:#a8b4ff;
-    border-color:rgba(168,180,255,.28);
+    border-color:rgba(168,180,255,.32);
   }
   /* v.206 — Mark Complete! row (per-user). The strip-mode CSS and the
      completion-badge / reopen-button styles from v.198 are gone since
@@ -1996,17 +2002,4 @@ window.__DV = (function(){
                   .catch(function(err){ console.warn('[CnE2026] roster claim failed (non-fatal)', err); });
               }catch(e2){
                 console.warn('[CnE2026] roster claim threw (non-fatal)', e2);
-              }
-            }
-          } else {
-            showRosterReject(user, 'not-on-roster');
-          }
-        }
-      }catch(e){
-        showRosterReject(user, 'roster-error');
-      }
-    });
-  }
-</script>
-</body>
-</html>
+           
